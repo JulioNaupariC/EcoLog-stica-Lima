@@ -18,9 +18,9 @@ Repositorio de documentación y desarrollo del proyecto académico EcoLogística
 
 - [Selección del enfoque del proyecto V_1_0_0](<docs/01 Inicio/01. Selección del enfoque del proyecto V_1_0_0.md>)  
 - [Acta de constitución V_1_1_0](<docs/01 Inicio/02. Acta de constitución V_1_1_0.md>)
-- [Declaración de la visión V_1_0_0](<docs/01 Inicio/03. Declaración de la visión V_1_0_0>)
-- [Registro de supuestos y restricciones V_1_0_0](<docs/01 Inicio/04. Registro de supuestos y restricciones V_1_0_0>)
-- [Registro de interesados V_1_0_0](<docs/01 Inicio/05. Registro de interesados V_1_0_0>)
+- [Declaración de la visión V_1_0_0](<docs/01 Inicio/03. Declaración de la visión V_1_0_0.md>)
+- [Registro de supuestos y restricciones V_1_0_0](<docs/01 Inicio/04. Registro de supuestos y restricciones V_1_0_0.md>)
+- [Registro de interesados V_1_0_0](<docs/01 Inicio/05. Registro de interesados V_1_0_0.md>)
 - [Requisitos funcionales V_1_0_0](<docs/01 Inicio/06. Requisitos funcionales V_1_0_0.md>)
 - [Requisitos no funcionales V_1_1_0](<docs/01 Inicio/07. Requisitos no funcionales V_1_1_0.md>)
 - [Usuarios V_1_0_0](<docs/01 Inicio/08. Usuarios V_1_0_0.md>)
@@ -28,7 +28,7 @@ Repositorio de documentación y desarrollo del proyecto académico EcoLogística
 - [Stack tecnológico V_1_0_0](<docs/01 Inicio/10. Stack tecnol#U00f3gico V_1_0_0.md>)
 - [Base de datos V_1_0_0](<docs/01 Inicio/11. Base de datos V_1_0_0.md>)
 - [Modelo C4 V_1_0_0](<docs/01 Inicio/12. Modelo C4 V_1_0_0.md>)
-- [Restricciones V_1_0_0](<docs/01 Inicio/13. Restricciones V_1_0_0>)
+- [Restricciones V_1_0_0](<docs/01 Inicio/13. Restricciones V_1_0_0.md>)
 
 ## Fase 02: Planificación del Proyecto
 
