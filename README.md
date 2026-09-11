@@ -16,7 +16,7 @@ Repositorio de documentación y desarrollo del proyecto académico EcoLogística
 
 ## Fase 01: Inicio y línea base
 
-- [Selección del enfoque del proyecto V_1_0_0](<docs/01 Inicio/01. Selección del enfoque del proyecto V_1_0_0>)  
+- [Selección del enfoque del proyecto V_1_0_0](<docs/01 Inicio/01. Selección del enfoque del proyecto V_1_0_0.md>)  
 - [Acta de constitución V_1_1_0](<docs/01 Inicio/02. Acta de constitución V_1_1_0.md>)
 - [Declaración de la visión V_1_0_0](<docs/01 Inicio/03. Declaración de la visión V_1_0_0>)
 - [Registro de supuestos y restricciones V_1_0_0](<docs/01 Inicio/04. Registro de supuestos y restricciones V_1_0_0>)
