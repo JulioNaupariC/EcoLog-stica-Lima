@@ -1,7 +1,5 @@
 # Transformando a ágil — EcoLogística Lima
 
-- [Volver ->](</README.md>)
-
 | Metadato | Valor |
 |---|---|
 | Proyecto | EcoLogística Lima — Optimizador de Rutas Sostenibles para DistriRápido S.A.C. |

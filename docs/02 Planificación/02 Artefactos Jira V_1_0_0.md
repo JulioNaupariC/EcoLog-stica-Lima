@@ -1,14 +1,12 @@
 # Artefactos Jira — EcoLogística Lima
 
-- [Volver ->](</README.md>)
-
 | Metadato | Valor |
 |---|---|
 | Proyecto Jira | EcoLogística Lima (`ECL`) |
 | Tipo de proyecto | Company-managed Software |
 | Board | `ECL board` — Scrum, Board ID 3 |
 | Versión | 1.0.0 |
-| Fecha | 10/09/2026 |
+| Fecha | 11/09/2026 |
 
 ## 1. Configuración operativa validada
 
@@ -93,7 +91,7 @@ La Release consolida gestión operativa, optimización VRPTW/Green VRP, seguimie
 | Duración | 2 semanas |
 | Inicio | 11/09/2026 09:00 (America/Lima) |
 | Fin | 25/09/2026 09:00 (America/Lima) |
-| Estado al generar este documento | Future / planificado |
+| Estado al generar este documento | Active / iniciado |
 
 **Sprint Goal:** Establecer una base ejecutable y segura de EcoLogística Lima, habilitando autenticación, gestión inicial de flota y pedidos, y controles de CI/CD necesarios para iniciar la optimización sostenible de rutas.
 
@@ -142,59 +140,99 @@ El flujo configurado en `ECL board` es:
 
 El Board usa `Story Points (customfield_10037)` para estimación y `Rank` para el orden del backlog.
 
-## 7. Evidencias visuales requeridas
+## 7. Evidencias visuales de Jira
 
-> **Regla de entrega:** las evidencias deben ser capturas reales de Jira y recortarse exclusivamente al panel o contenedor que demuestra el requisito. No incluir escritorio, barra de tareas, pestañas del navegador ni espacio vacío innecesario.
+> **Fecha de evidencias:** 11/09/2026.  
+> Las capturas se recortaron al área funcional de Jira para evitar escritorio, barra de tareas y pestañas del navegador. Las imágenes se encuentran en `evidencias-jira/` y se referencian mediante rutas relativas para que se rendericen directamente en GitHub.
 
-### Evidencia 1 — Roadmap del Proyecto
+### Evidencia 1 — Roadmap / Cronograma de Épicas
 
-- **Vista Jira:** Roadmap / Timeline del proyecto ECL.
-- **Debe mostrar:** las 6 Épicas, sus nombres y barras de fechas.
-- **Recorte:** encabezado temporal + lista de Épicas + barras; excluir navegación del navegador.
-- **Archivo final sugerido:** `evidencias-jira/01-roadmap.png`.
-<!-- INSERTAR AQUÍ LA CAPTURA REAL: evidencias-jira/01-roadmap.png -->
+La vista de cronograma muestra las seis Épicas del proyecto, sus periodos de ejecución, el Sprint 1 y el hito de la versión `v1.0.0-MVP`.
 
-### Evidencia 2 — Backlog Priorizado
+![Evidencia 1 - Roadmap de Épicas](./evidencias-jira/01-roadmap-epicas.png)
 
-- **Vista Jira:** Backlog de `ECL board`.
-- **Debe mostrar:** ranking, Story Points y Componentes. Priorizar en el encuadre los primeros elementos: EN-001, EN-002, EN-006, US-001, US-002 y US-004.
-- **Recorte:** contenedor del backlog con columnas/campos visibles; sin barra del navegador.
-- **Archivo final sugerido:** `evidencias-jira/02-backlog-priorizado.png`.
-<!-- INSERTAR AQUÍ LA CAPTURA REAL: evidencias-jira/02-backlog-priorizado.png -->
+**Elementos observables:**
+- `ECL-1` — EP-01 Gestión de Acceso y Seguridad.
+- `ECL-2` — EP-02 Gestión Operativa Logística.
+- `ECL-3` — EP-03 Optimización Sostenible de Rutas.
+- `ECL-4` — EP-04 Operación, Seguimiento e Incidencias.
+- `ECL-5` — EP-05 Analítica, Reportes y Sostenibilidad.
+- `ECL-6` — EP-06 Plataforma, Calidad y Entrega Continua.
+- Hito de Release `v1.0.0-MVP`.
 
-### Evidencia 3 — Sprint Planning y Sprint Goal
+### Evidencia 2 — Product Backlog priorizado
 
-- **Vista Jira:** Sprint 1 dentro del Backlog.
-- **Debe mostrar:** nombre `Sprint 1 - Base Operativa`, Sprint Goal, fechas, los 6 ítems padre y **28 SP**.
-- **Recorte:** cabecera completa del Sprint y su lista de ítems; no es necesario desplegar las 18 subtareas si impide leer el Goal.
-- **Archivo final sugerido:** `evidencias-jira/03-sprint-planning.png`.
-<!-- INSERTAR AQUÍ LA CAPTURA REAL: evidencias-jira/03-sprint-planning.png -->
+La vista del Backlog registra los elementos pendientes fuera del Sprint activo, manteniendo el orden de prioridad definido. Se observan las estimaciones Fibonacci y la asociación de los elementos con sus Épicas.
 
-### Evidencia 4 — Tablero Scrum Activo
+![Evidencia 2 - Product Backlog priorizado](./evidencias-jira/02-backlog-priorizado.png)
 
-- **Vista Jira:** Active Sprint / Board, después de iniciar Sprint 1.
-- **Debe mostrar:** las cuatro columnas `To Do`, `In Progress`, `In Review / QA`, `Done` y tarjetas reales del Sprint.
-- **Momento recomendado:** capturar cuando el equipo tenga trabajo legítimamente distribuido entre estados; no mover tarjetas solo para simular avance.
-- **Recorte:** exclusivamente el tablero con encabezados y tarjetas.
-- **Archivo final sugerido:** `evidencias-jira/04-board-activo.png`.
-<!-- INSERTAR AQUÍ LA CAPTURA REAL: evidencias-jira/04-board-activo.png -->
+El Backlog restante muestra **14 actividades y 87 SP**. Los otros **6 elementos y 28 SP** se encuentran comprometidos en el Sprint 1, por lo que el total de trabajo estimado del Product Backlog ejecutable continúa siendo **115 SP**.
+
+> **Nota de trazabilidad:** la asignación de Componentes se documenta en la tabla de la sección 2 de este archivo y está configurada en Jira para los 20 elementos ejecutables.
+
+### Evidencia 3 — Sprint 1 activo, Sprint Goal y compromiso
+
+El Sprint 1 se encuentra iniciado con seis elementos padre, fechas del 11 al 25 de septiembre de 2026 y un compromiso total de **28 Story Points**.
+
+![Evidencia 3 - Sprint 1 Base Operativa](./evidencias-jira/03-sprint1-planning-goal.png)
+
+**Sprint Goal:** Establecer una base ejecutable y segura de EcoLogística Lima, habilitando autenticación, gestión inicial de flota y pedidos, y controles de CI/CD necesarios para iniciar la optimización sostenible de rutas.
+
+La captura evidencia además que Jira ofrece la acción **Completar sprint**, confirmando que el Sprint se encuentra activo.
+
+### Evidencia 4 — Tablero Scrum activo
+
+El tablero activo utiliza las cuatro columnas definidas para el flujo de trabajo:
+
+`To Do → In Progress → In Review / QA → Done`
+
+Al momento de tomar las evidencias, el Sprint acababa de iniciarse y las subtareas se encontraban legítimamente en **To Do**. Por esta razón no se trasladaron tarjetas artificialmente a otros estados únicamente para la captura.
+
+#### 4.1 EN-001 — Arquitectura reproducible
+
+![Tablero activo - ECL-19 Arquitectura](./evidencias-jira/04a-board-ecl19-arquitectura.png)
+
+#### 4.2 EN-002 — Seguridad OWASP y RBAC
+
+![Tablero activo - ECL-20 Seguridad](./evidencias-jira/04b-board-ecl20-seguridad.png)
+
+#### 4.3 EN-006 — CI/CD y puertas de calidad
+
+![Tablero activo - ECL-24 CI/CD](./evidencias-jira/04c-board-ecl24-cicd.png)
+
+#### 4.4 US-001 — Autenticación y acceso por rol
+
+![Tablero activo - ECL-7 Autenticación](./evidencias-jira/04d-board-ecl7-autenticacion.png)
+
+#### 4.5 US-002 — Gestión de vehículos
+
+![Tablero activo - ECL-8 Vehículos](./evidencias-jira/04e-board-ecl8-vehiculos.png)
+
+#### 4.6 US-004 — Registro y validación de pedidos
+
+![Tablero activo - ECL-10 Pedidos](./evidencias-jira/04f-board-ecl10-pedidos.png)
+
+Estas seis vistas corresponden a los seis elementos padre comprometidos en Sprint 1 y muestran sus 18 subtareas distribuidas por responsable.
 
 ### Evidencia 5 — Gestión de Versiones / Release
 
-- **Vista Jira:** Releases / Versions.
-- **Debe mostrar:** `v1.0.0-MVP`, fechas y work items asociados.
-- **Recorte:** panel de la Release y asociación de elementos; excluir navegación externa.
-- **Archivo final sugerido:** `evidencias-jira/05-release.png`.
-<!-- INSERTAR AQUÍ LA CAPTURA REAL: evidencias-jira/05-release.png -->
+La versión oficial del MVP se encuentra creada en Jira como `v1.0.0-MVP`, con fecha de inicio 10/09/2026 y fecha objetivo de Release 04/12/2026.
 
-## 8. Checklist de evidencia antes de entregar
+![Evidencia 5 - Release v1.0.0-MVP](./evidencias-jira/05-release-v1.0.0-mvp.png)
 
-- [ ] Roadmap real recortado y legible.
-- [ ] Backlog con Story Points y Componentes visibles.
-- [ ] Sprint 1 con Goal explícito y 28 SP.
-- [ ] Sprint iniciado y Board con las cuatro columnas visibles.
-- [ ] Release `v1.0.0-MVP` visible con elementos asociados.
-- [ ] Ninguna captura incluye escritorio, taskbar, pestañas del navegador o espacio sobrante.
-- [ ] Las cinco imágenes se guardan dentro de `docs/02 Planificación/evidencias-jira/` y se insertan en este documento antes de la entrega.
+La Release se mantiene en estado **UNRELEASED** durante el desarrollo y consolida el alcance del MVP de EcoLogística Lima.
+
+## 8. Checklist de evidencia para entrega
+
+- [x] Roadmap real recortado y legible.
+- [x] Backlog priorizado con Story Points visibles.
+- [x] Sprint 1 iniciado, con Sprint Goal explícito y 28 SP.
+- [x] Tablero Scrum activo con las cuatro columnas configuradas.
+- [x] Release `v1.0.0-MVP` visible con fechas y descripción.
+- [x] Capturas almacenadas en `evidencias-jira/` y enlazadas mediante rutas relativas.
+- [x] Evidencias sin escritorio, taskbar ni pestañas del navegador.
+
+> **Observación:** el Sprint fue capturado en su estado inicial; por integridad de la evidencia no se simuló avance. Conforme el equipo ejecute las subtareas, las tarjetas deberán desplazarse por el flujo según su estado real.
+
 
 [← Volver al README Principal](../../README.md)
