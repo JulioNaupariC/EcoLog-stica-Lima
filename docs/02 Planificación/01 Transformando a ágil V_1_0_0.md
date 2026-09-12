@@ -596,9 +596,9 @@ Durante la planificación se detectaron dos inconsistencias de la línea base: e
 
 ### Fuentes internas del repositorio
 
-- `docs/01. Inicio/06. Requisitos funcionales V_1_0_0.md`
-- `docs/01. Inicio/07. Requisitos no funcionales V_1_1_0.md`
-- `docs/01. Inicio/09. Reglas de negocio V_1_0_0.md`
-- `docs/01. Inicio/12. Modelo C4 V_1_0_0.md`
+- `docs/01 Inicio/06. Requisitos funcionales V_1_0_0.md`
+- `docs/01 Inicio/07. Requisitos no funcionales V_1_1_0.md`
+- `docs/01 Inicio/09. Reglas de negocio V_1_0_0.md`
+- `docs/01 Inicio/12. Modelo C4 V_1_0_0.md`
 
 [← Volver al README Principal](../../README.md)
