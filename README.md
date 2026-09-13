@@ -44,5 +44,8 @@ Repositorio de documentación y desarrollo del proyecto académico EcoLogística
 - Release: `v1.0.0-MVP`.
 - Product Backlog ejecutable: 20 elementos / 115 Story Points.
 - Sprint 1: `Sprint 1 - Base Operativa`, 28 Story Points, 18 subtareas técnicas.
+- Sprint activo: 11/09/2026 – 25/09/2026.
 
-> Las capturas reales de Jira requeridas para la evidencia se incorporarán en `docs/02 Planificación/evidencias-jira/` antes de la entrega final.
+> Las evidencias visuales de Jira se encuentran disponibles en
+> `docs/02 Planificación/evidencias-jira/` y están integradas en
+> [`02 Artefactos Jira V_1_0_0.md`](<docs/02 Planificación/02 Artefactos Jira V_1_0_0.md>).
