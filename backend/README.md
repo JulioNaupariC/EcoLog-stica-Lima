@@ -1,7 +1,8 @@
-# Backend EcoLogística Lima — ECL-27
+# Backend EcoLogística Lima — ECL-27 / ECL-30
 
-Bootstrap FastAPI con SQLAlchemy síncrono y Psycopg 3. No incluye entidades de
-negocio, autenticación, Docker, Redis ni pipelines.
+Bootstrap FastAPI con SQLAlchemy síncrono y Psycopg 3. Incluye el modelo de
+credenciales Usuario y hashing Argon2id. No incluye login HTTP, sesiones,
+autorización, auditoría, Docker, Redis ni pipelines.
 
 ## Instalación (PowerShell)
 
@@ -69,9 +70,73 @@ La factoría FastAPI crea el motor sin abrir conexión y lo libera al cerrar.
 commit explícito. Los errores provocan rollback y el cierre libera la sesión.
 Futuros handlers que usen estas sesiones deben ser síncronos (`def`).
 
-Alembic obtiene la URL del entorno y usa `Base.metadata`. No hay revisiones ni
-tablas de negocio. `alembic heads` y `alembic history` deben estar vacíos.
-Las futuras migraciones se ejecutarán explícitamente, nunca al arrancar HTTP.
+Alembic obtiene la URL del entorno y usa `Base.metadata`. La primera revisión
+es `0001_create_usuario`, sin revisión padre. Crea únicamente `usuario` con UUID,
+email único, password_hash, rol, estado y creado_en según el esquema aprobado.
+Las migraciones se ejecutan explícitamente, nunca al arrancar HTTP.
+La comparación de metadata excluye `spatial_ref_sys`, administrada por PostGIS.
+
+```powershell
+.venv/Scripts/python -m alembic upgrade head
+.venv/Scripts/python -m alembic current
+.venv/Scripts/python -m alembic check
+```
+
+PostgreSQL 16 dispone de `gen_random_uuid()`; comprobar su disponibilidad antes
+del upgrade. La migración no instala extensiones ni crea usuarios iniciales.
+
+## Credenciales — ECL-30
+
+`app/core/passwords.py` ofrece `hash_password`, `verify_password` y `needs_rehash`
+usando argon2-cffi. Perfil explícito Argon2id: 64 MiB, 3 iteraciones y paralelismo
+4; salt aleatorio generado por la biblioteca. El hash codificado incluye salt y
+parámetros, y se almacena exclusivamente en `password_hash VARCHAR(255)`.
+
+Se rechazan null, valores no string y cadena vacía. Se preservan Unicode y
+espacios, sin normalización, truncamiento ni límite de 1024 bytes. No se define
+una política de fortaleza o caducidad no documentada.
+
+`CredentialService(UsuarioRepository(session))` expone:
+
+- `create(email, password, rol)`: devuelve `UserIdentity`, sin hash.
+- `verify(usuario_id, password)`: verifica únicamente la contraseña.
+- `verify_and_rehash(usuario_id, password)`: verifica y actualiza parámetros si
+  corresponde. Usa una actualización condicional para no sobrescribir un cambio
+  de contraseña concurrente. Ante conflicto devuelve falso.
+
+La creación siempre calcula un hash nuevo; una cadena con aspecto de hash se
+trata como contraseña literal, nunca como hash importado. El repositorio mantiene
+el hash dentro de su implementación y no lo devuelve al servicio. No se deben
+serializar entidades ORM ni inspeccionar sus atributos como respuesta pública.
+
+El llamador es dueño de la transacción: debe realizar commit explícito o rollback.
+Los fallos de almacenamiento se convierten en `CredentialStorageError` sin
+detalles del driver. No registrar entidades, contraseñas, hashes ni excepciones
+originales. Un hash malformado o contraseña incorrecta no verifica; los fallos
+operativos del backend generan errores saneados.
+
+Verificar una contraseña no autoriza acceso ni comprueba estado activo. ECL-31
+implementará RBAC/auditoría; ECL-36 coordinará estado de cuenta, bloqueo RN-001,
+login y sesión. No hay JWT, cookies, contadores ni permisos en este incremento.
+
+## Pruebas de migración y persistencia
+
+Configurar privadamente `TEST_DATABASE_URL` en el entorno o `.env`, apuntando a
+una base desechable cuyo nombre termine en `_test` y sea distinto del nombre de
+la base de desarrollo. No se usa `DATABASE_URL` como sustituto.
+
+El esquema public debe estar vacío: solo se admiten `spatial_ref_sys` de PostGIS
+y una tabla `alembic_version` vacía. Las pruebas crean y eliminan `usuario`, y
+pueden dejar la tabla de control de Alembic vacía. No ejecutarlas contra datos
+que se desee conservar. No se realizan downgrades automáticos al iniciar HTTP.
+
+```powershell
+.venv/Scripts/python -m pytest tests/integration -q
+```
+
+Sin TEST_DATABASE_URL se omiten las pruebas destructivas y se reporta downgrade
+pendiente. La prueba de conectividad PostGIS existente usa DATABASE_URL y es
+de solo lectura. No se considera una omisión como prueba aprobada.
 
 ## Calidad
 
