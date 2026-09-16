@@ -29,4 +29,3 @@ def test_upgrade_downgrade_and_metadata(migration_database):
     with engine.connect() as connection:
         assert not inspect(connection).has_table("usuario")
     command.upgrade(config, "head")
-    command.downgrade(config, "base")
