@@ -14,12 +14,18 @@ anyio==4.15.1
     # via
     #   httpx
     #   starlette
+argon2-cffi==25.1.0
+    # via ecologistica-backend (pyproject.toml)
+argon2-cffi-bindings==26.1.0
+    # via argon2-cffi
 build==1.6.1
     # via pip-tools
 certifi==2026.7.22
     # via
     #   httpcore
     #   httpx
+cffi==2.1.1
+    # via argon2-cffi-bindings
 click==8.5.0
     # via
     #   pip-tools
@@ -67,6 +73,8 @@ psycopg[binary]==3.3.5
     # via ecologistica-backend (pyproject.toml)
 psycopg-binary==3.3.5
     # via psycopg
+pycparser==3.0
+    # via cffi
 pydantic==2.13.5
     # via
     #   ecologistica-backend (pyproject.toml)
