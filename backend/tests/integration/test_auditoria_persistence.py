@@ -6,14 +6,30 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from alembic import command
+from app.core.config import Settings
 from app.core.rbac import Identidad, Motivo, Permiso, Rol
-from app.db.session import session_factory
+from app.db.session import build_audit_engine, session_factory
 from app.models import Auditoria, Usuario
 from app.repositories.auditoria import AuditStorageError, Detalle, Evento, Registro
 from app.services.auditoria import AuditoriaService
 from app.services.autorizacion import AuthorizationDenied, AutorizacionService
 
 pytestmark = pytest.mark.integration
+
+
+@pytest.fixture
+def audit_database(migration_database):
+    engine, config = migration_database
+    audit_engine = build_audit_engine(Settings())
+    try:
+        yield (
+            engine,
+            config,
+            session_factory(engine),
+            session_factory(audit_engine),
+        )
+    finally:
+        audit_engine.dispose()
 
 
 @pytest.mark.parametrize(
@@ -26,14 +42,13 @@ pytestmark = pytest.mark.integration
         ("INACTIVO", Rol.OPERADOR, Motivo.ESTADO_NO_ACTIVO),
     ],
 )
-def test_denied_actor_attribution(migration_database, estado, rol, motivo):
-    engine, config = migration_database
+def test_denied_actor_attribution(audit_database, estado, rol, motivo):
+    engine, config, business_factory, audit_factory = audit_database
     command.upgrade(config, "head")
-    factory = session_factory(engine)
     identifier = uuid4()
     known_actor = rol == Rol.OPERADOR
     if known_actor:
-        with factory.begin() as session:
+        with business_factory.begin() as session:
             session.add(
                 Usuario(
                     usuario_id=identifier,
@@ -46,21 +61,22 @@ def test_denied_actor_attribution(migration_database, estado, rol, motivo):
     identity = Identidad(identifier, rol, estado) if rol is not None else None
     # An unpersisted UUID with invalid role must not cause an audit FK failure.
     with pytest.raises(AuthorizationDenied):
-        AutorizacionService(AuditoriaService(factory)).autorizar(
+        AutorizacionService(AuditoriaService(audit_factory)).autorizar(
             identity, Permiso.USUARIOS_CREAR
         )
-    with factory() as observer:
+    with business_factory() as observer:
         row = observer.scalars(select(Auditoria)).one()
         assert row.usuario_id == (identifier if known_actor else None)
         assert row.accion == Evento.DENEGADA.value
         assert row.detalle["motivo"] == motivo.value
 
 
-def test_persistence_rollback_and_fk(migration_database):
-    engine, config = migration_database
+def test_persistence_rollback_and_fk(audit_database):
+    engine, config, business_factory, audit_factory = audit_database
     command.upgrade(config, "head")
-    factory = session_factory(engine)
-    with factory.begin() as session:
+    assert business_factory.kw["bind"] is not audit_factory.kw["bind"]
+    assert business_factory.kw["bind"].pool is not audit_factory.kw["bind"].pool
+    with business_factory.begin() as session:
         user = Usuario(
             email="audit@example.test", password_hash="test-placeholder", rol="OPERADOR"
         )
@@ -68,7 +84,7 @@ def test_persistence_rollback_and_fk(migration_database):
         session.flush()
         identifier = user.usuario_id
     identity = Identidad(identifier, Rol.OPERADOR, "ACTIVO")
-    audit = AuditoriaService(factory)
+    audit = AuditoriaService(audit_factory)
     auth = AutorizacionService(audit)
     with Session(engine) as business:
         business.add(
@@ -81,7 +97,7 @@ def test_persistence_rollback_and_fk(migration_database):
         with pytest.raises(AuthorizationDenied):
             auth.autorizar(identity, Permiso.USUARIOS_CREAR)
         business.rollback()
-    with factory() as observer:
+    with business_factory() as observer:
         rows = observer.scalars(select(Auditoria).order_by(Auditoria.creado_en)).all()
         assert len(rows) == 2
         assert {row.accion for row in rows} == {e.value for e in Evento}
@@ -107,7 +123,7 @@ def test_persistence_rollback_and_fk(migration_database):
                 ),
             )
         )
-    with factory() as observer:
+    with business_factory() as observer:
         assert len(observer.scalars(select(Auditoria)).all()) == 3
         with pytest.raises(IntegrityError), observer.begin_nested():
             observer.execute(delete(Usuario).where(Usuario.usuario_id == identifier))

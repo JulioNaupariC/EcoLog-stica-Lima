@@ -165,7 +165,9 @@ excepción de acceso a datos personales; RNF-004 exige su protección.
 
 `evaluar(identidad, permiso, contexto)` es una policy pura sin I/O. Deniega
 identidad/rol/permiso inválidos, estado diferente de ACTIVO, concesión ausente
-y contexto insuficiente. La matriz y sus mapas internos son inmutables.
+y contexto insuficiente. `None` significa que no se proporcionó contexto y solo
+puede bastar para alcance GENERAL; cualquier valor no nulo que no sea `Contexto`
+se deniega, incluso para alcance GENERAL. La matriz y sus mapas son inmutables.
 
 `Identidad` contiene UUID, rol y estado. El llamador debe obtenerlos de una fuente
 confiable y vigente; no aceptar esos datos desde el cliente ni interpretar una
@@ -187,8 +189,11 @@ este incremento no habilita operación multisede.
 `AutorizacionService(auditoria).autorizar(...)` evalúa y registra antes de retornar
 la Decision permitida; si deniega, lanza `AuthorizationDenied("Access denied")`.
 El consumidor ejecuta la operación solo después de ese retorno y respeta el
-alcance. `evaluar` por sí solo no audita. `AuditoriaService(session_factory)` es el
+alcance. `evaluar` por sí solo no audita. `AuditoriaService(audit_factory)` es el
 adaptador persistente; el servicio de autorización acepta un contrato AuditSink.
+La factory de auditoría se crea desde `build_audit_engine(Settings())`, usando la
+misma configuración externa pero un Engine y pool distintos de los de negocio.
+Ambos engines tienen ciclos de vida separados y deben liberarse por separado.
 
 No existe dependencia FastAPI, proveedor HTTP simulado ni endpoint adicional.
 ECL-36 resolverá identidad, conectará autorización con HTTP y traducirá errores.
@@ -225,9 +230,10 @@ No registrar contraseñas, hashes, tokens, cookies, sesiones secretas, DNI/conta
 emails, cuerpos HTTP, headers ni mensajes originales de excepciones. No registrar
 objetos de validación completos ni sus entradas al integrar consumidores.
 
-El repositorio solo inserta y hace flush. AuditoriaService posee una transacción
-corta independiente y confirma cada decisión; un rollback de negocio posterior
-no la elimina. Si falla conexión, flush o commit se lanza AuditStorageError con
+El repositorio solo inserta y hace flush. AuditoriaService recibe exclusivamente
+la factory del engine dedicado, posee una transacción corta y confirma cada
+decisión; un rollback de negocio posterior no la elimina. Si falla conexión,
+flush o commit se lanza AuditStorageError con
 mensaje saneado y no se concede autorización. No hay reintento recursivo.
 La auditoría es append-only mediante esta API, no una garantía contra un usuario
 SQL privilegiado; no hay funciones de edición/borrado ni retención automática.

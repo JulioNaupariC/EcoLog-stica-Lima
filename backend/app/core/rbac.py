@@ -277,10 +277,12 @@ def evaluar(
         return Decision(False, Motivo.ESTADO_NO_ACTIVO)
     if not isinstance(permiso, Permiso):
         return Decision(False, Motivo.PERMISO_INVALIDO)
+    if contexto is not None and not isinstance(contexto, Contexto):
+        return Decision(False, Motivo.CONTEXTO_INSUFICIENTE)
     alcance = MATRIZ_RBAC[rol].get(permiso)
     if alcance is None:
         return Decision(False, Motivo.SIN_PERMISO)
-    contexto = contexto if isinstance(contexto, Contexto) else Contexto()
+    contexto = contexto if contexto is not None else Contexto()
     if alcance == Alcance.PROPIO:
         valido = contexto.propietario_id == identidad.usuario_id
     elif alcance == Alcance.ASIGNADO_JORNADA:
