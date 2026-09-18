@@ -8,7 +8,7 @@ from sqlalchemy.orm import Session, sessionmaker
 from app.core.config import Settings
 
 
-def build_engine(settings: Settings) -> Engine:
+def _build_engine(settings: Settings) -> Engine:
     if settings.database_url is None:
         raise ValueError("DATABASE_URL is required for database operations")
     return create_engine(
@@ -17,6 +17,16 @@ def build_engine(settings: Settings) -> Engine:
         hide_parameters=True,
         connect_args={"connect_timeout": settings.db_connect_timeout},
     )
+
+
+def build_engine(settings: Settings) -> Engine:
+    """Build the engine used by business transactions."""
+    return _build_engine(settings)
+
+
+def build_audit_engine(settings: Settings) -> Engine:
+    """Build an audit-only engine with a pool independent from business work."""
+    return _build_engine(settings)
 
 
 def session_factory(engine: Engine) -> sessionmaker[Session]:

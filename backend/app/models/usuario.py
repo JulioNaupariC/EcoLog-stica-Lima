@@ -6,9 +6,10 @@ from uuid import UUID
 from sqlalchemy import CheckConstraint, DateTime, String, UniqueConstraint, text
 from sqlalchemy.orm import Mapped, mapped_column
 
+from app.core.rbac import Rol
 from app.db.base import Base
 
-ROLES = ("ADMINISTRADOR", "OPERADOR", "CONDUCTOR", "ANALISTA", "AUDITOR")
+ROLES = tuple(rol.value for rol in Rol)
 ESTADOS = ("ACTIVO", "BLOQUEADO", "INACTIVO")
 
 
