@@ -3,7 +3,7 @@
 from typing import Protocol
 from uuid import UUID
 
-from app.core.rbac import Contexto, Decision, Identidad, Permiso, evaluar
+from app.core.rbac import Contexto, Decision, Identidad, Motivo, Permiso, evaluar
 from app.repositories.auditoria import Detalle, Evento, Registro
 
 
@@ -32,6 +32,7 @@ class AutorizacionService:
             identidad.usuario_id
             if isinstance(identidad, Identidad)
             and isinstance(identidad.usuario_id, UUID)
+            and decision.motivo not in (Motivo.IDENTIDAD_INVALIDA, Motivo.ROL_INVALIDO)
             else None
         )
         self._auditoria.registrar(

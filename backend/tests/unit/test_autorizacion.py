@@ -38,3 +38,41 @@ def test_storage_failure_never_grants_access():
     identity = Identidad(uuid4(), Rol.OPERADOR, "ACTIVO")
     with pytest.raises(AuditStorageError):
         AutorizacionService(sink).autorizar(identity, Permiso.PEDIDOS_CREAR)
+
+
+@pytest.mark.parametrize(
+    "identity,motivo",
+    [
+        (Identidad(uuid4(), "INVALID", "ACTIVO"), Motivo.ROL_INVALIDO),
+        (None, Motivo.IDENTIDAD_INVALIDA),
+        ({}, Motivo.IDENTIDAD_INVALIDA),
+        (Identidad("invalid", Rol.OPERADOR, "ACTIVO"), Motivo.IDENTIDAD_INVALIDA),
+    ],
+)
+def test_invalid_identity_has_no_audit_actor(identity, motivo):
+    sink = Mock()
+    with pytest.raises(AuthorizationDenied):
+        AutorizacionService(sink).autorizar(identity, Permiso.USUARIOS_CREAR)
+    sink.registrar.assert_called_once()
+    record = sink.registrar.call_args.args[0]
+    assert record.usuario_id is None
+    assert record.evento is Evento.DENEGADA
+    assert record.detalle.motivo is motivo
+
+
+@pytest.mark.parametrize(
+    "estado,motivo",
+    [
+        ("ACTIVO", Motivo.SIN_PERMISO),
+        ("BLOQUEADO", Motivo.ESTADO_NO_ACTIVO),
+        ("INACTIVO", Motivo.ESTADO_NO_ACTIVO),
+    ],
+)
+def test_known_denied_actor_is_preserved(estado, motivo):
+    sink = Mock()
+    identity = Identidad(uuid4(), Rol.OPERADOR, estado)
+    with pytest.raises(AuthorizationDenied):
+        AutorizacionService(sink).autorizar(identity, Permiso.USUARIOS_CREAR)
+    record = sink.registrar.call_args.args[0]
+    assert record.usuario_id == identity.usuario_id
+    assert record.detalle.motivo is motivo

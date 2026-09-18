@@ -16,6 +16,46 @@ from app.services.autorizacion import AuthorizationDenied, AutorizacionService
 pytestmark = pytest.mark.integration
 
 
+@pytest.mark.parametrize(
+    "estado,rol,motivo",
+    [
+        ("ACTIVO", "INVALID", Motivo.ROL_INVALIDO),
+        (None, None, Motivo.IDENTIDAD_INVALIDA),
+        ("ACTIVO", Rol.OPERADOR, Motivo.SIN_PERMISO),
+        ("BLOQUEADO", Rol.OPERADOR, Motivo.ESTADO_NO_ACTIVO),
+        ("INACTIVO", Rol.OPERADOR, Motivo.ESTADO_NO_ACTIVO),
+    ],
+)
+def test_denied_actor_attribution(migration_database, estado, rol, motivo):
+    engine, config = migration_database
+    command.upgrade(config, "head")
+    factory = session_factory(engine)
+    identifier = uuid4()
+    known_actor = rol == Rol.OPERADOR
+    if known_actor:
+        with factory.begin() as session:
+            session.add(
+                Usuario(
+                    usuario_id=identifier,
+                    email="actor@example.test",
+                    password_hash="test-placeholder",
+                    rol=rol,
+                    estado=estado,
+                )
+            )
+    identity = Identidad(identifier, rol, estado) if rol is not None else None
+    # An unpersisted UUID with invalid role must not cause an audit FK failure.
+    with pytest.raises(AuthorizationDenied):
+        AutorizacionService(AuditoriaService(factory)).autorizar(
+            identity, Permiso.USUARIOS_CREAR
+        )
+    with factory() as observer:
+        row = observer.scalars(select(Auditoria)).one()
+        assert row.usuario_id == (identifier if known_actor else None)
+        assert row.accion == Evento.DENEGADA.value
+        assert row.detalle["motivo"] == motivo.value
+
+
 def test_persistence_rollback_and_fk(migration_database):
     engine, config = migration_database
     command.upgrade(config, "head")
