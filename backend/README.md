@@ -128,6 +128,8 @@ y RNF-003/RNF-004. No se modifican los documentos base. Rol identifica un perfil
 recurso identifica una capacidad; acción identifica la operación; permiso es
 el par explícito `recurso.accion`. No hay tablas de permisos ni gestión dinámica.
 Los enums de Python no cambian el VARCHAR ni los constraints de Usuario.
+Cambiar el catálogo de roles requiere una nueva migración Alembic.
+Nunca editar 0001 después de aplicada.
 
 En esta tabla C/R/U/D equivalen a crear/consultar/actualizar/desactivar.
 Cada letra corresponde a un permiso distinto; D siempre es lógico.
