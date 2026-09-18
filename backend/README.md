@@ -1,8 +1,9 @@
-# Backend EcoLogística Lima — ECL-27 / ECL-30
+# Backend EcoLogística Lima — ECL-27 / ECL-30 / ECL-31
 
 Bootstrap FastAPI con SQLAlchemy síncrono y Psycopg 3. Incluye el modelo de
-credenciales Usuario y hashing Argon2id. No incluye login HTTP, sesiones,
-autorización, auditoría, Docker, Redis ni pipelines.
+credenciales Usuario, hashing Argon2id y autorización RBAC con auditoría persistente.
+No incluye login HTTP, sesiones, integración HTTP de autorización, Docker,
+Redis ni pipelines.
 
 ## Instalación (PowerShell)
 
@@ -116,8 +117,132 @@ originales. Un hash malformado o contraseña incorrecta no verifica; los fallos
 operativos del backend generan errores saneados.
 
 Verificar una contraseña no autoriza acceso ni comprueba estado activo. ECL-31
-implementará RBAC/auditoría; ECL-36 coordinará estado de cuenta, bloqueo RN-001,
-login y sesión. No hay JWT, cookies, contadores ni permisos en este incremento.
+añade RBAC/auditoría por separado; ECL-36 coordinará estado de cuenta, bloqueo
+RN-001, login y sesión. El servicio de credenciales conserva su alcance original.
+
+## Autorización y auditoría — ECL-31
+
+La matriz estática de `app/core/rbac.py` se traza contra
+`docs/01 Inicio/08. Usuarios V_1_0_0.md`, RF-001 a RF-012, RN-002, RN-015
+y RNF-003/RNF-004. No se modifican los documentos base. Rol identifica un perfil;
+recurso identifica una capacidad; acción identifica la operación; permiso es
+el par explícito `recurso.accion`. No hay tablas de permisos ni gestión dinámica.
+Los enums de Python no cambian el VARCHAR ni los constraints de Usuario.
+
+En esta tabla C/R/U/D equivalen a crear/consultar/actualizar/desactivar.
+Cada letra corresponde a un permiso distinto; D siempre es lógico.
+
+| Recurso | Administrador | Operador | Conductor | Analista | Auditor |
+|---|---|---|---|---|---|
+| usuarios | CRUD | R | — | — | R anonimizado |
+| parametros | CRUD | R | — | R | R |
+| vehiculos | CRUD | CRU | R asignado/jornada | R agregado | R |
+| conductores | CRUD | CRU | R propio | R agregado | R anonimizado |
+| pedidos | CRUD | CRU | R asignado/jornada | R agregado | R anonimizado |
+| clientes | CRUD | CRU | R asignado/jornada | R agregado | R anonimizado |
+| optimizaciones.consultar | Sí | Sí | — | Sí | Sí |
+| optimizaciones.ejecutar / rutas.reoptimizar | — | Sí | — | — | — |
+| rutas.consultar | Sí | Sí | Asignada/jornada | Agregado | Anonimizado |
+| rutas.actualizar_estado | — | Sí | Asignada/jornada | — | — |
+| incidencias | R | CRU | CR propias | R agregado | R anonimizado |
+| indicadores.consultar | Sí | Sí | Propio | Sí | Sí |
+| reportes.consultar / reportes.descargar | Sí | Sí | Propio | Sí | Anonimizado |
+| compensacion.consultar | — | — | — | Sí | — |
+| auditoria.consultar | Sí | Propio | Propio | — | Sí |
+
+Los permisos son contratos para futuros módulos, no implementaciones de esos
+módulos. `compensacion.consultar` se traza a RF-011/US-011. La descarga de un
+reporte no concede escritura operativa. No se concede creación manual de rutas:
+RF-006 define generación mediante optimización. No existe comodín de Administrador.
+
+Interpretación restrictiva de la contradicción documental: aunque algunas celdas
+conceden D al Operador, la regla complementaria exige Administrador. Se deniega D
+al Operador y no se añade desactivación de incidencias a ningún rol porque la
+matriz solo concede R al Administrador. El Auditor no recibe DNI/contacto ni una
+excepción de acceso a datos personales; RNF-004 exige su protección.
+
+### Contrato de uso independiente de HTTP
+
+`evaluar(identidad, permiso, contexto)` es una policy pura sin I/O. Deniega
+identidad/rol/permiso inválidos, estado diferente de ACTIVO, concesión ausente
+y contexto insuficiente. La matriz y sus mapas internos son inmutables.
+
+`Identidad` contiene UUID, rol y estado. El llamador debe obtenerlos de una fuente
+confiable y vigente; no aceptar esos datos desde el cliente ni interpretar una
+instancia de esta clase como prueba de autenticación. El usuario debe estar
+persistido antes de auditar con su UUID. No se arrastran email ni hash.
+
+`Contexto` representa hechos obtenidos por el servidor. PROPIO compara propietario
+con actor; ASIGNADO_JORNADA exige actor asignado y UUID de jornada coincidente.
+AGREGADO/ANONIMIZADO requieren una proyección explícita. No enviar booleanos del
+cliente como evidencia ni pasar a estas verificaciones IDs sin validar.
+Las colecciones deben filtrarse por el servidor antes de dar acceso.
+
+La policy no agrega ni anonimiza datos: el futuro repositorio/esquema de respuesta
+debe aplicar la proyección seleccionada y minimizar campos también en GENERAL.
+Los UUID de jornada son un contrato interno para la futura integración, no una
+tabla nueva. La restricción de sede/zona se implementará cuando exista ese modelo;
+este incremento no habilita operación multisede.
+
+`AutorizacionService(auditoria).autorizar(...)` evalúa y registra antes de retornar
+la Decision permitida; si deniega, lanza `AuthorizationDenied("Access denied")`.
+El consumidor ejecuta la operación solo después de ese retorno y respeta el
+alcance. `evaluar` por sí solo no audita. `AuditoriaService(session_factory)` es el
+adaptador persistente; el servicio de autorización acepta un contrato AuditSink.
+
+No existe dependencia FastAPI, proveedor HTTP simulado ni endpoint adicional.
+ECL-36 resolverá identidad, conectará autorización con HTTP y traducirá errores.
+GET /health permanece público. Las rutas automáticas de documentación tampoco
+cambian. La frase de Jira «aplicadas a endpoints protegidos» tiene integración
+pendiente hasta que existan esos endpoints y su proveedor real de identidad.
+
+### Auditoría de decisiones
+
+Solo se escriben AUTORIZACION_PERMITIDA y AUTORIZACION_DENEGADA. La primera
+no acredita ejecución ni éxito de una operación de negocio. No se auditan login,
+sesiones, bloqueo RN-001 ni operaciones de módulos inexistentes.
+
+El modelo lógico aprobado define los siete campos. ECL-31 concreta los tipos:
+
+| Campo | Tipo / regla |
+|---|---|
+| auditoria_id | UUID PK generado por PostgreSQL |
+| usuario_id | UUID nullable, FK a usuario con ON DELETE RESTRICT |
+| entidad | VARCHAR(50), derivado del permiso; autorizacion si es inválido |
+| entidad_id | UUID nullable, referencia lógica a objeto existente cuando aplique |
+| accion | VARCHAR(64), CHECK limitado a las dos decisiones |
+| creado_en | TIMESTAMPTZ, CURRENT_TIMESTAMP |
+| detalle | JSONB objeto, únicamente permiso enumerado/null y motivo enumerado |
+
+La nulabilidad permite denegaciones sin identidad u objeto establecido; no se
+inventan usuarios. Tipos, longitudes e índices son decisiones físicas de ECL-31,
+no un DDL de auditoría preexistente. Hay índices por fecha y usuario/fecha.
+
+Registro/Detalle son modelos tipados, inmutables y validados con campos adicionales
+prohibidos. El repositorio construye el contenido; no admite payload libre para
+volcarlo a JSONB. Un permiso o rol inválido nunca se copia como texto en detalle.
+No registrar contraseñas, hashes, tokens, cookies, sesiones secretas, DNI/contacto,
+emails, cuerpos HTTP, headers ni mensajes originales de excepciones. No registrar
+objetos de validación completos ni sus entradas al integrar consumidores.
+
+El repositorio solo inserta y hace flush. AuditoriaService posee una transacción
+corta independiente y confirma cada decisión; un rollback de negocio posterior
+no la elimina. Si falla conexión, flush o commit se lanza AuditStorageError con
+mensaje saneado y no se concede autorización. No hay reintento recursivo.
+La auditoría es append-only mediante esta API, no una garantía contra un usuario
+SQL privilegiado; no hay funciones de edición/borrado ni retención automática.
+
+### Migración incremental y verificación
+
+`0002_create_auditoria` depende de `0001_create_usuario`, que permanece intacta.
+Upgrade crea únicamente auditoria e índices; downgrade a 0001 elimina auditoria
+y conserva usuarios y PostGIS. La aplicación no ejecuta migraciones al arrancar.
+
+Las pruebas de ECL-31 cubren policy, alcances, errores saneados, persistencia,
+rollback y ciclo 0001 → 0002 → 0001 → 0002. El test de migración ejecuta también
+`alembic.command.check` en ambos upgrades contra TEST_DATABASE_URL. ECL-32 mantiene
+la suite transversal de seguridad/HTTP y las 20 pruebas de exposición de RNF-004.
+La cobertura local no acredita el DoD completo ni sustituye peer review/SAST.
 
 ## Pruebas de migración y persistencia
 
@@ -126,7 +251,7 @@ una base desechable cuyo nombre termine en `_test` y sea distinto del nombre de
 la base de desarrollo. No se usa `DATABASE_URL` como sustituto.
 
 El esquema public debe estar vacío: solo se admiten `spatial_ref_sys` de PostGIS
-y una tabla `alembic_version` vacía. Las pruebas crean y eliminan `usuario`, y
+y una tabla `alembic_version` vacía. Las pruebas crean/eliminan `usuario` y `auditoria`, y
 pueden dejar la tabla de control de Alembic vacía. No ejecutarlas contra datos
 que se desee conservar. No se realizan downgrades automáticos al iniciar HTTP.
 
