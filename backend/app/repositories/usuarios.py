@@ -24,6 +24,15 @@ class UserIdentity:
     creado_en: datetime
 
 
+@dataclass(frozen=True, repr=False)
+class LoginAccount:
+    usuario_id: UUID
+    rol: str
+    estado: str
+    intentos_fallidos: int
+    bloqueado_hasta: datetime | None
+
+
 class UsuarioRepository:
     def __init__(self, session: Session) -> None:
         self._session = session
@@ -68,5 +77,41 @@ class UsuarioRepository:
                 )
                 return result.rowcount == 1
             return True
+        except SQLAlchemyError:
+            raise CredentialStorageError("Credential storage unavailable") from None
+
+    def find_for_login(self, email: str) -> LoginAccount | None:
+        try:
+            usuario = self._session.scalar(
+                select(Usuario).where(Usuario.email == email).with_for_update()
+            )
+            if usuario is None:
+                return None
+            return LoginAccount(
+                usuario.usuario_id,
+                usuario.rol,
+                usuario.estado,
+                usuario.intentos_fallidos,
+                usuario.bloqueado_hasta,
+            )
+        except SQLAlchemyError:
+            raise CredentialStorageError("Credential storage unavailable") from None
+
+    def set_login_state(
+        self,
+        usuario_id: UUID,
+        *,
+        intentos_fallidos: int,
+        bloqueado_hasta: datetime | None,
+    ) -> None:
+        try:
+            self._session.execute(
+                update(Usuario)
+                .where(Usuario.usuario_id == usuario_id)
+                .values(
+                    intentos_fallidos=intentos_fallidos,
+                    bloqueado_hasta=bloqueado_hasta,
+                )
+            )
         except SQLAlchemyError:
             raise CredentialStorageError("Credential storage unavailable") from None

@@ -6,7 +6,8 @@ from app.db.base import Base
 from app.db.session import build_engine
 from app.models import Usuario  # noqa: F401
 
-settings = Settings()
+migration_url = context.config.attributes.get("database_url")
+settings = Settings(database_url=migration_url) if migration_url else Settings()
 if settings.database_url is None:
     raise RuntimeError("DATABASE_URL is required for migrations")
 

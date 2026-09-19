@@ -11,8 +11,10 @@ from app.repositories.auditoria import (
     AuditoriaRepository,
     AuditStorageError,
     Detalle,
+    DetalleAcceso,
     Evento,
     Registro,
+    ResultadoAcceso,
 )
 from app.services.auditoria import AuditoriaService
 
@@ -55,6 +57,25 @@ def test_unknown_permission_is_not_persisted_as_text():
     session = MagicMock()
     AuditoriaRepository(session).insert(record)
     assert session.add.call_args.args[0].entidad == "autorizacion"
+
+
+def test_access_audit_is_typed_and_failed_login_has_no_actor():
+    session = MagicMock()
+    identifier = uuid4()
+    record = Registro(
+        usuario_id=None,
+        entidad_id=identifier,
+        evento=Evento.LOGIN_FALLIDO,
+        detalle=DetalleAcceso(resultado=ResultadoAcceso.CREDENCIALES_INVALIDAS),
+    )
+    AuditoriaRepository(session).insert(record)
+    row = session.add.call_args.args[0]
+    assert row.usuario_id is None
+    assert row.entidad_id == identifier
+    assert row.entidad == "usuario"
+    assert row.detalle == {"resultado": "CREDENCIALES_INVALIDAS"}
+    with pytest.raises(ValidationError):
+        DetalleAcceso(resultado=ResultadoAcceso.EXITOSO, email="secret@example.test")
 
 
 @pytest.mark.parametrize(

@@ -19,6 +19,7 @@ class Settings(BaseSettings):
     app_env: Literal["development", "test", "production"] = "development"
     database_url: SecretStr | None = None
     db_connect_timeout: int = Field(default=5, ge=1, le=30)
+    session_ttl_minutes: int = Field(default=60, ge=1, le=1440)
 
     @field_validator("database_url", mode="before")
     @classmethod

@@ -8,6 +8,7 @@ def test_defaults_and_blank_url():
     assert Settings().database_url is None
     assert Settings(database_url="").database_url is None
     assert Settings().db_connect_timeout == 5
+    assert Settings().session_ttl_minutes == 60
 
 
 @pytest.mark.parametrize("url", ["broken", "sqlite:///db", "postgresql://host/db"])

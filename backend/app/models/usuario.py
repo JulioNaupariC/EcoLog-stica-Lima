@@ -3,7 +3,14 @@
 from datetime import datetime
 from uuid import UUID
 
-from sqlalchemy import CheckConstraint, DateTime, String, UniqueConstraint, text
+from sqlalchemy import (
+    CheckConstraint,
+    DateTime,
+    SmallInteger,
+    String,
+    UniqueConstraint,
+    text,
+)
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.core.rbac import Rol
@@ -24,6 +31,9 @@ class Usuario(Base):
         CheckConstraint(
             "estado IN ('ACTIVO','BLOQUEADO','INACTIVO')", name="ck_usuario_estado"
         ),
+        CheckConstraint(
+            "intentos_fallidos BETWEEN 0 AND 3", name="ck_usuario_intentos_fallidos"
+        ),
     )
 
     usuario_id: Mapped[UUID] = mapped_column(
@@ -36,6 +46,10 @@ class Usuario(Base):
     creado_en: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=text("CURRENT_TIMESTAMP")
     )
+    intentos_fallidos: Mapped[int] = mapped_column(
+        SmallInteger, server_default=text("0")
+    )
+    bloqueado_hasta: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
 
     def __repr__(self) -> str:
         return "<Usuario>"

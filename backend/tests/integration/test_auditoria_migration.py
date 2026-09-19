@@ -24,7 +24,7 @@ def test_audit_upgrade_check_downgrade_preserves_usuario(migration_database):
         assert inspect(connection).has_table("auditoria")
         assert (
             connection.scalar(text("SELECT version_num FROM alembic_version"))
-            == "0002_create_auditoria"
+            == "0003_create_login_sessions"
         )
     command.downgrade(config, "0001_create_usuario")
     with engine.connect() as connection:

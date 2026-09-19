@@ -100,7 +100,10 @@ def test_persistence_rollback_and_fk(audit_database):
     with business_factory() as observer:
         rows = observer.scalars(select(Auditoria).order_by(Auditoria.creado_en)).all()
         assert len(rows) == 2
-        assert {row.accion for row in rows} == {e.value for e in Evento}
+        assert {row.accion for row in rows} == {
+            Evento.PERMITIDA.value,
+            Evento.DENEGADA.value,
+        }
         assert all(
             row.usuario_id == identifier and row.auditoria_id and row.creado_en.tzinfo
             for row in rows
