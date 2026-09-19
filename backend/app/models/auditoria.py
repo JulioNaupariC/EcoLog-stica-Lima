@@ -14,7 +14,8 @@ class Auditoria(Base):
     __tablename__ = "auditoria"
     __table_args__ = (
         CheckConstraint(
-            "accion IN ('AUTORIZACION_PERMITIDA','AUTORIZACION_DENEGADA')",
+            "accion IN ('AUTORIZACION_PERMITIDA','AUTORIZACION_DENEGADA',"
+            "'LOGIN_EXITOSO','LOGIN_FALLIDO','CUENTA_BLOQUEADA','SESION_CERRADA')",
             name="ck_auditoria_accion",
         ),
         CheckConstraint(

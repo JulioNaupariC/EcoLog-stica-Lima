@@ -17,30 +17,42 @@ from app.db.session import build_engine
 BACKEND = Path(__file__).resolve().parents[2]
 
 
+def validate_test_database_url(
+    test_url: str | None, development_url: str | None
+) -> str:
+    """Return a dedicated test URL or abort before any database operation."""
+    if not test_url:
+        pytest.fail(
+            "TEST_DATABASE_URL is required for destructive tests", pytrace=False
+        )
+    try:
+        target = make_url(test_url)
+        development = make_url(development_url) if development_url else None
+    except (ArgumentError, ValueError, TypeError):
+        pytest.fail("Invalid test database configuration", pytrace=False)
+    if (
+        target.drivername != "postgresql+psycopg"
+        or not target.host
+        or not target.database
+        or not target.database.endswith("_test")
+    ):
+        pytest.fail("Invalid test database configuration", pytrace=False)
+    if development is not None and (
+        target == development or target.database == development.database
+    ):
+        pytest.fail("Test and development database must be different", pytrace=False)
+    return test_url
+
+
 @pytest.fixture
 def migration_database(monkeypatch):
     values = dotenv_values(BACKEND / ".env")
-    test_url = os.environ.get("TEST_DATABASE_URL", values.get("TEST_DATABASE_URL"))
-    if not test_url:
-        pytest.skip(
-            "TEST_DATABASE_URL absent: destructive migration validation pending"
-        )
-    engine = None
+    raw_test_url = os.environ.get("TEST_DATABASE_URL", values.get("TEST_DATABASE_URL"))
+    raw_development_url = os.environ.get("DATABASE_URL", values.get("DATABASE_URL"))
+    test_url = validate_test_database_url(raw_test_url, raw_development_url)
     try:
-        target = make_url(test_url)
-        development = Settings().database_url
-        if (
-            development
-            and target.database == make_url(development.get_secret_value()).database
-        ):
-            pytest.fail("Test and development database names must differ")
-        if not target.database or not target.database.endswith("_test"):
-            pytest.fail("Disposable test database name must end with _test")
         engine = build_engine(Settings(database_url=test_url))
     except (ArgumentError, ValueError, TypeError):
-        pass
-    # Report outside the exception handler so pytest cannot render its context.
-    if engine is None:
         pytest.fail("Invalid test database configuration", pytrace=False)
     try:
         with engine.connect() as connection:
@@ -53,6 +65,8 @@ def migration_database(monkeypatch):
                 pytest.fail("Migration tests require an unversioned test database")
         monkeypatch.setenv("DATABASE_URL", test_url)
         config = Config(str(BACKEND / "alembic.ini"))
+        # Alembic env.py prioritizes this validated, pinned test target over env.
+        config.attributes["database_url"] = test_url
         # Only arm cleanup after validating the dedicated, empty test database.
         try:
             yield engine, config

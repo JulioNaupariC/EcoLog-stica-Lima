@@ -20,9 +20,12 @@ def test_engine_disposed_on_shutdown(monkeypatch):
     from app.core.config import Settings
 
     engine = MagicMock()
+    audit_engine = MagicMock()
     monkeypatch.setattr("app.main.build_engine", lambda settings: engine)
+    monkeypatch.setattr("app.main.build_audit_engine", lambda settings: audit_engine)
     settings = Settings(database_url="postgresql+psycopg://localhost/db")
     with TestClient(create_app(settings)) as client:
         assert client.get("/health").status_code == 200
         engine.connect.assert_not_called()
     engine.dispose.assert_called_once()
+    audit_engine.dispose.assert_called_once()

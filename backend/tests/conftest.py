@@ -7,6 +7,11 @@ import pytest
 def isolated_unit_environment(request, monkeypatch, tmp_path):
     if request.node.get_closest_marker("integration"):
         return
-    for name in ("DATABASE_URL", "APP_ENV", "DB_CONNECT_TIMEOUT"):
+    for name in (
+        "DATABASE_URL",
+        "APP_ENV",
+        "DB_CONNECT_TIMEOUT",
+        "SESSION_TTL_MINUTES",
+    ):
         monkeypatch.delenv(name, raising=False)
     monkeypatch.chdir(tmp_path)

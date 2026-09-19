@@ -252,6 +252,62 @@ rollback y ciclo 0001 → 0002 → 0001 → 0002. El test de migración ejecuta 
 la suite transversal de seguridad/HTTP y las 20 pruebas de exposición de RNF-004.
 La cobertura local no acredita el DoD completo ni sustituye peer review/SAST.
 
+## Login y sesión — ECL-36
+
+`POST /login` recibe únicamente email y password. Un acceso válido devuelve UUID
+y rol actuales, y establece `ecologistica_session`; el token nunca aparece en el
+JSON. Usuario inexistente, password incorrecta, estados INACTIVO/BLOQUEADO y un
+bloqueo temporal activo reciben el mismo 401 `Credenciales inválidas`. Los fallos
+de almacenamiento o auditoría producen un 503 saneado.
+
+La sesión es opaca y revocable. Se genera con aleatoriedad criptográfica y la BD
+almacena únicamente SHA-256(token). La cookie usa HttpOnly, SameSite=Strict,
+path `/` y Secure en producción. `SESSION_TTL_MINUTES` es configuración técnica,
+vale 60 por defecto y admite de 1 a 1440 minutos; no es requisito funcional. No
+hay JWT ni refresh token.
+
+`POST /logout` exige la sesión actual, la revoca, limpia la cookie y devuelve 204.
+No revoca otras sesiones. Cada request protegido vuelve a resolver el hash de la
+cookie, la sesión y el Usuario en PostgreSQL. Rol, estado y UUID nunca se confían
+desde el cliente. Una sesión revocada/vencida, un cambio a INACTIVO/BLOQUEADO o un
+bloqueo temporal vigente invalidan el acceso. `require_permission()` entrega esa
+Identidad de BD a ECL-31; no se añadieron endpoints de negocio y `/health` sigue
+público.
+
+### RN-001
+
+`intentos_fallidos` y `bloqueado_hasta` son independientes de `estado`. La fila de
+Usuario se bloquea con `SELECT FOR UPDATE`: cada password incorrecta incrementa el
+contador; la tercera conserva estado ACTIVO y fija 15 minutos. Al vencer, se limpia
+el bloqueo antes del siguiente intento. Un éxito reinicia ambos campos. Los estados
+BLOQUEADO e INACTIVO nunca se reactivan automáticamente. Un email inexistente pasa
+por una verificación Argon2 ficticia, sin contador ni persistencia del email.
+
+### Auditoría y transacciones
+
+ECL-36 añade LOGIN_EXITOSO, LOGIN_FALLIDO, CUENTA_BLOQUEADA y SESION_CERRADA con
+un detalle de acceso tipado separado del detalle RBAC. LOGIN_FALLIDO siempre tiene
+`usuario_id=NULL`; una cuenta conocida solo puede aparecer como `entidad_id`. Nunca
+se registran email, password, hashes, token, cookie, IP, user-agent ni errores del
+driver.
+
+Negocio y auditoría usan engines/pools creados una vez durante el lifecycle y se
+cierran al apagar. La cookie se entrega solo después de persistir sesión y auditar
+LOGIN_EXITOSO. Si la auditoría falla, la sesión creada se revoca compensatoriamente
+y se devuelve 503.
+
+### Migración 0003 y límites
+
+`0003_create_login_sessions` depende de `0002_create_auditoria`: añade los campos
+de RN-001, crea `sesion` y amplía el CHECK de auditoría. No modifica revisiones
+anteriores. El downgrade a 0002 solo continúa si no existen eventos ECL-36. Si
+existen, falla explícitamente sin borrar auditorías ni alterar esos registros, que
+requieren tratamiento manual antes de volver a 0002.
+
+ECL-38 conserva las pruebas BDD completas de autenticación. ECL-32 conserva la
+campaña ofensiva, CSRF, enumeración temporal, fijación/robo de sesión y exposición
+transversal de datos. ECL-36 aporta únicamente las pruebas técnicas necesarias.
+
 ## Pruebas de migración y persistencia
 
 Configurar privadamente `TEST_DATABASE_URL` en el entorno o `.env`, apuntando a
@@ -259,7 +315,8 @@ una base desechable cuyo nombre termine en `_test` y sea distinto del nombre de
 la base de desarrollo. No se usa `DATABASE_URL` como sustituto.
 
 El esquema public debe estar vacío: solo se admiten `spatial_ref_sys` de PostGIS
-y una tabla `alembic_version` vacía. Las pruebas crean/eliminan `usuario` y `auditoria`, y
+y una tabla `alembic_version` vacía. Las pruebas crean/eliminan `usuario`, `auditoria`
+y `sesion`, y
 pueden dejar la tabla de control de Alembic vacía. No ejecutarlas contra datos
 que se desee conservar. No se realizan downgrades automáticos al iniciar HTTP.
 

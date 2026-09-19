@@ -29,8 +29,14 @@ def test_approved_schema_and_safe_representation():
         "rol",
         "estado",
         "creado_en",
+        "intentos_fallidos",
+        "bloqueado_hasta",
     }
-    assert all(not column.nullable for column in table.columns)
+    assert all(
+        not column.nullable
+        for column in table.columns
+        if column.name != "bloqueado_hasta"
+    )
     assert str(table.c.usuario_id.server_default.arg) == "gen_random_uuid()"
     assert table.c.email.type.length == 255
     assert table.c.password_hash.type.length == 255
@@ -38,7 +44,7 @@ def test_approved_schema_and_safe_representation():
     assert table.c.estado.type.length == 15
     assert table.c.creado_en.type.timezone
     assert any(isinstance(c, UniqueConstraint) for c in table.constraints)
-    assert len([c for c in table.constraints if isinstance(c, CheckConstraint)]) == 2
+    assert len([c for c in table.constraints if isinstance(c, CheckConstraint)]) == 3
     assert "secret" not in repr(Usuario(password_hash="secret"))
 
 
