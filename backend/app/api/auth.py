@@ -74,13 +74,23 @@ def logout(
     authenticated: Annotated[AuthenticatedSession, Depends(get_authenticated_session)],
     service: Annotated[AutenticacionService, Depends(get_authentication_service)],
 ) -> None:
+    settings: Settings = request.app.state.settings
     try:
         service.logout(authenticated)
     except AuthenticationUnavailable:
+        cookie_deletion = Response()
+        cookie_deletion.delete_cookie(
+            COOKIE_NAME,
+            path="/",
+            httponly=True,
+            secure=settings.app_env == "production",
+            samesite="strict",
+        )
         raise HTTPException(
-            status.HTTP_503_SERVICE_UNAVAILABLE, "Servicio no disponible"
+            status.HTTP_503_SERVICE_UNAVAILABLE,
+            "Servicio no disponible",
+            headers={"Set-Cookie": cookie_deletion.headers["set-cookie"]},
         ) from None
-    settings: Settings = request.app.state.settings
     response.delete_cookie(
         COOKIE_NAME,
         path="/",

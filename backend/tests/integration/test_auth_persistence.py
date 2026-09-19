@@ -292,3 +292,29 @@ def test_failed_success_audit_compensates_session(auth_database, monkeypatch):
         assert stored is not None and stored.revocada_en is not None
     with pytest.raises(InvalidSession):
         service.resolve(known_token)
+
+
+def test_failed_logout_audit_keeps_session_revoked(auth_database):
+    factory, service = auth_database
+    create_user(factory)
+    result = service.login("user@example.test", "correct")
+    authenticated = service.resolve(result.token)
+    real_audit = service._auditoria
+
+    class FailedLogoutAudit:
+        def registrar(self, registro):
+            if registro.evento is Evento.SESION_CERRADA:
+                raise AuditStorageError("private audit details")
+            real_audit.registrar(registro)
+
+    failing_service = AutenticacionService(factory, FailedLogoutAudit(), ttl_minutes=60)
+    with pytest.raises(AuthenticationUnavailable, match="^Authentication unavailable$"):
+        failing_service.logout(authenticated)
+
+    with factory() as session:
+        stored = session.scalar(
+            select(Sesion).where(Sesion.sesion_id == result.sesion_id)
+        )
+        assert stored.revocada_en is not None
+    with pytest.raises(InvalidSession):
+        service.resolve(result.token)

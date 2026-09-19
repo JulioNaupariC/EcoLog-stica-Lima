@@ -118,3 +118,44 @@ def test_logout_revokes_current_session_and_clears_cookie():
     assert "Path=/" in deletion
     assert "HttpOnly" in deletion
     assert "SameSite=strict" in deletion
+
+
+@pytest.mark.parametrize(
+    "environment,secure", [("development", False), ("production", True)]
+)
+def test_logout_audit_failure_returns_sanitized_error_and_clears_cookie(
+    environment, secure
+):
+    app = create_app(Settings(app_env=environment, database_url=None))
+    service = Mock()
+    authenticated = AuthenticatedSession(
+        uuid4(), Identidad(uuid4(), Rol.OPERADOR, "ACTIVO")
+    )
+    service.login.return_value = LoginResult(
+        "current-token",
+        authenticated.sesion_id,
+        authenticated.identidad,
+        datetime.now(timezone.utc) + timedelta(minutes=60),
+    )
+    service.logout.side_effect = AuthenticationUnavailable("private audit details")
+    app.dependency_overrides[get_authentication_service] = lambda: service
+    app.dependency_overrides[get_authenticated_session] = lambda: authenticated
+
+    with TestClient(app) as client:
+        login_response = client.post(
+            "/login", json={"email": "user@example.test", "password": "secret"}
+        )
+        assert login_response.status_code == 200
+        assert client.cookies.get("ecologistica_session") == "current-token"
+        response = client.post("/logout")
+        assert client.cookies.get("ecologistica_session") is None
+
+    assert response.status_code == 503
+    assert response.json() == {"detail": "Servicio no disponible"}
+    assert "private audit details" not in response.text
+    deletion = response.headers["set-cookie"]
+    assert "Path=/" in deletion
+    assert "HttpOnly" in deletion
+    assert "SameSite=strict" in deletion
+    assert ("Secure" in deletion) is secure
+    assert "Domain=" not in deletion
