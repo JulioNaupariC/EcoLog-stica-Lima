@@ -35,7 +35,9 @@ def upgrade() -> None:
         sa.PrimaryKeyConstraint("vehiculo_id"),
         sa.UniqueConstraint("placa", name="uq_vehiculo_placa"),
         sa.CheckConstraint(
-            "placa = upper(btrim(placa)) AND length(placa) > 0",
+            "length(placa) > 0 AND placa = upper(placa) "
+            "AND left(placa, 1) !~ '[[:space:]]' "
+            "AND right(placa, 1) !~ '[[:space:]]'",
             name="ck_vehiculo_placa_canonica",
         ),
         sa.CheckConstraint(

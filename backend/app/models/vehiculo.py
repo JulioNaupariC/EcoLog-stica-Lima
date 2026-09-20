@@ -24,7 +24,9 @@ class Vehiculo(Base):
     __table_args__ = (
         UniqueConstraint("placa", name="uq_vehiculo_placa"),
         CheckConstraint(
-            "placa = upper(btrim(placa)) AND length(placa) > 0",
+            "length(placa) > 0 AND placa = upper(placa) "
+            "AND left(placa, 1) !~ '[[:space:]]' "
+            "AND right(placa, 1) !~ '[[:space:]]'",
             name="ck_vehiculo_placa_canonica",
         ),
         CheckConstraint(

@@ -50,14 +50,30 @@ def test_vehicle_valid_persistence_defaults_and_exact_decimals(migration_databas
         assert zero_emission.factor_co2_kg_km == Decimal("0.00000")
 
 
+@pytest.mark.parametrize("placa", ["ABC123", "ABC-123", "ABC 123"])
+def test_vehicle_plate_accepts_canonical_values_and_internal_space(
+    migration_database, placa
+):
+    engine, config = migration_database
+    command.upgrade(config, "head")
+    with Session(engine) as session:
+        vehicle = Vehiculo(**vehicle_values(placa=placa))
+        session.add(vehicle)
+        session.commit()
+        assert vehicle.placa == placa
+
+
 @pytest.mark.parametrize(
     "overrides",
     [
         {"placa": ""},
         {"placa": "   "},
-        {"placa": " X-2"},
-        {"placa": "X-2 "},
-        {"placa": "x-2"},
+        {"placa": "\tABC123"},
+        {"placa": "ABC123\t"},
+        {"placa": "\nABC123"},
+        {"placa": "ABC123\n"},
+        {"placa": " ABC123 "},
+        {"placa": "abc123"},
         {"placa": "X-2", "tipo": "INVALIDO"},
         {"placa": "X-3", "capacidad_kg": Decimal("0")},
         {"placa": "X-4", "capacidad_kg": Decimal("-1")},

@@ -7,6 +7,11 @@ from sqlalchemy import CheckConstraint, Index, Numeric, SmallInteger, String
 from app.models.vehiculo import TIPOS_VEHICULO, Vehiculo
 
 EXPECTED_TYPES = ("CAMIONETA", "FURGON", "MOTO")
+EXPECTED_PLATE_CHECK = (
+    "length(placa) > 0 AND placa = upper(placa) "
+    "AND left(placa, 1) !~ '[[:space:]]' "
+    "AND right(placa, 1) !~ '[[:space:]]'"
+)
 EXPECTED_CONSTRAINTS = {
     "uq_vehiculo_placa",
     "ck_vehiculo_placa_canonica",
@@ -72,8 +77,7 @@ def test_vehicle_numeric_precision_constraints_and_index():
         for constraint in table.constraints
         if constraint.name == "ck_vehiculo_placa_canonica"
     )
-    assert "upper(btrim(placa))" in str(plate_check.sqltext)
-    assert "length(placa) > 0" in str(plate_check.sqltext)
+    assert str(plate_check.sqltext) == EXPECTED_PLATE_CHECK
 
 
 def test_vehicle_type_catalog_matches_model_and_migration(monkeypatch):
@@ -110,3 +114,10 @@ def test_vehicle_type_catalog_matches_model_and_migration(monkeypatch):
         and constraint.name == "ck_vehiculo_tipo"
     )
     assert _check_values(migration_constraint) == EXPECTED_TYPES
+    migration_plate_check = next(
+        constraint
+        for constraint in created_objects
+        if isinstance(constraint, CheckConstraint)
+        and constraint.name == "ck_vehiculo_placa_canonica"
+    )
+    assert str(migration_plate_check.sqltext) == EXPECTED_PLATE_CHECK

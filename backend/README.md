@@ -319,9 +319,10 @@ transversal de datos. ECL-36 aporta únicamente las pruebas técnicas necesarias
 
 El catálogo de tipo admite únicamente CAMIONETA, FURGON y MOTO. Ambas capacidades
 y el rendimiento deben ser positivos; el factor de CO₂ admite cero, pero no valores
-negativos, y el año debe estar entre 1980 y 2100. La placa se persiste en mayúsculas,
-sin whitespace exterior y no vacía. No se impone una regex de placa peruana ni
-existe todavía un CHECK de catálogo para estado.
+negativos, y el año debe estar entre 1980 y 2100. La placa debe proporcionarse en
+mayúsculas, sin whitespace exterior y no vacía; no se transforma automáticamente.
+Se admite whitespace interno. No se impone una regex de placa peruana ni existe
+todavía un CHECK de catálogo para estado.
 
 El downgrade `0004 → 0003` elimina la tabla `vehiculo` y todos sus datos. Es una
 operación destructiva reservada a la base desechable de pruebas; nunca debe
