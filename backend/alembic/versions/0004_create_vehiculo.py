@@ -43,11 +43,21 @@ def upgrade() -> None:
         sa.CheckConstraint(
             "tipo IN ('CAMIONETA','FURGON','MOTO')", name="ck_vehiculo_tipo"
         ),
-        sa.CheckConstraint("capacidad_kg > 0", name="ck_vehiculo_capacidad_kg"),
-        sa.CheckConstraint("capacidad_m3 > 0", name="ck_vehiculo_capacidad_m3"),
-        sa.CheckConstraint("rendimiento_km_l > 0", name="ck_vehiculo_rendimiento_km_l"),
         sa.CheckConstraint(
-            "factor_co2_kg_km >= 0", name="ck_vehiculo_factor_co2_kg_km"
+            "capacidad_kg <> 'NaN'::numeric AND capacidad_kg > 0",
+            name="ck_vehiculo_capacidad_kg",
+        ),
+        sa.CheckConstraint(
+            "capacidad_m3 <> 'NaN'::numeric AND capacidad_m3 > 0",
+            name="ck_vehiculo_capacidad_m3",
+        ),
+        sa.CheckConstraint(
+            "rendimiento_km_l <> 'NaN'::numeric AND rendimiento_km_l > 0",
+            name="ck_vehiculo_rendimiento_km_l",
+        ),
+        sa.CheckConstraint(
+            "factor_co2_kg_km <> 'NaN'::numeric AND factor_co2_kg_km >= 0",
+            name="ck_vehiculo_factor_co2_kg_km",
         ),
         sa.CheckConstraint(
             "anio_fabricacion BETWEEN 1980 AND 2100",

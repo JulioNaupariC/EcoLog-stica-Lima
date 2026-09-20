@@ -12,6 +12,16 @@ EXPECTED_PLATE_CHECK = (
     "AND left(placa, 1) !~ '[[:space:]]' "
     "AND right(placa, 1) !~ '[[:space:]]'"
 )
+EXPECTED_NUMERIC_CHECKS = {
+    "ck_vehiculo_capacidad_kg": ("capacidad_kg <> 'NaN'::numeric AND capacidad_kg > 0"),
+    "ck_vehiculo_capacidad_m3": ("capacidad_m3 <> 'NaN'::numeric AND capacidad_m3 > 0"),
+    "ck_vehiculo_rendimiento_km_l": (
+        "rendimiento_km_l <> 'NaN'::numeric AND rendimiento_km_l > 0"
+    ),
+    "ck_vehiculo_factor_co2_kg_km": (
+        "factor_co2_kg_km <> 'NaN'::numeric AND factor_co2_kg_km >= 0"
+    ),
+}
 EXPECTED_CONSTRAINTS = {
     "uq_vehiculo_placa",
     "ck_vehiculo_placa_canonica",
@@ -78,6 +88,12 @@ def test_vehicle_numeric_precision_constraints_and_index():
         if constraint.name == "ck_vehiculo_placa_canonica"
     )
     assert str(plate_check.sqltext) == EXPECTED_PLATE_CHECK
+    model_checks = {
+        constraint.name: str(constraint.sqltext)
+        for constraint in table.constraints
+        if constraint.name in EXPECTED_NUMERIC_CHECKS
+    }
+    assert model_checks == EXPECTED_NUMERIC_CHECKS
 
 
 def test_vehicle_type_catalog_matches_model_and_migration(monkeypatch):
@@ -121,3 +137,10 @@ def test_vehicle_type_catalog_matches_model_and_migration(monkeypatch):
         and constraint.name == "ck_vehiculo_placa_canonica"
     )
     assert str(migration_plate_check.sqltext) == EXPECTED_PLATE_CHECK
+    migration_numeric_checks = {
+        constraint.name: str(constraint.sqltext)
+        for constraint in created_objects
+        if isinstance(constraint, CheckConstraint)
+        and constraint.name in EXPECTED_NUMERIC_CHECKS
+    }
+    assert migration_numeric_checks == EXPECTED_NUMERIC_CHECKS

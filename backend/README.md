@@ -346,9 +346,10 @@ desarrollo. No se realizan downgrades automáticos al iniciar HTTP.
 .venv/Scripts/python -m pytest tests/integration -q
 ```
 
-Sin TEST_DATABASE_URL se omiten las pruebas destructivas y se reporta downgrade
-pendiente. La prueba de conectividad PostGIS existente usa DATABASE_URL y es
-de solo lectura. No se considera una omisión como prueba aprobada.
+`TEST_DATABASE_URL` es obligatoria para las pruebas destructivas. Si falta o es
+inválida, la suite correspondiente falla explícitamente; nunca usa `DATABASE_URL`
+como fallback. La prueba de conectividad PostGIS existente usa `DATABASE_URL` y
+es de solo lectura.
 
 ## Calidad
 

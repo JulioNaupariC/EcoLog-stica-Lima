@@ -32,10 +32,22 @@ class Vehiculo(Base):
         CheckConstraint(
             "tipo IN ('CAMIONETA','FURGON','MOTO')", name="ck_vehiculo_tipo"
         ),
-        CheckConstraint("capacidad_kg > 0", name="ck_vehiculo_capacidad_kg"),
-        CheckConstraint("capacidad_m3 > 0", name="ck_vehiculo_capacidad_m3"),
-        CheckConstraint("rendimiento_km_l > 0", name="ck_vehiculo_rendimiento_km_l"),
-        CheckConstraint("factor_co2_kg_km >= 0", name="ck_vehiculo_factor_co2_kg_km"),
+        CheckConstraint(
+            "capacidad_kg <> 'NaN'::numeric AND capacidad_kg > 0",
+            name="ck_vehiculo_capacidad_kg",
+        ),
+        CheckConstraint(
+            "capacidad_m3 <> 'NaN'::numeric AND capacidad_m3 > 0",
+            name="ck_vehiculo_capacidad_m3",
+        ),
+        CheckConstraint(
+            "rendimiento_km_l <> 'NaN'::numeric AND rendimiento_km_l > 0",
+            name="ck_vehiculo_rendimiento_km_l",
+        ),
+        CheckConstraint(
+            "factor_co2_kg_km <> 'NaN'::numeric AND factor_co2_kg_km >= 0",
+            name="ck_vehiculo_factor_co2_kg_km",
+        ),
         CheckConstraint(
             "anio_fabricacion BETWEEN 1980 AND 2100",
             name="ck_vehiculo_anio_fabricacion",

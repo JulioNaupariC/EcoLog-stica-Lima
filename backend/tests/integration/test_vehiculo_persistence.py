@@ -103,6 +103,32 @@ def test_vehicle_constraints_reject_invalid_values_and_session_recovers(
         assert valid.vehiculo_id is not None
 
 
+@pytest.mark.parametrize(
+    ("field", "recovery_plate"),
+    [
+        ("capacidad_kg", "NAN-KG"),
+        ("capacidad_m3", "NAN-M3"),
+        ("rendimiento_km_l", "NAN-KML"),
+        ("factor_co2_kg_km", "NAN-CO2"),
+    ],
+)
+def test_vehicle_numeric_nan_is_rejected_and_session_recovers(
+    migration_database, field, recovery_plate
+):
+    engine, config = migration_database
+    command.upgrade(config, "head")
+    with Session(engine) as session:
+        session.add(Vehiculo(**vehicle_values(**{field: Decimal("NaN")})))
+        with pytest.raises(IntegrityError):
+            session.flush()
+        session.rollback()
+
+        valid = Vehiculo(**vehicle_values(placa=recovery_plate))
+        session.add(valid)
+        session.commit()
+        assert valid.vehiculo_id is not None
+
+
 def test_vehicle_duplicate_plate_is_rejected_and_session_recovers(
     migration_database,
 ):
