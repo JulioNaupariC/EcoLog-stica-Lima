@@ -308,6 +308,25 @@ ECL-38 conserva las pruebas BDD completas de autenticación. ECL-32 conserva la
 campaña ofensiva, CSRF, enumeración temporal, fijación/robo de sesión y exposición
 transversal de datos. ECL-36 aporta únicamente las pruebas técnicas necesarias.
 
+## Modelo de vehículos — ECL-39
+
+`0004_create_vehiculo` depende de `0003_create_login_sessions` y crea la tabla
+`vehiculo`. Incluye `vehiculo_id` UUID, `placa VARCHAR(10) UNIQUE`,
+`tipo VARCHAR(20)`, `capacidad_kg NUMERIC(10,2)`,
+`capacidad_m3 NUMERIC(10,2)`, `rendimiento_km_l NUMERIC(10,3)`,
+`factor_co2_kg_km NUMERIC(10,5)`, `anio_fabricacion SMALLINT` y
+`estado VARCHAR(15) DEFAULT 'ACTIVO'`, con índice por estado.
+
+El catálogo de tipo admite únicamente CAMIONETA, FURGON y MOTO. Ambas capacidades
+y el rendimiento deben ser positivos; el factor de CO₂ admite cero, pero no valores
+negativos, y el año debe estar entre 1980 y 2100. La placa se persiste en mayúsculas,
+sin whitespace exterior y no vacía. No se impone una regex de placa peruana ni
+existe todavía un CHECK de catálogo para estado.
+
+El downgrade `0004 → 0003` elimina la tabla `vehiculo` y todos sus datos. Es una
+operación destructiva reservada a la base desechable de pruebas; nunca debe
+ejecutarse contra desarrollo.
+
 ## Pruebas de migración y persistencia
 
 Configurar privadamente `TEST_DATABASE_URL` en el entorno o `.env`, apuntando a
@@ -316,9 +335,11 @@ la base de desarrollo. No se usa `DATABASE_URL` como sustituto.
 
 El esquema public debe estar vacío: solo se admiten `spatial_ref_sys` de PostGIS
 y una tabla `alembic_version` vacía. Las pruebas crean/eliminan `usuario`, `auditoria`
-y `sesion`, y
-pueden dejar la tabla de control de Alembic vacía. No ejecutarlas contra datos
-que se desee conservar. No se realizan downgrades automáticos al iniciar HTTP.
+y `sesion`, y `vehiculo`; pueden dejar la tabla de control de Alembic vacía.
+Requieren `TEST_DATABASE_URL`, sin fallback a `DATABASE_URL`, y aplican las
+validaciones de nombre `_test` y separación respecto de desarrollo. No ejecutarlas
+contra datos que se desee conservar ni ejecutar downgrades destructivos contra
+desarrollo. No se realizan downgrades automáticos al iniciar HTTP.
 
 ```powershell
 .venv/Scripts/python -m pytest tests/integration -q

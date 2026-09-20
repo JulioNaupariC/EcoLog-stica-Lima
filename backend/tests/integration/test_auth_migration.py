@@ -1,4 +1,5 @@
 import pytest
+from alembic.script import ScriptDirectory
 from sqlalchemy import inspect, text
 from sqlalchemy.exc import IntegrityError
 
@@ -16,6 +17,9 @@ def test_upgrade_check_downgrade_and_upgrade_login_schema(migration_database):
 
 def test_downgrade_rejects_access_audit_and_preserves_it(migration_database):
     engine, config = migration_database
+    heads = ScriptDirectory.from_config(config).get_heads()
+    assert len(heads) == 1, f"Expected one Alembic head, found {heads}"
+    expected_head = heads[0]
     command.upgrade(config, "head")
     with engine.begin() as connection:
         connection.execute(
@@ -39,7 +43,7 @@ def test_downgrade_rejects_access_audit_and_preserves_it(migration_database):
             == 1
         )
         assert connection.scalar(text("SELECT version_num FROM alembic_version")) == (
-            "0003_create_login_sessions"
+            expected_head
         )
 
     # Explicit manual treatment for this disposable test database only.
@@ -51,7 +55,7 @@ def test_downgrade_rejects_access_audit_and_preserves_it(migration_database):
         columns = {column["name"] for column in inspector.get_columns("usuario")}
         assert {"intentos_fallidos", "bloqueado_hasta"} <= columns
         assert connection.scalar(text("SELECT version_num FROM alembic_version")) == (
-            "0003_create_login_sessions"
+            expected_head
         )
     command.downgrade(config, "0002_create_auditoria")
     with engine.connect() as connection:
