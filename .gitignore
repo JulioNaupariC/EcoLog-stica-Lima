@@ -12,3 +12,6 @@ htmlcov/
 coverage.xml
 build/
 dist/
+node_modules/
+coverage/
+.npm-cache/
