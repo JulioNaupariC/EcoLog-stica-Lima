@@ -12,6 +12,8 @@ from app.repositories.auditoria import (
     AuditStorageError,
     Detalle,
     DetalleAcceso,
+    DetalleParametrosVehiculo,
+    DetalleVehiculoDesactivado,
     Evento,
     Registro,
     ResultadoAcceso,
@@ -76,6 +78,51 @@ def test_access_audit_is_typed_and_failed_login_has_no_actor():
     assert row.detalle == {"resultado": "CREDENCIALES_INVALIDAS"}
     with pytest.raises(ValidationError):
         DetalleAcceso(resultado=ResultadoAcceso.EXITOSO, email="secret@example.test")
+
+
+def test_vehicle_audit_is_typed_and_contains_no_values():
+    actor_id = uuid4()
+    vehicle_id = uuid4()
+    record = Registro(
+        usuario_id=actor_id,
+        entidad_id=vehicle_id,
+        evento=Evento.VEHICULO_PARAMETROS_ACTUALIZADOS,
+        detalle=DetalleParametrosVehiculo(
+            campos_modificados=("rendimiento_km_l", "factor_co2_kg_km")
+        ),
+    )
+    session = MagicMock()
+    AuditoriaRepository(session).insert(record)
+    row = session.add.call_args.args[0]
+    assert row.entidad == "vehiculo"
+    assert row.usuario_id == actor_id
+    assert row.entidad_id == vehicle_id
+    assert row.detalle == {
+        "campos_modificados": ["rendimiento_km_l", "factor_co2_kg_km"]
+    }
+    deactivation = Registro(
+        usuario_id=actor_id,
+        entidad_id=vehicle_id,
+        evento=Evento.VEHICULO_DESACTIVADO,
+        detalle=DetalleVehiculoDesactivado(),
+    )
+    AuditoriaRepository(session).insert(deactivation)
+    assert session.add.call_args.args[0].detalle == {}
+
+
+@pytest.mark.parametrize(
+    "detail",
+    [
+        {"campos_modificados": ("placa",)},
+        {"campos_modificados": ("rendimiento_km_l", "rendimiento_km_l")},
+        {"campos_modificados": ()},
+        {"campos_modificados": ("factor_co2_kg_km",), "valor": "secret"},
+    ],
+)
+def test_vehicle_audit_detail_rejects_unapproved_data(detail):
+    with pytest.raises(ValidationError) as error:
+        DetalleParametrosVehiculo.model_validate(detail)
+    assert "secret" not in str(error.value)
 
 
 @pytest.mark.parametrize(

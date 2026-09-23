@@ -15,7 +15,8 @@ class Auditoria(Base):
     __table_args__ = (
         CheckConstraint(
             "accion IN ('AUTORIZACION_PERMITIDA','AUTORIZACION_DENEGADA',"
-            "'LOGIN_EXITOSO','LOGIN_FALLIDO','CUENTA_BLOQUEADA','SESION_CERRADA')",
+            "'LOGIN_EXITOSO','LOGIN_FALLIDO','CUENTA_BLOQUEADA','SESION_CERRADA',"
+            "'VEHICULO_PARAMETROS_ACTUALIZADOS','VEHICULO_DESACTIVADO')",
             name="ck_auditoria_accion",
         ),
         CheckConstraint(
@@ -39,7 +40,7 @@ class Auditoria(Base):
     creado_en: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=text("CURRENT_TIMESTAMP")
     )
-    detalle: Mapped[dict[str, str | None]] = mapped_column(JSONB)
+    detalle: Mapped[dict[str, str | list[str] | None]] = mapped_column(JSONB)
 
     def __repr__(self) -> str:
         return "<Auditoria>"

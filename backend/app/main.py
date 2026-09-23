@@ -7,6 +7,7 @@ from fastapi import FastAPI
 
 from app.api.auth import router as auth_router
 from app.api.health import router as health_router
+from app.api.vehiculos import router as vehicle_router
 from app.core.config import Settings
 from app.db.session import build_audit_engine, build_engine, session_factory
 from app.services.auditoria import AuditoriaService
@@ -54,4 +55,5 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app = FastAPI(title="EcoLogística Lima API", version="0.1.0", lifespan=lifespan)
     app.include_router(health_router)
     app.include_router(auth_router)
+    app.include_router(vehicle_router)
     return app

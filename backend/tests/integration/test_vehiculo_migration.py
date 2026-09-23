@@ -17,7 +17,6 @@ def test_vehicle_upgrade_constraints_downgrade_and_metadata(migration_database):
         assert not inspect(connection).has_table("vehiculo")
 
     command.upgrade(config, "0004_create_vehiculo")
-    command.check(config)
     with engine.connect() as connection:
         inspector = inspect(connection)
         assert inspector.has_table("vehiculo")
@@ -59,16 +58,6 @@ def test_vehicle_upgrade_constraints_downgrade_and_metadata(migration_database):
             for index in inspector.get_indexes("vehiculo")
         }
         assert indexes["ix_vehiculo_estado"] == ["estado"]
-        context = MigrationContext.configure(
-            connection,
-            opts={
-                "include_object": lambda obj, name, type_, reflected, compare_to: (
-                    not (type_ == "table" and name == "spatial_ref_sys" and reflected)
-                )
-            },
-        )
-        assert compare_metadata(context, Base.metadata) == []
-
     command.downgrade(config, "0003_create_login_sessions")
     with engine.connect() as connection:
         inspector = inspect(connection)
@@ -82,3 +71,13 @@ def test_vehicle_upgrade_constraints_downgrade_and_metadata(migration_database):
 
     command.upgrade(config, "head")
     command.check(config)
+    with engine.connect() as connection:
+        context = MigrationContext.configure(
+            connection,
+            opts={
+                "include_object": lambda obj, name, type_, reflected, compare_to: (
+                    not (type_ == "table" and name == "spatial_ref_sys" and reflected)
+                )
+            },
+        )
+        assert compare_metadata(context, Base.metadata) == []
