@@ -342,6 +342,27 @@ validaciones de nombre `_test` y separación respecto de desarrollo. No ejecutar
 contra datos que se desee conservar ni ejecutar downgrades destructivos contra
 desarrollo. No se realizan downgrades automáticos al iniciar HTTP.
 
+## API de vehículos — ECL-40
+
+La API autenticada expone `POST /vehiculos`, `GET /vehiculos`,
+`GET /vehiculos/{vehiculo_id}`, `PATCH /vehiculos/{vehiculo_id}` y
+`DELETE /vehiculos/{vehiculo_id}`. El DELETE nunca elimina la fila: aplica la
+transición lógica `ACTIVO → INACTIVO`; repetirla es idempotente. Un vehículo
+inactivo puede consultarse, pero no modificarse ni reactivarse desde este CRUD.
+
+La placa recibida por HTTP se normaliza con `strip().upper()`, conservando guiones
+y whitespace interno. Los campos numéricos usan `Decimal` y rechazan valores no
+finitos, signo, precisión o escala incompatibles antes de llegar a PostgreSQL.
+
+Administrador dispone de CRUD, Operador de CRU y Auditor de lectura. Los alcances
+asignado del Conductor y agregado del Analista no forman parte del listado CRUD
+general. La identidad siempre procede de la sesión persistida.
+
+`0005_extend_vehicle_audit_events` añade únicamente
+`VEHICULO_PARAMETROS_ACTUALIZADOS` y `VEHICULO_DESACTIVADO`. Estas auditorías se
+insertan en la misma transacción que el cambio del vehículo. El downgrade falla
+sin borrar evidencia si existen eventos incompatibles con `0004`.
+
 ```powershell
 .venv/Scripts/python -m pytest tests/integration -q
 ```
