@@ -27,8 +27,9 @@ ni las reglas de línea base.
 - [Requisitos no funcionales, incluidos RNF-003/RNF-004](../../01%20Inicio/07.%20Requisitos%20no%20funcionales%20V_1_1_0.md)
 - [Definition of Done](../01%20Transformando%20a%20%C3%A1gil%20V_1_0_0.md#8-definition-of-done-dod-global)
 - `backend/app/core/rbac.py`, `backend/app/api/dependencies.py` y
-  `backend/app/services/autenticacion.py` en la base `origin/main`
-  `58c3d9c7088d69e3424f78efe4debb21736e1ef0`.
+  `backend/app/services/autenticacion.py`, `backend/app/models/usuario.py` y
+  `backend/app/services/credenciales.py` y `backend/README.md` en la base
+  `origin/main` `099838bdec64c16c4ecaee04644f2f69ec2c46dc`.
 
 La subtarea Jira, según el contenido aportado, pide escenarios de registro,
 actualización de disponibilidad, DNI duplicado y licencia vencida. No se
@@ -60,10 +61,11 @@ proyecciones.
 
 Los criterios BDD de RF-003 mencionan DNI duplicado **o** licencia vencida al
 intentar guardar, pero el criterio de US-003 dice que la licencia vencida
-impide habilitar la asignación. Este borrador preserva esa diferencia como
-decisión pendiente. La recomendación de este borrador es conservar el registro
-vencido, pero bloquear su asignación. Es una propuesta, no una decisión aprobada,
-y no modifica ninguno de los dos criterios de línea base.
+impide habilitar la asignación. Acuerdo de Frank para revisión: permitir guardar
+el perfil aunque la licencia esté vencida y marcarlo no asignable hasta que se
+renueve. Esto no modifica la línea base; RF-003 requiere aclaración mediante el
+proceso de control de cambios. El escenario de guardado vencido queda incluido
+abajo para que Antony y Julio revisen esta interpretación.
 
 ## Contrato candidato para revisión — no aprobado
 
@@ -75,7 +77,8 @@ que el código exista.
 
 | Campo | Alternativa propuesta para acordar |
 |---|---|
-| Cuenta | Propuesta: todo conductor tiene exactamente una cuenta `USUARIO` con rol `CONDUCTOR`; `conductor.usuario_id` es obligatorio y único. La cuenta del Administrador/Operador que registra es distinta de la nueva cuenta CONDUCTOR (`actor.usuario_id != conductor.usuario_id`). Un usuario no se vincula a más de un conductor. Alta de la cuenta objetivo y del conductor es atómica; el actor autorizado no se convierte ni se vincula como conductor. |
+| Cuenta | Acuerdo de Frank, pendiente de revisión de Antony/Julio: todo conductor tiene exactamente una cuenta `USUARIO` con rol `CONDUCTOR`; `conductor.usuario_id` es obligatorio y único. La cuenta del Administrador/Operador que registra es distinta de la nueva cuenta CONDUCTOR (`actor.usuario_id != conductor.usuario_id`). Un usuario no se vincula a más de un conductor. Alta de la cuenta objetivo y del conductor es atómica; el actor autorizado no se convierte ni se vincula como conductor. |
+| Credenciales | **Pendiente, bloquea el contrato final de alta:** acordar cómo se establece la credencial de la cuenta nueva (p. ej., contraseña inicial o flujo de invitación/activación). El modelo exige `password_hash` y el servicio interno de credenciales recibe contraseña y rol; no se encontró un endpoint de alta de usuarios. No aceptar ni exponer hashes directamente. |
 | `nombre` | Obligatorio; recortar espacios exteriores; entre 1 y 160 caracteres. |
 | `dni` | Obligatorio; exactamente 8 dígitos ASCII; unicidad global tras eliminar espacios exteriores; conservar como texto para no perder ceros iniciales. No devolverlo salvo a roles explícitamente autorizados. |
 | `licencia_numero` | Obligatorio; texto de 1 a 20 caracteres; recortar espacios exteriores y normalizar letras a mayúsculas; aceptar letras ASCII, dígitos y guion. Confirmar el patrón con el responsable de dominio antes de imponerlo. |
@@ -94,14 +97,18 @@ y la representación temporal requieren aprobación antes de codificarse.
 
 | Operación propuesta | Acceso propuesto | Resultado HTTP y cuerpo candidato |
 |---|---|---|
-| `POST /conductores` | Administrador u Operador autenticado, distinto de la nueva cuenta CONDUCTOR. La API crea una cuenta CONDUCTOR distinta y la vincula atómicamente; no acepta que el actor autenticado se convierta en el conductor ni acepta un `usuario_id` arbitrario. | `201`; devuelve `conductor_id`, `usuario_id`, `nombre`, disponibilidad y `habilitado_asignacion`. No incluye DNI, licencia ni contacto en la respuesta de creación. |
-| `GET /conductores/{conductor_id}` | Administrador/Operador: detalle operativo permitido. Conductor: solo si el ID corresponde a su vínculo. | `200`; el contrato enumera campos por rol. Conductor propio recibe solo campos aprobados para su uso; consulta ajena responde `403` genérico, sin cuerpo del conductor. |
-| `PATCH /conductores/{conductor_id}` | Administrador/Operador, con campos actualizables enumerados. Conductor no actualiza su perfil en esta propuesta. | `200`; recurso actualizado con la misma proyección autorizada. Omitidos conservan valor; entrada inválida devuelve `422` y no modifica el recurso. |
-| Listado general/desactivación | No incluido en la propuesta mínima ECL-48. | Requiere alcance y contrato separados. No inferir listado ni `DELETE` de la matriz global. |
+| `POST /conductores` | Propuesta: Administrador u Operador autenticado, distinto de la nueva cuenta CONDUCTOR. La API crea una cuenta CONDUCTOR distinta y la vincula atómicamente; no acepta que el actor autenticado se convierta en el conductor ni acepta un `usuario_id` arbitrario. La forma de provisionar su credencial queda pendiente. | `201`; cuerpo de respuesta candidato: `conductor_id`, `usuario_id`, `nombre`, disponibilidad y `habilitado_asignacion`. No incluye DNI, licencia ni contacto en la respuesta de creación. |
+| `GET /conductores/{conductor_id}` | Acuerdo de Frank para revisión: Administrador/Operador; Conductor solo si el ID corresponde a su vínculo. | `200`; el contrato enumera campos por rol. Conductor propio recibe solo campos aprobados para su uso; consulta ajena responde `403` genérico, sin cuerpo del conductor. |
+| `GET /conductores` paginado | Propuesta para ECL-48, solicitada para habilitar ST-023: Administrador/Operador. Sin acceso de listado para Conductor, Analista o Auditor en este contrato mínimo. | Candidato: `page` desde 1 y `page_size` de 1 a 100; orden estable por `conductor_id` ascendente; respuesta de página con `conductor_id`, `nombre`, disponibilidad y `habilitado_asignacion`. No incluir DNI, número de licencia ni contacto. Estos parámetros, campos y límites son propuestas, no contrato existente. |
+| `PATCH /conductores/{conductor_id}` | Acuerdo de Frank para revisión: Administrador/Operador. Conductor no actualiza su perfil en esta propuesta. | `200`; recurso actualizado con la misma proyección autorizada. Omitidos conservan valor; entrada inválida devuelve `422` y no modifica el recurso. |
+| Desactivación/baja | No incluido en la propuesta de operaciones de ECL-48 aquí descrita. | Requiere alcance y contrato separados. No inferir `DELETE` de la matriz global. |
 | Consulta de Auditor | No incluir detalle individual en la API mínima. Si se requiere, proponer una extensión de resumen agregado sin IDs, DNI, contacto ni texto libre. | Extensión pendiente; no es respuesta implementada ni operación comprometida. Enmascarar parcialmente identificadores no basta para anonimizar. |
 
-Los status/cuerpos anteriores son candidatos para decisión de Antony y Julio.
-No se fijan mensajes que puedan revelar datos personales.
+Las rutas, status, cuerpos, campos y parámetros anteriores son propuestas para
+revisión de Antony y Julio, no un contrato implementado o aprobado. El acuerdo
+de alcance de Frank incorpora un listado paginado como dependencia de trabajo
+de ST-023, sujeto a contrastar con Jira. No se fijan mensajes que puedan
+revelar datos personales.
 
 ## Escenarios BDD — borrador
 
@@ -124,15 +131,17 @@ pendientes de aprobación.
 - **Cuando** envía `POST /conductores`.
 - **Entonces** la API responde `201`, crea el conductor y lo vincula una sola
   vez a `conductor.rosa@example.test`, no al usuario
-  `admin.frank@example.test`, conserva los datos normalizados por la regla
-  aprobada y devuelve `conductor_id`, `usuario_id`, `nombre`, disponibilidad y
+  `admin.frank@example.test`, aplica las normalizaciones del contrato si se
+  aprueban y devuelve `conductor_id`, `usuario_id`, `nombre`, disponibilidad y
   `habilitado_asignacion: true`.
 - **Y** el cuerpo no incluye DNI, licencia ni contacto.
 
 El resultado esperado depende de aprobar los campos/formatos candidatos y la
 semántica de cuenta/licencia. La distinción entre actor y cuenta objetivo
 también es parte de la propuesta de vínculo y debe confirmarse. Los IDs de
-respuesta son valores generados, no literales del fixture.
+respuesta son valores generados, no literales del fixture. La solicitud
+ejecutable y el alta atómica también dependen de acordar el aprovisionamiento
+seguro de credenciales; no se prescribe una contraseña en este escenario.
 
 ### D2 — DNI duplicado
 
@@ -166,10 +175,23 @@ licencia, pero una conducción prevista desde `2026-10-09T00:00:00-05:00` no lo
 es. El motor evalúa toda la conducción de la ruta contra el instante de fin de
 vigencia, no solo la fecha en que se crea el registro.
 
-**Propuesta pendiente:** conservar el registro aunque esté vencido; impedir
-asignación a partir de la medianoche posterior a la fecha de vigencia local.
-El tratamiento de guardado/actualización de una licencia vencida debe aprobarse
-contra la redacción de RF-003.
+### D3a — Guardar perfil con licencia vencida
+
+- **Dado** el Administrador autenticado `admin.frank@example.test` y una cuenta
+  CONDUCTOR nueva distinta `conductor.rosa@example.test`.
+- **Y** la solicitud de alta incluye `licencia_vigente_hasta: "2026-10-07"`
+  y los demás campos sintéticos válidos del escenario D1.
+- **Cuando** el Administrador envía `POST /conductores` el `2026-10-08`.
+- **Entonces** la API acepta y persiste el perfil con el vínculo a la cuenta
+  CONDUCTOR distinta, y la respuesta propuesta indica
+  `habilitado_asignacion: false`.
+- **Y** no se devuelve el número de licencia ni se rechaza el guardado solo por
+  su vencimiento.
+
+El resultado de negocio refleja el acuerdo de Frank pendiente de revisión de
+Antony/Julio. `POST`, `201`, el campo de respuesta y las validaciones son
+propuestas de contrato; RF-003 conserva su texto vigente hasta un cambio
+aprobado.
 
 ### D4 — Actualización de disponibilidad
 
@@ -220,26 +242,29 @@ propuestas pendientes de ratificación.
 ### D6 — Autorización backend y controles visuales de operaciones propuestas
 
 - **Dado** las operaciones candidatas `POST /conductores`,
-  `GET /conductores/{id}` y `PATCH /conductores/{id}`.
-- **Cuando** Administrador u Operador invocan la operación incluida para su rol
-  en el contrato aprobado.
-- **Entonces** reciben el resultado definido para esa operación; una sesión
-  ausente recibe `401` y un rol/contexto sin permiso recibe `403` sin cambio ni
-  cuerpo de conductor.
-- **Y** un Conductor que solicita el ID vinculado a otra cuenta recibe `403`;
-  con su propio ID recibe solo su proyección autorizada.
+  `GET /conductores`, `GET /conductores/{id}` y
+  `PATCH /conductores/{id}`.
+- **Cuando** Administrador u Operador invocan una de esas operaciones.
+- **Entonces** el backend permite la operación dentro del alcance propuesto;
+  una sesión ausente recibe `401` y un rol/contexto sin permiso recibe `403`
+  sin cambios ni cuerpo de conductor.
+- **Y** un Conductor solo puede consultar su propio ID y proyección; solicitar
+  otro conductor o el listado recibe `403` sin información protegida.
+- **Y** Analista y Auditor no reciben acceso individual ni al listado bajo
+  esta propuesta mínima.
 
-Estos roles/status son candidatos, no alcance aprobado de ECL-48. La matriz
-global de usuarios no compromete automáticamente todas sus operaciones como
-parte de esta subtarea.
+El alcance de estos roles/operaciones fue acordado por Frank para revisión de
+Antony/Julio. Las rutas y status HTTP siguen siendo propuestas. La matriz global
+RBAC no amplía automáticamente el alcance de ECL-48.
 
 **Control visual separado:** la interfaz presenta u oculta/deshabilita acciones
 según la experiencia de cada rol, pero alterar el cliente o invocar directamente
 la API no concede acceso. La prueba de seguridad debe verificar autorización
 real del backend, no solo la ausencia de botones.
 
-**Alcance propuesto para confirmar:** las tres rutas candidatas de la tabla de
-contrato. No se incluyen listado general ni desactivación. Al momento de
+**Alcance propuesto para confirmar:** POST, GET por ID, GET paginado y PATCH.
+El listado paginado se propone para cubrir la dependencia de ST-023 indicada
+por Frank; confirmar contra Jira. No se incluye desactivación. Al momento de
 inspección no existen endpoints de conductores en la base consultada.
 
 ### D7 — Conductor intenta consultar un conductor ajeno
@@ -269,6 +294,23 @@ No se considera anonimizada una respuesta que solo enmascara parcialmente DNI o
 contacto mientras conserva información que permita identificar a la persona.
 Este resumen no es endpoint existente ni se agrega automáticamente a ECL-48.
 
+### D9 — Listado paginado para ST-023 (operación propuesta)
+
+- **Dado** tres conductores existentes con IDs ordenables `C-100`, `C-200` y
+  `C-300`, y un Administrador autorizado.
+- **Cuando** solicita `GET /conductores?page=1&page_size=2` y luego
+  `GET /conductores?page=2&page_size=2`.
+- **Entonces** la primera respuesta contiene `C-100` y `C-200`, y la segunda
+  contiene `C-300`; ambas incluyen metadatos `page`, `page_size` y `total: 3`.
+- **Y** cada elemento contiene `conductor_id`, `nombre`, disponibilidad y
+  `habilitado_asignacion`, pero no DNI, número de licencia ni contacto.
+- **Y** una cuenta Conductor no autorizada al listado recibe `403` sin datos.
+
+La forma de paginación, los nombres/valores de parámetros, el orden estable y la
+proyección son propuestas API que ECL-48 debe confirmar. El listado se incluye
+en este borrador para habilitar ST-023 según la relación comunicada por Frank;
+la dependencia Jira no se pudo consultar directamente.
+
 ## Escenarios RN-005 de ST-021; implementación futura fuera del CRUD
 
 ST-021 documenta estos escenarios de RN-005 para orientar el requisito y el
@@ -279,17 +321,19 @@ continua, pausas y bordes debe acordarse antes de automatizarlos.
 
 ### F1 — Límite de ocho horas de conducción
 
-- **Dado** un conductor que, antes de una ruta candidata, acumula `7 h 59 min`
-  de conducción en la jornada según el registro que defina el motor.
-- **Cuando** el motor evalúa una ruta candidata que añade `1 min` de conducción.
-- **Entonces** el total de `8 h` no excede RN-005 por duración total; la
-  factibilidad sigue sujeta a las demás restricciones.
-- **Y** si la ruta candidata añade `2 min`, el total de `8 h 1 min` excede el
-  máximo y el motor no la asigna a ese conductor, informando la restricción.
+- **Dado** dos rutas candidatas cuya conducción total calculada por ruta es
+  `8 h` para `ruta-A` y `8 h 1 min` para `ruta-B`, suponiendo que las demás
+  restricciones se satisfacen.
+- **Cuando** el motor evalúa por separado la factibilidad de cada ruta.
+- **Entonces** no rechaza `ruta-A` por exceder el límite total, porque alcanza
+  exactamente `8 h`.
+- **Y** no asigna `ruta-B` a ese conductor e informa que esa ruta excede el
+  límite de ocho horas.
 
 ### F2 — Descanso tras cuatro horas continuas
 
-- **Dado** un conductor con `3 h 59 min` de conducción continua sin descanso.
+- **Dado** un conductor que, en una ruta candidata, lleva `3 h 59 min` de
+  conducción continua sin descanso.
 - **Cuando** una parada añade `1 min` de conducción y la siguiente añade
   `1 min` más sin descanso intermedio.
 - **Entonces** el motor no considera factible el tramo que reanuda conducción
@@ -297,21 +341,25 @@ continua, pausas y bordes debe acordarse antes de automatizarlos.
 - **Y** el descanso de exactamente `1 h` satisface la duración mínima
   documentada y permite volver a evaluar el tramo siguiente.
 
-La forma de contar inicio/fin de conducción y descanso, y cómo insertar la pausa
-en una ruta, deben definirse en el contrato del motor. Estos son escenarios BDD
-de ST-021; implementación y ejecución siguen fuera del CRUD.
+El cómputo se refiere a la conducción de cada ruta evaluada, no a disponibilidad
+ni a una suma de rutas distintas. La forma de contar inicio/fin de conducción y
+descanso, y cómo insertar la pausa en una ruta, deben definirse en el contrato
+del motor. Estos son escenarios BDD de ST-021; implementación y ejecución
+siguen fuera del CRUD.
 
 ## Decisiones pendientes y bloqueos
 
 | Decisión | Propuesta para revisar | Fuente / justificación | Impacto | Confirman |
 |---|---|---|---|---|
-| Vínculo Conductor–Usuario | Uno-a-uno obligatorio; cuenta CONDUCTOR distinta de quien registra (Administrador/Operador), y cuenta y perfil se crean atómicamente. Alternativa: vínculo opcional si hay conductores sin login. | El modelo lógico nombra `usuario_id` pero no cardinalidad ni actor creador; la separación evita vincular al perfil la identidad con privilegios de administración. | FK nullable/unique, transacción de alta, identidad del actor y lookup propio. | Julio y Frank; Antony confirma implementación. |
+| Vínculo Conductor–Usuario | Acuerdo de Frank para revisión: uno-a-uno obligatorio; la cuenta CONDUCTOR es distinta del Administrador/Operador que registra; crear cuenta y perfil atómicamente. | El modelo lógico nombra `usuario_id` pero no cardinalidad ni actor creador; separación explícita de actor y usuario sujeto. | FK unique/not null, transacción de alta y asociación autenticada; la creación de cuenta sigue siendo propuesta API. | Frank acuerda; Antony/Julio revisan antes de cerrar. |
+| Provisión de credenciales | Pendiente: acordar contraseña inicial o invitación/activación antes de fijar el cuerpo de alta. No aceptar hashes suministrados por el cliente. | `Usuario.password_hash` es obligatorio; `CredentialService.create` recibe email/contraseña/rol y hashea internamente; el README indica que no se crean usuarios automáticamente. | Bloquea el esquema de entrada y la transacción completa de `POST /conductores`; no cambiar la cuenta autenticada por la cuenta del conductor. | Frank, Antony y Julio; Antony define factibilidad y seguridad. |
 | Campos obligatorios, formatos y límites | Nombre 1–160; DNI obligatorio de 8 dígitos único; licencia obligatoria 1–20 alfanumérico/guion; experiencia entero ≥0; contacto obligatorio E.164; punto de partida texto 1–255. | RF-003 solo enumera campos; formatos y límites no están aprobados en los requisitos. | Esquema, validadores y errores 409/422; fixtures D1/D2/D5. | Julio y Frank por dominio; Antony por factibilidad. |
-| Disponibilidad | Intervalo completo requerido al alta y para asignar; PATCH omitiendo ambos extremos conserva; ambos `null` limpia el intervalo, mantiene el perfil y lo deja no asignable; un solo extremo es inválido. | El modelo lógico sugiere `disponible_desde/hasta`; no define nulabilidad o actualización. Separar existencia del perfil de elegibilidad evita contradicción. | Nulabilidad/constraints, validación de alta y PATCH, elegibilidad; D1/D4/D5b. | Julio/Frank por operación; Antony por API/modelo y asignación. |
-| Licencia vencida | Fecha ISO sin hora, válida durante todo el día local de vencimiento; evaluar toda la conducción planificada, conservar perfil vencido y bloquear asignación desde el siguiente día local. | US-003 impide asignar; RF-003 es ambiguo respecto de guardar. | Campo de vigencia y futura comprobación del motor; D3. | Julio y Frank por negocio; Antony por comportamiento del motor. |
-| Operaciones ECL-48 | Propuesta mínima: POST alta, GET por ID y PATCH; sin lista general ni desactivación. Conductor solo consulta propio. Auditor no obtiene detalle individual. | La matriz global no amplía automáticamente el ticket; ticket ECL-48 no consultado directamente. | Rutas, RBAC, cuerpos y status candidatos en D1–D7. | Julio confirma alcance Jira; Antony contrato; Frank trazabilidad. |
+| Disponibilidad | Propuesta: intervalo completo al alta y para asignar; omitir ambos extremos en PATCH conserva; ambos `null` limpia el intervalo y mantiene el perfil no asignable; un solo extremo es inválido. | El modelo lógico sugiere `disponible_desde/hasta`; no define nulabilidad o actualización. | Constraints, validación de alta/PATCH y elegibilidad; D1/D4/D5b. | Frank propone; Antony/Julio revisan. |
+| Licencia vencida al guardar | Acuerdo de Frank para revisión: guardar perfil vencido y marcarlo no asignable; vigencia durante el día de vencimiento en Lima, asignación desde el siguiente día local impedida. | US-003 impide habilitar asignación; BDD de RF-003 parece rechazar guardado. La línea base requiere aclaración, no se cambia aquí. | Validación de alta, campo de respuesta y motor futuro; D3/D3a. | Frank acuerda; Antony/Julio revisan y aclaran RF-003. |
+| Permisos | Acuerdo de Frank para revisión: Administrador/Operador POST/GET listado/GET por ID/PATCH; Conductor solo GET propio; otros roles sin listado ni detalle individual. | Referencia a la matriz RBAC global, acotada a las operaciones candidatas de ECL-48. | Autorización, proyecciones, pruebas; D6/D7. | Frank acuerda; Antony/Julio revisan. |
+| Listado y dependencia ST-023 | Propuesta para ECL-48: GET paginado, para habilitar ST-023; no listado para Conductor/Analista/Auditor; campos no sensibles en el resumen. | Relación de dependencia indicada por Frank; Jira no está conectado y la relación debe comprobarse allí. | Ruta/contrato de paginación y proyección; D6 y trabajo dependiente ST-023. | Frank propone; Antony/Julio validan Jira y API. |
 | Proyección de Auditor | Si se necesita lectura, extensión separada de resumen agregado sin IDs, DNI, contacto ni texto libre; no usar masking parcial como anonimización. | RNF-004 y matriz de lectura anonimizada; riesgo de reidentificación. | Fuera del ECL-48 mínimo; D8 sujeto a aprobación y revisión de privacidad. | Julio y Frank; Antony por factibilidad. |
-| RN-005 | Mantener escenarios exactos de 8 h, exceso de 8 h, umbral de 4 h continuas y pausa de 1 h; acordar cómputo de ruta y bordes. | Límites expresos de RN-005. | Contrato y pruebas del motor futuro; no agrega lógica al CRUD. | Antony por motor; Julio/Frank por interpretación. |
+| RN-005 | Evaluar límite total y conducción continua por ruta; los umbrales exactos siguen siendo los de RN-005. | Límites expresos de RN-005. | Contrato y pruebas del motor futuro; no agrega lógica al CRUD. | Antony por motor; Julio/Frank por interpretación. |
 
 ## Condición para convertir el borrador en criterios ejecutables
 
