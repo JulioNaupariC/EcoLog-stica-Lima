@@ -71,14 +71,68 @@ Los tiempos/duraciones anteriores son parámetros **propuestos** del plan, no un
 
 Una corrida que no crea ni persiste pedidos válidos **no puede declararse satisfactoria**, aunque sus tiempos sean bajos.
 
+
+### 3.1. Componentes existentes y procedimiento de aprovisionamiento previsto
+
+Los enlaces siguientes apuntan a componentes reales del repositorio, relativos a este documento:
+
+| Elemento | Componente implementado | Uso previsto y límites |
+|---|---|---|
+| Esquema y entorno | [Arranque y migraciones](../../README.md#arranque-local-con-docker-compose--ecl-29), [migración de usuarios](../../backend/alembic/versions/0001_create_usuario.py), [vehículos](../../backend/alembic/versions/0004_create_vehiculo.py), [clientes/pedidos](../../backend/alembic/versions/0006_create_cliente_pedido.py) | Crear una base aislada y aplicar migraciones. Las migraciones crean esquema, no el conjunto sintético. |
+| Usuarios | [CredentialService.create](../../backend/app/services/credenciales.py), [UsuarioRepository](../../backend/app/repositories/usuarios.py), [contrato y transacción](../../backend/README.md#credenciales--ecl-30) | Crear credenciales con hash mediante el servicio interno; el llamador confirma o revierte la transacción. No existe alta pública de usuarios. |
+| Clientes | [Modelo Cliente](../../backend/app/models/cliente.py), [ejemplos create_user/create_client](../../backend/tests/integration/test_pedido_http_e2e.py) | El ejemplo persiste Cliente con una sesión SQLAlchemy y obtiene su UUID. No existe API de alta de clientes; su CRUD pertenece a ECL-11. Las funciones del test son referencias técnicas, no un script de preparación de carga. |
+| Vehículos | [POST /vehiculos](../../backend/app/api/vehiculos.py), [VehicleCreate](../../backend/app/schemas/vehiculo.py), [servicio](../../backend/app/services/vehiculos.py) | Alta autenticada con permiso vehiculos.crear y respuesta 201; usar placas únicas y campos válidos según VehicleCreate. |
+| Login y permisos | [POST /login](../../backend/app/api/auth.py), [RBAC](../../backend/app/core/rbac.py) | Obtener cookie de sesión después de persistir los usuarios; OPERADOR/ADMINISTRADOR para pedidos y altas de vehículos. |
+
+**Pendiente de ECL-61:** no existe un script integrado de aprovisionamiento ni de snapshot/restauración de este conjunto de carga. ECL-61 deberá versionar ese procedimiento, sus dependencias y parámetros, siguiendo los componentes anteriores. No se presenta ningún nombre de archivo o comando de ejecución inexistente como implementado. Hasta disponer de él y verificar su repetibilidad, la preparación y la campaña de carga permanecen pendientes.
+
+**Orden y cantidades propuestas, verificables antes de medir:**
+
+1. Crear la base descartable, aplicar las migraciones y confirmar que no hay datos de negocio residuales.
+2. Fijar en el manifiesto el número de clientes de carga `U ≥ 100` (incluyendo cualquier ajuste de concurrencia). Crear exactamente `U` usuarios sintéticos ACTIVO con rol OPERADOR o ADMINISTRADOR mediante CredentialService.create, uno por cliente virtual; guardar solo IDs y roles en la evidencia pública. Verificar conteos, unicidad y permisos. Si cambia U, regenerar y verificar el estado base antes de medir.
+3. Persistir exactamente **100 clientes sintéticos** con Cliente y una transacción SQLAlchemy, siguiendo el ejemplo enlazado; conservar sus UUID en el manifiesto. Este número es un parámetro del conjunto propuesto, no un requisito de negocio.
+4. Iniciar sesión y crear exactamente **50 vehículos ACTIVO** mediante POST /vehiculos: 20 CAMIONETA, 20 FURGON y 10 MOTO, placas únicas y capacidades positivas. Validar cada 201 e ID; conciliar los 50 IDs y tipos con consultas de lectura a vehiculo. El generador fijará los valores y la semilla en el manifiesto.
+5. Comprobar en BD exactamente U usuarios sintéticos, 100 clientes, 50 vehículos y **cero pedidos**, y que todos los cliente_id del manifiesto existen. Conservar el conjunto de IDs esperado; no basta comparar conteos si las identidades difieren.
+6. Cerrar/revocar las sesiones usadas para aprovisionar vehículos y retirar sus filas del conjunto descartable mediante el procedimiento de ECL-61, sin tocar bases compartidas; verificar cero sesiones antes de capturar el estado base confirmado con esquema, usuarios, clientes y flota, antes del login de carga y del calentamiento. Ejecutar el calentamiento separado y correlacionar sus pedidos para excluirlos de métricas; el estado base no debe contener sesiones ni pedidos de corridas anteriores.
+7. Entre repeticiones, aplicar la restauración aislada descrita en el paso 7 de la sección 3 mediante el procedimiento que entregue ECL-61: verificar revisión Alembic, conteos, IDs, roles, tipos y cero pedidos/sesiones residuales; contrastar semilla y manifiesto. Reautenticar los clientes virtuales después de restaurar. Si la verificación falla, no iniciar la siguiente repetición. Una base nueva debe reproducir el conjunto lógico; documentar cualquier cambio de UUID y regenerar sus referencias antes de medir.
+
 ## 4. Medición, cálculos y errores
 
-- **P95 que determina la aceptación de RNF-008:** el **P95 de las solicitudes `POST /pedidos` con HTTP `201`, cuerpo válido y `pedido_id` efectivamente persistido**, registradas **únicamente durante la fase estable del perfil de estrés cuya concurrencia se haya demostrado**. Duración desde el inicio de la solicitud HTTP hasta recibir completamente su respuesta, en segundos. Ordenar las `N` duraciones válidas y tomar la posición `ceil(0.95 × N)` (rango más próximo). El criterio de aceptación es **P95 válido ≤2 s en cada una de las tres repeticiones**; además publicar P95 agregado ponderado por solicitudes válidas. **P95 de todos los intentos respondidos** se publica como diagnóstico, no reemplaza al P95 válido de aceptación. Excluir calentamiento, `POST /login`, salud y SQL de verificación. No excluir ni esconder respuestas fallidas: deben registrarse por separado y someterse a criterios de errores; si no hay una cantidad suficiente de pedidos `201` persistidos, la corrida es inválida y no aprobada.
+- **P95 que determina la aceptación de RNF-008:** el **P95 de las solicitudes `POST /pedidos` con HTTP `201`, cuerpo válido y `pedido_id` efectivamente persistido**, registradas **únicamente durante la fase estable del perfil de estrés cuya concurrencia se haya demostrado**. Duración desde el inicio de la solicitud HTTP hasta recibir completamente su respuesta, en segundos. Ordenar las `N` duraciones válidas y tomar la posición `ceil(0.95 × N)` (rango más próximo). El criterio de aceptación es **P95 válido ≤2 s en cada una de las tres repeticiones**; además publicar el P95 agregado calculado reuniendo todas las duraciones válidas de las tres repeticiones, ordenándolas de menor a mayor y seleccionando la posición `ceil(0.95 × N_total)` (índice desde 1), donde `N_total = N_1 + N_2 + N_3`. **Está prohibido promediar los percentiles individuales, incluso con ponderaciones.** Si alguna repetición es inválida o no aprobada, el agregado se etiqueta diagnóstico y nunca acredita aceptación conjunta. **P95 de todos los intentos respondidos** se publica como diagnóstico, no reemplaza al P95 válido de aceptación. Excluir calentamiento, `POST /login`, salud y SQL de verificación. No excluir ni esconder respuestas fallidas: deben registrarse por separado y someterse a criterios de errores; si una repetición de estrés tiene menos de **1,000 pedidos únicos válidos y persistidos en sus 10 minutos estables**, la corrida es inválida y no aprobada. Este mínimo de 1,000 pedidos válidos por repetición de estrés es un **criterio metodológico adicional propuesto**, no un requisito literal de RNF-008, ni un nuevo umbral del requisito, ni equivalencia con el volumen diario.
 - **Tasa HTTP 5xx:** `100 × cantidad de respuestas 500–599 / total de respuestas HTTP recibidas de POST /pedidos en fase estable`. Reportar N y numerador. Las respuestas 4xx **sí** se incluyen en el denominador, pero se informan aparte como fallos funcionales/autorización/validación, no como 5xx.
 - **Timeouts y errores de conexión:** cada `POST /pedidos` agota a los **10 s** (parámetro propuesto). Si no hay respuesta HTTP, **no** cuenta como 5xx ni entra en el P95 válido; sí entra en intentos totales y en la tasa separada `fallos_sin_respuesta / intentos_totales`. Reportar 4xx, timeouts, fallos de transporte y respuestas/cuerpo inválidos; **cualquier timeout o error de transporte durante la fase estable impide aprobar esa repetición** hasta investigar y repetir; los 4xx de negocio/autorización tampoco pueden presentarse como registros válidos. No usar la exclusión de fallos del P95 para mejorar artificialmente el resultado.
 - **Éxito funcional:** porcentaje de intentos con HTTP 201, `pedido_id` válido y persistencia comprobada. Informar fallos por categoría (4xx, 5xx, timeout, transporte, validación de respuesta, ausencia en DB).
-- **Aceptación del perfil de estrés:** en **cada repetición**: (1) concurrencia servidor ≥100 `POST /pedidos` en vuelo sostenida en toda la ventana estable conforme al muestreo definido; (2) P95 **válido** de `POST /pedidos` ≤2 s; (3) respuestas HTTP 5xx / respuestas HTTP de `POST /pedidos` <1 %; (4) todas las respuestas `201` contabilizadas tienen `pedido_id` persistido; (5) sin timeouts/errores de conexión en fase estable; (6) 4xx y fallos funcionales desglosados e investigados (si impiden registros válidos, la corrida no se aprueba). **Aceptación del volumen diario:** completar y persistir exactamente 1,000 pedidos únicos siguiendo la distribución propuesta y conciliar el manifiesto. Reportar por separado lo aprobado o no aprobado en cada perfil; el cumplimiento de un perfil no sustituye al otro.
+- **Aceptación del perfil de estrés:** en **cada repetición**: (1) concurrencia servidor ≥100 `POST /pedidos` en vuelo sostenida en toda la ventana estable conforme al muestreo definido; (2) P95 **válido** de `POST /pedidos` ≤2 s; (3) respuestas HTTP 5xx / respuestas HTTP de `POST /pedidos` <1 %; (4) todas las respuestas `201` contabilizadas tienen `pedido_id` persistido; (5) sin timeouts/errores de conexión en fase estable; (6) cero respuestas 4xx, cero respuestas 2xx distintas de 201, cero cuerpos incorrectos y cero fallos de persistencia; (7) al menos 1,000 pedidos únicos válidos y persistidos durante los 10 minutos estables. Las reglas de invalidación siguientes son obligatorias. **Aceptación del volumen diario:** completar y persistir exactamente 1,000 pedidos únicos siguiendo la distribución propuesta y conciliar el manifiesto. Reportar por separado lo aprobado o no aprobado en cada perfil; el cumplimiento de un perfil no sustituye al otro.
 - **Repeticiones:** informar cada ejecución y el resultado conjunto; ninguna repetición se descarta sin motivo documentado. Conservar exportaciones de Locust, trazas del backend, métricas de ECL-60, manifiesto anonimizado y versión Git.
+
+
+### 4.1. Reglas objetivas por perfil
+
+Para evitar sesgo de supervivencia, registrar cada intento y conciliar sus IDs, respuesta y persistencia. Un pedido válido requiere HTTP 201, cuerpo conforme al contrato, UUID único, cliente_id esperado y fila persistida coincidente. Un fallo de verificación de BD deja la corrida **NO EVALUABLE/no aprobada** hasta completar la evidencia; no se presume persistencia.
+
+| Condición | Perfil diario | Perfil de estrés, por repetición |
+|---|---|---|
+| Población mínima | Exactamente 1,000 pedidos únicos válidos y persistidos, conciliados por franja con el manifiesto | Al menos 1,000 pedidos únicos válidos y persistidos en los 10 minutos estables; no contar calentamiento ni auxiliares |
+| 4xx | Cualquier 4xx de registro invalida la corrida | Cualquier 4xx de registro en fase estable invalida la repetición |
+| Respuesta/cuerpo incorrectos | Cualquier 2xx distinto de 201, cuerpo inválido, UUID duplicado o cliente_id incorrecto invalida | La misma regla, aplicada a fase estable |
+| Persistencia | Cualquier 201 sin fila coincidente o discrepancia entre IDs/manifiesto/BD invalida | La misma regla para todos los 201 de fase estable |
+| Timeouts y transporte | Cualquier fallo de registro invalida; se conserva el intento y se investiga | Cualquier fallo en fase estable invalida, aunque el P95 válido sea bajo |
+| 5xx | Cualquier 5xx de registro invalida este perfil funcional estricto | Se permite únicamente tasa 5xx <1 % de respuestas HTTP de registro; ≥1 % impide aprobar. Deben cumplirse todos los demás criterios |
+| Volumen y evidencia | Menos/más de 1,000 pedidos únicos o incumplimiento por franja invalida; una simulación comprimida no acredita horario real | Menos de 1,000 válidos invalida; evidencia insuficiente de concurrencia o saturación del generador invalida. P95 >2 s impide aprobar |
+
+Estas reglas son parámetros metodológicos propuestos y no cambian los umbrales de RNF-008. La tolerancia 5xx del estrés no autoriza tolerar errores funcionales. No emitir reintentos automáticos que oculten errores: registrar por separado cada intento, incluso si después logra un pedido válido; el reintento no revierte una invalidación. Si un 5xx deja una fila persistida, registrarla como discrepancia de conciliación, no como pedido válido.
+
+Los fallos de preparación, login o calentamiento se conservan fuera del P95 estable y obligan a resolver la causa y reiniciar la preparación antes de medir; no se permite continuar con sesiones o datos inválidos. Para aceptar la campaña deben aprobarse las tres repeticiones independientes y el perfil diario, sin seleccionar únicamente las corridas favorables.
+
+### 4.2. Consulta del tablero — cobertura pendiente de RNF-008
+
+RNF-008 exige registrar pedidos **y consultar el tablero**, según [requisitos no funcionales](<../01 Inicio/07. Requisitos no funcionales V_1_1_0.md>). En el estado revisado de la rama, [la aplicación FastAPI](../../backend/app/main.py) registra routers de salud, autenticación, pedidos y vehículos: **no existe un endpoint de consulta del tablero**. GET /vehiculos o GET /health no sustituyen esa función.
+
+La dependencia funcional es **ECL-15 / US-009 — Consultar dashboard de operación y sostenibilidad**, identificada en [la planificación](<../02 Planificación/02 Artefactos Jira V_1_0_0.md>). ECL-61 deberá integrar la consulta real cuando ECL-15 esté implementado y su contrato/permiso estén disponibles; ECL-60 aportará sus métricas. Antes de ejecutar esa cobertura, versionar ruta real, payload/filtros, rol, respuestas esperadas, proporción/cadencia de consultas y duración del escenario. Estos parámetros están pendientes; no se inventa una ruta ni se atribuye una ejecución.
+
+La prueba prevista consultará el tablero durante el escenario de registro, con datos sintéticos conciliados, validando respuesta autorizada y contenido agregado frente a BD. Conservar intentos, respuestas, latencias, errores y comprobaciones por separado; una respuesta/cuerpo incorrecto, fallo de persistencia/consistencia de los datos consultados, 4xx, timeout o error de transporte impedirá aprobar esta cobertura. Informar la tasa 5xx de consulta y exigir <1 %, sin diluir la tasa de POST /pedidos con respuestas del tablero.
+
+El P95 de registro y la evidencia de ≥100 POST /pedidos en vuelo mantienen su población original: las consultas del tablero no cuentan como registros ni reemplazan su concurrencia; publicar sus métricas separadamente. No se introduce un umbral de latencia de tablero que RNF-008 no establece. **Hasta implementar y ejecutar esta cobertura, el cumplimiento integral de RNF-008 permanece PENDIENTE**, aunque aprueben los perfiles de registro.
 
 ## 5. Disponibilidad y observación mensual
 
@@ -97,7 +151,8 @@ Una corrida que no crea ni persiste pedidos válidos **no puede declararse satis
 
 ## 7. Evidencias y entregables
 
-- Script Locust, dependencias fijadas, configuración de entorno y semilla de datos (**a crear por ECL-61**).
+- Script Locust, procedimiento integrado de aprovisionamiento/restauración, dependencias fijadas, configuración de entorno y semilla de datos (**a crear por ECL-61**).
+- Contrato real y evidencia de consulta del tablero: dependencia ECL-15; integración de carga/evidencia por ECL-61, aún pendientes.
 - Manifiesto de 1,000 pedidos sintéticos/día y 50 vehículos; recuentos y verificación de persistencia.
 - Registro de 100 usuarios virtuales frente a solicitudes en vuelo realmente observadas.
 - Resultados por repetición y agregados: respuestas HTTP 201, 4xx, 5xx, fallos sin respuesta, percentiles y observaciones.
@@ -112,4 +167,3 @@ Una corrida que no crea ni persiste pedidos válidos **no puede declararse satis
 - **Julio — ST-036:** documentar SLA, hallazgos y respuesta operativa cuando existan datos comprobados.
 
 **Estado de esta revisión:** únicamente **planificación metodológica**. No se ha ejecutado una campaña de carga, no se ha medido P95 ni se ha demostrado disponibilidad mensual.
-
