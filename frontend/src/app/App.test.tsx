@@ -37,6 +37,7 @@ function RouteControls() {
       <button type="button" onClick={() => { void navigate('/pedidos/nuevo') }}>Abrir ruta de pedido</button>
       <button type="button" onClick={() => { void navigate('/login') }}>Abrir ruta de login</button>
       <button type="button" onClick={() => { void navigate('/vehiculos') }}>Abrir ruta de vehículos</button>
+      <button type="button" onClick={() => { void navigate('/conductor/itinerario') }}>Abrir ruta de itinerario</button>
       <button type="button" onClick={() => { void navigate(-1) }}>Atrás</button>
     </aside>
   )
@@ -103,6 +104,36 @@ describe('App', () => {
     expect(screen.getByRole('heading', { name: 'Iniciar sesión' })).toBeInTheDocument()
     expect(screen.queryByRole('heading', { name: 'Registrar pedido' })).not.toBeInTheDocument()
   })
+
+  it('solicita iniciar sesión al abrir el itinerario sin identidad', () => {
+    renderAt('/conductor/itinerario')
+    expect(screen.getByTestId('path')).toHaveTextContent('/login')
+    expect(screen.getByRole('heading', { name: 'Iniciar sesión' })).toBeInTheDocument()
+    expect(screen.queryByRole('heading', { name: 'Mi itinerario' })).not.toBeInTheDocument()
+  })
+
+  it('permite al conductor abrir su itinerario desde la navegación y por ruta directa', async () => {
+    renderAt('/login')
+    const user = await signIn('CONDUCTOR')
+    expect(screen.getByRole('link', { name: 'Mi itinerario' })).toHaveAttribute('href', '/conductor/itinerario')
+    await user.click(screen.getByRole('link', { name: 'Mi itinerario' }))
+    expect(screen.getByRole('heading', { name: 'Mi itinerario' })).toBeInTheDocument()
+    await user.click(screen.getByRole('link', { name: 'EcoLogística Lima' }))
+    await user.click(screen.getByRole('button', { name: 'Abrir ruta de itinerario' }))
+    expect(screen.getByRole('note')).toHaveTextContent('Vista de demostración')
+  })
+
+  it.each<AuthRole>(['ADMINISTRADOR', 'OPERADOR', 'ANALISTA', 'AUDITOR'])(
+    'oculta itinerario y deniega su ruta directa a %s',
+    async (role) => {
+      renderAt('/login')
+      const user = await signIn(role)
+      expect(screen.queryByRole('link', { name: 'Mi itinerario' })).not.toBeInTheDocument()
+      await user.click(screen.getByRole('button', { name: 'Abrir ruta de itinerario' }))
+      expect(screen.getByRole('heading', { name: 'Acceso denegado' })).toBeInTheDocument()
+      expect(screen.queryByRole('note')).not.toBeInTheDocument()
+    },
+  )
 
   it('al entrar correctamente vuelve a / y reemplaza la entrada de /login', async () => {
     const user = userEvent.setup()

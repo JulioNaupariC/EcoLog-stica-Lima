@@ -112,6 +112,35 @@ propios, sin exponer cuerpos ni detalles arbitrarios del backend.
 ECL-41 no incluye detalle, edición, desactivación, reactivación, filtros,
 paginación ni asignaciones.
 
+## Itinerario móvil del conductor — ST-030
+
+La ruta `/conductor/itinerario` y el enlace **Mi itinerario** están disponibles
+únicamente para una identidad autenticada con rol `CONDUCTOR`. Sin identidad
+se solicita iniciar sesión; los demás roles reciben acceso denegado. Tras
+recargar se requiere iniciar sesión de nuevo, como en las otras vistas.
+
+La vista sigue el diseño ECL-55/ST-029 aprobado según la confirmación de Giancarlo.
+Muestra cuatro paradas ficticias, siguiente parada destacada, alertas operativas
+de demostración, filtros y detalle. La siguiente parada es la primera no completada
+por secuencia; no cambia al filtrar ni al abrir otro detalle. El detalle muestra
+únicamente las alertas asociadas a esa parada. Incluye un ejemplo sin asignación.
+Los controles se recorren con Tab y se activan con Enter o espacio. Al cambiar de
+vista el foco pasa al título. El diseño contempla 360 px en una columna.
+
+Los datos están identificados como demostración: no se consulta una API de rutas,
+no se modifican entregas reales y no se incluye GPS, persistencia ni sincronización
+offline. La integración real debe aplicar autorización en el backend por conductor
+y asignación. El backend local no ofrece endpoints de itinerarios ni alertas;
+no se inventó un contrato ni se consultan recursos de otros conductores. La
+integración de esos datos sigue pendiente y debe revisarse antes de cerrar el ticket.
+
+Para probar el acceso integrado se necesita el backend y una cuenta de prueba
+autorizada con rol `CONDUCTOR`. Revisar escritorio y 360 px, filtros, selección,
+teclado y denegación a otros roles. Las pruebas de React simulan autenticación;
+la verificación adicional de navegador usa login real de conductor y login
+simulado de Auditor. Resultados y capturas en
+[VALIDACION_ST030.md](VALIDACION_ST030.md) y [evidencias ECL-56](evidencias/ECL-56/README.md).
+
 ## Desarrollo
 
 ```bash
