@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, Navigate, Route, Routes, useNavigate } from 'react-router-dom'
 import { HomePage } from '../pages/HomePage'
+import { DriverItineraryPage } from '../pages/DriverItineraryPage'
 import { LoginPage } from '../pages/LoginPage'
 import { NotFoundPage } from '../pages/NotFoundPage'
 import { OrderCreatePage } from '../pages/OrderCreatePage'
@@ -53,6 +54,9 @@ export function App() {
             {vehicleAccess.canList ? (
               <Link className="nav-link" to="/vehiculos">Vehículos</Link>
             ) : null}
+            {identity?.rol === 'CONDUCTOR' ? (
+              <Link className="nav-link" to="/conductor/itinerario">Mi itinerario</Link>
+            ) : null}
           </div>
         </nav>
       </header>
@@ -73,6 +77,12 @@ export function App() {
             path="/vehiculos"
             element={identity === null ? <Navigate to="/login" replace /> : (
               vehicleAccess.canList ? <VehiclesPage canCreate={vehicleAccess.canCreate} /> : <AccessDenied />
+            )}
+          />
+          <Route
+            path="/conductor/itinerario"
+            element={identity === null ? <Navigate to="/login" replace /> : (
+              identity.rol === 'CONDUCTOR' ? <DriverItineraryPage /> : <AccessDenied />
             )}
           />
           <Route path="*" element={<NotFoundPage />} />
