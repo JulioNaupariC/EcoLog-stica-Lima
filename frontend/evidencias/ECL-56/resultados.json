@@ -1,0 +1,22 @@
+[
+  {
+    "browser": "chrome",
+    "version": "154.0.8037.98",
+    "mobileWidth": 360,
+    "desktopWidth": 1280,
+    "result": "passed",
+    "driverLogin": "real",
+    "auditorLogin": "simulated",
+    "horizontalOverflow": false
+  },
+  {
+    "browser": "firefox",
+    "version": "157.0",
+    "mobileWidth": 360,
+    "desktopWidth": 1280,
+    "result": "passed",
+    "driverLogin": "real",
+    "auditorLogin": "simulated",
+    "horizontalOverflow": false
+  }
+]
