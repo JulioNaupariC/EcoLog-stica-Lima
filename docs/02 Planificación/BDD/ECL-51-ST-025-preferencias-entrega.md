@@ -30,7 +30,7 @@ línea base ni propone una entidad de preferencias adicional.
   `backend/alembic/versions/0006_create_cliente_pedido.py`,
   `backend/app/api/pedidos.py`, `backend/app/schemas/pedido.py` y
   `backend/app/services/pedidos.py` en la base `origin/main`
-  `58c3d9c7088d69e3424f78efe4debb21736e1ef0`.
+  `099838bdec64c16c4ecaee04644f2f69ec2c46dc`.
 
 La subtarea Jira, según el contenido aportado, solicita horarios preferidos,
 referencias de ubicación y restricciones de acceso por cliente; el criterio
@@ -73,27 +73,36 @@ con cierta sintaxis u otro contenido semántico.
   preferencias ni interpretar `horario_preferido` como fecha/hora.
 - Propuesta de API: `GET /clientes/{cliente_id}/preferencias` devuelve
   `cliente_id`, `horario_preferido`, `referencia` y `restriccion_acceso`;
-  `PATCH /clientes/{cliente_id}/preferencias` actualiza solo campos incluidos.
-  El registro inicial ocurre como parte de la creación del Cliente existente,
-  no como un recurso independiente. Estas rutas no existen todavía.
-- Propuesta para PATCH: campo omitido conserva su valor; `null` limpia el campo
-  nullable; `""` y texto compuesto solo por espacios se rechazan sin cambios.
-  Las cadenas con espacios alrededor se preservan tal como fueron enviadas;
-  no se recortan ni normalizan silenciosamente.
+  `PATCH /clientes/{cliente_id}/preferencias` actualiza solo campos incluidos
+  sobre un Cliente existente. No propone un endpoint para registrar preferencias
+  sin Cliente existente; estas rutas aún no existen.
+- Acuerdo de Frank para revisión: en PATCH, campo omitido conserva su valor;
+  `null` limpia el campo nullable; `""` y texto compuesto solo por espacios se
+  rechazan sin cambios. Las cadenas con espacios alrededor se preservan tal como
+  fueron enviadas; no se recortan ni normalizan silenciosamente. Antony y Julio
+  deben revisar este acuerdo antes de cerrar el contrato.
+- El esquema actual permite como máximo 120 caracteres para
+  `horario_preferido` y 255 para `referencia` y `restriccion_acceso`. Propuesta
+  pendiente para la API: validar esos límites antes de persistir y devolver un
+  error por campo sin alterar valores existentes. Los tamaños del esquema son
+  hechos observados; el comportamiento de validación HTTP no está implementado
+  ni aprobado.
 - Propuesta de formulario de pedido: mostrar horario y restricción como
   información contextual, sin convertirlos ni copiarlos. Ofrecer la referencia
   del Cliente mediante una acción explícita “Usar como referencia del pedido”;
   copiarla al campo independiente del Pedido no guarda hasta que el Operador
   confirme el pedido. La selección no modifica la preferencia del Cliente.
-- Propuesta inicial de permisos: solo Administrador y Operador gestionan o
-  consultan preferencias dentro del contexto que se les autorice. No incluir
-  automáticamente lectura de Conductor, Analista o Auditor; definir cada
-  proyección antes de exponerla. El backend aplica autorización aunque el
-  frontend oculte acciones.
+- Acuerdo de Frank para revisión: solo Administrador y Operador autorizados
+  consultan y actualizan las preferencias del Cliente objetivo en ECL-52.
+  Conductor, Analista y Auditor no reciben esta proyección en ese alcance.
+  El backend aplica autorización aunque el frontend oculte acciones; Antony y
+  Julio deben ratificarlo.
 
-Todos los puntos anteriores son propuestas pendientes de confirmación por
-Julio, Antony y Frank. El límite físico de columna sí está confirmado por el
-esquema; la regla de rechazar vacío/espacios es nueva y requiere acuerdo.
+Los endpoints y su contrato permanecen propuestos, no implementados. La
+semántica de omitido/null/vacío y el alcance de permisos reflejan acuerdos de
+Frank para revisión, pendientes de ratificación de Antony y Julio. Los tamaños
+físicos son los del esquema existente; su validación anticipada por API es una
+propuesta.
 
 ## Datos sintéticos de referencia
 
@@ -112,17 +121,19 @@ conversiones automáticas.
 
 ### P1 — Registrar y consultar preferencias válidas
 
-- **Dado** un Cliente `cliente-A` existente con las tres preferencias en
-  `null` y un usuario autorizado.
-- **Cuando** registra los valores sintéticos de la tabla de referencia usando
-  el recurso candidato y luego consulta `cliente-A`.
+- **Dado** un Cliente existente `cliente-A` cuyas tres preferencias son `null`
+  y un Administrador u Operador autorizado.
+- **Cuando** inicializa las preferencias de ese Cliente mediante el PATCH
+  candidato con los valores sintéticos de la tabla y luego consulta
+  `cliente-A`.
 - **Entonces** cada valor queda guardado en su campo del registro de `cliente-A`
   y una consulta autorizada devuelve `cliente_id: cliente-A` y los tres valores
   sin alterarlos.
 
 **Observables:** el identificador del cliente no cambia; se devuelve la misma
 terna de valores; no se crea una fila en una entidad nueva de preferencias.
-El endpoint indicado es candidato, no implementación existente.
+La operación y las rutas son propuestas; este caso inicializa datos sobre un
+Cliente ya existente, no crea un Cliente ni una asociación independiente.
 
 ### P2 — Actualizar preferencias existentes
 
@@ -134,9 +145,9 @@ El endpoint indicado es candidato, no implementación existente.
 - **Entonces** una lectura posterior de `cliente-A` refleja los nuevos valores
   y conserva el vínculo al mismo Cliente.
 
-P4a–P4c concretan por separado la semántica candidata para PATCH. La operación
-parcial y la conservación de campos deben ratificarse antes de considerarlos
-criterios aprobados.
+P4a–P4c concretan por separado el acuerdo de Frank sobre la semántica PATCH,
+pendiente de revisión de Antony y Julio. Las rutas y la implementación de la
+operación parcial siguen siendo propuestas.
 
 ### P3 — Valor que excede capacidad documentada
 
@@ -146,9 +157,10 @@ criterios aprobados.
 - **Entonces** el sistema rechaza la entrada antes de persistirla, identifica el
   campo que excede el máximo técnico y mantiene intactos los valores previos.
 
-**Base verificable:** límites de las columnas existentes: 120, 255 y 255
-caracteres. El contrato API deberá convertir ese límite de almacenamiento en
-validación de entrada comprensible; no se fija aquí status HTTP.
+**Base verificable:** límites físicos de las columnas existentes: 120, 255 y
+255 caracteres. La validación anticipada por API, el rechazo de longitudes
+excesivas con error por campo y la conservación de valores previos son
+comportamientos propuestos, no reglas de negocio ya aprobadas.
 
 ### P5 — Cliente inexistente
 
@@ -179,17 +191,20 @@ aislamiento requiere definir el contrato de persistencia/API.
 ### P7 — Permisos backend y presentación visual
 
 - **Dado** un usuario autenticado con rol Administrador u Operador, autorizado
-  en el contrato propuesto para el Cliente `cliente-A`.
+  sobre el Cliente `cliente-A` conforme al acuerdo de Frank pendiente de
+  ratificación.
 - **Cuando** consulta o actualiza preferencias a través del endpoint candidato.
 - **Entonces** el backend permite la operación autorizada y devuelve o persiste
   solo los campos de preferencias de `cliente-A`.
 - **Y** si un usuario sin permiso invoca directamente el mismo endpoint, el
   backend deniega la operación y no modifica datos ni revela preferencias.
+- **Y** una sesión con rol Conductor, Analista o Auditor recibe denegación para
+  esta proyección dentro del alcance candidato de ECL-52.
 
-La matriz global RBAC es referencia para decidir los permisos, pero este
-escenario no compromete automáticamente todas sus capacidades, roles ni
-operaciones como parte de ECL-52. Administrador/Operador como roles autorizados
-es una propuesta, no un acuerdo vigente.
+La matriz global RBAC orienta los permisos, pero este escenario no compromete
+automáticamente todas sus capacidades ni operaciones como parte de ECL-52.
+La limitación a Administrador/Operador es un acuerdo de Frank para revisión,
+pendiente de ratificación de Antony/Julio.
 
 **Control visual separado:** el frontend muestra las acciones permitidas como
 ayuda de uso, pero la prueba debe invocar también el backend directamente con
@@ -223,21 +238,21 @@ propuesta, no comportamiento actual.
 
 | Decisión | Alternativa recomendada (propuesta) | Fuente / justificación | Impacto en modelo/API/BDD | Confirman |
 |---|---|---|---|---|
-| Recurso y operaciones ECL-52 | Reutilizar columnas de Cliente; GET y PATCH de preferencias; creación inicial al crear Cliente. Sin entidad nueva ni CRUD completo implícito. | Modelo/migración 0006; la base consultada no tiene endpoints Cliente/preferencias. | Rutas, esquemas y permisos limitados; P1/P2/P5/P7. | Julio define alcance; Antony API/modelo; Frank trazabilidad. |
-| Actualización parcial y campos omitidos | PATCH parcial; omitir conserva exactamente el valor persistido. | El comportamiento no está definido por el esquema nullable; evita alterar campos no enviados. | Semántica de PATCH y P4a; posible concurrencia. | Julio y Frank; Antony confirma API. |
-| Significado de `null` | `null` limpia el campo nullable y la lectura devuelve null. | Columnas permiten NULL; si PATCH representa limpieza debe ser explícito. | Validación/esquema y P4b. | Julio y Frank; Antony confirma API. |
-| Texto vacío/espacios | Rechazar `""` y solo espacios; sin recorte ni normalización automática de textos no vacíos. | No existe regla semántica aprobada; propuesta para evitar preferencias vacías ambiguas. | Validadores, errores y P4c; requiere aprobación de negocio. | Julio y Frank; Antony implementabilidad. |
-| Límites técnicos | Rechazar antes de persistir longitudes 121 para horario y 256 para referencia/restricción; error identifica campo y los valores previos permanecen. | Columnas `VARCHAR(120/255/255)` existentes. | Schema/API y P3; convertir límite DB en respuesta de validación. | Antony contrato técnico; Julio/Frank aceptación. |
+| Recurso y operaciones ECL-52 | Propuesta: reutilizar columnas de Cliente y ofrecer GET/PATCH sobre Cliente existente; no crear un recurso independiente ni asumir CRUD completo. | Modelo/migración 0006; la base consultada no tiene endpoints Cliente/preferencias. | Rutas, esquemas y permisos limitados; P1/P2/P5/P7. | Julio define alcance; Antony API/modelo; Frank trazabilidad. |
+| Actualización parcial y campos omitidos | Acuerdo de Frank para revisión: PATCH parcial; omitir conserva exactamente el valor persistido. | El esquema no define semántica de actualización; evita alterar campos no enviados. | Semántica de PATCH y P4a; posible concurrencia. | Frank acuerda; Antony/Julio revisan. |
+| Significado de `null` | Acuerdo de Frank para revisión: `null` limpia el campo nullable y la lectura devuelve null. | Las columnas actuales permiten NULL; la limpieza debe ser explícita en PATCH. | Validación/esquema y P4b. | Frank acuerda; Antony/Julio revisan. |
+| Texto vacío/espacios | Acuerdo de Frank para revisión: rechazar `""` y solo espacios, sin cambiar datos; conservar texto no vacío tal como fue enviado. | El esquema no define regla semántica; este comportamiento requiere validación de aplicación. | Validadores, error y P4c. | Frank acuerda; Antony/Julio revisan. |
+| Límites técnicos | Propuesta API: rechazar longitudes 121 para horario y 256 para referencia/restricción; error identifica campo y conserva valores previos. | Columnas actuales `VARCHAR(120/255/255)`; validación HTTP anticipada no está implementada. | Schema/API y P3. | Antony contrato técnico; Julio/Frank aceptación. |
 | Horario y restricción al crear Pedido | Mostrar como información del Cliente; no convertir ni copiar al pedido. | `horario_preferido` es texto; RN-006 regula ventana del Pedido y no lo interpreta. | UI y P8; mantiene separados los campos. | Julio/Frank negocio; Giancarlo/José UX e interfaz; Antony integración. |
 | Copia de referencia | Acción explícita “Usar como referencia del pedido”; rellena el campo separado del Pedido, editable antes de confirmar; nunca altera Cliente ni copia silenciosamente. | RF-005 pide proponer preferencias; modelo Pedido contiene `referencia` propia. | Formulario, propuesta de valores y P8; no implica cambiar POST automáticamente. | Julio/Frank; Giancarlo/José interacción; Antony integración. |
-| Campos visibles por rol | Propuesta inicial: solo Administrador/Operador autorizados ven preferencias; no exponerlas a Conductor/Analista/Auditor hasta acordar proyección y contexto. | Matriz RBAC global orienta, pero no define alcance ECL-52 ni campos específicos. | Autorización backend y proyección; P7; control visual como complemento. | Julio/Frank permisos; Antony backend; José/Giancarlo UI. |
+| Campos visibles por rol | Acuerdo de Frank para revisión: solo Administrador/Operador autorizados leen y actualizan; no exponer esta proyección a Conductor/Analista/Auditor dentro de ECL-52. | Matriz RBAC global orienta, pero no determina campos ni alcance de ECL-52. | Autorización backend y proyección; P7; control visual complementario. | Frank acuerda; Antony/Julio revisan; José/Giancarlo UI. |
 | Asociación con Cliente y aislamiento | El ID del recurso identifica al Cliente; validar existencia y actualizar solo ese registro. | Cliente ya contiene las columnas; Pedido referencia Cliente por FK. | Resolver Cliente, 404 candidato y transacción; P5/P6. | Antony contrato; Julio/Frank aceptación. |
 
-### P4 — Semántica de omitido, null y texto vacío (propuestas pendientes)
+### P4 — Semántica acordada por Frank, pendiente de ratificación
 
-Cada `Entonces` siguiente describe la alternativa recomendada, no un acuerdo
-aprobado. Los resultados se concretan para que puedan aceptarse o cambiarse
-explícitamente durante la revisión.
+Cada `Entonces` refleja el acuerdo de Frank registrado en esta conversación,
+pendiente de ratificación de Antony y Julio. Los endpoints y respuestas API
+siguen siendo propuestas.
 
 #### P4a — Campo omitido conserva el valor
 
@@ -279,7 +294,8 @@ aprobado.
 ## Condición para convertir el borrador en criterios ejecutables
 
 Tras resolver las decisiones, fijar rutas/métodos y respuestas observables, y
-ratificar o modificar las propuestas de omitido/null/vacío y uso en pedidos.
+ratificar o modificar las propuestas de rutas y uso en pedidos. Los acuerdos de
+Frank sobre omitido/null/vacío y roles deben quedar revisados por Antony y Julio.
 Los ejemplos sintéticos respetan las capacidades existentes; ninguna
 validación semántica adicional queda aprobada por este borrador. No se declaran
 pruebas ejecutadas.
