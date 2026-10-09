@@ -1,11 +1,19 @@
 /** Persistent pending-report outbox. Never store tokens or customer PII. */
 import { validateReport, validUuid } from '../types/driverReport'
 import type { PendingDriverReport } from '../types/driverReport'
+import { isItinerarySnapshot } from './offlineStorage'
 
 const DATABASE = 'ecologistica-offline-v1'
 const VERSION = 2
 const REPORTS = 'pendingReports'
 const MAX_PER_OWNER = 100
+
+export class ConfirmedReportSnapshotUnavailableError extends Error {
+  constructor() {
+    super('El itinerario local falta o está vencido. Obtén uno vigente del servidor y vuelve a sincronizar el mismo reporte.')
+    this.name = 'ConfirmedReportSnapshotUnavailableError'
+  }
+}
 
 function openDb(): Promise<IDBDatabase> {
   if (typeof indexedDB === 'undefined') return Promise.reject(new Error('IndexedDB no disponible'))
@@ -97,6 +105,50 @@ export async function confirmReport(ownerId: string, operationId: string): Promi
         const removal = store.delete(operationId)
         removal.onsuccess = () => done(undefined)
       }
+    })
+  } finally { db.close() }
+}
+
+/** Commit the acknowledged result and outbox removal in one IndexedDB transaction. */
+export async function confirmAcknowledgedReport(report: PendingDriverReport): Promise<void> {
+  validateReport(report)
+  const db = await openDb()
+  try {
+    await new Promise<void>((resolve, reject) => {
+      const tx = db.transaction([REPORTS, 'itineraries'], 'readwrite')
+      let failure: Error = new Error('No se pudo actualizar el almacenamiento local')
+      const reports = tx.objectStore(REPORTS)
+      const itineraries = tx.objectStore('itineraries')
+      const pending = reports.get(report.operationId)
+      pending.onsuccess = () => {
+        const current = pending.result as PendingDriverReport | undefined
+        if (!current || current.ownerId !== report.ownerId ||
+            current.stopId !== report.stopId || current.status !== report.status) {
+          tx.abort()
+          return
+        }
+        const stored = itineraries.get(report.ownerId)
+        stored.onsuccess = () => {
+          const snapshot: unknown = stored.result
+          if (!isItinerarySnapshot(snapshot) || snapshot.ownerId !== report.ownerId ||
+              snapshot.expiresAt <= Date.now() ||
+              !snapshot.stops.some(stop => stop.stopId === report.stopId)) {
+            failure = new ConfirmedReportSnapshotUnavailableError()
+            tx.abort()
+            return
+          }
+          itineraries.put({
+            ...snapshot,
+            stops: snapshot.stops.map(stop => stop.stopId === report.stopId
+              ? { ...stop, status: report.status }
+              : stop),
+          }, report.ownerId)
+          reports.delete(report.operationId)
+        }
+      }
+      tx.oncomplete = () => resolve()
+      tx.onerror = () => reject(failure)
+      tx.onabort = () => reject(failure)
     })
   } finally { db.close() }
 }
