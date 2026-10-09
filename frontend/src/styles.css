@@ -14,7 +14,7 @@
 
 body {
   margin: 0;
-  min-width: 320px;
+  min-width: 0;
   min-height: 100vh;
 }
 
@@ -72,6 +72,9 @@ a:focus-visible {
 }
 
 .nav-link {
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
   border-radius: 0.35rem;
   padding: 0.55rem 0.75rem;
   color: #125b3d;
@@ -215,7 +218,7 @@ h1 {
 .form-field input,
 .form-field select {
   width: 100%;
-  min-height: 2.8rem;
+  min-height: 2.75rem;
   border: 1px solid #789488;
   border-radius: 0.4rem;
   padding: 0.65rem 0.75rem;
