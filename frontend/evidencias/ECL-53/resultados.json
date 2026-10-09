@@ -1,0 +1,45 @@
+{
+  "checkedAt": "2026-10-09T08:51:05.581Z",
+  "syntheticData": true,
+  "actualHttpApi": true,
+  "browsers": [
+    {
+      "browser": "chrome",
+      "version": "155.0.8059.40",
+      "passed": true,
+      "role": "ADMINISTRADOR",
+      "realLogin": true,
+      "realApiGetPatch": true,
+      "preferencesRetrieved": true,
+      "explicitClear": true,
+      "otherClientUnchanged": true,
+      "localValidationPreservesData": true,
+      "unknownClient404": true,
+      "conductorDenied": true,
+      "mobileWidth": 360,
+      "horizontalOverflow": false,
+      "keyboardTab": true,
+      "pageErrors": 0,
+      "simulatedCase": "PATCH 503 intercepted only for error display and preservation of unsaved values"
+    },
+    {
+      "browser": "firefox",
+      "version": "157.0",
+      "passed": true,
+      "role": "OPERADOR",
+      "realLogin": true,
+      "realApiGetPatch": true,
+      "preferencesRetrieved": true,
+      "explicitClear": true,
+      "otherClientUnchanged": true,
+      "localValidationPreservesData": true,
+      "unknownClient404": true,
+      "conductorDenied": true,
+      "mobileWidth": 360,
+      "horizontalOverflow": false,
+      "keyboardTab": true,
+      "pageErrors": 0,
+      "simulatedCase": "PATCH 503 intercepted only for error display and preservation of unsaved values"
+    }
+  ]
+}

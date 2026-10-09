@@ -1,4 +1,5 @@
 import { FormEvent, useRef, useState } from 'react'
+import { FormField as Field } from '../components/FormField'
 import {
   createOrder,
   datetimeLocalToIso,
@@ -143,27 +144,6 @@ function validate(values: OrderFormValues): {
       tipo_producto: tipoProducto,
     },
   }
-}
-
-interface FieldProps {
-  error?: string
-  id: FormField
-  label: string
-  children: React.ReactNode
-}
-
-function Field({ error, id, label, children }: FieldProps) {
-  return (
-    <div className="form-field">
-      <label htmlFor={id}>{label}</label>
-      {children}
-      {error ? (
-        <p className="field-error" id={`${id}-error`}>
-          {error}
-        </p>
-      ) : null}
-    </div>
-  )
 }
 
 export function OrderCreatePage() {

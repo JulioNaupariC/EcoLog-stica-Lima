@@ -179,3 +179,23 @@ y reciben acceso denegado al abrir la ruta.
 
 Validación y reproducción en [VALIDACION_ST023.md](VALIDACION_ST023.md).
 Capturas de Chrome y Firefox en [evidencias ECL-49](evidencias/ECL-49/README.md).
+
+## Preferencias de entrega — ECL-53 / ST-027
+
+La ruta `/clientes/preferencias` permite a ADMINISTRADOR y OPERADOR consultar y
+editar horario preferido, referencia de ubicación y restricciones de acceso
+mediante GET/PATCH `/clientes/{cliente_id}/preferencias` de ST-026.
+Se utiliza el ID de un cliente existente porque la API todavía no proporciona
+un listado para seleccionar clientes. No se crean clientes desde esta vista.
+
+Los campos de texto respetan los límites 120/255/255 y preservan los espacios
+del contenido. Las casillas “Sin…” permiten limpiar explícitamente con null;
+los campos sin cambios se omiten del PATCH. El horario es descriptivo y no
+modifica las ventanas de los pedidos. Los demás roles no disponen del enlace
+y reciben acceso denegado al abrir la ruta. Un 401 devuelve al login.
+
+Se reutilizan `FormField`, extraído del formulario de pedidos, y los estilos
+existentes de formularios y avisos. La regresión de pedidos permanece en verde.
+Ver [VALIDACION_ST027.md](VALIDACION_ST027.md),
+[capturas ECL-53](evidencias/ECL-53/README.md) y la
+[guía para José](../GUIA_JOSE_ST027.md) para resultados, reproducción y PR.
