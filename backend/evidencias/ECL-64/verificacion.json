@@ -1,0 +1,39 @@
+{
+  "recorded_at_utc": "2026-10-09T17:34:10.109089+00:00",
+  "git_base": "bc512a52465957dd29e1bdfb1122cfa509130cb6",
+  "baseline_cliente_repository_sha256": "83578e840adfb8f80992e749d532a60f1003db05c6b924bd994f72a87104a96e",
+  "sha256": {
+    "backend/app/repositories/clientes.py": "196858d27614fa1031d7a52cd35c482ed9beaaa68bb9ec57b9fef1fee98073e0",
+    "backend/tests/unit/test_pedido_repository.py": "b6d9f638fa8d5083030d276a430367bba47d16117caab37510229440bb99cd51",
+    "backend/tests/integration/test_cliente_existence.py": "52faa9dee2834310a6854059e3ba05d98f67cc03c6885e32ff677417eea76ee9",
+    "backend/scripts/compare_client_lookup.py": "ebbe78fb7b40741235824a59d5bc1a833c625c7672024aa913225b42bab9063d",
+    "backend/VALIDACION_ST038.md": "8ec7206a017d08862e123fd0fe7689e9d3d02a4106dc42c26708ba3a064a79e4",
+    "backend/evidencias/ECL-64/comparacion.json": "10fa62ba43c4601eb83b2f0448ae657c76231d982dfe9a7117346e69a85b885f"
+  },
+  "unit": {
+    "passed": 556,
+    "failed": 0,
+    "coverage_affected_repository_percent": 100
+  },
+  "integration": {
+    "suite_passed": 116,
+    "suite_skipped": 1,
+    "separate_postgis_passed": 1,
+    "total_verified": 117,
+    "failed": 0
+  },
+  "checks": {
+    "ruff": true,
+    "format": true,
+    "eighty_plans_and_medians": true,
+    "functional_lookup_equivalence": true,
+    "script_database_guard": true,
+    "documentation_links": true
+  },
+  "pending": [
+    "dashboard_payload",
+    "route_and_dashboard_queries",
+    "pull_request_ci",
+    "peer_review"
+  ]
+}

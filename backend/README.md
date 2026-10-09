@@ -556,3 +556,10 @@ Consultar [INFORME_ST037.md](INFORME_ST037.md) y
 [evidencias/ECL-63](evidencias/ECL-63/README.md). Incluye planes reales de
 consultas de pedidos sobre datos sinteticos y oportunidades para ST-038.
 Dashboard y rutas permanecen pendientes; no se acredita RNF-012.
+
+## ECL-64 / ST-038: consulta minima de cliente
+
+La comprobacion de cliente para registrar pedidos usa SELECT EXISTS, evitando
+recuperar el perfil completo. Ver [VALIDACION_ST038.md](VALIDACION_ST038.md) y
+[evidencias/ECL-64](evidencias/ECL-64/README.md) para comparacion y pruebas.
+El payload del dashboard sigue pendiente; este incremento no acredita RNF-012.
