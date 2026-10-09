@@ -52,6 +52,22 @@ def test_unlisted_origin_is_not_authorized_by_preflight():
     assert "access-control-allow-origin" not in response.headers
 
 
+def test_driver_itinerary_get_preflight_from_allowed_origin():
+    app = create_app(
+        Settings(database_url=None, cors_allowed_origins=[FRONTEND_ORIGIN])
+    )
+    headers = {
+        **PREFLIGHT_HEADERS,
+        "Access-Control-Request-Method": "GET",
+    }
+    with TestClient(app) as client:
+        response = client.options("/conductor/itinerario", headers=headers)
+
+    assert response.status_code == 200
+    assert response.headers["access-control-allow-origin"] == FRONTEND_ORIGIN
+    assert "GET" in response.headers["access-control-allow-methods"].split(", ")
+
+
 def test_empty_origin_list_denies_cors_but_keeps_http_available():
     app = create_app(Settings(database_url=None))
     with TestClient(app) as client:

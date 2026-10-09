@@ -7,6 +7,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.api.auth import router as auth_router
+from app.api.driver_reports import router as driver_report_router
 from app.api.health import router as health_router
 from app.api.pedidos import router as order_router
 from app.api.vehiculos import router as vehicle_router
@@ -59,11 +60,12 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         CORSMiddleware,
         allow_origins=config.cors_allowed_origins,
         allow_credentials=True,
-        allow_methods=["POST"],
+        allow_methods=["GET", "POST"],
         allow_headers=["Content-Type"],
     )
     app.include_router(health_router)
     app.include_router(auth_router)
+    app.include_router(driver_report_router)
     app.include_router(order_router)
     app.include_router(vehicle_router)
     return app

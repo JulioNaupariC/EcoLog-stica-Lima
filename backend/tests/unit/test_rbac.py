@@ -133,6 +133,8 @@ def test_complete_rbac_matrix_matches_approved_grants():
         },
         Rol.CONDUCTOR: {
             Permiso.CONDUCTORES_CONSULTAR: Alcance.PROPIO,
+            Permiso.ITINERARIOS_CONSULTAR: Alcance.PROPIO,
+            Permiso.PARADAS_REPORTAR: Alcance.PROPIO,
             Permiso.INCIDENCIAS_CREAR: Alcance.PROPIO,
             Permiso.INCIDENCIAS_CONSULTAR: Alcance.PROPIO,
             Permiso.INDICADORES_CONSULTAR: Alcance.PROPIO,
@@ -241,6 +243,18 @@ def test_own_scope(actor):
     assert evaluar(
         actor, permission, Contexto(propietario_id=actor.usuario_id)
     ).permitido
+
+
+def test_driver_itinerary_and_stop_reporting_are_self_scoped(actor):
+    driver = replace(actor, rol=Rol.CONDUCTOR)
+    own = Contexto(propietario_id=driver.usuario_id)
+    other = Contexto(propietario_id=uuid4())
+
+    for permission in (Permiso.ITINERARIOS_CONSULTAR, Permiso.PARADAS_REPORTAR):
+        assert evaluar(driver, permission, own).permitido
+        assert not evaluar(driver, permission, other).permitido
+        assert not evaluar(driver, permission).permitido
+        assert not evaluar(replace(driver, rol=Rol.OPERADOR), permission, own).permitido
 
 
 def test_assignment_and_day(actor):
