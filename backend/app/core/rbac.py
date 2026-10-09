@@ -45,6 +45,8 @@ class Permiso(str, Enum):
     RUTAS_REOPTIMIZAR = "rutas.reoptimizar"
     RUTAS_CONSULTAR = "rutas.consultar"
     RUTAS_ACTUALIZAR_ESTADO = "rutas.actualizar_estado"
+    ITINERARIOS_CONSULTAR = "itinerarios.consultar"
+    PARADAS_REPORTAR = "paradas.reportar"
     INCIDENCIAS_CREAR = "incidencias.crear"
     INCIDENCIAS_CONSULTAR = "incidencias.consultar"
     INCIDENCIAS_ACTUALIZAR = "incidencias.actualizar"
@@ -150,6 +152,8 @@ MATRIZ_RBAC = MappingProxyType(
                 Alcance.PROPIO,
                 (
                     Permiso.CONDUCTORES_CONSULTAR,
+                    Permiso.ITINERARIOS_CONSULTAR,
+                    Permiso.PARADAS_REPORTAR,
                     Permiso.INCIDENCIAS_CREAR,
                     Permiso.INCIDENCIAS_CONSULTAR,
                     Permiso.INDICADORES_CONSULTAR,

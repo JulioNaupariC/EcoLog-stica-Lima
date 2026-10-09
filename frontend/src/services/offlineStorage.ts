@@ -2,12 +2,12 @@
  * ST-032 - Minimal offline itinerary snapshot store.
  * No credentials, DNI, phone numbers or personal customer details are stored.
  * IndexedDB is scoped by verified user UUID and a snapshot may expire.
- * This is NOT the pending-report queue or the synchronization implementation.
+ * The pending-report outbox shares this database but uses its own object store.
  */
 export type StopSummary = {
   stopId: string
   position: number
-  status: 'PENDIENTE' | 'EN_RUTA' | 'ENTREGADO'
+  status: 'PENDIENTE' | 'EN_RUTA' | 'ENTREGADO' | 'NO_ENTREGADO'
 }
 
 export type ItinerarySnapshot = {
@@ -61,7 +61,8 @@ export async function saveItinerary(snapshot: ItinerarySnapshot): Promise<void> 
       snapshot.expiresAt <= Date.now() || !Array.isArray(snapshot.stops) ||
       snapshot.stops.length > 100 || snapshot.stops.some(stop =>
         !stop.stopId || !Number.isInteger(stop.position) || stop.position < 1 ||
-        !['PENDIENTE', 'EN_RUTA', 'ENTREGADO'].includes(stop.status))) {
+        !validUserId(stop.stopId) ||
+        !['PENDIENTE', 'EN_RUTA', 'ENTREGADO', 'NO_ENTREGADO'].includes(stop.status))) {
     throw new Error('Itinerario local inválido')
   }
   const db = await openDatabase()

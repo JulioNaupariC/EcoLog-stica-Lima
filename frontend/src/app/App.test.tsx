@@ -1,19 +1,28 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter, useLocation, useNavigate } from 'react-router-dom'
-import { login } from '../services/auth'
+import { login, logout } from '../services/auth'
 import type { AuthRole } from '../services/auth'
 import { createVehicle, listVehicles } from '../services/vehicles'
 import type { VehicleResponse } from '../services/vehicles'
+import { listPendingReports } from '../services/reportQueue'
 import { App } from './App'
 
 vi.mock('../services/auth', async (importOriginal) => {
   const actual = await importOriginal<typeof import('../services/auth')>()
-  return { ...actual, login: vi.fn() }
+  return { ...actual, login: vi.fn(), logout: vi.fn() }
 })
 
 const loginMock = vi.mocked(login)
+const logoutMock = vi.mocked(logout)
 const usuario_id = '123e4567-e89b-12d3-a456-426614174000'
+
+vi.mock('../services/reportQueue', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('../services/reportQueue')>()
+  return { ...actual, listPendingReports: vi.fn() }
+})
+
+const pendingReportsMock = vi.mocked(listPendingReports)
 
 vi.mock('../services/vehicles', async (importOriginal) => {
   const actual = await importOriginal<typeof import('../services/vehicles')>()
@@ -65,6 +74,8 @@ async function signIn(role: AuthRole) {
 describe('App', () => {
   beforeEach(() => {
     loginMock.mockReset()
+    logoutMock.mockReset().mockResolvedValue()
+    pendingReportsMock.mockReset().mockResolvedValue([])
     listVehiclesMock.mockReset().mockResolvedValue([vehicle])
     createVehicleMock.mockReset().mockResolvedValue(vehicle)
   })
@@ -246,5 +257,54 @@ describe('App', () => {
     expect(screen.queryByRole('button', { name: 'Actualizar listado' })).not.toBeInTheDocument()
     expect(listVehiclesMock).not.toHaveBeenCalled()
     expect(createVehicleMock).not.toHaveBeenCalled()
+  })
+
+  it('confirma antes de cerrar sesión con reportes offline pendientes y los conserva', async () => {
+    const user = userEvent.setup()
+    pendingReportsMock.mockResolvedValue([
+      {
+        ownerId: usuario_id,
+        stopId: '223e4567-e89b-42d3-a456-426614174000',
+        operationId: '323e4567-e89b-42d3-a456-426614174000',
+        status: 'ENTREGADO',
+        createdAt: 1,
+        attemptCount: 0,
+      },
+    ])
+    const confirm = vi.spyOn(window, 'confirm').mockReturnValue(false)
+    renderAt('/login')
+    await signIn('CONDUCTOR')
+
+    await user.click(screen.getByRole('button', { name: 'Cerrar sesión' }))
+
+    expect(confirm).toHaveBeenCalledWith(expect.stringContaining('1 reporte pendiente'))
+    expect(logoutMock).not.toHaveBeenCalled()
+    expect(screen.getByText('Rol: CONDUCTOR')).toBeInTheDocument()
+    confirm.mockRestore()
+  })
+
+  it('cierra sesión tras advertir que la cola pendiente se conservará localmente', async () => {
+    const user = userEvent.setup()
+    pendingReportsMock.mockResolvedValue([
+      {
+        ownerId: usuario_id,
+        stopId: '223e4567-e89b-42d3-a456-426614174000',
+        operationId: '323e4567-e89b-42d3-a456-426614174000',
+        status: 'ENTREGADO',
+        createdAt: 1,
+        attemptCount: 0,
+      },
+    ])
+    const confirm = vi.spyOn(window, 'confirm').mockReturnValue(true)
+    renderAt('/login')
+    await signIn('CONDUCTOR')
+
+    await user.click(screen.getByRole('button', { name: 'Cerrar sesión' }))
+
+    expect(confirm).toHaveBeenCalledWith(expect.stringContaining('Se conservarán en este dispositivo'))
+    expect(logoutMock).toHaveBeenCalledOnce()
+    expect(screen.getByTestId('path')).toHaveTextContent('/login')
+    expect(screen.queryByText('Rol: CONDUCTOR')).not.toBeInTheDocument()
+    confirm.mockRestore()
   })
 })

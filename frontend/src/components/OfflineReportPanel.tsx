@@ -6,28 +6,35 @@ import { enqueueReport, listPendingReports } from '../services/reportQueue'
 import { synchronizeReports } from '../services/reportSync'
 import type { ReportTransport } from '../services/reportSync'
 
-/** Embed ONLY inside the existing CONDUCTOR-authorized route after ST-030 is merged. */
-export function OfflineReportPanel({ ownerId, stopId, transport }: {
+/** Render only inside the existing CONDUCTOR-authorized itinerary route. */
+export function OfflineReportPanel({ ownerId, stopId, transport, allowNewReport = true }: {
   ownerId: string
   stopId: string
   transport?: ReportTransport
+  allowNewReport?: boolean
 }) {
   const [pending, setPending] = useState<number | null>(null)
   const [message, setMessage] = useState('')
   const [busy, setBusy] = useState(false)
+  const [hasPendingReportForStop, setHasPendingReportForStop] = useState(false)
   const reload = useCallback(async () => {
-    setPending((await listPendingReports(ownerId)).length)
-  }, [ownerId])
+    const reports = await listPendingReports(ownerId)
+    setPending(reports.length)
+    setHasPendingReportForStop(reports.some(report => report.stopId === stopId))
+  }, [ownerId, stopId])
 
   useEffect(() => {
     let active = true
     void listPendingReports(ownerId).then(items => {
-      if (active) setPending(items.length)
+      if (active) {
+        setPending(items.length)
+        setHasPendingReportForStop(items.some(report => report.stopId === stopId))
+      }
     }).catch(() => {
       if (active) setMessage('No se pudo abrir el almacenamiento local.')
     })
     return () => { active = false }
-  }, [ownerId])
+  }, [ownerId, stopId])
 
   async function queue(status: DriverReportStatus) {
     if (busy) return
@@ -54,16 +61,19 @@ export function OfflineReportPanel({ ownerId, stopId, transport }: {
   }
 
   return (
-    <section aria-labelledby="offline-reports-title">
-      <h2 id="offline-reports-title">Reportes de la parada</h2>
+    <section aria-labelledby={`offline-reports-title-${stopId}`}>
+      <h2 id={`offline-reports-title-${stopId}`}>Reportes de la parada</h2>
       <ConnectionStatus />
       <p role="status" aria-live="polite">Reportes pendientes: {pending ?? 'consultando…'}</p>
       <div className="offline-report-actions">
-        <button type="button" disabled={busy} onClick={() => { void queue('ENTREGADO') }}>Registrar entrega pendiente</button>
-        <button type="button" disabled={busy} onClick={() => { void queue('NO_ENTREGADO') }}>Registrar no entregado</button>
+        <button type="button" disabled={busy || !allowNewReport || hasPendingReportForStop} onClick={() => { void queue('ENTREGADO') }}>Registrar entrega pendiente</button>
+        <button type="button" disabled={busy || !allowNewReport || hasPendingReportForStop} onClick={() => { void queue('NO_ENTREGADO') }}>Registrar no entregado</button>
         <button type="button" disabled={busy || !transport} onClick={() => { void sync() }}>Sincronizar pendientes</button>
       </div>
-      {!transport && <p>Sincronización con servidor pendiente: falta el endpoint autenticado e idempotente.</p>}
+      {hasPendingReportForStop ? (
+        <p role="status">Esta parada ya tiene un reporte pendiente. Sincronízalo antes de registrar otro resultado.</p>
+      ) : null}
+      {!transport && <p>La sincronización no está configurada para esta vista.</p>}
       {message && <p role="status" aria-live="polite">{message}</p>}
     </section>
   )

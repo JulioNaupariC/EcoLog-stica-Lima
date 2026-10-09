@@ -5,7 +5,7 @@ from typing import Annotated
 
 from fastapi import Depends, HTTPException, Request, status
 
-from app.core.rbac import Identidad, Permiso
+from app.core.rbac import Contexto, Identidad, Permiso
 from app.repositories.auditoria import AuditStorageError
 from app.services.autenticacion import (
     AutenticacionService,
@@ -44,7 +44,10 @@ def get_authenticated_session(
         ) from None
 
 
-def require_permission(permiso: Permiso) -> Callable[..., Identidad]:
+def require_permission(
+    permiso: Permiso,
+    context_factory: Callable[[Identidad], Contexto] | None = None,
+) -> Callable[..., Identidad]:
     def dependency(
         request: Request,
         authenticated: Annotated[
@@ -59,7 +62,14 @@ def require_permission(permiso: Permiso) -> Callable[..., Identidad]:
                 status.HTTP_503_SERVICE_UNAVAILABLE, "Servicio no disponible"
             )
         try:
-            service.autorizar(authenticated.identidad, permiso)
+            if context_factory is None:
+                service.autorizar(authenticated.identidad, permiso)
+            else:
+                service.autorizar(
+                    authenticated.identidad,
+                    permiso,
+                    context_factory(authenticated.identidad),
+                )
         except AuthorizationDenied:
             raise HTTPException(status.HTTP_403_FORBIDDEN, "Acceso denegado") from None
         except AuditStorageError:

@@ -6,7 +6,8 @@ import { LoginPage } from '../pages/LoginPage'
 import { NotFoundPage } from '../pages/NotFoundPage'
 import { OrderCreatePage } from '../pages/OrderCreatePage'
 import { VehiclesPage } from '../pages/VehiclesPage'
-import type { AuthRole, LoginResponse } from '../services/auth'
+import { logout, type AuthRole, type LoginResponse } from '../services/auth'
+import { listPendingReports } from '../services/reportQueue'
 
 function canCreateOrders(role: AuthRole): boolean {
   return role === 'ADMINISTRADOR' || role === 'OPERADOR'
@@ -28,13 +29,50 @@ function AccessDenied() {
 
 export function App() {
   const [identity, setIdentity] = useState<LoginResponse | null>(null)
+  const [logoutMessage, setLogoutMessage] = useState('')
+  const [loggingOut, setLoggingOut] = useState(false)
   const navigate = useNavigate()
   const createOrdersAllowed = identity !== null && canCreateOrders(identity.rol)
   const vehicleAccess = getVehicleAccess(identity?.rol)
 
   function handleLoginSuccess(loggedInIdentity: LoginResponse) {
     setIdentity(loggedInIdentity)
+    setLogoutMessage('')
     void navigate('/', { replace: true })
+  }
+
+  async function handleLogout() {
+    if (!identity || loggingOut) return
+    setLogoutMessage('')
+    setLoggingOut(true)
+    try {
+      if (identity.rol === 'CONDUCTOR') {
+        let pendingCount: number | null
+        try {
+          pendingCount = (await listPendingReports(identity.usuario_id)).length
+        } catch {
+          pendingCount = null
+        }
+        if (pendingCount === null) {
+          if (!window.confirm(
+            'No se pudo verificar la cola offline. Los reportes locales no se eliminarán. ¿Cerrar sesión?',
+          )) return
+        } else if (pendingCount > 0 && !window.confirm(
+          `Tienes ${pendingCount === 1 ? '1 reporte pendiente' : `${pendingCount} reportes pendientes`}. Se conservarán en este dispositivo y podrás sincronizarlos al volver a iniciar sesión. ¿Cerrar sesión?`,
+        )) {
+          return
+        }
+      }
+      await logout()
+      setIdentity(null)
+      await navigate('/login', { replace: true })
+    } catch (error) {
+      setLogoutMessage(
+        error instanceof Error ? error.message : 'No se pudo cerrar la sesión.',
+      )
+    } finally {
+      setLoggingOut(false)
+    }
   }
 
   return (
@@ -48,6 +86,11 @@ export function App() {
             {identity ? <span className="identity-role">Rol: {identity.rol}</span> : (
               <Link className="nav-link" to="/login">Iniciar sesión</Link>
             )}
+            {identity ? (
+              <button className="nav-link" type="button" disabled={loggingOut} onClick={() => { void handleLogout() }}>
+                {loggingOut ? 'Cerrando sesión…' : 'Cerrar sesión'}
+              </button>
+            ) : null}
             {createOrdersAllowed ? (
               <Link className="nav-link" to="/pedidos/nuevo">Registrar pedido</Link>
             ) : null}
@@ -60,6 +103,7 @@ export function App() {
           </div>
         </nav>
       </header>
+      {logoutMessage ? <p className="container" role="alert">{logoutMessage}</p> : null}
       <main id="contenido-principal" className="container main-content">
         <Routes>
           <Route path="/" element={<HomePage />} />
@@ -82,7 +126,9 @@ export function App() {
           <Route
             path="/conductor/itinerario"
             element={identity === null ? <Navigate to="/login" replace /> : (
-              identity.rol === 'CONDUCTOR' ? <DriverItineraryPage /> : <AccessDenied />
+              identity.rol === 'CONDUCTOR' ? (
+                <DriverItineraryPage key={identity.usuario_id} ownerId={identity.usuario_id} />
+              ) : <AccessDenied />
             )}
           />
           <Route path="*" element={<NotFoundPage />} />

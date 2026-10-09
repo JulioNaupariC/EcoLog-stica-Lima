@@ -151,3 +151,29 @@ export async function login(payload: LoginRequest): Promise<LoginResponse> {
   }
   return { usuario_id: body.usuario_id, rol: body.rol }
 }
+
+export async function logout(): Promise<void> {
+  let url: string
+  try {
+    url = buildApiUrl('logout')
+  } catch {
+    throw new AuthServiceError('unexpected', 'No se pudo cerrar la sesión.')
+  }
+
+  let response: Response
+  try {
+    response = await fetch(url, { method: 'POST', credentials: 'include' })
+  } catch {
+    throw new AuthServiceError('network', 'No se pudo conectar para cerrar la sesión.')
+  }
+
+  if (response.status !== 204) {
+    throw new AuthServiceError(
+      response.status === 503 ? 'unavailable' : 'unexpected',
+      response.status === 503
+        ? 'El servicio no está disponible para cerrar la sesión.'
+        : 'No se pudo cerrar la sesión.',
+      { status: response.status },
+    )
+  }
+}
