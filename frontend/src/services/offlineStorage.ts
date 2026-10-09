@@ -2,12 +2,12 @@
  * ST-032 - Minimal offline itinerary snapshot store.
  * No credentials, DNI, phone numbers or personal customer details are stored.
  * IndexedDB is scoped by verified user UUID and a snapshot may expire.
- * This is NOT the pending-report queue or the synchronization implementation.
+ * The pending-report outbox shares this database but uses its own object store.
  */
 export type StopSummary = {
   stopId: string
   position: number
-  status: 'PENDIENTE' | 'EN_RUTA' | 'ENTREGADO'
+  status: 'PENDIENTE' | 'EN_RUTA' | 'ENTREGADO' | 'NO_ENTREGADO'
 }
 
 export type ItinerarySnapshot = {
@@ -29,7 +29,9 @@ function openDatabase(): Promise<IDBDatabase> {
     request.onupgradeneeded = () => {
       const db = request.result
       if (!db.objectStoreNames.contains(STORE_NAME)) db.createObjectStore(STORE_NAME)
-      if (!db.objectStoreNames.contains("pendingReports")) db.createObjectStore("pendingReports", { keyPath: "operationId" })
+      if (!db.objectStoreNames.contains('pendingReports')) {
+        db.createObjectStore('pendingReports', { keyPath: 'operationId' })
+      }
     }
     request.onsuccess = () => resolve(request.result)
     request.onerror = () => reject(new Error('No se pudo abrir el almacenamiento local'))
@@ -44,11 +46,19 @@ function validUserId(value: string): boolean {
 function isItinerarySnapshot(value: unknown): value is ItinerarySnapshot {
   if (typeof value !== 'object' || value === null) return false
   const snapshot = value as Record<string, unknown>
-  if (typeof snapshot.ownerId !== 'string' || !validUserId(snapshot.ownerId) ||
-      typeof snapshot.savedAt !== 'number' || !Number.isSafeInteger(snapshot.savedAt) ||
-      typeof snapshot.expiresAt !== 'number' || !Number.isSafeInteger(snapshot.expiresAt) ||
-      snapshot.expiresAt <= snapshot.savedAt || !Array.isArray(snapshot.stops) ||
-      snapshot.stops.length > 100) return false
+  if (
+    typeof snapshot.ownerId !== 'string' ||
+    !validUserId(snapshot.ownerId) ||
+    typeof snapshot.savedAt !== 'number' ||
+    !Number.isSafeInteger(snapshot.savedAt) ||
+    typeof snapshot.expiresAt !== 'number' ||
+    !Number.isSafeInteger(snapshot.expiresAt) ||
+    snapshot.expiresAt <= snapshot.savedAt ||
+    !Array.isArray(snapshot.stops) ||
+    snapshot.stops.length > 100
+  ) {
+    return false
+  }
 
   const stopIds = new Set<string>()
   const positions = new Set<number>()
@@ -58,10 +68,19 @@ function isItinerarySnapshot(value: unknown): value is ItinerarySnapshot {
     const stopId = item.stopId
     const position = item.position
     const status = item.status
-    if (typeof stopId !== 'string' || !UUID_PATTERN.test(stopId) ||
-        typeof position !== 'number' || !Number.isSafeInteger(position) || position < 1 ||
-        typeof status !== 'string' || !['PENDIENTE', 'EN_RUTA', 'ENTREGADO'].includes(status) ||
-        stopIds.has(stopId) || positions.has(position)) return false
+    if (
+      typeof stopId !== 'string' ||
+      !UUID_PATTERN.test(stopId) ||
+      typeof position !== 'number' ||
+      !Number.isSafeInteger(position) ||
+      position < 1 ||
+      typeof status !== 'string' ||
+      !['PENDIENTE', 'EN_RUTA', 'ENTREGADO', 'NO_ENTREGADO'].includes(status) ||
+      stopIds.has(stopId) ||
+      positions.has(position)
+    ) {
+      return false
+    }
     stopIds.add(stopId)
     positions.add(position)
     return true
@@ -99,8 +118,9 @@ export async function saveItinerary(snapshot: ItinerarySnapshot): Promise<void> 
       const request = store.put(snapshot, snapshot.ownerId)
       request.onsuccess = () => done(undefined)
     })
+  } finally {
+    db.close()
   }
-  finally { db.close() }
 }
 
 export async function loadItinerary(ownerId: string): Promise<ItinerarySnapshot | null> {
@@ -120,7 +140,9 @@ export async function loadItinerary(ownerId: string): Promise<ItinerarySnapshot 
       return null
     }
     return snapshot
-  } finally { db.close() }
+  } finally {
+    db.close()
+  }
 }
 
 export async function clearItinerary(ownerId: string): Promise<void> {
@@ -131,6 +153,7 @@ export async function clearItinerary(ownerId: string): Promise<void> {
       const request = store.delete(ownerId)
       request.onsuccess = () => done(undefined)
     })
+  } finally {
+    db.close()
   }
-  finally { db.close() }
 }

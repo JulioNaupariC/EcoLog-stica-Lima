@@ -422,6 +422,34 @@ extensión PostGIS ni expone operaciones de Cliente. El CRUD y las preferencias
 de Cliente pertenecen a ECL-11. Las pruebas de migración y persistencia de Pedido
 usan exclusivamente la `TEST_DATABASE_URL` validada por el fixture existente.
 
+## Itinerario del conductor y reportes offline — ECL-58
+
+La revisión `0008_driver_assignments_and_reports` agrega asignaciones mínimas
+conductor-parada e informes persistidos. `GET /conductor/itinerario` y
+`POST /conductor/reportes` requieren sesión activa y rol `CONDUCTOR`; ambos
+permisos se auditan con alcance propio. El propietario siempre se obtiene de la
+sesión, y un informe sólo se acepta para una parada asignada a ese conductor.
+
+El POST recibe `operation_id` (UUID idempotente), `stop_id` y estado final
+`ENTREGADO` o `NO_ENTREGADO`. Repetir la misma operación devuelve el mismo ACK;
+reutilizar el UUID con otro propietario o contenido produce `409`. La transacción
+persiste el evento y el estado de parada conjuntamente. Una parada ya finalizada
+no admite otro informe. Los fallos de almacenamiento devuelven mensajes
+saneados.
+
+El aprovisionamiento no se expone por HTTP. El futuro productor confiable del
+planificador debe llamar `DriverReportService.provision_assignment(...)` usando
+los UUID de parada y conductor producidos por ese flujo. La implementación actual
+no contiene modelos ni un flujo de planificación/asignación de rutas, por lo que
+el endpoint devuelve una lista vacía hasta que ese adaptador se conecte; esta
+revisión no inventa asignaciones ni UUIDs. Tampoco sustituye el modelo de
+Pedido/Parada ni almacena datos personales de clientes en el reporte.
+
+En el cliente, la instantánea del itinerario y la outbox se separan por UUID de
+sesión en IndexedDB. El cierre de sesión advierte sobre reportes sin ACK y no los
+borra; tras autenticarse nuevamente con la misma cuenta pueden sincronizarse.
+Sólo una confirmación HTTP con el mismo `operation_id` elimina un reporte local.
+
 ## Calidad
 
 ```powershell

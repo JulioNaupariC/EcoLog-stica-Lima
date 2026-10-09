@@ -1,4 +1,4 @@
-import { AuthServiceError, login } from './auth'
+import { AuthServiceError, login, logout } from './auth'
 import type { AuthRole, LoginRequest } from './auth'
 
 const payload: LoginRequest = {
@@ -152,5 +152,36 @@ describe('servicio de autenticación', () => {
       message: 'No se pudo iniciar sesión.',
     })
     expect(fetchMock).not.toHaveBeenCalled()
+  })
+
+  it('revoca la sesión autenticada y exige la respuesta 204 de logout', async () => {
+    const fetchMock = vi.fn().mockResolvedValue(new Response(null, { status: 204 }))
+    vi.stubGlobal('fetch', fetchMock)
+
+    await expect(logout()).resolves.toBeUndefined()
+
+    expect(fetchMock).toHaveBeenCalledExactlyOnceWith(
+      'http://127.0.0.1:8000/logout',
+      { method: 'POST', credentials: 'include' },
+    )
+  })
+
+  it.each([
+    [401, 'unexpected', 'No se pudo cerrar la sesión.'],
+    [503, 'unavailable', 'El servicio no está disponible para cerrar la sesión.'],
+    [500, 'unexpected', 'No se pudo cerrar la sesión.'],
+  ] as const)('maneja cierre de sesión HTTP %s sin aceptar la operación', async (status, kind, message) => {
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(new Response(null, { status })))
+
+    await expect(logout()).rejects.toMatchObject({ kind, message, status })
+  })
+
+  it('conserva el error de sesión si falla el transporte de logout', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new Error('private details')))
+
+    await expect(logout()).rejects.toMatchObject({
+      kind: 'network',
+      message: 'No se pudo conectar para cerrar la sesión.',
+    })
   })
 })

@@ -6,7 +6,7 @@ import pytest
 from fastapi import HTTPException
 
 from app.api.dependencies import get_authenticated_session, require_permission
-from app.core.rbac import Identidad, Permiso, Rol
+from app.core.rbac import Contexto, Identidad, Permiso, Rol
 from app.repositories.auditoria import AuditStorageError
 from app.services.autenticacion import (
     AuthenticatedSession,
@@ -28,6 +28,27 @@ def test_permission_dependency_uses_database_resolved_identity():
     assert dependency(request, authenticated) == authenticated.identidad
     authorization.autorizar.assert_called_once_with(
         authenticated.identidad, Permiso.PEDIDOS_CREAR
+    )
+
+
+def test_permission_dependency_can_supply_a_self_ownership_context():
+    authorization = Mock()
+    request = SimpleNamespace(
+        app=SimpleNamespace(state=SimpleNamespace(authorization_service=authorization))
+    )
+    authenticated = AuthenticatedSession(
+        uuid4(), Identidad(uuid4(), Rol.CONDUCTOR, "ACTIVO")
+    )
+    dependency = require_permission(
+        Permiso.ITINERARIOS_CONSULTAR,
+        lambda identity: Contexto(propietario_id=identity.usuario_id),
+    )
+
+    assert dependency(request, authenticated) == authenticated.identidad
+    authorization.autorizar.assert_called_once_with(
+        authenticated.identidad,
+        Permiso.ITINERARIOS_CONSULTAR,
+        Contexto(propietario_id=authenticated.identidad.usuario_id),
     )
 
 
