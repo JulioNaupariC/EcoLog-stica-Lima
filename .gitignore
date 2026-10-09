@@ -15,3 +15,5 @@ dist/
 node_modules/
 coverage/
 .npm-cache/
+.tmp-st024-pg/
+test-results/

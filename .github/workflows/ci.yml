@@ -1,6 +1,10 @@
 name: CI
 
 on:
+  workflow_dispatch:
+  push:
+    branches:
+      - feat/ECL-50-st024-pruebas-conductores
   pull_request:
     branches:
       - main
@@ -9,7 +13,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: ci-${{ github.workflow }}-${{ github.event.pull_request.number }}
+  group: ci-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -52,7 +56,29 @@ jobs:
           python -m pytest tests/unit -q
           --cov=app
           --cov-report=term-missing
+          --cov-report=xml:test-results/coverage.xml
+          --junitxml=test-results/unit.xml
           --cov-fail-under=80
+
+      - name: ST-024 driver unit coverage gate
+        run: >-
+          python -m pytest tests/unit/test_conductor*.py -q
+          --cov=app.api.conductores --cov=app.schemas.conductor
+          --cov=app.services.conductores --cov=app.repositories.conductores
+          --cov-report=term-missing
+          --cov-report=xml:test-results/conductores-coverage.xml
+          --cov-report=html:test-results/conductores-coverage
+          --junitxml=test-results/conductores-unit.xml
+          --cov-fail-under=80
+
+      - name: Upload backend unit evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-unit-results-${{ github.run_id }}
+          path: backend/test-results/
+          if-no-files-found: warn
+          retention-days: 30
 
   backend-integration:
     name: Backend / Integration
@@ -109,7 +135,18 @@ jobs:
           ecologistica_ci_test
 
       - name: Run backend integration tests
-        run: python -m pytest tests/integration -q
+        run: >-
+          python -m pytest tests/integration -q
+          --junitxml=test-results/integration.xml
+
+      - name: Upload backend integration evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-integration-results-${{ github.run_id }}
+          path: backend/test-results/
+          if-no-files-found: warn
+          retention-days: 30
 
   frontend:
     name: Frontend
@@ -141,7 +178,20 @@ jobs:
         run: npm run typecheck
 
       - name: Run frontend tests
-        run: npm run test:coverage
+        run: >-
+          npm run test:coverage -- --reporter=default --reporter=junit
+          --outputFile.junit=test-results/frontend.xml
+
+      - name: Upload frontend test evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-test-results-${{ github.run_id }}
+          path: |
+            frontend/test-results/
+            frontend/coverage/
+          if-no-files-found: warn
+          retention-days: 30
 
       - name: Build frontend
         run: npm run build
