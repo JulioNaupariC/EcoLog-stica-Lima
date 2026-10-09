@@ -1,0 +1,783 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuites name="vitest tests" tests="369" failures="0" errors="0" time="38.2726375">
+  <testsuite name="src/app/App.drivers.test.tsx" timestamp="2026-10-09T08:27:21.540Z" tests="7" failures="0" errors="0" skipped="0" time="1.6961923">
+    <testcase classname="src/app/App.drivers.test.tsx" name="redirige acceso anónimo al login" time="0.3293044">
+        </testcase>
+    <testcase classname="src/app/App.drivers.test.tsx" name="habilita navegación y gestión para ADMINISTRADOR" time="0.3964528">
+        </testcase>
+    <testcase classname="src/app/App.drivers.test.tsx" name="habilita navegación y gestión para OPERADOR" time="0.2697114">
+        </testcase>
+    <testcase classname="src/app/App.drivers.test.tsx" name="deniega ruta y oculta enlace a CONDUCTOR" time="0.1649903">
+        </testcase>
+    <testcase classname="src/app/App.drivers.test.tsx" name="deniega ruta y oculta enlace a AUDITOR" time="0.1448213">
+        </testcase>
+    <testcase classname="src/app/App.drivers.test.tsx" name="deniega ruta y oculta enlace a ANALISTA" time="0.1484005">
+        </testcase>
+    <testcase classname="src/app/App.drivers.test.tsx" name="401 de API limpia identidad y vuelve al login" time="0.2387593">
+        </testcase>
+  </testsuite>
+  <testsuite name="src/app/App.test.tsx" timestamp="2026-10-09T08:27:21.543Z" tests="27" failures="0" errors="0" skipped="0" time="16.7053283">
+    <testcase classname="src/app/App.test.tsx" name="App &gt; renderiza el inicio con landmarks y enlace de acceso anónimo" time="0.3921262">
+        </testcase>
+    <testcase classname="src/app/App.test.tsx" name="App &gt; abre /login desde el enlace anónimo" time="0.1637707">
+        </testcase>
+    <testcase classname="src/app/App.test.tsx" name="App &gt; muestra la página 404 para una ruta desconocida y permite volver al inicio" time="0.1305736">
+        </testcase>
+    <testcase classname="src/app/App.test.tsx" name="App &gt; redirige /pedidos/nuevo a /login sin identidad" time="0.0330324">
+        </testcase>
+    <testcase classname="src/app/App.test.tsx" name="App &gt; solicita iniciar sesión al abrir el itinerario sin identidad" time="0.0321096">
+        </testcase>
+    <testcase classname="src/app/App.test.tsx" name="App &gt; permite al conductor abrir su itinerario desde la navegación y por ruta directa" time="1.0307632">
+        </testcase>
+    <testcase classname="src/app/App.test.tsx" name="App &gt; oculta itinerario y deniega su ruta directa a ADMINISTRADOR" time="0.6991428">
+        </testcase>
+    <testcase classname="src/app/App.test.tsx" name="App &gt; oculta itinerario y deniega su ruta directa a OPERADOR" time="0.7505201">
+        </testcase>
+    <testcase classname="src/app/App.test.tsx" name="App &gt; oculta itinerario y deniega su ruta directa a ANALISTA" time="0.7264679">
+        </testcase>
+    <testcase classname="src/app/App.test.tsx" name="App &gt; oculta itinerario y deniega su ruta directa a AUDITOR" time="0.728882">
+        </testcase>
+    <testcase classname="src/app/App.test.tsx" name="App &gt; al entrar correctamente vuelve a / y reemplaza la entrada de /login" time="0.6523095">
+        </testcase>
+    <testcase classname="src/app/App.test.tsx" name="App &gt; permite a ADMINISTRADOR ver y abrir el formulario de pedidos" time="0.7423423">
+        </testcase>
+    <testcase classname="src/app/App.test.tsx" name="App &gt; permite a OPERADOR ver y abrir el formulario de pedidos" time="0.7133449">
+        </testcase>
+    <testcase classname="src/app/App.test.tsx" name="App &gt; oculta pedidos y deniega el acceso directo a CONDUCTOR" time="0.7918856">
+        </testcase>
+    <testcase classname="src/app/App.test.tsx" name="App &gt; oculta pedidos y deniega el acceso directo a ANALISTA" time="0.6477223">
+        </testcase>
+    <testcase classname="src/app/App.test.tsx" name="App &gt; oculta pedidos y deniega el acceso directo a AUDITOR" time="0.8228686">
+        </testcase>
+    <testcase classname="src/app/App.test.tsx" name="App &gt; redirige /login a / cuando ya existe identidad en memoria" time="0.7447015">
+        </testcase>
+    <testcase classname="src/app/App.test.tsx" name="App &gt; no recupera identidad al volver a montar App en /pedidos/nuevo" time="0.7044107">
+        </testcase>
+    <testcase classname="src/app/App.test.tsx" name="App &gt; no recupera identidad al volver a montar App en /vehiculos" time="0.5982052">
+        </testcase>
+    <testcase classname="src/app/App.test.tsx" name="App &gt; redirige /vehiculos a login sin identidad y no consulta vehículos" time="0.0177852">
+        </testcase>
+    <testcase classname="src/app/App.test.tsx" name="App &gt; permite a ADMINISTRADOR listar y crear conservando /vehiculos" time="0.8294377">
+        </testcase>
+    <testcase classname="src/app/App.test.tsx" name="App &gt; permite a OPERADOR listar y crear conservando /vehiculos" time="0.944018">
+        </testcase>
+    <testcase classname="src/app/App.test.tsx" name="App &gt; Auditor ve enlace y listado, sin montar el formulario" time="0.8513457">
+        </testcase>
+    <testcase classname="src/app/App.test.tsx" name="App &gt; oculta vehículos y deniega acceso directo a CONDUCTOR sin solicitudes" time="0.9302541">
+        </testcase>
+    <testcase classname="src/app/App.test.tsx" name="App &gt; oculta vehículos y deniega acceso directo a ANALISTA sin solicitudes" time="0.6870567">
+        </testcase>
+    <testcase classname="src/app/App.test.tsx" name="App &gt; confirma antes de cerrar sesión con reportes offline pendientes y los conserva" time="0.6780291">
+        </testcase>
+    <testcase classname="src/app/App.test.tsx" name="App &gt; cierra sesión tras advertir que la cola pendiente se conservará localmente" time="0.6578757">
+        </testcase>
+  </testsuite>
+  <testsuite name="src/components/OfflineReportPanel.test.tsx" timestamp="2026-10-09T08:27:21.546Z" tests="3" failures="0" errors="0" skipped="0" time="0.582321">
+    <testcase classname="src/components/OfflineReportPanel.test.tsx" name="OfflineReportPanel &gt; impide crear un segundo resultado para la misma parada pendiente" time="0.3063744">
+        </testcase>
+    <testcase classname="src/components/OfflineReportPanel.test.tsx" name="OfflineReportPanel &gt; no bloquea una parada distinta por reportes pendientes de otra parada" time="0.0829419">
+        </testcase>
+    <testcase classname="src/components/OfflineReportPanel.test.tsx" name="OfflineReportPanel &gt; habilita un nuevo reporte para la parada después de recibir ACK" time="0.1887872">
+        </testcase>
+  </testsuite>
+  <testsuite name="src/domain/driverForm.test.ts" timestamp="2026-10-09T08:27:21.547Z" tests="25" failures="0" errors="0" skipped="0" time="0.0219768">
+    <testcase classname="src/domain/driverForm.test.ts" name="normaliza campos y convierte hora de Lima a UTC sin depender del navegador" time="0.0072472">
+        </testcase>
+    <testcase classname="src/domain/driverForm.test.ts" name="valida nombre y rechaza valores inválidos" time="0.0008732">
+        </testcase>
+    <testcase classname="src/domain/driverForm.test.ts" name="valida nombre y rechaza valores inválidos" time="0.000339">
+        </testcase>
+    <testcase classname="src/domain/driverForm.test.ts" name="valida dni y rechaza valores inválidos" time="0.0003372">
+        </testcase>
+    <testcase classname="src/domain/driverForm.test.ts" name="valida dni y rechaza valores inválidos" time="0.0002813">
+        </testcase>
+    <testcase classname="src/domain/driverForm.test.ts" name="valida licencia_numero y rechaza valores inválidos" time="0.0003183">
+        </testcase>
+    <testcase classname="src/domain/driverForm.test.ts" name="valida licencia_numero y rechaza valores inválidos" time="0.0002784">
+        </testcase>
+    <testcase classname="src/domain/driverForm.test.ts" name="valida licencia_vigente_hasta y rechaza valores inválidos" time="0.000311">
+        </testcase>
+    <testcase classname="src/domain/driverForm.test.ts" name="valida licencia_vigente_hasta y rechaza valores inválidos" time="0.0003032">
+        </testcase>
+    <testcase classname="src/domain/driverForm.test.ts" name="valida licencia_vigente_hasta y rechaza valores inválidos" time="0.0002594">
+        </testcase>
+    <testcase classname="src/domain/driverForm.test.ts" name="valida experiencia_anios y rechaza valores inválidos" time="0.0002833">
+        </testcase>
+    <testcase classname="src/domain/driverForm.test.ts" name="valida experiencia_anios y rechaza valores inválidos" time="0.0002537">
+        </testcase>
+    <testcase classname="src/domain/driverForm.test.ts" name="valida experiencia_anios y rechaza valores inválidos" time="0.0002465">
+        </testcase>
+    <testcase classname="src/domain/driverForm.test.ts" name="valida telefono y rechaza valores inválidos" time="0.0004302">
+        </testcase>
+    <testcase classname="src/domain/driverForm.test.ts" name="valida punto_partida y rechaza valores inválidos" time="0.0002971">
+        </testcase>
+    <testcase classname="src/domain/driverForm.test.ts" name="valida punto_partida y rechaza valores inválidos" time="0.0002645">
+        </testcase>
+    <testcase classname="src/domain/driverForm.test.ts" name="valida disponible_desde y rechaza valores inválidos" time="0.0002607">
+        </testcase>
+    <testcase classname="src/domain/driverForm.test.ts" name="valida disponible_hasta y rechaza valores inválidos" time="0.0002698">
+        </testcase>
+    <testcase classname="src/domain/driverForm.test.ts" name="valida disponible_desde y rechaza valores inválidos" time="0.0002413">
+        </testcase>
+    <testcase classname="src/domain/driverForm.test.ts" name="valida email y rechaza valores inválidos" time="0.0002566">
+        </testcase>
+    <testcase classname="src/domain/driverForm.test.ts" name="valida password y rechaza valores inválidos" time="0.0002867">
+        </testcase>
+    <testcase classname="src/domain/driverForm.test.ts" name="valida password y rechaza valores inválidos" time="0.0002671">
+        </testcase>
+    <testcase classname="src/domain/driverForm.test.ts" name="permite licencia vencida y retirar disponibilidad sólo en edición" time="0.000655">
+        </testcase>
+    <testcase classname="src/domain/driverForm.test.ts" name="envía sólo cambios y preserva precisión temporal al editar otros campos" time="0.0015865">
+        </testcase>
+    <testcase classname="src/domain/driverForm.test.ts" name="no inventa fechas para un perfil sin disponibilidad" time="0.0003898">
+        </testcase>
+  </testsuite>
+  <testsuite name="src/domain/driverItinerary.test.ts" timestamp="2026-10-09T08:27:21.550Z" tests="3" failures="0" errors="0" skipped="0" time="0.0098489">
+    <testcase classname="src/domain/driverItinerary.test.ts" name="Siguiente parada y alertas &gt; elige la primera parada no completada por secuencia sin modificar la entrada" time="0.0034682">
+        </testcase>
+    <testcase classname="src/domain/driverItinerary.test.ts" name="Siguiente parada y alertas &gt; no devuelve siguiente parada para una ruta vacía o completada" time="0.0003462">
+        </testcase>
+    <testcase classname="src/domain/driverItinerary.test.ts" name="Siguiente parada y alertas &gt; asocia alertas únicamente a las paradas afectadas" time="0.0014371">
+        </testcase>
+  </testsuite>
+  <testsuite name="src/hooks/useOnlineStatus.test.tsx" timestamp="2026-10-09T08:27:21.551Z" tests="1" failures="0" errors="0" skipped="0" time="0.0760329">
+    <testcase classname="src/hooks/useOnlineStatus.test.tsx" name="useOnlineStatus &gt; responde a eventos de desconexión y reconexión" time="0.071102">
+        </testcase>
+  </testsuite>
+  <testsuite name="src/pages/DriverItineraryPage.test.tsx" timestamp="2026-10-09T08:27:21.551Z" tests="11" failures="0" errors="0" skipped="0" time="2.7073168">
+    <testcase classname="src/pages/DriverItineraryPage.test.tsx" name="DriverItineraryPage — ECL-56, demostración &gt; distingue la siguiente parada, la alerta y el aviso de datos ficticios" time="0.4156204">
+        </testcase>
+    <testcase classname="src/pages/DriverItineraryPage.test.tsx" name="DriverItineraryPage — ECL-56, demostración &gt; abre el detalle de la siguiente parada y vuelve con foco en el título" time="0.3120595">
+        </testcase>
+    <testcase classname="src/pages/DriverItineraryPage.test.tsx" name="DriverItineraryPage — ECL-56, demostración &gt; filtra PENDIENTE sin cambiar la siguiente parada ni la secuencia" time="0.2903228">
+        </testcase>
+    <testcase classname="src/pages/DriverItineraryPage.test.tsx" name="DriverItineraryPage — ECL-56, demostración &gt; filtra EN_RUTA sin cambiar la siguiente parada ni la secuencia" time="0.260899">
+        </testcase>
+    <testcase classname="src/pages/DriverItineraryPage.test.tsx" name="DriverItineraryPage — ECL-56, demostración &gt; filtra ENTREGADO sin cambiar la siguiente parada ni la secuencia" time="0.2272832">
+        </testcase>
+    <testcase classname="src/pages/DriverItineraryPage.test.tsx" name="DriverItineraryPage — ECL-56, demostración &gt; filtra DEMORADO sin cambiar la siguiente parada ni la secuencia" time="0.2610052">
+        </testcase>
+    <testcase classname="src/pages/DriverItineraryPage.test.tsx" name="DriverItineraryPage — ECL-56, demostración &gt; conserva el filtro al volver del detalle y muestra solo alertas aplicables" time="0.2292106">
+        </testcase>
+    <testcase classname="src/pages/DriverItineraryPage.test.tsx" name="DriverItineraryPage — ECL-56, demostración &gt; navega al estado sin asignación y vuelve al ejemplo completo" time="0.2419904">
+        </testcase>
+    <testcase classname="src/pages/DriverItineraryPage.test.tsx" name="DriverItineraryPage — ECL-56, demostración &gt; no inventa una ruta cuando no hay itinerario" time="0.0227009">
+        </testcase>
+    <testcase classname="src/pages/DriverItineraryPage.test.tsx" name="DriverItineraryPage — ECL-56, demostración &gt; maneja una ruta completada, ausencia de alertas y un filtro vacío" time="0.2227454">
+        </testcase>
+    <testcase classname="src/pages/DriverItineraryPage.test.tsx" name="DriverItineraryPage — ECL-56, demostración &gt; permite abrir y regresar del detalle con teclado" time="0.2196025">
+        </testcase>
+  </testsuite>
+  <testsuite name="src/pages/DriversPage.test.tsx" timestamp="2026-10-09T08:27:21.553Z" tests="14" failures="0" errors="0" skipped="0" time="4.3632264">
+    <testcase classname="src/pages/DriversPage.test.tsx" name="muestra carga, vacío y no presenta datos ficticios" time="0.4081792">
+        </testcase>
+    <testcase classname="src/pages/DriversPage.test.tsx" name="lista sin DNI ni teléfono, carga perfil con foco y permite cancelar" time="0.4684117">
+        </testcase>
+    <testcase classname="src/pages/DriversPage.test.tsx" name="valida antes de enviar y registra contra el servicio una sola vez" time="0.5249733">
+        </testcase>
+    <testcase classname="src/pages/DriversPage.test.tsx" name="edita sólo datos modificados, preserva fechas y retira disponibilidad" time="0.5664682">
+        </testcase>
+    <testcase classname="src/pages/DriversPage.test.tsx" name="mantiene campos y limpia contraseña ante error conflict" time="0.1855579">
+        </testcase>
+    <testcase classname="src/pages/DriversPage.test.tsx" name="mantiene campos y limpia contraseña ante error network" time="0.2145195">
+        </testcase>
+    <testcase classname="src/pages/DriversPage.test.tsx" name="mantiene campos y limpia contraseña ante error validation" time="0.2239356">
+        </testcase>
+    <testcase classname="src/pages/DriversPage.test.tsx" name="informa error de carga y permite reintentar" time="0.1396974">
+        </testcase>
+    <testcase classname="src/pages/DriversPage.test.tsx" name="pagina y actualiza desde el backend" time="0.3054809">
+        </testcase>
+    <testcase classname="src/pages/DriversPage.test.tsx" name="expira sesión, bloquea acceso denegado y oculta datos previamente cargados" time="0.1960886">
+        </testcase>
+    <testcase classname="src/pages/DriversPage.test.tsx" name="informa perfil inexistente y bloquea error de permiso al guardar" time="0.3114015">
+        </testcase>
+    <testcase classname="src/pages/DriversPage.test.tsx" name="ignora respuestas tardías después de salir de la página" time="0.0031439">
+        </testcase>
+    <testcase classname="src/pages/DriversPage.test.tsx" name="maneja errores inesperados sin mostrar detalles privados" time="0.3404435">
+        </testcase>
+    <testcase classname="src/pages/DriversPage.test.tsx" name="representa un perfil inactivo sin franja y páginas sin registros" time="0.4709838">
+        </testcase>
+  </testsuite>
+  <testsuite name="src/pages/LoginPage.test.tsx" timestamp="2026-10-09T08:27:21.555Z" tests="14" failures="0" errors="0" skipped="0" time="1.6702694">
+    <testcase classname="src/pages/LoginPage.test.tsx" name="LoginPage &gt; renderiza campos asociados, atributos requeridos y contraseña enmascarada" time="0.2635694">
+        </testcase>
+    <testcase classname="src/pages/LoginPage.test.tsx" name="LoginPage &gt; valida campos vacíos y enfoca el primero" time="0.0987072">
+        </testcase>
+    <testcase classname="src/pages/LoginPage.test.tsx" name="LoginPage &gt; enfoca la contraseña si es el único campo inválido" time="0.0444802">
+        </testcase>
+    <testcase classname="src/pages/LoginPage.test.tsx" name="LoginPage &gt; rechaza más de 255 caracteres en correo sin enviarlo" time="0.0538193">
+        </testcase>
+    <testcase classname="src/pages/LoginPage.test.tsx" name="LoginPage &gt; envía ambos valores sin transformarlos y comunica la identidad exacta" time="0.0503791">
+        </testcase>
+    <testcase classname="src/pages/LoginPage.test.tsx" name="LoginPage &gt; anuncia loading, deshabilita el botón e impide doble submit inmediatamente" time="0.0784147">
+        </testcase>
+    <testcase classname="src/pages/LoginPage.test.tsx" name="LoginPage &gt; muestra un error unauthorized seguro, conserva correo y limpia contraseña" time="0.0881148">
+        </testcase>
+    <testcase classname="src/pages/LoginPage.test.tsx" name="LoginPage &gt; muestra un error unavailable seguro, conserva correo y limpia contraseña" time="0.0707567">
+        </testcase>
+    <testcase classname="src/pages/LoginPage.test.tsx" name="LoginPage &gt; muestra un error network seguro, conserva correo y limpia contraseña" time="0.0680667">
+        </testcase>
+    <testcase classname="src/pages/LoginPage.test.tsx" name="LoginPage &gt; muestra un error unexpected seguro, conserva correo y limpia contraseña" time="0.0656283">
+        </testcase>
+    <testcase classname="src/pages/LoginPage.test.tsx" name="LoginPage &gt; muestra errores 422 solo en campos reconocidos y enfoca el primero" time="0.0559021">
+        </testcase>
+    <testcase classname="src/pages/LoginPage.test.tsx" name="LoginPage &gt; enfoca la contraseña si es el único error 422 de campo" time="0.0431223">
+        </testcase>
+    <testcase classname="src/pages/LoginPage.test.tsx" name="LoginPage &gt; limpia errores al editar y permite un nuevo intento" time="0.6132768">
+        </testcase>
+    <testcase classname="src/pages/LoginPage.test.tsx" name="LoginPage &gt; presenta un mensaje seguro si ocurre un rechazo no tipado" time="0.0716657">
+        </testcase>
+  </testsuite>
+  <testsuite name="src/pages/OrderCreatePage.test.tsx" timestamp="2026-10-09T08:27:21.556Z" tests="27" failures="0" errors="0" skipped="0" time="3.2788827">
+    <testcase classname="src/pages/OrderCreatePage.test.tsx" name="OrderCreatePage &gt; renderiza todos los controles con etiquetas accesibles" time="0.2963412">
+        </testcase>
+    <testcase classname="src/pages/OrderCreatePage.test.tsx" name="OrderCreatePage &gt; valida cliente_id: " time="0.151525">
+        </testcase>
+    <testcase classname="src/pages/OrderCreatePage.test.tsx" name="OrderCreatePage &gt; valida cliente_id: no-es-uuid" time="0.1545069">
+        </testcase>
+    <testcase classname="src/pages/OrderCreatePage.test.tsx" name="OrderCreatePage &gt; valida dirección vacía" time="0.092656">
+        </testcase>
+    <testcase classname="src/pages/OrderCreatePage.test.tsx" name="OrderCreatePage &gt; exige referencia o coordenadas completas" time="0.0765026">
+        </testcase>
+    <testcase classname="src/pages/OrderCreatePage.test.tsx" name="OrderCreatePage &gt; rechaza una sola coordenada" time="0.0748759">
+        </testcase>
+    <testcase classname="src/pages/OrderCreatePage.test.tsx" name="OrderCreatePage &gt; rechaza Latitud fuera de rango" time="0.076627">
+        </testcase>
+    <testcase classname="src/pages/OrderCreatePage.test.tsx" name="OrderCreatePage &gt; rechaza Longitud fuera de rango" time="0.0865712">
+        </testcase>
+    <testcase classname="src/pages/OrderCreatePage.test.tsx" name="OrderCreatePage &gt; valida decimales de Peso (kg) con valor 0" time="0.0820835">
+        </testcase>
+    <testcase classname="src/pages/OrderCreatePage.test.tsx" name="OrderCreatePage &gt; valida decimales de Peso (kg) con valor 1.001" time="0.0713216">
+        </testcase>
+    <testcase classname="src/pages/OrderCreatePage.test.tsx" name="OrderCreatePage &gt; valida decimales de Volumen (m³) con valor -1" time="0.075605">
+        </testcase>
+    <testcase classname="src/pages/OrderCreatePage.test.tsx" name="OrderCreatePage &gt; valida decimales de Volumen (m³) con valor 1.0001" time="0.0806803">
+        </testcase>
+    <testcase classname="src/pages/OrderCreatePage.test.tsx" name="OrderCreatePage &gt; valida tipo_producto" time="0.0713477">
+        </testcase>
+    <testcase classname="src/pages/OrderCreatePage.test.tsx" name="OrderCreatePage &gt; valida tipo_producto" time="0.0680011">
+        </testcase>
+    <testcase classname="src/pages/OrderCreatePage.test.tsx" name="OrderCreatePage &gt; rechaza una ventana final igual o anterior al inicio" time="0.0713205">
+        </testcase>
+    <testcase classname="src/pages/OrderCreatePage.test.tsx" name="OrderCreatePage &gt; envía prioridad, strings decimales y fechas ISO timezone-aware" time="0.108091">
+        </testcase>
+    <testcase classname="src/pages/OrderCreatePage.test.tsx" name="OrderCreatePage &gt; envía null para referencia y coordenadas vacías cuando la otra ubicación existe" time="0.1307836">
+        </testcase>
+    <testcase classname="src/pages/OrderCreatePage.test.tsx" name="OrderCreatePage &gt; deshabilita el botón durante loading e impide doble submit" time="0.1343399">
+        </testcase>
+    <testcase classname="src/pages/OrderCreatePage.test.tsx" name="OrderCreatePage &gt; muestra pedido_id y estado después del éxito" time="0.0823388">
+        </testcase>
+    <testcase classname="src/pages/OrderCreatePage.test.tsx" name="OrderCreatePage &gt; muestra el error de servicio unauthorized y conserva el formulario" time="0.0873816">
+        </testcase>
+    <testcase classname="src/pages/OrderCreatePage.test.tsx" name="OrderCreatePage &gt; muestra el error de servicio forbidden y conserva el formulario" time="0.0900958">
+        </testcase>
+    <testcase classname="src/pages/OrderCreatePage.test.tsx" name="OrderCreatePage &gt; muestra el error de servicio client-not-found y conserva el formulario" time="0.094147">
+        </testcase>
+    <testcase classname="src/pages/OrderCreatePage.test.tsx" name="OrderCreatePage &gt; muestra el error de servicio unavailable y conserva el formulario" time="0.08705">
+        </testcase>
+    <testcase classname="src/pages/OrderCreatePage.test.tsx" name="OrderCreatePage &gt; muestra el error de servicio network y conserva el formulario" time="0.1056459">
+        </testcase>
+    <testcase classname="src/pages/OrderCreatePage.test.tsx" name="OrderCreatePage &gt; mapea el 422 a campo y conserva errores de modelo en el resumen" time="0.0830413">
+        </testcase>
+    <testcase classname="src/pages/OrderCreatePage.test.tsx" name="OrderCreatePage &gt; limpia el error del campo cuando el usuario lo corrige" time="0.6621058">
+        </testcase>
+    <testcase classname="src/pages/OrderCreatePage.test.tsx" name="OrderCreatePage &gt; presenta un error seguro ante un rechazo no tipado" time="0.0798972">
+        </testcase>
+  </testsuite>
+  <testsuite name="src/pages/VehiclesPage.test.tsx" timestamp="2026-10-09T08:27:21.559Z" tests="59" failures="0" errors="0" skipped="0" time="6.8010025">
+    <testcase classname="src/pages/VehiclesPage.test.tsx" name="VehiclesPage &gt; anuncia carga inicial, marca la región ocupada y luego muestra vacío" time="0.3614378">
+        </testcase>
+    <testcase classname="src/pages/VehiclesPage.test.tsx" name="VehiclesPage &gt; tabla accesible conserva orden, decimales y todos los estados, escapando texto" time="0.3761208">
+        </testcase>
+    <testcase classname="src/pages/VehiclesPage.test.tsx" name="VehiclesPage &gt; GET fallido enfoca la alerta y permite reintentar con teclado sin crear" time="0.1352014">
+        </testcase>
+    <testcase classname="src/pages/VehiclesPage.test.tsx" name="VehiclesPage &gt; actualización manual anuncia loading y conserva datos con advertencia si falla" time="0.1274409">
+        </testcase>
+    <testcase classname="src/pages/VehiclesPage.test.tsx" name="VehiclesPage &gt; monta exactamente siete controles requeridos y catálogo accesible" time="0.1715229">
+        </testcase>
+    <testcase classname="src/pages/VehiclesPage.test.tsx" name="VehiclesPage &gt; valida campos vacíos, asocia descripción y enfoca el primero" time="0.1512751">
+        </testcase>
+    <testcase classname="src/pages/VehiclesPage.test.tsx" name="VehiclesPage &gt; rechaza Placa=   , conserva valor y enfoca el campo" time="0.1381615">
+        </testcase>
+    <testcase classname="src/pages/VehiclesPage.test.tsx" name="VehiclesPage &gt; rechaza Placa=ABCDEFGHIJK, conserva valor y enfoca el campo" time="0.1657946">
+        </testcase>
+    <testcase classname="src/pages/VehiclesPage.test.tsx" name="VehiclesPage &gt; rechaza Placa=ßßßßßß, conserva valor y enfoca el campo" time="0.1612298">
+        </testcase>
+    <testcase classname="src/pages/VehiclesPage.test.tsx" name="VehiclesPage &gt; rechaza Tipo=, conserva valor y enfoca el campo" time="0.1196196">
+        </testcase>
+    <testcase classname="src/pages/VehiclesPage.test.tsx" name="VehiclesPage &gt; rechaza Tipo=AUTO, conserva valor y enfoca el campo" time="0.1093485">
+        </testcase>
+    <testcase classname="src/pages/VehiclesPage.test.tsx" name="VehiclesPage &gt; rechaza Capacidad (kg)=0, conserva valor y enfoca el campo" time="0.1053301">
+        </testcase>
+    <testcase classname="src/pages/VehiclesPage.test.tsx" name="VehiclesPage &gt; rechaza Capacidad (m³)=-1, conserva valor y enfoca el campo" time="0.1071626">
+        </testcase>
+    <testcase classname="src/pages/VehiclesPage.test.tsx" name="VehiclesPage &gt; rechaza Rendimiento (km/L)=0.0000, conserva valor y enfoca el campo" time="0.1237649">
+        </testcase>
+    <testcase classname="src/pages/VehiclesPage.test.tsx" name="VehiclesPage &gt; rechaza Factor CO₂ (kg/km)=-0.00001, conserva valor y enfoca el campo" time="0.1313453">
+        </testcase>
+    <testcase classname="src/pages/VehiclesPage.test.tsx" name="VehiclesPage &gt; rechaza Capacidad (kg)=NaN, conserva valor y enfoca el campo" time="0.1190061">
+        </testcase>
+    <testcase classname="src/pages/VehiclesPage.test.tsx" name="VehiclesPage &gt; rechaza Capacidad (m³)=Infinity, conserva valor y enfoca el campo" time="0.0991885">
+        </testcase>
+    <testcase classname="src/pages/VehiclesPage.test.tsx" name="VehiclesPage &gt; rechaza Capacidad (kg)=1e3, conserva valor y enfoca el campo" time="0.0973601">
+        </testcase>
+    <testcase classname="src/pages/VehiclesPage.test.tsx" name="VehiclesPage &gt; rechaza Capacidad (kg)=1,25, conserva valor y enfoca el campo" time="0.0958338">
+        </testcase>
+    <testcase classname="src/pages/VehiclesPage.test.tsx" name="VehiclesPage &gt; rechaza Capacidad (kg)= 1.25 , conserva valor y enfoca el campo" time="0.08662">
+        </testcase>
+    <testcase classname="src/pages/VehiclesPage.test.tsx" name="VehiclesPage &gt; rechaza Capacidad (kg)=100000000, conserva valor y enfoca el campo" time="0.0854384">
+        </testcase>
+    <testcase classname="src/pages/VehiclesPage.test.tsx" name="VehiclesPage &gt; rechaza Capacidad (m³)=100000000.00, conserva valor y enfoca el campo" time="0.084995">
+        </testcase>
+    <testcase classname="src/pages/VehiclesPage.test.tsx" name="VehiclesPage &gt; rechaza Rendimiento (km/L)=10000000, conserva valor y enfoca el campo" time="0.1002826">
+        </testcase>
+    <testcase classname="src/pages/VehiclesPage.test.tsx" name="VehiclesPage &gt; rechaza Factor CO₂ (kg/km)=100000, conserva valor y enfoca el campo" time="0.0974529">
+        </testcase>
+    <testcase classname="src/pages/VehiclesPage.test.tsx" name="VehiclesPage &gt; rechaza Capacidad (kg)=1.001, conserva valor y enfoca el campo" time="0.0806774">
+        </testcase>
+    <testcase classname="src/pages/VehiclesPage.test.tsx" name="VehiclesPage &gt; rechaza Capacidad (m³)=0.00010, conserva valor y enfoca el campo" time="0.1023636">
+        </testcase>
+    <testcase classname="src/pages/VehiclesPage.test.tsx" name="VehiclesPage &gt; rechaza Rendimiento (km/L)=1.0001, conserva valor y enfoca el campo" time="0.0991132">
+        </testcase>
+    <testcase classname="src/pages/VehiclesPage.test.tsx" name="VehiclesPage &gt; rechaza Factor CO₂ (kg/km)=1.000001, conserva valor y enfoca el campo" time="0.0825704">
+        </testcase>
+    <testcase classname="src/pages/VehiclesPage.test.tsx" name="VehiclesPage &gt; rechaza Año de fabricación=1979, conserva valor y enfoca el campo" time="0.0844472">
+        </testcase>
+    <testcase classname="src/pages/VehiclesPage.test.tsx" name="VehiclesPage &gt; rechaza Año de fabricación=2101, conserva valor y enfoca el campo" time="0.0827043">
+        </testcase>
+    <testcase classname="src/pages/VehiclesPage.test.tsx" name="VehiclesPage &gt; rechaza Año de fabricación=2024.5, conserva valor y enfoca el campo" time="0.0888037">
+        </testcase>
+    <testcase classname="src/pages/VehiclesPage.test.tsx" name="VehiclesPage &gt; rechaza Año de fabricación=2e3, conserva valor y enfoca el campo" time="0.0933158">
+        </testcase>
+    <testcase classname="src/pages/VehiclesPage.test.tsx" name="VehiclesPage &gt; envía tipo CAMIONETA, placa original y cuatro strings decimales" time="0.0984712">
+        </testcase>
+    <testcase classname="src/pages/VehiclesPage.test.tsx" name="VehiclesPage &gt; envía tipo FURGON, placa original y cuatro strings decimales" time="0.1021382">
+        </testcase>
+    <testcase classname="src/pages/VehiclesPage.test.tsx" name="VehiclesPage &gt; envía tipo MOTO, placa original y cuatro strings decimales" time="0.0993732">
+        </testcase>
+    <testcase classname="src/pages/VehiclesPage.test.tsx" name="VehiclesPage &gt; acepta máximos decimales, año 1980 y longitud de placa después de normalizar" time="0.0941624">
+        </testcase>
+    <testcase classname="src/pages/VehiclesPage.test.tsx" name="VehiclesPage &gt; acepta máximos decimales, año 2100 y longitud de placa después de normalizar" time="0.1045363">
+        </testcase>
+    <testcase classname="src/pages/VehiclesPage.test.tsx" name="VehiclesPage &gt; acepta ceros finales e iniciales, precisión mínima y factor CO₂ cero sin alterar strings" time="0.1016907">
+        </testcase>
+    <testcase classname="src/pages/VehiclesPage.test.tsx" name="VehiclesPage &gt; limpia error visual al corregir y mantiene la placa como fue escrita" time="0.1777264">
+        </testcase>
+    <testcase classname="src/pages/VehiclesPage.test.tsx" name="VehiclesPage &gt; impide doble submit, anuncia envío y bloquea controles hasta completar" time="0.1658113">
+        </testcase>
+    <testcase classname="src/pages/VehiclesPage.test.tsx" name="VehiclesPage &gt; alta exitosa anuncia placa canónica, limpia campos y errores, y actualiza listado" time="0.1378924">
+        </testcase>
+    <testcase classname="src/pages/VehiclesPage.test.tsx" name="VehiclesPage &gt; refresh fallido conserva el éxito y reintenta solo GET" time="0.1339331">
+        </testcase>
+    <testcase classname="src/pages/VehiclesPage.test.tsx" name="VehiclesPage &gt; GET antiguo (resolve) no sobrescribe refresh después de crear" time="0.0652613">
+        </testcase>
+    <testcase classname="src/pages/VehiclesPage.test.tsx" name="VehiclesPage &gt; GET antiguo (reject) no sobrescribe refresh después de crear" time="0.0533101">
+        </testcase>
+    <testcase classname="src/pages/VehiclesPage.test.tsx" name="VehiclesPage &gt; StrictMode invalida el GET del primer montaje" time="0.031984">
+        </testcase>
+    <testcase classname="src/pages/VehiclesPage.test.tsx" name="VehiclesPage &gt; 409 conserva los siete valores y enfoca placa" time="0.1143847">
+        </testcase>
+    <testcase classname="src/pages/VehiclesPage.test.tsx" name="VehiclesPage &gt; 422 asocia campos y enfoca el primero en orden de formulario" time="0.1304131">
+        </testcase>
+    <testcase classname="src/pages/VehiclesPage.test.tsx" name="VehiclesPage &gt; errores generales conservan formulario y enfocan alerta: VehicleServiceError: Tu sesión no está disponible o ha vencido." time="0.1368314">
+        </testcase>
+    <testcase classname="src/pages/VehiclesPage.test.tsx" name="VehiclesPage &gt; errores generales conservan formulario y enfocan alerta: VehicleServiceError: No tienes permisos para realizar esta acción." time="0.1214636">
+        </testcase>
+    <testcase classname="src/pages/VehiclesPage.test.tsx" name="VehiclesPage &gt; errores generales conservan formulario y enfocan alerta: VehicleServiceError: El servicio no está disponible en este momento." time="0.1195005">
+        </testcase>
+    <testcase classname="src/pages/VehiclesPage.test.tsx" name="VehiclesPage &gt; errores generales conservan formulario y enfocan alerta: VehicleServiceError: No se pudo comunicar con el servicio." time="0.1361043">
+        </testcase>
+    <testcase classname="src/pages/VehiclesPage.test.tsx" name="VehiclesPage &gt; errores generales conservan formulario y enfocan alerta: VehicleServiceError: Revisa los datos ingresados." time="0.1197139">
+        </testcase>
+    <testcase classname="src/pages/VehiclesPage.test.tsx" name="VehiclesPage &gt; errores generales conservan formulario y enfocan alerta: VehicleServiceError: No se pudo completar la operación." time="0.1721701">
+        </testcase>
+    <testcase classname="src/pages/VehiclesPage.test.tsx" name="VehiclesPage &gt; errores generales conservan formulario y enfocan alerta: Error: private detail" time="0.1196703">
+        </testcase>
+    <testcase classname="src/pages/VehiclesPage.test.tsx" name="VehiclesPage &gt; modo auditor no monta formulario ni acciones de creación" time="0.0397055">
+        </testcase>
+    <testcase classname="src/pages/VehiclesPage.test.tsx" name="VehiclesPage &gt; ignora GET pendiente tras desmontar: resolve" time="0.0015454">
+        </testcase>
+    <testcase classname="src/pages/VehiclesPage.test.tsx" name="VehiclesPage &gt; ignora GET pendiente tras desmontar: reject" time="0.0011599">
+        </testcase>
+    <testcase classname="src/pages/VehiclesPage.test.tsx" name="VehiclesPage &gt; ignora POST pendiente tras desmontar sin disparar refresh: resolve" time="0.0749521">
+        </testcase>
+    <testcase classname="src/pages/VehiclesPage.test.tsx" name="VehiclesPage &gt; ignora POST pendiente tras desmontar sin disparar refresh: reject" time="0.0772055">
+        </testcase>
+  </testsuite>
+  <testsuite name="src/services/api.test.ts" timestamp="2026-10-09T08:27:21.566Z" tests="18" failures="0" errors="0" skipped="0" time="0.0137347">
+    <testcase classname="src/services/api.test.ts" name="configuración de API &gt; acepta una URL base HTTP válida" time="0.0029154">
+        </testcase>
+    <testcase classname="src/services/api.test.ts" name="configuración de API &gt; acepta una URL base HTTPS válida" time="0.0002724">
+        </testcase>
+    <testcase classname="src/services/api.test.ts" name="configuración de API &gt; acepta una URL base con trailing slash" time="0.00018">
+        </testcase>
+    <testcase classname="src/services/api.test.ts" name="configuración de API &gt; construye un path relativo dentro de la ruta base configurada" time="0.0008486">
+        </testcase>
+    <testcase classname="src/services/api.test.ts" name="configuración de API &gt; combina barras sin producir separadores duplicados" time="0.0003506">
+        </testcase>
+    <testcase classname="src/services/api.test.ts" name="configuración de API &gt; rechaza una variable ausente: undefined" time="0.0012513">
+        </testcase>
+    <testcase classname="src/services/api.test.ts" name="configuración de API &gt; rechaza una variable ausente: " time="0.0002377">
+        </testcase>
+    <testcase classname="src/services/api.test.ts" name="configuración de API &gt; rechaza una variable ausente:    " time="0.0001879">
+        </testcase>
+    <testcase classname="src/services/api.test.ts" name="configuración de API &gt; rechaza una URL inválida" time="0.0003861">
+        </testcase>
+    <testcase classname="src/services/api.test.ts" name="configuración de API &gt; rechaza protocolos no permitidos" time="0.0002497">
+        </testcase>
+    <testcase classname="src/services/api.test.ts" name="configuración de API &gt; rechaza un path capaz de sustituir el origen: http://otro-host.test/resource" time="0.0003043">
+        </testcase>
+    <testcase classname="src/services/api.test.ts" name="configuración de API &gt; rechaza un path capaz de sustituir el origen: https://otro-host.test/resource" time="0.0002277">
+        </testcase>
+    <testcase classname="src/services/api.test.ts" name="configuración de API &gt; rechaza un path capaz de sustituir el origen: //otro-host.test/resource" time="0.0002159">
+        </testcase>
+    <testcase classname="src/services/api.test.ts" name="configuración de API &gt; rechaza traversal fuera del pathname base" time="0.0002995">
+        </testcase>
+    <testcase classname="src/services/api.test.ts" name="configuración de API &gt; rechaza una base con credenciales: http://user@localhost:8000" time="0.0002255">
+        </testcase>
+    <testcase classname="src/services/api.test.ts" name="configuración de API &gt; rechaza una base con credenciales: http://user:password@localhost:8000" time="0.0001827">
+        </testcase>
+    <testcase classname="src/services/api.test.ts" name="configuración de API &gt; rechaza una base con query" time="0.00022">
+        </testcase>
+    <testcase classname="src/services/api.test.ts" name="configuración de API &gt; rechaza una base con fragmento" time="0.0005745">
+        </testcase>
+  </testsuite>
+  <testsuite name="src/services/auth.test.ts" timestamp="2026-10-09T08:27:21.569Z" tests="29" failures="0" errors="0" skipped="0" time="0.0384653">
+    <testcase classname="src/services/auth.test.ts" name="servicio de autenticación &gt; usa la URL base, POST, JSON, credenciales y únicamente los campos del contrato" time="0.0107273">
+        </testcase>
+    <testcase classname="src/services/auth.test.ts" name="servicio de autenticación &gt; acepta la identidad real con rol ADMINISTRADOR" time="0.0011148">
+        </testcase>
+    <testcase classname="src/services/auth.test.ts" name="servicio de autenticación &gt; acepta la identidad real con rol OPERADOR" time="0.0007287">
+        </testcase>
+    <testcase classname="src/services/auth.test.ts" name="servicio de autenticación &gt; acepta la identidad real con rol CONDUCTOR" time="0.0006">
+        </testcase>
+    <testcase classname="src/services/auth.test.ts" name="servicio de autenticación &gt; acepta la identidad real con rol ANALISTA" time="0.0005591">
+        </testcase>
+    <testcase classname="src/services/auth.test.ts" name="servicio de autenticación &gt; acepta la identidad real con rol AUDITOR" time="0.0004992">
+        </testcase>
+    <testcase classname="src/services/auth.test.ts" name="servicio de autenticación &gt; rechaza respuestas incompletas o con identidad desconocida" time="0.0019364">
+        </testcase>
+    <testcase classname="src/services/auth.test.ts" name="servicio de autenticación &gt; rechaza respuestas incompletas o con identidad desconocida" time="0.0007671">
+        </testcase>
+    <testcase classname="src/services/auth.test.ts" name="servicio de autenticación &gt; rechaza respuestas incompletas o con identidad desconocida" time="0.0008493">
+        </testcase>
+    <testcase classname="src/services/auth.test.ts" name="servicio de autenticación &gt; rechaza respuestas incompletas o con identidad desconocida" time="0.0006521">
+        </testcase>
+    <testcase classname="src/services/auth.test.ts" name="servicio de autenticación &gt; rechaza respuestas incompletas o con identidad desconocida" time="0.0012513">
+        </testcase>
+    <testcase classname="src/services/auth.test.ts" name="servicio de autenticación &gt; rechaza respuestas incompletas o con identidad desconocida" time="0.0006466">
+        </testcase>
+    <testcase classname="src/services/auth.test.ts" name="servicio de autenticación &gt; rechaza JSON inválido y un status de éxito diferente de 200" time="0.0014088">
+        </testcase>
+    <testcase classname="src/services/auth.test.ts" name="servicio de autenticación &gt; mapea HTTP 401 sin revelar detalles del servidor" time="0.001497">
+        </testcase>
+    <testcase classname="src/services/auth.test.ts" name="servicio de autenticación &gt; mapea HTTP 403 sin revelar detalles del servidor" time="0.0007223">
+        </testcase>
+    <testcase classname="src/services/auth.test.ts" name="servicio de autenticación &gt; mapea HTTP 503 sin revelar detalles del servidor" time="0.0008311">
+        </testcase>
+    <testcase classname="src/services/auth.test.ts" name="servicio de autenticación &gt; mapea HTTP 500 sin revelar detalles del servidor" time="0.0006701">
+        </testcase>
+    <testcase classname="src/services/auth.test.ts" name="servicio de autenticación &gt; tolera errores HTTP con cuerpo no JSON" time="0.0008107">
+        </testcase>
+    <testcase classname="src/services/auth.test.ts" name="servicio de autenticación &gt; mapea solo campos conocidos del 422 con mensajes propios" time="0.0011621">
+        </testcase>
+    <testcase classname="src/services/auth.test.ts" name="servicio de autenticación &gt; tolera un 422 no estructurado" time="0.0007799">
+        </testcase>
+    <testcase classname="src/services/auth.test.ts" name="servicio de autenticación &gt; tolera un 422 no estructurado" time="0.0007437">
+        </testcase>
+    <testcase classname="src/services/auth.test.ts" name="servicio de autenticación &gt; tolera un 422 no estructurado" time="0.0006101">
+        </testcase>
+    <testcase classname="src/services/auth.test.ts" name="servicio de autenticación &gt; distingue un fallo de red sin exponer el error del transporte" time="0.000706">
+        </testcase>
+    <testcase classname="src/services/auth.test.ts" name="servicio de autenticación &gt; no inicia fetch si la URL base no es válida" time="0.0008208">
+        </testcase>
+    <testcase classname="src/services/auth.test.ts" name="servicio de autenticación &gt; revoca la sesión autenticada y exige la respuesta 204 de logout" time="0.0008076">
+        </testcase>
+    <testcase classname="src/services/auth.test.ts" name="servicio de autenticación &gt; maneja cierre de sesión HTTP 401 sin aceptar la operación" time="0.0006072">
+        </testcase>
+    <testcase classname="src/services/auth.test.ts" name="servicio de autenticación &gt; maneja cierre de sesión HTTP 503 sin aceptar la operación" time="0.0004895">
+        </testcase>
+    <testcase classname="src/services/auth.test.ts" name="servicio de autenticación &gt; maneja cierre de sesión HTTP 500 sin aceptar la operación" time="0.000414">
+        </testcase>
+    <testcase classname="src/services/auth.test.ts" name="servicio de autenticación &gt; conserva el error de sesión si falla el transporte de logout" time="0.0005">
+        </testcase>
+  </testsuite>
+  <testsuite name="src/services/driverItinerary.test.ts" timestamp="2026-10-09T08:27:21.576Z" tests="5" failures="0" errors="0" skipped="0" time="0.0234102">
+    <testcase classname="src/services/driverItinerary.test.ts" name="servicio de itinerario y reportes del conductor &gt; valida las asignaciones del usuario desde la respuesta autenticada" time="0.0128339">
+        </testcase>
+    <testcase classname="src/services/driverItinerary.test.ts" name="servicio de itinerario y reportes del conductor &gt; no admite respuestas con paradas mal formadas" time="0.0024253">
+        </testcase>
+    <testcase classname="src/services/driverItinerary.test.ts" name="servicio de itinerario y reportes del conductor &gt; usa cache solo ante errores recuperables de conexión o servidor" time="0.001676">
+        </testcase>
+    <testcase classname="src/services/driverItinerary.test.ts" name="servicio de itinerario y reportes del conductor &gt; envía los campos mínimos y exige ACK del mismo operation_id" time="0.0013796">
+        </testcase>
+    <testcase classname="src/services/driverItinerary.test.ts" name="servicio de itinerario y reportes del conductor &gt; retiene el reporte si el ACK falta o identifica otra operación" time="0.000772">
+        </testcase>
+  </testsuite>
+  <testsuite name="src/services/drivers.test.ts" timestamp="2026-10-09T08:27:21.577Z" tests="29" failures="0" errors="0" skipped="0" time="0.0579207">
+    <testcase classname="src/services/drivers.test.ts" name="lista con paginación y cookie, descarta datos personales extra" time="0.0151587">
+        </testcase>
+    <testcase classname="src/services/drivers.test.ts" name="alta envía únicamente el contrato, sin propietario, rol ni hash" time="0.0022899">
+        </testcase>
+    <testcase classname="src/services/drivers.test.ts" name="consulta y PATCH conservan perfiles y null para retirar disponibilidad" time="0.0030864">
+        </testcase>
+    <testcase classname="src/services/drivers.test.ts" name="traduce HTTP 401 sin mostrar texto del servidor" time="0.0032478">
+        </testcase>
+    <testcase classname="src/services/drivers.test.ts" name="traduce HTTP 403 sin mostrar texto del servidor" time="0.0013772">
+        </testcase>
+    <testcase classname="src/services/drivers.test.ts" name="traduce HTTP 404 sin mostrar texto del servidor" time="0.0014055">
+        </testcase>
+    <testcase classname="src/services/drivers.test.ts" name="traduce HTTP 409 sin mostrar texto del servidor" time="0.001263">
+        </testcase>
+    <testcase classname="src/services/drivers.test.ts" name="traduce HTTP 422 sin mostrar texto del servidor" time="0.0015007">
+        </testcase>
+    <testcase classname="src/services/drivers.test.ts" name="traduce HTTP 500 sin mostrar texto del servidor" time="0.0011651">
+        </testcase>
+    <testcase classname="src/services/drivers.test.ts" name="traduce HTTP 503 sin mostrar texto del servidor" time="0.0011742">
+        </testcase>
+    <testcase classname="src/services/drivers.test.ts" name="traduce HTTP 400 sin mostrar texto del servidor" time="0.0011357">
+        </testcase>
+    <testcase classname="src/services/drivers.test.ts" name="mapea sólo campos conocidos de 422, ignorando texto y ubicaciones ajenas" time="0.0014222">
+        </testcase>
+    <testcase classname="src/services/drivers.test.ts" name="rechaza listado malformado" time="0.0012793">
+        </testcase>
+    <testcase classname="src/services/drivers.test.ts" name="rechaza listado malformado" time="0.000857">
+        </testcase>
+    <testcase classname="src/services/drivers.test.ts" name="rechaza listado malformado" time="0.0007991">
+        </testcase>
+    <testcase classname="src/services/drivers.test.ts" name="rechaza listado malformado" time="0.0007996">
+        </testcase>
+    <testcase classname="src/services/drivers.test.ts" name="rechaza listado malformado" time="0.0008352">
+        </testcase>
+    <testcase classname="src/services/drivers.test.ts" name="rechaza listado malformado" time="0.0008715">
+        </testcase>
+    <testcase classname="src/services/drivers.test.ts" name="rechaza listado malformado" time="0.000908">
+        </testcase>
+    <testcase classname="src/services/drivers.test.ts" name="rechaza listado malformado" time="0.0010028">
+        </testcase>
+    <testcase classname="src/services/drivers.test.ts" name="rechaza listado malformado" time="0.0008556">
+        </testcase>
+    <testcase classname="src/services/drivers.test.ts" name="rechaza listado malformado" time="0.0008195">
+        </testcase>
+    <testcase classname="src/services/drivers.test.ts" name="rechaza listado malformado" time="0.0008258">
+        </testcase>
+    <testcase classname="src/services/drivers.test.ts" name="rechaza detalle malformado" time="0.0009864">
+        </testcase>
+    <testcase classname="src/services/drivers.test.ts" name="rechaza detalle malformado" time="0.0009134">
+        </testcase>
+    <testcase classname="src/services/drivers.test.ts" name="rechaza detalle malformado" time="0.0008897">
+        </testcase>
+    <testcase classname="src/services/drivers.test.ts" name="rechaza detalle malformado" time="0.0008438">
+        </testcase>
+    <testcase classname="src/services/drivers.test.ts" name="rechaza IDs y páginas inválidos antes de fetch" time="0.0013539">
+        </testcase>
+    <testcase classname="src/services/drivers.test.ts" name="controla red, JSON incorrecto, status inesperado y configuración inválida" time="0.0028215">
+        </testcase>
+  </testsuite>
+  <testsuite name="src/services/offlineStorage.test.ts" timestamp="2026-10-09T08:27:21.582Z" tests="4" failures="0" errors="0" skipped="0" time="0.0345425">
+    <testcase classname="src/services/offlineStorage.test.ts" name="offline itinerary storage &gt; saves and loads only the snapshot for the requested owner" time="0.0175868">
+        </testcase>
+    <testcase classname="src/services/offlineStorage.test.ts" name="offline itinerary storage &gt; clears only the requested owner itinerary" time="0.0046704">
+        </testcase>
+    <testcase classname="src/services/offlineStorage.test.ts" name="offline itinerary storage &gt; rejects malformed UUIDs, stops, and duplicate itinerary positions" time="0.0050298">
+        </testcase>
+    <testcase classname="src/services/offlineStorage.test.ts" name="offline itinerary storage &gt; upgrades version 1 without losing the itinerary store" time="0.0023148">
+        </testcase>
+  </testsuite>
+  <testsuite name="src/services/orders.test.ts" timestamp="2026-10-09T08:27:21.584Z" tests="15" failures="0" errors="0" skipped="0" time="0.0296459">
+    <testcase classname="src/services/orders.test.ts" name="servicio de pedidos &gt; crea el pedido con URL, credenciales, headers y payload exactos" time="0.0135565">
+        </testcase>
+    <testcase classname="src/services/orders.test.ts" name="servicio de pedidos &gt; mapea HTTP 401 a un error tipado" time="0.0023187">
+        </testcase>
+    <testcase classname="src/services/orders.test.ts" name="servicio de pedidos &gt; mapea HTTP 403 a un error tipado" time="0.0007376">
+        </testcase>
+    <testcase classname="src/services/orders.test.ts" name="servicio de pedidos &gt; mapea HTTP 404 a un error tipado" time="0.0006052">
+        </testcase>
+    <testcase classname="src/services/orders.test.ts" name="servicio de pedidos &gt; mapea HTTP 503 a un error tipado" time="0.0006318">
+        </testcase>
+    <testcase classname="src/services/orders.test.ts" name="servicio de pedidos &gt; conserva los errores FastAPI 422 asociables a campos" time="0.0010534">
+        </testcase>
+    <testcase classname="src/services/orders.test.ts" name="servicio de pedidos &gt; tolera un detail 422 no estructurado" time="0.0008582">
+        </testcase>
+    <testcase classname="src/services/orders.test.ts" name="servicio de pedidos &gt; tolera un detail 422 no estructurado" time="0.0006469">
+        </testcase>
+    <testcase classname="src/services/orders.test.ts" name="servicio de pedidos &gt; tolera un detail 422 no estructurado" time="0.000719">
+        </testcase>
+    <testcase classname="src/services/orders.test.ts" name="servicio de pedidos &gt; distingue fallos de transporte" time="0.0012273">
+        </testcase>
+    <testcase classname="src/services/orders.test.ts" name="servicio de pedidos &gt; maneja respuestas HTTP inesperadas y cuerpos exitosos inválidos" time="0.0016583">
+        </testcase>
+    <testcase classname="src/services/orders.test.ts" name="datetimeLocalToIso &gt; convierte la hora local usando la semántica real de Date" time="0.0006755">
+        </testcase>
+    <testcase classname="src/services/orders.test.ts" name="datetimeLocalToIso &gt; rechaza una fecha local inválida: " time="0.0002002">
+        </testcase>
+    <testcase classname="src/services/orders.test.ts" name="datetimeLocalToIso &gt; rechaza una fecha local inválida:    " time="0.0001232">
+        </testcase>
+    <testcase classname="src/services/orders.test.ts" name="datetimeLocalToIso &gt; rechaza una fecha local inválida: fecha-inválida" time="0.000113">
+        </testcase>
+  </testsuite>
+  <testsuite name="src/services/reportQueue.test.ts" timestamp="2026-10-09T08:27:21.586Z" tests="4" failures="0" errors="0" skipped="0" time="0.0285617">
+    <testcase classname="src/services/reportQueue.test.ts" name="pending report queue &gt; persists events in creation order and isolates owners" time="0.0137172">
+        </testcase>
+    <testcase classname="src/services/reportQueue.test.ts" name="pending report queue &gt; does not replace an event on an idempotent local enqueue" time="0.0019047">
+        </testcase>
+    <testcase classname="src/services/reportQueue.test.ts" name="pending report queue &gt; increments attempts and removes only the matching owner operation" time="0.003995">
+        </testcase>
+    <testcase classname="src/services/reportQueue.test.ts" name="pending report queue &gt; rejects invalid event identifiers without opening a queue entry" time="0.0027007">
+        </testcase>
+  </testsuite>
+  <testsuite name="src/services/reportSync.test.ts" timestamp="2026-10-09T08:27:21.587Z" tests="3" failures="0" errors="0" skipped="0" time="0.0117455">
+    <testcase classname="src/services/reportSync.test.ts" name="Sincronización segura ST-032 &gt; borra únicamente cuando el backend reconoce la operación correcta" time="0.0053884">
+        </testcase>
+    <testcase classname="src/services/reportSync.test.ts" name="Sincronización segura ST-032 &gt; conserva pendiente cuando falla la red" time="0.0010168">
+        </testcase>
+    <testcase classname="src/services/reportSync.test.ts" name="Sincronización segura ST-032 &gt; rechaza confirmación con ID diferente y mantiene el reporte" time="0.0005629">
+        </testcase>
+  </testsuite>
+  <testsuite name="src/services/vehicles.test.ts" timestamp="2026-10-09T08:27:21.588Z" tests="68" failures="0" errors="0" skipped="0" time="0.1117105">
+    <testcase classname="src/services/vehicles.test.ts" name="servicio vehicles &gt; GET usa URL base, credenciales, sin headers ni body; conserva orden e inactivos" time="0.014386">
+        </testcase>
+    <testcase classname="src/services/vehicles.test.ts" name="servicio vehicles &gt; GET acepta lista vacía" time="0.0018094">
+        </testcase>
+    <testcase classname="src/services/vehicles.test.ts" name="servicio vehicles &gt; POST envía solo siete campos, conserva strings y placa original, acepta 201" time="0.0019199">
+        </testcase>
+    <testcase classname="src/services/vehicles.test.ts" name="servicio vehicles &gt; valida tipo CAMIONETA y mantiene estado string abierto" time="0.0014342">
+        </testcase>
+    <testcase classname="src/services/vehicles.test.ts" name="servicio vehicles &gt; valida tipo FURGON y mantiene estado string abierto" time="0.0012449">
+        </testcase>
+    <testcase classname="src/services/vehicles.test.ts" name="servicio vehicles &gt; valida tipo MOTO y mantiene estado string abierto" time="0.0010488">
+        </testcase>
+    <testcase classname="src/services/vehicles.test.ts" name="servicio vehicles &gt; GET rechaza lista o elemento inválido: null" time="0.0020653">
+        </testcase>
+    <testcase classname="src/services/vehicles.test.ts" name="servicio vehicles &gt; GET rechaza lista o elemento inválido: {}" time="0.001013">
+        </testcase>
+    <testcase classname="src/services/vehicles.test.ts" name="servicio vehicles &gt; GET rechaza lista o elemento inválido: {&quot;vehicles&quot;:[]}" time="0.0013653">
+        </testcase>
+    <testcase classname="src/services/vehicles.test.ts" name="servicio vehicles &gt; GET rechaza lista o elemento inválido: &quot;vehicles&quot;" time="0.0010751">
+        </testcase>
+    <testcase classname="src/services/vehicles.test.ts" name="servicio vehicles &gt; GET rechaza lista o elemento inválido: {&quot;placa&quot;:&quot;ABC-123&quot;,&quot;tipo&quot;:&quot;CAMIONETA&quot;,&quot;capacidad_kg&quot;:&quot;1000.00&quot;,&quot;capacidad_m3&quot;:&quot;8.00&quot;,&quot;rendimiento_km_l&quot;:&quot;10.000&quot;,&quot;factor_co2_kg_km&quot;:&quot;0.30000&quot;,&quot;anio_fabricacion&quot;:2024,&quot;vehiculo_id&quot;:&quot;123e4567-e89b-12d3-a456-426614174000&quot;,&quot;estado&quot;:&quot;ACTIVO&quot;}" time="0.0009632">
+        </testcase>
+    <testcase classname="src/services/vehicles.test.ts" name="servicio vehicles &gt; GET &gt; rechaza vehículo incompatible: null" time="0.0025483">
+        </testcase>
+    <testcase classname="src/services/vehicles.test.ts" name="servicio vehicles &gt; GET &gt; rechaza vehículo incompatible: undefined" time="0.0010782">
+        </testcase>
+    <testcase classname="src/services/vehicles.test.ts" name="servicio vehicles &gt; GET &gt; rechaza vehículo incompatible: &quot;vehicle&quot;" time="0.0009728">
+        </testcase>
+    <testcase classname="src/services/vehicles.test.ts" name="servicio vehicles &gt; GET &gt; rechaza vehículo incompatible: {&quot;placa&quot;:&quot;ABC-123&quot;,&quot;tipo&quot;:&quot;CAMIONETA&quot;,&quot;capacidad_kg&quot;:&quot;1000.00&quot;,&quot;capacidad_m3&quot;:&quot;8.00&quot;,&quot;rendimiento_km_l&quot;:&quot;10.000&quot;,&quot;factor_co2_kg_km&quot;:&quot;0.30000&quot;,&quot;anio_fabricacion&quot;:2024,&quot;vehiculo_id&quot;:42,&quot;estado&quot;:&quot;ACTIVO&quot;}" time="0.001078">
+        </testcase>
+    <testcase classname="src/services/vehicles.test.ts" name="servicio vehicles &gt; GET &gt; rechaza vehículo incompatible: {&quot;placa&quot;:&quot;ABC-123&quot;,&quot;tipo&quot;:&quot;CAMIONETA&quot;,&quot;capacidad_kg&quot;:&quot;1000.00&quot;,&quot;capacidad_m3&quot;:&quot;8.00&quot;,&quot;rendimiento_km_l&quot;:&quot;10.000&quot;,&quot;factor_co2_kg_km&quot;:&quot;0.30000&quot;,&quot;anio_fabricacion&quot;:2024,&quot;vehiculo_id&quot;:&quot;invalid&quot;,&quot;estado&quot;:&quot;ACTIVO&quot;}" time="0.0010052">
+        </testcase>
+    <testcase classname="src/services/vehicles.test.ts" name="servicio vehicles &gt; GET &gt; rechaza vehículo incompatible: {&quot;placa&quot;:null,&quot;tipo&quot;:&quot;CAMIONETA&quot;,&quot;capacidad_kg&quot;:&quot;1000.00&quot;,&quot;capacidad_m3&quot;:&quot;8.00&quot;,&quot;rendimiento_km_l&quot;:&quot;10.000&quot;,&quot;factor_co2_kg_km&quot;:&quot;0.30000&quot;,&quot;anio_fabricacion&quot;:2024,&quot;vehiculo_id&quot;:&quot;123e4567-e89b-12d3-a456-426614174000&quot;,&quot;estado&quot;:&quot;ACTIVO&quot;}" time="0.0009838">
+        </testcase>
+    <testcase classname="src/services/vehicles.test.ts" name="servicio vehicles &gt; GET &gt; rechaza vehículo incompatible: {&quot;placa&quot;:&quot;ABC-123&quot;,&quot;tipo&quot;:&quot;AUTO&quot;,&quot;capacidad_kg&quot;:&quot;1000.00&quot;,&quot;capacidad_m3&quot;:&quot;8.00&quot;,&quot;rendimiento_km_l&quot;:&quot;10.000&quot;,&quot;factor_co2_kg_km&quot;:&quot;0.30000&quot;,&quot;anio_fabricacion&quot;:2024,&quot;vehiculo_id&quot;:&quot;123e4567-e89b-12d3-a456-426614174000&quot;,&quot;estado&quot;:&quot;ACTIVO&quot;}" time="0.0009904">
+        </testcase>
+    <testcase classname="src/services/vehicles.test.ts" name="servicio vehicles &gt; GET &gt; rechaza vehículo incompatible: {&quot;placa&quot;:&quot;ABC-123&quot;,&quot;tipo&quot;:&quot;CAMIONETA&quot;,&quot;capacidad_kg&quot;:1000,&quot;capacidad_m3&quot;:&quot;8.00&quot;,&quot;rendimiento_km_l&quot;:&quot;10.000&quot;,&quot;factor_co2_kg_km&quot;:&quot;0.30000&quot;,&quot;anio_fabricacion&quot;:2024,&quot;vehiculo_id&quot;:&quot;123e4567-e89b-12d3-a456-426614174000&quot;,&quot;estado&quot;:&quot;ACTIVO&quot;}" time="0.0009855">
+        </testcase>
+    <testcase classname="src/services/vehicles.test.ts" name="servicio vehicles &gt; GET &gt; rechaza vehículo incompatible: {&quot;placa&quot;:&quot;ABC-123&quot;,&quot;tipo&quot;:&quot;CAMIONETA&quot;,&quot;capacidad_kg&quot;:&quot;1000.00&quot;,&quot;capacidad_m3&quot;:&quot;NaN&quot;,&quot;rendimiento_km_l&quot;:&quot;10.000&quot;,&quot;factor_co2_kg_km&quot;:&quot;0.30000&quot;,&quot;anio_fabricacion&quot;:2024,&quot;vehiculo_id&quot;:&quot;123e4567-e89b-12d3-a456-426614174000&quot;,&quot;estado&quot;:&quot;ACTIVO&quot;}" time="0.0010209">
+        </testcase>
+    <testcase classname="src/services/vehicles.test.ts" name="servicio vehicles &gt; GET &gt; rechaza vehículo incompatible: {&quot;placa&quot;:&quot;ABC-123&quot;,&quot;tipo&quot;:&quot;CAMIONETA&quot;,&quot;capacidad_kg&quot;:&quot;1000.00&quot;,&quot;capacidad_m3&quot;:&quot;8.00&quot;,&quot;rendimiento_km_l&quot;:&quot;Infinity&quot;,&quot;factor_co2_kg_km&quot;:&quot;0.30000&quot;,&quot;anio_fabricacion&quot;:2024,&quot;vehiculo_id&quot;:&quot;123e4567-e89b-12d3-a456-426614174000&quot;,&quot;estado&quot;:&quot;ACTIVO&quot;}" time="0.0012631">
+        </testcase>
+    <testcase classname="src/services/vehicles.test.ts" name="servicio vehicles &gt; GET &gt; rechaza vehículo incompatible: {&quot;placa&quot;:&quot;ABC-123&quot;,&quot;tipo&quot;:&quot;CAMIONETA&quot;,&quot;capacidad_kg&quot;:&quot;1000.00&quot;,&quot;capacidad_m3&quot;:&quot;8.00&quot;,&quot;rendimiento_km_l&quot;:&quot;10.000&quot;,&quot;factor_co2_kg_km&quot;:{},&quot;anio_fabricacion&quot;:2024,&quot;vehiculo_id&quot;:&quot;123e4567-e89b-12d3-a456-426614174000&quot;,&quot;estado&quot;:&quot;ACTIVO&quot;}" time="0.0010449">
+        </testcase>
+    <testcase classname="src/services/vehicles.test.ts" name="servicio vehicles &gt; GET &gt; rechaza vehículo incompatible: {&quot;placa&quot;:&quot;ABC-123&quot;,&quot;tipo&quot;:&quot;CAMIONETA&quot;,&quot;capacidad_kg&quot;:&quot;1000.00&quot;,&quot;capacidad_m3&quot;:&quot;8.00&quot;,&quot;rendimiento_km_l&quot;:&quot;10.000&quot;,&quot;factor_co2_kg_km&quot;:&quot;0.30000&quot;,&quot;anio_fabricacion&quot;:&quot;2024&quot;,&quot;vehiculo_id&quot;:&quot;123e4567-e89b-12d3-a456-426614174000&quot;,&quot;estado&quot;:&quot;ACTIVO&quot;}" time="0.0009919">
+        </testcase>
+    <testcase classname="src/services/vehicles.test.ts" name="servicio vehicles &gt; GET &gt; rechaza vehículo incompatible: {&quot;placa&quot;:&quot;ABC-123&quot;,&quot;tipo&quot;:&quot;CAMIONETA&quot;,&quot;capacidad_kg&quot;:&quot;1000.00&quot;,&quot;capacidad_m3&quot;:&quot;8.00&quot;,&quot;rendimiento_km_l&quot;:&quot;10.000&quot;,&quot;factor_co2_kg_km&quot;:&quot;0.30000&quot;,&quot;anio_fabricacion&quot;:2024.5,&quot;vehiculo_id&quot;:&quot;123e4567-e89b-12d3-a456-426614174000&quot;,&quot;estado&quot;:&quot;ACTIVO&quot;}" time="0.0009924">
+        </testcase>
+    <testcase classname="src/services/vehicles.test.ts" name="servicio vehicles &gt; GET &gt; rechaza vehículo incompatible: {&quot;placa&quot;:&quot;ABC-123&quot;,&quot;tipo&quot;:&quot;CAMIONETA&quot;,&quot;capacidad_kg&quot;:&quot;1000.00&quot;,&quot;capacidad_m3&quot;:&quot;8.00&quot;,&quot;rendimiento_km_l&quot;:&quot;10.000&quot;,&quot;factor_co2_kg_km&quot;:&quot;0.30000&quot;,&quot;anio_fabricacion&quot;:2024,&quot;vehiculo_id&quot;:&quot;123e4567-e89b-12d3-a456-426614174000&quot;,&quot;estado&quot;:false}" time="0.0009568">
+        </testcase>
+    <testcase classname="src/services/vehicles.test.ts" name="servicio vehicles &gt; GET &gt; mapea HTTP 401 sin exponer contenido" time="0.0019625">
+        </testcase>
+    <testcase classname="src/services/vehicles.test.ts" name="servicio vehicles &gt; GET &gt; mapea HTTP 403 sin exponer contenido" time="0.0015612">
+        </testcase>
+    <testcase classname="src/services/vehicles.test.ts" name="servicio vehicles &gt; GET &gt; mapea HTTP 503 sin exponer contenido" time="0.0012363">
+        </testcase>
+    <testcase classname="src/services/vehicles.test.ts" name="servicio vehicles &gt; GET &gt; mapea HTTP 500 sin exponer contenido" time="0.001209">
+        </testcase>
+    <testcase classname="src/services/vehicles.test.ts" name="servicio vehicles &gt; GET &gt; mapea HTTP 404 sin exponer contenido" time="0.0011344">
+        </testcase>
+    <testcase classname="src/services/vehicles.test.ts" name="servicio vehicles &gt; GET &gt; rechaza un status de éxito incorrecto" time="0.0011731">
+        </testcase>
+    <testcase classname="src/services/vehicles.test.ts" name="servicio vehicles &gt; GET &gt; rechaza éxito sin JSON" time="0.0012572">
+        </testcase>
+    <testcase classname="src/services/vehicles.test.ts" name="servicio vehicles &gt; GET &gt; conserva la categoría HTTP aunque el cuerpo no sea JSON" time="0.0018513">
+        </testcase>
+    <testcase classname="src/services/vehicles.test.ts" name="servicio vehicles &gt; GET &gt; distingue error de red sin exponer su mensaje" time="0.0014306">
+        </testcase>
+    <testcase classname="src/services/vehicles.test.ts" name="servicio vehicles &gt; GET &gt; no ejecuta fetch con URL base inválida" time="0.001172">
+        </testcase>
+    <testcase classname="src/services/vehicles.test.ts" name="servicio vehicles &gt; POST &gt; rechaza vehículo incompatible: null" time="0.0035767">
+        </testcase>
+    <testcase classname="src/services/vehicles.test.ts" name="servicio vehicles &gt; POST &gt; rechaza vehículo incompatible: undefined" time="0.0010814">
+        </testcase>
+    <testcase classname="src/services/vehicles.test.ts" name="servicio vehicles &gt; POST &gt; rechaza vehículo incompatible: &quot;vehicle&quot;" time="0.0017512">
+        </testcase>
+    <testcase classname="src/services/vehicles.test.ts" name="servicio vehicles &gt; POST &gt; rechaza vehículo incompatible: {&quot;placa&quot;:&quot;ABC-123&quot;,&quot;tipo&quot;:&quot;CAMIONETA&quot;,&quot;capacidad_kg&quot;:&quot;1000.00&quot;,&quot;capacidad_m3&quot;:&quot;8.00&quot;,&quot;rendimiento_km_l&quot;:&quot;10.000&quot;,&quot;factor_co2_kg_km&quot;:&quot;0.30000&quot;,&quot;anio_fabricacion&quot;:2024,&quot;vehiculo_id&quot;:42,&quot;estado&quot;:&quot;ACTIVO&quot;}" time="0.0025712">
+        </testcase>
+    <testcase classname="src/services/vehicles.test.ts" name="servicio vehicles &gt; POST &gt; rechaza vehículo incompatible: {&quot;placa&quot;:&quot;ABC-123&quot;,&quot;tipo&quot;:&quot;CAMIONETA&quot;,&quot;capacidad_kg&quot;:&quot;1000.00&quot;,&quot;capacidad_m3&quot;:&quot;8.00&quot;,&quot;rendimiento_km_l&quot;:&quot;10.000&quot;,&quot;factor_co2_kg_km&quot;:&quot;0.30000&quot;,&quot;anio_fabricacion&quot;:2024,&quot;vehiculo_id&quot;:&quot;invalid&quot;,&quot;estado&quot;:&quot;ACTIVO&quot;}" time="0.0013205">
+        </testcase>
+    <testcase classname="src/services/vehicles.test.ts" name="servicio vehicles &gt; POST &gt; rechaza vehículo incompatible: {&quot;placa&quot;:null,&quot;tipo&quot;:&quot;CAMIONETA&quot;,&quot;capacidad_kg&quot;:&quot;1000.00&quot;,&quot;capacidad_m3&quot;:&quot;8.00&quot;,&quot;rendimiento_km_l&quot;:&quot;10.000&quot;,&quot;factor_co2_kg_km&quot;:&quot;0.30000&quot;,&quot;anio_fabricacion&quot;:2024,&quot;vehiculo_id&quot;:&quot;123e4567-e89b-12d3-a456-426614174000&quot;,&quot;estado&quot;:&quot;ACTIVO&quot;}" time="0.001483">
+        </testcase>
+    <testcase classname="src/services/vehicles.test.ts" name="servicio vehicles &gt; POST &gt; rechaza vehículo incompatible: {&quot;placa&quot;:&quot;ABC-123&quot;,&quot;tipo&quot;:&quot;AUTO&quot;,&quot;capacidad_kg&quot;:&quot;1000.00&quot;,&quot;capacidad_m3&quot;:&quot;8.00&quot;,&quot;rendimiento_km_l&quot;:&quot;10.000&quot;,&quot;factor_co2_kg_km&quot;:&quot;0.30000&quot;,&quot;anio_fabricacion&quot;:2024,&quot;vehiculo_id&quot;:&quot;123e4567-e89b-12d3-a456-426614174000&quot;,&quot;estado&quot;:&quot;ACTIVO&quot;}" time="0.0010785">
+        </testcase>
+    <testcase classname="src/services/vehicles.test.ts" name="servicio vehicles &gt; POST &gt; rechaza vehículo incompatible: {&quot;placa&quot;:&quot;ABC-123&quot;,&quot;tipo&quot;:&quot;CAMIONETA&quot;,&quot;capacidad_kg&quot;:1000,&quot;capacidad_m3&quot;:&quot;8.00&quot;,&quot;rendimiento_km_l&quot;:&quot;10.000&quot;,&quot;factor_co2_kg_km&quot;:&quot;0.30000&quot;,&quot;anio_fabricacion&quot;:2024,&quot;vehiculo_id&quot;:&quot;123e4567-e89b-12d3-a456-426614174000&quot;,&quot;estado&quot;:&quot;ACTIVO&quot;}" time="0.001234">
+        </testcase>
+    <testcase classname="src/services/vehicles.test.ts" name="servicio vehicles &gt; POST &gt; rechaza vehículo incompatible: {&quot;placa&quot;:&quot;ABC-123&quot;,&quot;tipo&quot;:&quot;CAMIONETA&quot;,&quot;capacidad_kg&quot;:&quot;1000.00&quot;,&quot;capacidad_m3&quot;:&quot;NaN&quot;,&quot;rendimiento_km_l&quot;:&quot;10.000&quot;,&quot;factor_co2_kg_km&quot;:&quot;0.30000&quot;,&quot;anio_fabricacion&quot;:2024,&quot;vehiculo_id&quot;:&quot;123e4567-e89b-12d3-a456-426614174000&quot;,&quot;estado&quot;:&quot;ACTIVO&quot;}" time="0.0015132">
+        </testcase>
+    <testcase classname="src/services/vehicles.test.ts" name="servicio vehicles &gt; POST &gt; rechaza vehículo incompatible: {&quot;placa&quot;:&quot;ABC-123&quot;,&quot;tipo&quot;:&quot;CAMIONETA&quot;,&quot;capacidad_kg&quot;:&quot;1000.00&quot;,&quot;capacidad_m3&quot;:&quot;8.00&quot;,&quot;rendimiento_km_l&quot;:&quot;Infinity&quot;,&quot;factor_co2_kg_km&quot;:&quot;0.30000&quot;,&quot;anio_fabricacion&quot;:2024,&quot;vehiculo_id&quot;:&quot;123e4567-e89b-12d3-a456-426614174000&quot;,&quot;estado&quot;:&quot;ACTIVO&quot;}" time="0.0012371">
+        </testcase>
+    <testcase classname="src/services/vehicles.test.ts" name="servicio vehicles &gt; POST &gt; rechaza vehículo incompatible: {&quot;placa&quot;:&quot;ABC-123&quot;,&quot;tipo&quot;:&quot;CAMIONETA&quot;,&quot;capacidad_kg&quot;:&quot;1000.00&quot;,&quot;capacidad_m3&quot;:&quot;8.00&quot;,&quot;rendimiento_km_l&quot;:&quot;10.000&quot;,&quot;factor_co2_kg_km&quot;:{},&quot;anio_fabricacion&quot;:2024,&quot;vehiculo_id&quot;:&quot;123e4567-e89b-12d3-a456-426614174000&quot;,&quot;estado&quot;:&quot;ACTIVO&quot;}" time="0.0008909">
+        </testcase>
+    <testcase classname="src/services/vehicles.test.ts" name="servicio vehicles &gt; POST &gt; rechaza vehículo incompatible: {&quot;placa&quot;:&quot;ABC-123&quot;,&quot;tipo&quot;:&quot;CAMIONETA&quot;,&quot;capacidad_kg&quot;:&quot;1000.00&quot;,&quot;capacidad_m3&quot;:&quot;8.00&quot;,&quot;rendimiento_km_l&quot;:&quot;10.000&quot;,&quot;factor_co2_kg_km&quot;:&quot;0.30000&quot;,&quot;anio_fabricacion&quot;:&quot;2024&quot;,&quot;vehiculo_id&quot;:&quot;123e4567-e89b-12d3-a456-426614174000&quot;,&quot;estado&quot;:&quot;ACTIVO&quot;}" time="0.001085">
+        </testcase>
+    <testcase classname="src/services/vehicles.test.ts" name="servicio vehicles &gt; POST &gt; rechaza vehículo incompatible: {&quot;placa&quot;:&quot;ABC-123&quot;,&quot;tipo&quot;:&quot;CAMIONETA&quot;,&quot;capacidad_kg&quot;:&quot;1000.00&quot;,&quot;capacidad_m3&quot;:&quot;8.00&quot;,&quot;rendimiento_km_l&quot;:&quot;10.000&quot;,&quot;factor_co2_kg_km&quot;:&quot;0.30000&quot;,&quot;anio_fabricacion&quot;:2024.5,&quot;vehiculo_id&quot;:&quot;123e4567-e89b-12d3-a456-426614174000&quot;,&quot;estado&quot;:&quot;ACTIVO&quot;}" time="0.0007887">
+        </testcase>
+    <testcase classname="src/services/vehicles.test.ts" name="servicio vehicles &gt; POST &gt; rechaza vehículo incompatible: {&quot;placa&quot;:&quot;ABC-123&quot;,&quot;tipo&quot;:&quot;CAMIONETA&quot;,&quot;capacidad_kg&quot;:&quot;1000.00&quot;,&quot;capacidad_m3&quot;:&quot;8.00&quot;,&quot;rendimiento_km_l&quot;:&quot;10.000&quot;,&quot;factor_co2_kg_km&quot;:&quot;0.30000&quot;,&quot;anio_fabricacion&quot;:2024,&quot;vehiculo_id&quot;:&quot;123e4567-e89b-12d3-a456-426614174000&quot;,&quot;estado&quot;:false}" time="0.0008905">
+        </testcase>
+    <testcase classname="src/services/vehicles.test.ts" name="servicio vehicles &gt; POST &gt; mapea HTTP 401 sin exponer contenido" time="0.0008502">
+        </testcase>
+    <testcase classname="src/services/vehicles.test.ts" name="servicio vehicles &gt; POST &gt; mapea HTTP 403 sin exponer contenido" time="0.0009161">
+        </testcase>
+    <testcase classname="src/services/vehicles.test.ts" name="servicio vehicles &gt; POST &gt; mapea HTTP 503 sin exponer contenido" time="0.0006613">
+        </testcase>
+    <testcase classname="src/services/vehicles.test.ts" name="servicio vehicles &gt; POST &gt; mapea HTTP 500 sin exponer contenido" time="0.0006357">
+        </testcase>
+    <testcase classname="src/services/vehicles.test.ts" name="servicio vehicles &gt; POST &gt; mapea HTTP 404 sin exponer contenido" time="0.0012168">
+        </testcase>
+    <testcase classname="src/services/vehicles.test.ts" name="servicio vehicles &gt; POST &gt; rechaza un status de éxito incorrecto" time="0.0023554">
+        </testcase>
+    <testcase classname="src/services/vehicles.test.ts" name="servicio vehicles &gt; POST &gt; rechaza éxito sin JSON" time="0.0010049">
+        </testcase>
+    <testcase classname="src/services/vehicles.test.ts" name="servicio vehicles &gt; POST &gt; conserva la categoría HTTP aunque el cuerpo no sea JSON" time="0.0007104">
+        </testcase>
+    <testcase classname="src/services/vehicles.test.ts" name="servicio vehicles &gt; POST &gt; distingue error de red sin exponer su mensaje" time="0.0007648">
+        </testcase>
+    <testcase classname="src/services/vehicles.test.ts" name="servicio vehicles &gt; POST &gt; no ejecuta fetch con URL base inválida" time="0.0005729">
+        </testcase>
+    <testcase classname="src/services/vehicles.test.ts" name="servicio vehicles &gt; POST 409 significa placa duplicada" time="0.0014882">
+        </testcase>
+    <testcase classname="src/services/vehicles.test.ts" name="servicio vehicles &gt; GET 409 no representa conflicto de placa ni validación del formulario" time="0.0015475">
+        </testcase>
+    <testcase classname="src/services/vehicles.test.ts" name="servicio vehicles &gt; GET 422 no representa conflicto de placa ni validación del formulario" time="0.005223">
+        </testcase>
+    <testcase classname="src/services/vehicles.test.ts" name="servicio vehicles &gt; 422 reconoce solo loc exacto, deduplica campos y sustituye todos los detalles por mensajes propios" time="0.0029594">
+        </testcase>
+    <testcase classname="src/services/vehicles.test.ts" name="servicio vehicles &gt; 422 desconocido o malformado conserva un mensaje general seguro" time="0.0013381">
+        </testcase>
+    <testcase classname="src/services/vehicles.test.ts" name="servicio vehicles &gt; 422 desconocido o malformado conserva un mensaje general seguro" time="0.0011318">
+        </testcase>
+    <testcase classname="src/services/vehicles.test.ts" name="servicio vehicles &gt; 422 desconocido o malformado conserva un mensaje general seguro" time="0.0012206">
+        </testcase>
+    <testcase classname="src/services/vehicles.test.ts" name="servicio vehicles &gt; 422 desconocido o malformado conserva un mensaje general seguro" time="0.0011536">
+        </testcase>
+    <testcase classname="src/services/vehicles.test.ts" name="servicio vehicles &gt; 422 desconocido o malformado conserva un mensaje general seguro" time="0.0010595">
+        </testcase>
+  </testsuite>
+  <testsuite name="src/types/driverReport.test.ts" timestamp="2026-10-09T08:27:21.599Z" tests="3" failures="0" errors="0" skipped="0" time="0.0105025">
+    <testcase classname="src/types/driverReport.test.ts" name="ST-032 reportes &gt; crea evento con UUID, sin información personal de cliente" time="0.0041716">
+        </testcase>
+    <testcase classname="src/types/driverReport.test.ts" name="ST-032 reportes &gt; rechaza propietario y parada inválidos" time="0.0015117">
+        </testcase>
+    <testcase classname="src/types/driverReport.test.ts" name="ST-032 reportes &gt; rechaza intentos negativos y estados inválidos" time="0.0004501">
+        </testcase>
+  </testsuite>
+</testsuites>

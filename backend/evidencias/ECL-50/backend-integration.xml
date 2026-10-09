@@ -1,0 +1,121 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuites name="pytest tests">
+  <testsuite name="pytest" errors="0" failures="0" skipped="0" tests="116" time="63.242" timestamp="2026-10-09T03:30:34.982211-05:00">
+    <testcase classname="tests.integration.test_auditoria_migration" name="test_audit_upgrade_check_downgrade_preserves_usuario" time="0.733" />
+    <testcase classname="tests.integration.test_auditoria_persistence" name="test_denied_actor_attribution[ACTIVO-INVALID-ROL_INVALIDO]" time="0.244" />
+    <testcase classname="tests.integration.test_auditoria_persistence" name="test_denied_actor_attribution[None-None-IDENTIDAD_INVALIDA]" time="0.242" />
+    <testcase classname="tests.integration.test_auditoria_persistence" name="test_denied_actor_attribution[ACTIVO-OPERADOR-SIN_PERMISO]" time="0.246" />
+    <testcase classname="tests.integration.test_auditoria_persistence" name="test_denied_actor_attribution[BLOQUEADO-OPERADOR-ESTADO_NO_ACTIVO]" time="0.225" />
+    <testcase classname="tests.integration.test_auditoria_persistence" name="test_denied_actor_attribution[INACTIVO-OPERADOR-ESTADO_NO_ACTIVO]" time="0.249" />
+    <testcase classname="tests.integration.test_auditoria_persistence" name="test_persistence_rollback_and_fk" time="0.295" />
+    <testcase classname="tests.integration.test_auth_migration" name="test_upgrade_check_downgrade_and_upgrade_login_schema" time="0.524" />
+    <testcase classname="tests.integration.test_auth_migration" name="test_downgrade_rejects_access_audit_and_preserves_it" time="0.860" />
+    <testcase classname="tests.integration.test_auth_persistence" name="test_login_session_identity_logout_and_audit" time="0.521" />
+    <testcase classname="tests.integration.test_auth_persistence" name="test_failures_lock_for_fifteen_minutes_and_expire" time="0.696" />
+    <testcase classname="tests.integration.test_auth_persistence" name="test_structural_state_is_never_reactivated[INACTIVO]" time="0.348" />
+    <testcase classname="tests.integration.test_auth_persistence" name="test_structural_state_is_never_reactivated[BLOQUEADO]" time="0.324" />
+    <testcase classname="tests.integration.test_auth_persistence" name="test_unknown_user_matches_invalid_password_contract" time="0.384" />
+    <testcase classname="tests.integration.test_auth_persistence" name="test_unknown_user_runs_stable_argon_verification_without_creating_account" time="0.329" />
+    <testcase classname="tests.integration.test_auth_persistence" name="test_existing_user_password_operation_failure_is_operational" time="0.287" />
+    <testcase classname="tests.integration.test_auth_persistence" name="test_unknown_user_dummy_password_failure_is_operational" time="0.206" />
+    <testcase classname="tests.integration.test_auth_persistence" name="test_concurrent_failures_do_not_lose_increments" time="0.647" />
+    <testcase classname="tests.integration.test_auth_persistence" name="test_rehash_expiration_and_current_account_state" time="0.618" />
+    <testcase classname="tests.integration.test_auth_persistence" name="test_failed_success_audit_compensates_session" time="0.434" />
+    <testcase classname="tests.integration.test_auth_persistence" name="test_failed_logout_audit_keeps_session_revoked" time="0.549" />
+    <testcase classname="tests.integration.test_conductor_http_e2e" name="test_real_http_authentication_atomicity_and_driver_privacy" time="1.459" />
+    <testcase classname="tests.integration.test_conductor_st020" name="test_conductor_upgrade_downgrade_and_existing_tables" time="0.460" />
+    <testcase classname="tests.integration.test_conductor_st020" name="test_conductor_persistence_and_rejections" time="0.264" />
+    <testcase classname="tests.integration.test_conductor_st020" name="test_fk_rejects_unknown_user" time="0.301" />
+    <testcase classname="tests.integration.test_conductor_st024" name="test_negative_requests_preserve_committed_data" time="1.081" />
+    <testcase classname="tests.integration.test_conductor_st024" name="test_availability_and_profile_survive_application_restart" time="0.992" />
+    <testcase classname="tests.integration.test_conductor_st024" name="test_real_forbidden_writes_preserve_data_and_audit_denial[CONDUCTOR]" time="0.795" />
+    <testcase classname="tests.integration.test_conductor_st024" name="test_real_forbidden_writes_preserve_data_and_audit_denial[AUDITOR]" time="0.942" />
+    <testcase classname="tests.integration.test_conductor_st024" name="test_real_forbidden_writes_preserve_data_and_audit_denial[ANALISTA]" time="0.824" />
+    <testcase classname="tests.integration.test_conductor_st024" name="test_revoked_session_cannot_read_or_write_drivers" time="0.858" />
+    <testcase classname="tests.integration.test_driver_reports_migration" name="test_driver_assignment_and_report_migration" time="0.536" />
+    <testcase classname="tests.integration.test_fixture_safety" name="test_test_database_validation_fails_closed[None-postgresql+psycopg://u:p@localhost/app-is required]" time="0.006" />
+    <testcase classname="tests.integration.test_fixture_safety" name="test_test_database_validation_fails_closed[postgresql+psycopg://u:p@localhost/app_test-postgresql+psycopg://u:p@localhost/app_test-must be different]" time="0.003" />
+    <testcase classname="tests.integration.test_fixture_safety" name="test_test_database_validation_fails_closed[postgresql+psycopg://u:p@localhost/app-postgresql+psycopg://u:p@localhost/development-Invalid test database configuration]" time="0.003" />
+    <testcase classname="tests.integration.test_fixture_safety" name="test_alembic_target_stays_pinned_when_database_url_changes" time="2.459" />
+    <testcase classname="tests.integration.test_fixture_safety" name="test_malformed_url_is_sanitized" time="1.517" />
+    <testcase classname="tests.integration.test_fixture_safety" name="test_teardown_restores_base_and_preserves_failure[assertion]" time="2.369" />
+    <testcase classname="tests.integration.test_fixture_safety" name="test_teardown_restores_base_and_preserves_failure[upgrade]" time="3.163" />
+    <testcase classname="tests.integration.test_fixture_safety" name="test_teardown_restores_base_and_preserves_failure[cleanup]" time="2.477" />
+    <testcase classname="tests.integration.test_monitoring" name="test_real_database_readiness_and_sql_metrics" time="0.187" />
+    <testcase classname="tests.integration.test_pedido_http_e2e" name="test_bdd_valid_order_and_nonstandard_example" time="0.531" />
+    <testcase classname="tests.integration.test_pedido_http_e2e" name="test_bdd_invalid_windows_are_actionable_and_not_persisted" time="0.553" />
+    <testcase classname="tests.integration.test_pedido_http_e2e" name="test_real_auth_rbac_client_errors_and_sanitized_storage" time="0.865" />
+    <testcase classname="tests.integration.test_pedido_http_e2e" name="test_credentialed_browser_login_and_order_creation" time="0.745" />
+    <testcase classname="tests.integration.test_pedido_migration" name="test_client_order_revision_and_metadata" time="1.158" />
+    <testcase classname="tests.integration.test_pedido_persistence" name="test_spatial_reference_and_default_persistence" time="0.371" />
+    <testcase classname="tests.integration.test_pedido_persistence" name="test_database_constraints_and_transaction_rollback" time="0.262" />
+    <testcase classname="tests.integration.test_pedido_persistence" name="test_database_rejects_whitespace_only_text[referencia-\t]" time="0.245" />
+    <testcase classname="tests.integration.test_pedido_persistence" name="test_database_rejects_whitespace_only_text[referencia-\n]" time="0.219" />
+    <testcase classname="tests.integration.test_pedido_persistence" name="test_database_rejects_whitespace_only_text[referencia- \t \n ]" time="0.230" />
+    <testcase classname="tests.integration.test_pedido_persistence" name="test_database_rejects_whitespace_only_text[direccion-\t]" time="0.230" />
+    <testcase classname="tests.integration.test_pedido_persistence" name="test_database_rejects_whitespace_only_text[direccion- \t \n ]" time="0.344" />
+    <testcase classname="tests.integration.test_pedido_persistence" name="test_database_rejects_whitespace_only_text[tipo_producto-\n]" time="0.221" />
+    <testcase classname="tests.integration.test_pedido_persistence" name="test_database_rejects_whitespace_only_text[tipo_producto- \t \n ]" time="0.241" />
+    <testcase classname="tests.integration.test_postgis" name="test_real_postgresql_postgis" time="0.038" />
+    <testcase classname="tests.integration.test_preferencias_http_e2e" name="test_preferences_association_validation_and_order_preparation[ADMINISTRADOR]" time="0.691" />
+    <testcase classname="tests.integration.test_preferencias_http_e2e" name="test_preferences_association_validation_and_order_preparation[OPERADOR]" time="0.648" />
+    <testcase classname="tests.integration.test_preferencias_http_e2e" name="test_disallowed_roles_and_unauthenticated_cannot_read_or_change[CONDUCTOR]" time="0.551" />
+    <testcase classname="tests.integration.test_preferencias_http_e2e" name="test_disallowed_roles_and_unauthenticated_cannot_read_or_change[ANALISTA]" time="0.486" />
+    <testcase classname="tests.integration.test_preferencias_http_e2e" name="test_disallowed_roles_and_unauthenticated_cannot_read_or_change[AUDITOR]" time="0.476" />
+    <testcase classname="tests.integration.test_preferencias_http_e2e" name="test_failed_transaction_rolls_back_preferences" time="0.467" />
+    <testcase classname="tests.integration.test_security_http" name="test_us001_scenario_1_valid_access_and_login_audit" time="0.555" />
+    <testcase classname="tests.integration.test_security_http" name="test_operator_denied_delete_preserves_active_vehicle" time="0.727" />
+    <testcase classname="tests.integration.test_security_http" name="test_us001_scenario_3_role_restriction_preserves_protected_data" time="0.663" />
+    <testcase classname="tests.integration.test_security_http" name="test_contextual_roles_cannot_use_general_vehicle_crud[CONDUCTOR]" time="0.618" />
+    <testcase classname="tests.integration.test_security_http" name="test_contextual_roles_cannot_use_general_vehicle_crud[ANALISTA]" time="0.508" />
+    <testcase classname="tests.integration.test_security_http" name="test_missing_unknown_revoked_and_expired_sessions_never_create" time="0.625" />
+    <testcase classname="tests.integration.test_security_http" name="test_current_user_state_invalidates_existing_session_without_reactivation" time="1.018" />
+    <testcase classname="tests.integration.test_security_http" name="test_us001_scenario_2_invalid_credentials_are_indistinguishable" time="1.069" />
+    <testcase classname="tests.integration.test_security_http" name="test_logout_revokes_only_current_real_session" time="0.632" />
+    <testcase classname="tests.integration.test_security_http" name="test_security_control_failure_returns_503_and_never_executes_endpoint[audit]" time="0.433" />
+    <testcase classname="tests.integration.test_security_http" name="test_security_control_failure_returns_503_and_never_executes_endpoint[session]" time="0.441" />
+    <testcase classname="tests.integration.test_usuario_migration" name="test_upgrade_downgrade_and_metadata" time="0.512" />
+    <testcase classname="tests.integration.test_usuario_persistence" name="test_persistence_and_constraints" time="0.362" />
+    <testcase classname="tests.integration.test_vehicle_audit_migration" name="test_0005_clean_downgrade_and_metadata" time="0.459" />
+    <testcase classname="tests.integration.test_vehicle_audit_migration" name="test_0005_downgrade_rejects_and_preserves_vehicle_audit[VEHICULO_PARAMETROS_ACTUALIZADOS]" time="0.428" />
+    <testcase classname="tests.integration.test_vehicle_audit_migration" name="test_0005_downgrade_rejects_and_preserves_vehicle_audit[VEHICULO_DESACTIVADO]" time="0.358" />
+    <testcase classname="tests.integration.test_vehiculo_crud" name="test_real_crud_normalization_duplicate_and_not_found" time="0.367" />
+    <testcase classname="tests.integration.test_vehiculo_crud" name="test_patch_audits_only_real_parameter_changes" time="0.209" />
+    <testcase classname="tests.integration.test_vehiculo_crud" name="test_deactivation_is_audited_idempotent_and_blocks_patch" time="0.220" />
+    <testcase classname="tests.integration.test_vehiculo_crud" name="test_functional_audit_failure_rolls_back_change" time="0.233" />
+    <testcase classname="tests.integration.test_vehiculo_crud" name="test_deactivation_audit_failure_rolls_back_state" time="0.282" />
+    <testcase classname="tests.integration.test_vehiculo_crud" name="test_concurrent_deactivations_emit_one_transition" time="0.311" />
+    <testcase classname="tests.integration.test_vehiculo_crud" name="test_delete_committed_before_patch_blocks_mutation" time="0.301" />
+    <testcase classname="tests.integration.test_vehiculo_crud" name="test_concurrent_same_patch_emits_one_real_change" time="0.278" />
+    <testcase classname="tests.integration.test_vehiculo_http_e2e" name="test_authenticated_vehicle_crud_and_real_rbac" time="0.646" />
+    <testcase classname="tests.integration.test_vehiculo_migration" name="test_vehicle_upgrade_constraints_downgrade_and_metadata" time="0.647" />
+    <testcase classname="tests.integration.test_vehiculo_persistence" name="test_vehicle_valid_persistence_defaults_and_exact_decimals" time="0.301" />
+    <testcase classname="tests.integration.test_vehiculo_persistence" name="test_vehicle_plate_accepts_canonical_values_and_internal_space[ABC123]" time="0.221" />
+    <testcase classname="tests.integration.test_vehiculo_persistence" name="test_vehicle_plate_accepts_canonical_values_and_internal_space[ABC-123]" time="0.241" />
+    <testcase classname="tests.integration.test_vehiculo_persistence" name="test_vehicle_plate_accepts_canonical_values_and_internal_space[ABC 123]" time="0.466" />
+    <testcase classname="tests.integration.test_vehiculo_persistence" name="test_vehicle_constraints_reject_invalid_values_and_session_recovers[overrides0]" time="0.616" />
+    <testcase classname="tests.integration.test_vehiculo_persistence" name="test_vehicle_constraints_reject_invalid_values_and_session_recovers[overrides1]" time="0.424" />
+    <testcase classname="tests.integration.test_vehiculo_persistence" name="test_vehicle_constraints_reject_invalid_values_and_session_recovers[overrides2]" time="0.380" />
+    <testcase classname="tests.integration.test_vehiculo_persistence" name="test_vehicle_constraints_reject_invalid_values_and_session_recovers[overrides3]" time="0.459" />
+    <testcase classname="tests.integration.test_vehiculo_persistence" name="test_vehicle_constraints_reject_invalid_values_and_session_recovers[overrides4]" time="0.404" />
+    <testcase classname="tests.integration.test_vehiculo_persistence" name="test_vehicle_constraints_reject_invalid_values_and_session_recovers[overrides5]" time="0.347" />
+    <testcase classname="tests.integration.test_vehiculo_persistence" name="test_vehicle_constraints_reject_invalid_values_and_session_recovers[overrides6]" time="0.324" />
+    <testcase classname="tests.integration.test_vehiculo_persistence" name="test_vehicle_constraints_reject_invalid_values_and_session_recovers[overrides7]" time="0.335" />
+    <testcase classname="tests.integration.test_vehiculo_persistence" name="test_vehicle_constraints_reject_invalid_values_and_session_recovers[overrides8]" time="0.326" />
+    <testcase classname="tests.integration.test_vehiculo_persistence" name="test_vehicle_constraints_reject_invalid_values_and_session_recovers[overrides9]" time="0.391" />
+    <testcase classname="tests.integration.test_vehiculo_persistence" name="test_vehicle_constraints_reject_invalid_values_and_session_recovers[overrides10]" time="0.340" />
+    <testcase classname="tests.integration.test_vehiculo_persistence" name="test_vehicle_constraints_reject_invalid_values_and_session_recovers[overrides11]" time="0.453" />
+    <testcase classname="tests.integration.test_vehiculo_persistence" name="test_vehicle_constraints_reject_invalid_values_and_session_recovers[overrides12]" time="0.399" />
+    <testcase classname="tests.integration.test_vehiculo_persistence" name="test_vehicle_constraints_reject_invalid_values_and_session_recovers[overrides13]" time="0.312" />
+    <testcase classname="tests.integration.test_vehiculo_persistence" name="test_vehicle_constraints_reject_invalid_values_and_session_recovers[overrides14]" time="0.338" />
+    <testcase classname="tests.integration.test_vehiculo_persistence" name="test_vehicle_constraints_reject_invalid_values_and_session_recovers[overrides15]" time="0.368" />
+    <testcase classname="tests.integration.test_vehiculo_persistence" name="test_vehicle_constraints_reject_invalid_values_and_session_recovers[overrides16]" time="0.408" />
+    <testcase classname="tests.integration.test_vehiculo_persistence" name="test_vehicle_constraints_reject_invalid_values_and_session_recovers[overrides17]" time="0.390" />
+    <testcase classname="tests.integration.test_vehiculo_persistence" name="test_vehicle_numeric_nan_is_rejected_and_session_recovers[capacidad_kg-NAN-KG]" time="0.301" />
+    <testcase classname="tests.integration.test_vehiculo_persistence" name="test_vehicle_numeric_nan_is_rejected_and_session_recovers[capacidad_m3-NAN-M3]" time="0.251" />
+    <testcase classname="tests.integration.test_vehiculo_persistence" name="test_vehicle_numeric_nan_is_rejected_and_session_recovers[rendimiento_km_l-NAN-KML]" time="0.250" />
+    <testcase classname="tests.integration.test_vehiculo_persistence" name="test_vehicle_numeric_nan_is_rejected_and_session_recovers[factor_co2_kg_km-NAN-CO2]" time="0.418" />
+    <testcase classname="tests.integration.test_vehiculo_persistence" name="test_vehicle_duplicate_plate_is_rejected_and_session_recovers" time="0.273" />
+    <testcase classname="tests.integration.test_vehiculo_persistence" name="test_vehicle_database_assigns_active_server_default" time="0.356" />
+  </testsuite>
+</testsuites>
