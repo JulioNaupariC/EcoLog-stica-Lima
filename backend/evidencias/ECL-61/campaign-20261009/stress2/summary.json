@@ -1,0 +1,53 @@
+{
+  "attempts": 100,
+  "http_responses": 100,
+  "http_statuses": {
+    "401": 100
+  },
+  "http_5xx": 0,
+  "http_5xx_percent": 0.0,
+  "without_response": 0,
+  "functional_or_transport_errors": 100,
+  "persistence_discrepancies": 0,
+  "unique_valid_persisted": 0,
+  "p95_valid_seconds": null,
+  "p95_responded_seconds": 0.7523174999987532,
+  "p95_threshold_pass": false,
+  "http_5xx_threshold_pass": true,
+  "total_persisted_all_phases": 15618,
+  "persisted_without_valid_response_all_phases": 37,
+  "profile": "stress",
+  "run": "stress2",
+  "setup_failed": false,
+  "ramp_warm_failures": 100,
+  "concurrency": {
+    "expected_seconds": 600,
+    "observed_seconds": 0,
+    "missing_seconds": 600,
+    "minimum": null,
+    "maximum": null,
+    "seconds_at_least_100": 0,
+    "percent_seconds_at_least_100": 0.0,
+    "sustained_100_pass": false
+  },
+  "generator": {
+    "max_cpu_percent_one_core_basis": null,
+    "max_scheduler_lag_seconds": null,
+    "max_host_cpu_percent": null,
+    "max_host_memory_percent": null,
+    "lag_over_one_second_samples": 0
+  },
+  "availability": {
+    "first_utc": "2026-10-09T09:24:26.490771+00:00",
+    "last_utc": "2026-10-09T16:10:26.748226+00:00",
+    "samples": 152,
+    "available": 151,
+    "unavailable": 1,
+    "estimated_missing_slots": 24213,
+    "successful_samples_percent": 99.34210526315789,
+    "conservative_sample_coverage_percent": 0.6197414323825159,
+    "monthly_sla": "NOT_MEASURED"
+  },
+  "daily_hourly": null,
+  "load_acceptance_pass": false
+}

@@ -71,6 +71,17 @@ jobs:
           --junitxml=test-results/conductores-unit.xml
           --cov-fail-under=80
 
+      - name: ST-035 load analysis coverage gate
+        run: >-
+          python -m pytest tests/unit/test_loadtest_analysis.py
+          tests/unit/test_loadtest_evidence.py -q
+          --cov=loadtest.analysis --cov=loadtest.audit --cov=loadtest.report
+          --cov=loadtest.consolidate
+          --cov-report=term-missing
+          --cov-report=xml:test-results/load-analysis-coverage.xml
+          --junitxml=test-results/load-analysis-unit.xml
+          --cov-fail-under=80
+
       - name: Upload backend unit evidence
         if: always()
         uses: actions/upload-artifact@v4

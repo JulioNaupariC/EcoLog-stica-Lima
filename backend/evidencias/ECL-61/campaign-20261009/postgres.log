@@ -1,0 +1,111 @@
+2026-10-09 04:07:25.415 -05 [9660] LOG:  iniciando PostgreSQL 16.15, compiled by Visual C++ build 1944, 64-bit
+2026-10-09 04:07:25.416 -05 [9660] LOG:  escuchando en la dirección IPv4 «127.0.0.1», port 55455
+2026-10-09 04:07:25.560 -05 [31500] LOG:  el sistema de bases de datos fue apagado en 2026-10-09 04:07:24 -05
+2026-10-09 04:07:25.576 -05 [9660] LOG:  el sistema de bases de datos está listo para aceptar conexiones
+2026-10-09 04:11:05.487 -05 [13904] LOG:  no se pudo recibir datos del cliente: An existing connection was forcibly closed by the remote host.
+	
+2026-10-09 04:11:05.487 -05 [19724] LOG:  no se pudo recibir datos del cliente: An existing connection was forcibly closed by the remote host.
+	
+2026-10-09 04:11:05.487 -05 [2948] LOG:  no se pudo recibir datos del cliente: An existing connection was forcibly closed by the remote host.
+	
+2026-10-09 04:11:05.487 -05 [30540] LOG:  no se pudo recibir datos del cliente: An existing connection was forcibly closed by the remote host.
+	
+2026-10-09 04:11:05.487 -05 [13824] LOG:  no se pudo recibir datos del cliente: An existing connection was forcibly closed by the remote host.
+	
+2026-10-09 04:12:25.454 -05 [19096] LOG:  empezando checkpoint: time
+2026-10-09 04:16:55.445 -05 [19096] LOG:  checkpoint completo: escritos 5380 búfers (32.8%); 0 archivos WAL añadidos, 0 eliminados, 2 reciclados; write=269.573 s, sync=0.376 s, total=269.993 s; archivos sincronizados=711, más largo=0.008 s, promedio=0.001 s; distancia=39107 kB, estimación=39107 kB; lsn=0/59D96C8, lsn de redo=0/3BA8640
+2026-10-09 04:17:25.491 -05 [19096] LOG:  empezando checkpoint: time
+2026-10-09 04:19:00.713 -05 [9660] LOG:  could not reserve shared memory region (addr=0000022080000000) for child 0000000000000680: error code 487
+2026-10-09 04:20:22.522 -05 [19096] LOG:  checkpoint completo: escritos 1642 búfers (10.0%); 0 archivos WAL añadidos, 0 eliminados, 2 reciclados; write=176.323 s, sync=0.092 s, total=177.032 s; archivos sincronizados=22, más largo=0.062 s, promedio=0.005 s; distancia=34159 kB, estimación=38613 kB; lsn=0/79BEA20, lsn de redo=0/5D043F8
+2026-10-09 04:21:06.181 -05 [9660] LOG:  could not reserve shared memory region (addr=0000022080000000) for child 0000000000000974: error code 487
+2026-10-09 04:22:25.527 -05 [19096] LOG:  empezando checkpoint: time
+2026-10-09 04:22:45.679 -05 [9660] LOG:  could not reserve shared memory region (addr=0000022080000000) for child 0000000000000990: error code 487
+2026-10-09 04:24:17.722 -05 [15552] LOG:  no se pudo recibir datos del cliente: An existing connection was forcibly closed by the remote host.
+	
+2026-10-09 04:24:17.722 -05 [30648] LOG:  no se pudo recibir datos del cliente: An existing connection was forcibly closed by the remote host.
+	
+2026-10-09 04:24:17.722 -05 [13924] LOG:  no se pudo recibir datos del cliente: An existing connection was forcibly closed by the remote host.
+	
+2026-10-09 04:24:17.722 -05 [5976] LOG:  no se pudo recibir datos del cliente: An existing connection was forcibly closed by the remote host.
+	
+2026-10-09 04:24:17.722 -05 [16380] LOG:  no se pudo recibir datos del cliente: An existing connection was forcibly closed by the remote host.
+	
+2026-10-09 04:24:17.722 -05 [14636] LOG:  no se pudo recibir datos del cliente: An existing connection was forcibly closed by the remote host.
+	
+2026-10-09 04:24:17.723 -05 [30496] LOG:  no se pudo recibir datos del cliente: An existing connection was forcibly closed by the remote host.
+	
+2026-10-09 04:24:17.723 -05 [15644] LOG:  no se pudo recibir datos del cliente: An existing connection was forcibly closed by the remote host.
+	
+2026-10-09 04:24:17.723 -05 [23932] LOG:  no se pudo recibir datos del cliente: An existing connection was forcibly closed by the remote host.
+	
+2026-10-09 04:24:17.724 -05 [17808] LOG:  no se pudo recibir datos del cliente: An existing connection was forcibly closed by the remote host.
+	
+2026-10-09 04:24:17.724 -05 [13968] LOG:  no se pudo recibir datos del cliente: An existing connection was forcibly closed by the remote host.
+	
+2026-10-09 11:10:27.572 -05 [30524] LOG:  no se pudo recibir datos del cliente: An existing connection was forcibly closed by the remote host.
+	
+2026-10-09 11:10:27.572 -05 [23820] LOG:  no se pudo recibir datos del cliente: An existing connection was forcibly closed by the remote host.
+	
+2026-10-09 11:10:27.572 -05 [19724] LOG:  no se pudo recibir datos del cliente: An existing connection was forcibly closed by the remote host.
+	
+2026-10-09 11:10:27.572 -05 [16196] LOG:  no se pudo recibir datos del cliente: An existing connection was forcibly closed by the remote host.
+	
+2026-10-09 11:10:27.573 -05 [15184] LOG:  no se pudo recibir datos del cliente: An existing connection was forcibly closed by the remote host.
+	
+2026-10-09 11:10:27.573 -05 [15232] LOG:  no se pudo recibir datos del cliente: An existing connection was forcibly closed by the remote host.
+	
+2026-10-09 11:10:27.573 -05 [27632] LOG:  no se pudo recibir datos del cliente: An existing connection was forcibly closed by the remote host.
+	
+2026-10-09 11:10:27.573 -05 [896] LOG:  no se pudo recibir datos del cliente: An existing connection was forcibly closed by the remote host.
+	
+2026-10-09 11:10:27.573 -05 [28112] LOG:  no se pudo recibir datos del cliente: An existing connection was forcibly closed by the remote host.
+	
+2026-10-09 11:10:27.573 -05 [29636] LOG:  no se pudo recibir datos del cliente: An existing connection was forcibly closed by the remote host.
+	
+2026-10-09 11:10:27.805 -05 [31512] LOG:  no se pudo enviar datos al cliente: An existing connection was forcibly closed by the remote host.
+	
+2026-10-09 11:10:27.805 -05 [31512] FATAL:  se ha perdido la conexiÃ³n al cliente
+2026-10-09 11:10:27.824 -05 [33112] LOG:  no se pudo recibir datos del cliente: An existing connection was forcibly closed by the remote host.
+	
+2026-10-09 11:10:27.920 -05 [3628] LOG:  no se pudo recibir datos del cliente: An existing connection was forcibly closed by the remote host.
+	
+2026-10-09 11:10:27.924 -05 [25380] LOG:  no se pudo recibir datos del cliente: An existing connection was forcibly closed by the remote host.
+	
+2026-10-09 11:10:28.526 -05 [19096] LOG:  checkpoint completo: escritos 3329 búfers (20.3%); 0 archivos WAL añadidos, 0 eliminados, 3 reciclados; write=24479.026 s, sync=3.416 s, total=24482.999 s; archivos sincronizados=373, más largo=0.976 s, promedio=0.010 s; distancia=44245 kB, estimación=44245 kB; lsn=0/BCB8110, lsn de redo=0/8839970
+2026-10-09 11:10:28.528 -05 [19096] LOG:  empezando checkpoint: time
+2026-10-09 11:14:58.561 -05 [19096] LOG:  checkpoint completo: escritos 5343 búfers (32.6%); 0 archivos WAL añadidos, 0 eliminados, 4 reciclados; write=269.488 s, sync=0.509 s, total=270.033 s; archivos sincronizados=652, más largo=0.018 s, promedio=0.001 s; distancia=57374 kB, estimación=57374 kB; lsn=0/E7A4860, lsn de redo=0/C041270
+2026-10-09 11:15:28.595 -05 [19096] LOG:  empezando checkpoint: time
+2026-10-09 11:16:34.160 -05 [9660] LOG:  could not reserve shared memory region (addr=00000220FC6A0000) for child 0000000000000EC0: error code 487
+2026-10-09 11:19:35.711 -05 [9660] LOG:  could not reserve shared memory region (addr=0000022080000000) for child 0000000000000890: error code 487
+2026-10-09 11:19:58.087 -05 [19096] LOG:  checkpoint completo: escritos 3418 búfers (20.9%); 0 archivos WAL añadidos, 0 eliminados, 2 reciclados; write=269.417 s, sync=0.038 s, total=269.492 s; archivos sincronizados=83, más largo=0.003 s, promedio=0.001 s; distancia=44247 kB, estimación=56061 kB; lsn=0/116EAD38, lsn de redo=0/EB77088
+2026-10-09 11:20:28.098 -05 [19096] LOG:  empezando checkpoint: time
+2026-10-09 11:23:42.379 -05 [27852] LOG:  no se pudo recibir datos del cliente: An existing connection was forcibly closed by the remote host.
+	
+2026-10-09 11:23:42.379 -05 [16432] LOG:  no se pudo recibir datos del cliente: An existing connection was forcibly closed by the remote host.
+	
+2026-10-09 11:23:42.379 -05 [28844] LOG:  no se pudo recibir datos del cliente: An existing connection was forcibly closed by the remote host.
+	
+2026-10-09 11:23:42.379 -05 [26280] LOG:  no se pudo recibir datos del cliente: An existing connection was forcibly closed by the remote host.
+	
+2026-10-09 11:23:42.379 -05 [9844] LOG:  no se pudo recibir datos del cliente: An existing connection was forcibly closed by the remote host.
+	
+2026-10-09 11:23:42.379 -05 [30224] LOG:  no se pudo recibir datos del cliente: An existing connection was forcibly closed by the remote host.
+	
+2026-10-09 11:23:42.379 -05 [35024] LOG:  no se pudo recibir datos del cliente: An existing connection was forcibly closed by the remote host.
+	
+2026-10-09 11:23:42.379 -05 [35268] LOG:  no se pudo recibir datos del cliente: An existing connection was forcibly closed by the remote host.
+	
+2026-10-09 11:23:42.379 -05 [33180] LOG:  no se pudo recibir datos del cliente: An existing connection was forcibly closed by the remote host.
+	
+2026-10-09 11:23:42.379 -05 [34872] LOG:  no se pudo recibir datos del cliente: An existing connection was forcibly closed by the remote host.
+	
+2026-10-09 11:23:42.379 -05 [896] LOG:  no se pudo recibir datos del cliente: An existing connection was forcibly closed by the remote host.
+	
+2026-10-09 11:23:42.438 -05 [9660] LOG:  se recibió petición de apagado rápido
+2026-10-09 11:23:42.440 -05 [9660] LOG:  abortando transacciones activas
+2026-10-09 11:23:42.445 -05 [9660] LOG:  proceso ayudante «logical replication launcher» (PID 31736) terminó con código de salida 1
+2026-10-09 11:23:42.490 -05 [19096] LOG:  checkpoint completo: escritos 3598 búfers (22.0%); 0 archivos WAL añadidos, 0 eliminados, 3 reciclados; write=194.351 s, sync=0.016 s, total=194.392 s; archivos sincronizados=23, más largo=0.005 s, promedio=0.001 s; distancia=48466 kB, estimación=55302 kB; lsn=0/143B44F0, lsn de redo=0/11ACBAE8
+2026-10-09 11:23:42.491 -05 [19096] LOG:  apagando
+2026-10-09 11:23:42.492 -05 [19096] LOG:  empezando checkpoint: shutdown immediate
+2026-10-09 11:23:42.579 -05 [19096] LOG:  checkpoint completo: escritos 4402 búfers (26.9%); 0 archivos WAL añadidos, 0 eliminados, 3 reciclados; write=0.026 s, sync=0.042 s, total=0.089 s; archivos sincronizados=23, más largo=0.012 s, promedio=0.002 s; distancia=41890 kB, estimación=53960 kB; lsn=0/143B4568, lsn de redo=0/143B4568
+2026-10-09 11:23:42.606 -05 [9660] LOG:  el sistema de bases de datos está apagado

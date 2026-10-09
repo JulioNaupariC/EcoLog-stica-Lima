@@ -1,0 +1,40 @@
+{
+  "started_utc": "2026-10-09T09:04:27.923232+00:00",
+  "git_base": "468e4167c165f540668abaa5c04f0b292ef78c77",
+  "git_dirty": true,
+  "platform": "Windows-11-10.0.26300-SP0",
+  "python": "3.12.6 (tags/v3.12.6:a4a2d2b, Sep  6 2024, 20:11:23) [MSC v.1940 64 bit (AMD64)]",
+  "cpu": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel",
+  "logical_cpus": 32,
+  "physical_cpus": 24,
+  "ram_bytes": 16890322944,
+  "packages": {
+    "locust": "2.46.7",
+    "fastapi": "0.141.1",
+    "uvicorn": "0.53.0",
+    "psycopg": "3.3.5",
+    "SQLAlchemy": "2.0.54",
+    "psutil": "7.2.2"
+  },
+  "parameters": {
+    "pg_bin": "C:\\Program Files\\PostgreSQL\\16\\bin",
+    "output": "evidencias\\ECL-61\\smoke",
+    "pg_port": 55455,
+    "api_port": 8055,
+    "users": 100,
+    "seed": 35061,
+    "daily_seconds": 5,
+    "ramp": 5,
+    "warm": 5,
+    "stable": 10,
+    "repetitions": 1
+  },
+  "workers": 1,
+  "replicas": 1,
+  "network": "127.0.0.1; generator/API/DB same host",
+  "business_pool": "SQLAlchemy defaults: pool_size=5, max_overflow=10",
+  "audit_pool": "separate SQLAlchemy pool: pool_size=5, max_overflow=10",
+  "clocks": "same host OS epoch; each process uses perf_counter for durations",
+  "daily_profile": "COMPRESSED_SIMULATION",
+  "monthly_sla": "NOT_MEASURED"
+}

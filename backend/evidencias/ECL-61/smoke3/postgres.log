@@ -1,0 +1,43 @@
+2026-10-09 04:05:02.083 -05 [17976] LOG:  iniciando PostgreSQL 16.15, compiled by Visual C++ build 1944, 64-bit
+2026-10-09 04:05:02.084 -05 [17976] LOG:  escuchando en la dirección IPv4 «127.0.0.1», port 55455
+2026-10-09 04:05:02.122 -05 [31676] LOG:  el sistema de bases de datos fue apagado en 2026-10-09 04:05:00 -05
+2026-10-09 04:05:02.138 -05 [17976] LOG:  el sistema de bases de datos está listo para aceptar conexiones
+2026-10-09 04:05:47.094 -05 [2268] LOG:  no se pudo recibir datos del cliente: An existing connection was forcibly closed by the remote host.
+	
+2026-10-09 04:05:47.094 -05 [30324] LOG:  no se pudo recibir datos del cliente: An existing connection was forcibly closed by the remote host.
+	
+2026-10-09 04:05:47.095 -05 [4244] LOG:  no se pudo recibir datos del cliente: An existing connection was forcibly closed by the remote host.
+	
+2026-10-09 04:05:47.095 -05 [29000] LOG:  no se pudo recibir datos del cliente: An existing connection was forcibly closed by the remote host.
+	
+2026-10-09 04:05:47.096 -05 [20676] LOG:  no se pudo recibir datos del cliente: An existing connection was forcibly closed by the remote host.
+	
+2026-10-09 04:07:13.607 -05 [22524] LOG:  no se pudo recibir datos del cliente: An existing connection was forcibly closed by the remote host.
+	
+2026-10-09 04:07:13.607 -05 [16768] LOG:  no se pudo recibir datos del cliente: An existing connection was forcibly closed by the remote host.
+	
+2026-10-09 04:07:13.608 -05 [16012] LOG:  no se pudo recibir datos del cliente: An existing connection was forcibly closed by the remote host.
+	
+2026-10-09 04:07:13.608 -05 [29536] LOG:  no se pudo recibir datos del cliente: An existing connection was forcibly closed by the remote host.
+	
+2026-10-09 04:07:13.609 -05 [30876] LOG:  no se pudo recibir datos del cliente: An existing connection was forcibly closed by the remote host.
+	
+2026-10-09 04:07:13.609 -05 [18660] LOG:  no se pudo recibir datos del cliente: An existing connection was forcibly closed by the remote host.
+	
+2026-10-09 04:07:13.609 -05 [24192] LOG:  no se pudo recibir datos del cliente: An existing connection was forcibly closed by the remote host.
+	
+2026-10-09 04:07:13.609 -05 [31556] LOG:  no se pudo recibir datos del cliente: An existing connection was forcibly closed by the remote host.
+	
+2026-10-09 04:07:13.609 -05 [29000] LOG:  no se pudo recibir datos del cliente: An existing connection was forcibly closed by the remote host.
+	
+2026-10-09 04:07:13.610 -05 [6188] LOG:  no se pudo recibir datos del cliente: An existing connection was forcibly closed by the remote host.
+	
+2026-10-09 04:07:13.610 -05 [10832] LOG:  no se pudo recibir datos del cliente: An existing connection was forcibly closed by the remote host.
+	
+2026-10-09 04:07:13.654 -05 [17976] LOG:  se recibió petición de apagado rápido
+2026-10-09 04:07:13.657 -05 [17976] LOG:  abortando transacciones activas
+2026-10-09 04:07:13.661 -05 [17976] LOG:  proceso ayudante «logical replication launcher» (PID 24336) terminó con código de salida 1
+2026-10-09 04:07:13.663 -05 [28212] LOG:  apagando
+2026-10-09 04:07:13.664 -05 [28212] LOG:  empezando checkpoint: shutdown immediate
+2026-10-09 04:07:14.112 -05 [28212] LOG:  checkpoint completo: escritos 4967 búfers (30.3%); 0 archivos WAL añadidos, 0 eliminados, 2 reciclados; write=0.073 s, sync=0.365 s, total=0.449 s; archivos sincronizados=711, más largo=0.005 s, promedio=0.001 s; distancia=38663 kB, estimación=38663 kB; lsn=0/3B39548, lsn de redo=0/3B39548
+2026-10-09 04:07:14.155 -05 [17976] LOG:  el sistema de bases de datos está apagado

@@ -1,0 +1,40 @@
+2026-10-09 04:04:43.190 -05 [6552] LOG:  iniciando PostgreSQL 16.15, compiled by Visual C++ build 1944, 64-bit
+2026-10-09 04:04:43.191 -05 [6552] LOG:  escuchando en la dirección IPv4 «127.0.0.1», port 55455
+2026-10-09 04:04:43.230 -05 [30300] LOG:  el sistema de bases de datos fue apagado en 2026-10-09 04:04:42 -05
+2026-10-09 04:04:43.258 -05 [6552] LOG:  el sistema de bases de datos está listo para aceptar conexiones
+2026-10-09 04:04:43.885 -05 [31512] ERROR:  no existe el tipo Â«geographyÂ» en carÃ¡cter 178
+2026-10-09 04:04:43.885 -05 [31512] SENTENCIA:  
+	CREATE TABLE pedido (
+		pedido_id UUID DEFAULT gen_random_uuid() NOT NULL, 
+		cliente_id UUID NOT NULL, 
+		direccion VARCHAR(255) NOT NULL, 
+		referencia VARCHAR(255), 
+		ubicacion geography(POINT,4326), 
+		peso_kg NUMERIC(10, 2) NOT NULL, 
+		volumen_m3 NUMERIC(10, 3) NOT NULL, 
+		ventana_inicio TIMESTAMP WITH TIME ZONE NOT NULL, 
+		ventana_fin TIMESTAMP WITH TIME ZONE NOT NULL, 
+		prioridad VARCHAR(12) NOT NULL, 
+		tipo_producto VARCHAR(20) NOT NULL, 
+		estado VARCHAR(15) DEFAULT 'PENDIENTE' NOT NULL, 
+		PRIMARY KEY (pedido_id), 
+		CONSTRAINT fk_pedido_cliente_id_cliente FOREIGN KEY(cliente_id) REFERENCES cliente (cliente_id), 
+		CONSTRAINT ck_pedido_direccion CHECK (direccion ~ '[^[:space:]]'), 
+		CONSTRAINT ck_pedido_referencia CHECK (referencia IS NULL OR referencia ~ '[^[:space:]]'), 
+		CONSTRAINT ck_pedido_ubicacion_o_referencia CHECK (ubicacion IS NOT NULL OR coalesce(referencia ~ '[^[:space:]]', false)), 
+		CONSTRAINT ck_pedido_peso_kg CHECK (peso_kg <> 'NaN'::numeric AND peso_kg > 0), 
+		CONSTRAINT ck_pedido_volumen_m3 CHECK (volumen_m3 <> 'NaN'::numeric AND volumen_m3 > 0), 
+		CONSTRAINT ck_pedido_ventana CHECK (ventana_inicio < ventana_fin), 
+		CONSTRAINT ck_pedido_prioridad CHECK (prioridad IN ('EXPRESS','ESTANDAR','ECONOMICO')), 
+		CONSTRAINT ck_pedido_tipo_producto CHECK (tipo_producto ~ '[^[:space:]]')
+	)
+	
+	
+2026-10-09 04:04:44.189 -05 [6552] LOG:  se recibió petición de apagado rápido
+2026-10-09 04:04:44.193 -05 [6552] LOG:  abortando transacciones activas
+2026-10-09 04:04:44.194 -05 [3400] FATAL:  terminando la conexiÃ³n debido a una orden del administrador
+2026-10-09 04:04:44.198 -05 [6552] LOG:  proceso ayudante «logical replication launcher» (PID 18068) terminó con código de salida 1
+2026-10-09 04:04:44.204 -05 [31412] LOG:  apagando
+2026-10-09 04:04:44.205 -05 [31412] LOG:  empezando checkpoint: shutdown immediate
+2026-10-09 04:04:44.396 -05 [31412] LOG:  checkpoint completo: escritos 983 búfers (6.0%); 0 archivos WAL añadidos, 0 eliminados, 0 reciclados; write=0.035 s, sync=0.148 s, total=0.193 s; archivos sincronizados=326, más largo=0.002 s, promedio=0.001 s; distancia=4699 kB, estimación=4699 kB; lsn=0/1A0E498, lsn de redo=0/1A0E498
+2026-10-09 04:04:44.418 -05 [6552] LOG:  el sistema de bases de datos está apagado

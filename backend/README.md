@@ -530,3 +530,13 @@ fallan las pruebas, y exige cobertura unitaria de conductores de al menos 80 %.
 Consultar [VALIDACION_ST024.md](VALIDACION_ST024.md) para la matriz de casos y
 los resultados locales; [GUIA_JOSE_ST024.md](../GUIA_JOSE_ST024.md) explica cómo
 repetir las pruebas, subir la rama y obtener la evidencia de GitHub Actions.
+
+## Pruebas de carga y disponibilidad — ST-035 / ECL-61
+
+La campaña aislada y sus parámetros se describen en
+[loadtest/README.md](loadtest/README.md). Usa Locust con dependencias separadas
+en `requirements-load.lock`, HTTP real y bases nuevas por perfil.
+Los resultados, capturas e incidencias están en
+[VALIDACION_ST035.md](VALIDACION_ST035.md) y
+[evidencias/ECL-61](evidencias/ECL-61/README.md).
+El porcentaje de sondeos exitosos no acredita el SLA mensual.

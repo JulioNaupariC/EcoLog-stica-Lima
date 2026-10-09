@@ -1,0 +1,50 @@
+<!doctype html><html lang="es"><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1"><title>ECL-61 · ST-035 · Resultados medidos</title>
+<style>
+body{font:16px/1.5 system-ui,sans-serif;background:#edf3f6;color:#172b3a;margin:0}
+main{max-width:1240px;margin:auto;padding:36px}h1{font-size:32px;margin:0}h2{margin-top:36px}
+header,article,.panel{background:white;padding:24px;border-radius:12px;margin-bottom:20px}
+.subtitle{color:#475569}.notice{border-left:5px solid #b45309;background:#fff7ed;padding:16px}
+table{border-collapse:collapse;width:100%;font-size:14px;background:white}th,td{padding:12px;text-align:left;border-bottom:1px solid #cbd5e1}
+thead{background:#123b4a;color:white}.pass{color:#166534;font-weight:700}.fail{color:#b91c1c;font-weight:700}
+svg{width:100%;background:#f8fafc}svg text{font:13px system-ui;fill:#475569}code{word-break:break-all}
+a{color:#0369a1}
+</style><main><header><p class="subtitle">EcoLogística Lima · ECL-61 / ST-035 · RNF-007 y RNF-008</p>
+<h1>Pruebas de carga y disponibilidad</h1><p>Resultados reales · 2026-10-09T09:04:57.796335+00:00</p>
+<p>1,000 pedidos de jornada sintética · 50 vehículos por base · 100 clientes de estrés · 1 repeticiones</p></header>
+<p class="notice"><strong>Alcance de la evidencia:</strong> jornada comprimida a 5 segundos.
+Las mediciones verifican los umbrales; no acreditan RNF-008 si faltan 100 solicitudes activas sostenidas.
+La consulta del tablero depende de ECL-15. No se ha medido el SLA mensual.</p>
+<h2>Registro de pedidos: latencia y errores</h2><table><thead><tr><th>Perfil</th><th>Intentos</th><th>Válidos persistidos</th><th>P95 ≤2 s</th><th>5xx &lt;1%</th><th>Sin respuesta</th><th>Diferencias BD</th></tr></thead><tbody><tr><th>daily</th>
+<td>1,000</td><td>1,000</td>
+<td>0.012 s<br><span class="pass">CUMPLE</span></td>
+<td>0.000% (0/1000)<br><span class="pass">CUMPLE</span></td>
+<td>0</td><td>0</td></tr><tr><th>stress1</th>
+<td>1,010</td><td>1,010</td>
+<td>1.371 s<br><span class="pass">CUMPLE</span></td>
+<td>0.000% (0/1010)<br><span class="pass">CUMPLE</span></td>
+<td>0</td><td>0</td></tr></tbody></table>
+<p>P95 agregado de estrés: <strong>1.371 s</strong> sobre 1,010 respuestas válidas conciliadas.
+Rango más próximo; no se promedian percentiles. Agregado diagnóstico cuando alguna repetición no acredita la carga.</p>
+<h2>Disponibilidad durante la observación</h2><table><thead><tr><th>Perfil</th><th>Sondeos</th><th>Correctos</th><th>Fallidos</th><th>Huecos estimados</th><th>Éxito de muestras</th><th>Ventana UTC</th></tr></thead><tbody><tr><th>daily</th>
+<td>36</td><td>36</td><td>0</td>
+<td>0</td><td>100.00%</td>
+<td>2026-10-09T09:05:11.335717+00:00<br>2026-10-09T09:05:46.341894+00:00</td></tr><tr><th>stress1</th>
+<td>77</td><td>77</td><td>0</td>
+<td>3</td><td>100.00%</td>
+<td>2026-10-09T09:05:57.145495+00:00<br>2026-10-09T09:07:13.139081+00:00</td></tr></tbody></table>
+<p>GET /health y /health/ready (SELECT 1), cada segundo desde el mismo equipo. El porcentaje describe las muestras observadas; no garantiza continuidad entre sondeos. Los huecos no cuentan como disponibles. Los intervalos entre corridas quedan fuera de observación. <strong>SLA mensual: NO MEDIDO.</strong></p>
+<h2>Concurrencia del servidor</h2><article><h3>stress1 · concurrencia observada</h3>
+<p>Mínimo 65; máximo 100; ≥100 en 1/10 segundos (10.00%).
+Faltan 0 segundos. <span class="fail">NO ACREDITADO</span></p>
+<svg viewBox="0 0 960 220" role="img" aria-label="Serie de solicitudes en vuelo del servidor">
+<line x1="40" y1="80" x2="920" y2="80" stroke="#be123c" stroke-dasharray="6 5"/>
+<text x="40" y="65">Umbral: 100 solicitudes en vuelo</text>
+<polyline points="74.7,97.0 116.9,85.0 158.0,81.0 228.9,80.0 316.7,87.0 405.3,81.0 493.0,81.0 581.2,89.0 669.3,90.0 756.8,91.0 844.7,115.0" fill="none" stroke="#0369a1" stroke-width="2"/>
+<text x="40" y="210">Inicio de fase estable</text><text x="750" y="210">10 segundos</text></svg>
+<p>Retraso máximo del muestreador: 1.249 s.
+CPU máxima del generador: 30.0% de un núcleo.</p></article>
+<section class="panel"><h2>Entorno y trazabilidad</h2><p>Windows-11-10.0.26300-SP0 · 32 CPU lógicas · 15.7 GiB RAM · 1 worker / 1 réplica.</p>
+<p>API, generador y PostgreSQL locales sobre 127.0.0.1. Python 3.12.6; Locust 2.46.7.</p>
+<p>Base Git: <code>468e4167c165f540668abaa5c04f0b292ef78c77</code>; cambios de ST-035 pendientes de commit durante la ejecución.</p>
+<p>Fuentes: <a href="campaign.json">campaign.json</a>, <a href="environment.json">environment.json</a>, manifiestos, registros JSONL comprimidos, conciliación SQL, métricas Prometheus y logs por perfil.</p></section></main></html>
