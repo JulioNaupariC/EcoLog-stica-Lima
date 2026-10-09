@@ -471,3 +471,20 @@ Para regenerar las versiones fijadas desde pyproject.toml:
 .venv/Scripts/python -m piptools compile --no-build-isolation --no-emit-index-url --no-emit-trusted-host --output-file=requirements.lock pyproject.toml
 .venv/Scripts/python -m piptools compile --no-build-isolation --allow-unsafe --no-emit-index-url --no-emit-trusted-host --extra=dev --output-file=requirements-dev.lock pyproject.toml
 ```
+
+## API de conductores - ECL-48 / ST-022
+
+POST /conductores crea una cuenta CONDUCTOR y su perfil de forma atómica.
+GET /conductores ofrece un listado paginado; GET y PATCH
+/conductores/{conductor_id} consultan y actualizan el perfil/disponibilidad.
+Administrador y Operador pueden registrar, consultar y actualizar.
+Conductor sólo consulta su propio resumen; Analista/Auditor no acceden
+a esta API individual. Se usa la sesión y RBAC existentes.
+
+Una licencia vencida puede guardarse, pero el perfil se devuelve no asignable.
+Las contraseñas son de sólo escritura y se hashean mediante Argon2id.
+PATCH no permite cambiar cuenta, rol ni credenciales.
+
+El contrato, permisos, validaciones, pruebas y límites se describen en
+[VALIDACION_ST022.md](VALIDACION_ST022.md). Los endpoints están disponibles
+en /docs y /openapi.json.
