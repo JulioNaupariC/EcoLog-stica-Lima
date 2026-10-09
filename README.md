@@ -166,13 +166,28 @@ de nuevo los servicios. Las instrucciones de arranque sin Docker siguen en
 > `docs/02 Planificación/evidencias-jira/` y están integradas en
 > [`02 Artefactos Jira V_1_0_0.md`](<docs/02 Planificación/02 Artefactos Jira V_1_0_0.md>).
 
-## Fase 03: Implementación — entregables del Sprint 1
+## Fase 03: Implementación — entregables del Sprint 2
 
-- [01 Informe de estado del proyecto V_1_0_0](<docs/03 Implementación/01 Informe de estado del proyecto V_1_0_0.md>)
-- [02 Registro de Impedimentos V_1_0_0](<docs/03 Implementación/02 Registro de Impedimentos V_1_0_0.md>)
-- [03 Revisión del Sprint V_1_0_0](<docs/03 Implementación/03 Revisión del Sprint V_1_0_0.md>)
-- [04 Retrospectiva del Sprint V_1_0_0](<docs/03 Implementación/04 Retrospectiva del Sprint V_1_0_0.md>)
+- [01 Informe de estado del proyecto](<docs/03 Implementación/01 Informe de estado del proyecto V_1_0_0.md>)
+- [02 Registro de Impedimentos](<docs/03 Implementación/02 Registro de Impedimentos V_1_0_0.md>)
+- [03 Revisión del Sprint](<docs/03 Implementación/03 Revisión del Sprint V_1_0_0.md>)
+- [04 Retrospectiva del Sprint](<docs/03 Implementación/04 Retrospectiva del Sprint V_1_0_0.md>)
 
-### Actualización operativa — 02/10/2026
+### Estado del Sprint 2 — corte del 09/10/2026
 
-Sprint 1 sigue activo, con fin reprogramado en Jira al **02/10/2026 16:00 America/Lima**. La consulta actual registra **28/28 SP** de padres y **19/19 subtareas** finalizadas, como medidas separadas. ECL-29 y los entregables preparatorios están integrados mediante PR #20 y #21. Esto no acredita demo, retrospectiva ni aceptación. Véase la [adenda de Artefactos Jira V_1_0_1](<docs/02 Planificación/02 Artefactos Jira V_1_0_1.md>) para fuentes, límites y pendientes.
+Periodo planificado comunicado: 08/10/2026–23/10/2026. Los cuatro documentos
+sustituyen su contenido anterior por el Sprint 2; el historial del Sprint 1
+permanece en Git. Se conservan los nombres exigidos por la consigna y se registra
+la versión de contenido 1.1.0 en encabezados e historial.
+
+El incremento incluye conductores, preferencias, experiencia móvil/offline,
+observabilidad y mediciones de rendimiento. La entrega de subtareas se distingue
+de la aceptación de historias: P8, rutas reales, payload de dashboard,
+concurrencia sostenida y SLA mantienen los límites documentados.
+Review y retrospectiva se preparan para la exposición; sus actas quedan pendientes.
+La planificación inicial de la fase 02 conserva su carácter histórico.
+
+La captura Jira aportada muestra los cinco padres y las 19 subtareas como
+Finalizada: 27/27 SP y 19/19 subtareas, medidas separadas. El sprint aparece
+activo con la accion Completar sprint; sus limites tecnicos estan documentados
+en los entregables.
