@@ -4,11 +4,11 @@ from datetime import date, datetime, timedelta, timezone
 from uuid import uuid4
 
 import pytest
-from alembic import command
 from sqlalchemy import inspect
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
+from alembic import command
 from app.models import Conductor, Usuario
 
 pytestmark = pytest.mark.integration
