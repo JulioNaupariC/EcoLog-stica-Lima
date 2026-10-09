@@ -71,6 +71,10 @@ describe('App', () => {
 
   it('renderiza el inicio con landmarks y enlace de acceso anónimo', () => {
     renderAt('/')
+    expect(screen.getByRole('link', { name: 'Saltar al contenido principal' })).toHaveAttribute(
+      'href',
+      '#contenido-principal',
+    )
     expect(screen.getByRole('navigation')).toHaveAccessibleName('Navegación principal')
     expect(screen.getByRole('main')).toBeInTheDocument()
     expect(screen.getByRole('contentinfo')).toBeInTheDocument()

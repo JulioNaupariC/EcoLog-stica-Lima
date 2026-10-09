@@ -19,7 +19,8 @@
 .driver-alert p { margin: .25rem 0; }
 .driver-alert-title { text-transform: uppercase; font-size: .875rem; }
 .driver-alert small { display: block; margin-top: .5rem; }
-.driver-card { display: grid; gap: .25rem; padding: 1rem; border: 1px solid #78877f; border-radius: .75rem; background: #fff; text-align: left; }
+.driver-card { display: grid; width: 100%; min-width: 0; gap: .25rem; padding: 1rem; border: 1px solid #78877f; border-radius: .75rem; background: #fff; text-align: left; }
+.driver-card > * { min-width: 0; overflow-wrap: anywhere; }
 .driver-card span:not(.driver-card-state), .driver-card small { color: #526158; }
 .driver-card-state { color: #166534; font-size: .875rem; }
 .driver-card-en_ruta, .driver-card-next { border-color: #166534; background: #effbf1; }
@@ -35,6 +36,7 @@
 .driver-filter-label { display: block; margin-bottom: .25rem; }
 .driver-filter { width: 100%; min-height: 3rem; padding: .5rem; border: 1px solid #78877f; border-radius: .75rem; font: inherit; color: #17251c; background: #fff; }
 .driver-stops { display: grid; gap: 1rem; padding: 0; list-style: none; }
+.driver-stops > li { min-width: 0; }
 .driver-stop { width: 100%; padding: 0; border: 0; border-radius: .75rem; background: transparent; font: inherit; color: inherit; cursor: pointer; }
 .driver-primary, .driver-secondary { width: 100%; min-height: 3rem; margin-top: .75rem; padding: .75rem 1rem; border: 1px solid #166534; border-radius: .75rem; font: inherit; font-size: .875rem; font-weight: 700; cursor: pointer; }
 .driver-primary { color: #fff; background: #166534; }
@@ -46,4 +48,15 @@
 .driver-footnote { color: #526158; font-size: .75rem; }
 @media (max-width: 30rem) {
   .main-content:has(.driver-page) { width: calc(100% - 2rem); padding-block: 1rem; }
+}
+
+@media (forced-colors: active) {
+  .driver-card,
+  .driver-alert,
+  .driver-panel,
+  .driver-primary,
+  .driver-secondary,
+  .driver-filter {
+    border-color: CanvasText;
+  }
 }

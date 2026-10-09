@@ -39,6 +39,7 @@ export function App() {
 
   return (
     <div className="app-shell">
+      <a className="skip-link" href="#contenido-principal">Saltar al contenido principal</a>
       <header className="site-header">
         <nav className="container" aria-label="Navegación principal">
           <Link className="brand" to="/">

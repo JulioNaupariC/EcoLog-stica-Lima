@@ -1,0 +1,100 @@
+[
+  {
+    "browser": "chrome",
+    "version": "155.0.8059.40",
+    "result": "passed",
+    "authentication": "simulated-conductor-response",
+    "widthChecks": [
+      {
+        "width": 320,
+        "horizontalOverflow": false
+      },
+      {
+        "width": 360,
+        "horizontalOverflow": false
+      },
+      {
+        "width": 768,
+        "horizontalOverflow": false
+      },
+      {
+        "width": 1280,
+        "horizontalOverflow": false
+      }
+    ],
+    "unnamedControls": 0,
+    "skipLink": "passed",
+    "focusVisible": "passed",
+    "contrastChecks": [
+      {
+        "label": "ruta",
+        "ratio": 6.07,
+        "required": 4.5
+      },
+      {
+        "label": "aviso",
+        "ratio": 6.7,
+        "required": 4.5
+      },
+      {
+        "label": "alerta",
+        "ratio": 6.47,
+        "required": 4.5
+      },
+      {
+        "label": "botón principal",
+        "ratio": 7.13,
+        "required": 4.5
+      }
+    ]
+  },
+  {
+    "browser": "firefox",
+    "version": "157.0",
+    "result": "passed",
+    "authentication": "simulated-conductor-response",
+    "widthChecks": [
+      {
+        "width": 320,
+        "horizontalOverflow": false
+      },
+      {
+        "width": 360,
+        "horizontalOverflow": false
+      },
+      {
+        "width": 768,
+        "horizontalOverflow": false
+      },
+      {
+        "width": 1280,
+        "horizontalOverflow": false
+      }
+    ],
+    "unnamedControls": 0,
+    "skipLink": "passed",
+    "focusVisible": "passed",
+    "contrastChecks": [
+      {
+        "label": "ruta",
+        "ratio": 6.07,
+        "required": 4.5
+      },
+      {
+        "label": "aviso",
+        "ratio": 6.7,
+        "required": 4.5
+      },
+      {
+        "label": "alerta",
+        "ratio": 6.47,
+        "required": 4.5
+      },
+      {
+        "label": "botón principal",
+        "ratio": 7.13,
+        "required": 4.5
+      }
+    ]
+  }
+]
