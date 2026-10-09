@@ -33,11 +33,11 @@ def test_client_lookup_and_sanitized_failure():
     session = Mock()
     identifier = uuid4()
     repository = ClienteRepository(session)
-    session.get.return_value = object()
+    session.scalar.return_value = True
     assert repository.exists(identifier)
-    session.get.return_value = None
+    session.scalar.return_value = False
     assert not repository.exists(identifier)
-    session.get.side_effect = SQLAlchemyError("private")
+    session.scalar.side_effect = SQLAlchemyError("private")
     with pytest.raises(ClienteStorageError, match="Client storage unavailable"):
         repository.exists(identifier)
 
