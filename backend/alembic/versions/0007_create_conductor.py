@@ -43,34 +43,7 @@ def upgrade() -> None:
         ),
         sa.UniqueConstraint("usuario_id", name="uq_conductor_usuario_id"),
         sa.UniqueConstraint("dni", name="uq_conductor_dni"),
-        sa.CheckConstraint("dni ~ '^[0-9]{8}
-        sa.CheckConstraint("nombre ~ '[^[:space:]]'", name="ck_conductor_nombre"),
-        sa.CheckConstraint(
-            "licencia_numero ~ '[^[:space:]]'", name="ck_conductor_licencia"
-        ),
-        sa.CheckConstraint(
-            r"telefono ~ '^\+[1-9][0-9]{7,14}$'",
-            name="ck_conductor_telefono_e164",
-        ),
-        sa.CheckConstraint(
-            "punto_partida ~ '[^[:space:]]'", name="ck_conductor_punto_partida"
-        ),
-        sa.CheckConstraint("experiencia_anios >= 0", name="ck_conductor_experiencia"),
-        sa.CheckConstraint(
-            "(disponible_desde IS NULL AND disponible_hasta IS NULL) OR "
-            "(disponible_desde IS NOT NULL AND disponible_hasta IS NOT NULL "
-            "AND disponible_desde < disponible_hasta)",
-            name="ck_conductor_disponibilidad_intervalo",
-        ),
-        sa.CheckConstraint(
-            "estado IN ('ACTIVO', 'INACTIVO')", name="ck_conductor_estado"
-        ),
-    )
-
-
-def downgrade() -> None:
-    op.drop_table("conductor")
-", name="ck_conductor_dni_ocho_digitos"),
+        sa.CheckConstraint("dni ~ '^[0-9]{8}$'", name="ck_conductor_dni_ocho_digitos"),
         sa.CheckConstraint("nombre ~ '[^[:space:]]'", name="ck_conductor_nombre"),
         sa.CheckConstraint(
             "licencia_numero ~ '[^[:space:]]'", name="ck_conductor_licencia"
