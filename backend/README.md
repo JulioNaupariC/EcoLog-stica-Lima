@@ -503,3 +503,21 @@ produce JSONL y exige que API y BD respondan correctamente dentro de 5 s.
 
 Ver [VALIDACION_ST034.md](VALIDACION_ST034.md) y
 [evidencias ECL-60](evidencias/ECL-60/README.md) para permisos, límites y reproducción.
+
+## Preferencias de entrega — ECL-52 / ST-026
+
+GET y PATCH /clientes/{cliente_id}/preferencias consultan e inicializan/actualizan
+horario_preferido, referencia y restriccion_acceso de un Cliente existente.
+Administrador y Operador utilizan la sesión y los permisos de Cliente existentes;
+los demás roles no acceden a esta proyección individual.
+
+PATCH conserva campos omitidos, permite null para limpiar y rechaza campos extra,
+texto vacío, NUL y longitudes superiores a 120/255/255 caracteres. Los textos válidos
+se preservan sin recorte. La actualización es transaccional y se limita al Cliente
+identificado en la ruta, sin crear clientes ni alterar pedidos existentes.
+
+El consumidor puede consultar preferencias al preparar un pedido y elegir usar
+la referencia. El horario textual no se convierte automáticamente en una ventana.
+El frontend de ese flujo corresponde a ST-027.
+
+Contrato, resultados y reproducción en [VALIDACION_ST026.md](VALIDACION_ST026.md).
