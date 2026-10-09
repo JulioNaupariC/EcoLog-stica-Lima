@@ -563,3 +563,9 @@ La comprobacion de cliente para registrar pedidos usa SELECT EXISTS, evitando
 recuperar el perfil completo. Ver [VALIDACION_ST038.md](VALIDACION_ST038.md) y
 [evidencias/ECL-64](evidencias/ECL-64/README.md) para comparacion y pruebas.
 El payload del dashboard sigue pendiente; este incremento no acredita RNF-012.
+
+## ECL-54 / ST-028: validacion de preferencias
+
+Ver [VALIDACION_ST028.md](VALIDACION_ST028.md) para matriz BDD, resultados
+y diferencias registradas. La API y gestion de preferencias estan contrastadas;
+P8 presenta una brecha en la propuesta al crear pedidos. El BDD sigue en borrador.
