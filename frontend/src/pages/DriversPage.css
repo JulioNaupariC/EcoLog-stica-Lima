@@ -1,0 +1,28 @@
+.drivers-page { width: 100%; min-width: 0; }
+.drivers-page h1 { font-size: clamp(2rem, 6vw, 3.25rem); }
+.driver-page-heading, .driver-list-heading, .driver-card-heading { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; }
+.driver-list { margin-block: 2rem; }
+.driver-list-heading { margin-bottom: 1rem; }
+.driver-list-heading h2, .driver-card-heading h3 { margin: 0; }
+.driver-cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+.driver-list-card { min-width: 0; padding: 1.25rem; border: 1px solid #cedbd5; border-radius: .75rem; background: white; overflow-wrap: anywhere; }
+.driver-state { border: 1px solid #789488; border-radius: .35rem; padding: .25rem .5rem; font-size: .875rem; }
+.driver-assignment { padding: .65rem .8rem; border-radius: .4rem; color: #0c5134; background: #eaf4ef; line-height: 1.5; }
+.driver-warning { color: #854d0e; background: #fff7e5; }
+.drivers-empty { padding: 1rem; border: 1px solid #cedbd5; border-radius: .5rem; background: white; line-height: 1.6; }
+.driver-count, .driver-help { color: #3f554c; line-height: 1.6; }
+.driver-help { margin-bottom: 0; }
+.drivers-secondary { min-height: 2.8rem; border: 1px solid #125b3d; border-radius: .4rem; padding: .6rem 1rem; background: white; color: #125b3d; font: inherit; font-weight: 700; cursor: pointer; }
+.drivers-secondary:hover:not(:disabled) { background: #eaf4ef; }
+.drivers-secondary:disabled { opacity: .65; cursor: default; }
+.drivers-secondary:focus-visible, .drivers-page [tabindex="-1"]:focus-visible, .driver-checkbox input:focus-visible { outline: 3px solid #1d4ed8; outline-offset: 3px; }
+.driver-actions, .driver-pagination { display: flex; align-items: center; flex-wrap: wrap; gap: 1rem; }
+.driver-pagination { margin-top: 1.25rem; }
+.driver-editor { max-width: 48rem; margin-top: 2rem; }
+.driver-form { display: grid; gap: 1.25rem; padding: clamp(1rem, 4vw, 2rem); border: 1px solid #cedbd5; border-radius: .75rem; background: white; box-shadow: 0 .5rem 1.5rem rgb(16 43 34 / 8%); }
+.driver-form fieldset { min-width: 0; margin: 0; border: 0; padding: 0; }
+.driver-form legend { margin-bottom: 1rem; font-weight: 700; }
+.driver-checkbox { display: flex; align-items: center; gap: .75rem; min-height: 2.8rem; margin-top: 1rem; }
+.driver-checkbox input { width: 1.25rem; height: 1.25rem; flex-shrink: 0; accent-color: #125b3d; }
+.drivers-page .success-alert { overflow-wrap: anywhere; }
+@media (max-width: 42rem) { .driver-cards { grid-template-columns: 1fr; } .driver-form .form-grid { grid-template-columns: 1fr; } .driver-actions { align-items: stretch; flex-direction: column; } }

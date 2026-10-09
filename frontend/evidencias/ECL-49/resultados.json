@@ -1,0 +1,43 @@
+{
+  "checkedAt": "2026-10-09T07:20:18.898Z",
+  "syntheticData": true,
+  "actualHttpApi": true,
+  "browsers": [
+    {
+      "browser": "chrome",
+      "version": "154.0.8037.98",
+      "role": "ADMINISTRADOR",
+      "passed": true,
+      "realLogin": true,
+      "realRegistration": true,
+      "duplicateConflict": true,
+      "realPatch": true,
+      "unchangedTimestampPreserved": true,
+      "availabilityRemoved": true,
+      "mobileWidth": 360,
+      "desktopWidth": 1280,
+      "horizontalOverflow": false,
+      "pageErrors": 0,
+      "conductorDenied": true,
+      "controlledFailure": "GET list 503 simulated for error/retry evidence"
+    },
+    {
+      "browser": "firefox",
+      "version": "157.0",
+      "role": "OPERADOR",
+      "passed": true,
+      "realLogin": true,
+      "realRegistration": true,
+      "duplicateConflict": true,
+      "realPatch": true,
+      "unchangedTimestampPreserved": true,
+      "availabilityRemoved": true,
+      "mobileWidth": 360,
+      "desktopWidth": 1280,
+      "horizontalOverflow": false,
+      "pageErrors": 0,
+      "conductorDenied": true,
+      "controlledFailure": "GET list 503 simulated for error/retry evidence"
+    }
+  ]
+}

@@ -140,7 +140,7 @@ describe('App', () => {
     expect(screen.getByRole('heading', { name: 'Mi itinerario' })).toBeInTheDocument()
     await user.click(screen.getByRole('link', { name: 'EcoLogística Lima' }))
     await user.click(screen.getByRole('button', { name: 'Abrir ruta de itinerario' }))
-    expect(screen.getByRole('note')).toHaveTextContent('Vista de demostración')
+    expect(await screen.findByRole('note')).toHaveTextContent('Vista de demostración')
   })
 
   it.each<AuthRole>(['ADMINISTRADOR', 'OPERADOR', 'ANALISTA', 'AUDITOR'])(
