@@ -17,4 +17,5 @@ coverage/
 .npm-cache/
 .tmp-st027-pg/
 .tmp-st024-pg/
+.tmp-st035-pg/
 test-results/

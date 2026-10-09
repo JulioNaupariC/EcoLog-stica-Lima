@@ -1,0 +1,25 @@
+{
+  "evidence_consistent": true,
+  "checks": {
+    "daily:baseline": true,
+    "daily:unique_attempts": true,
+    "daily:unique_persisted": true,
+    "daily:monotonic_durations": true,
+    "daily:summary_matches_raw": true,
+    "daily:persisted_population": true,
+    "daily:hourly_counts": true,
+    "daily:scheduled_and_actual_marks": true,
+    "stress1:baseline": true,
+    "stress1:unique_attempts": true,
+    "stress1:unique_persisted": true,
+    "stress1:monotonic_durations": true,
+    "stress1:summary_matches_raw": true,
+    "stress1:persisted_population": true,
+    "stress1:stable_window": true,
+    "aggregate:raw_percentile": true,
+    "aggregate:population": true,
+    "scope:no_monthly_sla_claim": true,
+    "files:sha256": true
+  },
+  "note": "Evidence consistency does not imply performance acceptance."
+}

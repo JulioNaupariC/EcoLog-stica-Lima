@@ -1,0 +1,41 @@
+2026-10-09 11:25:00.671 -05 [16680] LOG:  iniciando PostgreSQL 16.15, compiled by Visual C++ build 1944, 64-bit
+2026-10-09 11:25:00.672 -05 [16680] LOG:  escuchando en la dirección IPv4 «127.0.0.1», port 55455
+2026-10-09 11:25:00.703 -05 [500] LOG:  el sistema de bases de datos fue apagado en 2026-10-09 11:24:59 -05
+2026-10-09 11:25:00.742 -05 [16680] LOG:  el sistema de bases de datos está listo para aceptar conexiones
+2026-10-09 11:25:22.760 -05 [16680] LOG:  could not reserve shared memory region (addr=000001FA8A640000) for child 0000000000001300: error code 487
+2026-10-09 11:26:48.807 -05 [16680] LOG:  could not reserve shared memory region (addr=000001FA87E40000) for child 0000000000000CF4: error code 487
+2026-10-09 11:30:00.710 -05 [28456] LOG:  empezando checkpoint: time
+2026-10-09 11:31:02.625 -05 [16680] LOG:  could not reserve shared memory region (addr=000001FA8A640000) for child 0000000000001328: error code 487
+2026-10-09 11:31:44.240 -05 [16680] LOG:  could not reserve shared memory region (addr=000001FA87E40000) for child 0000000000001080: error code 487
+2026-10-09 11:34:30.198 -05 [28456] LOG:  checkpoint completo: escritos 4950 búfers (30.2%); 0 archivos WAL añadidos, 0 eliminados, 3 reciclados; write=269.305 s, sync=0.149 s, total=269.490 s; archivos sincronizados=364, más largo=0.002 s, promedio=0.001 s; distancia=52727 kB, estimación=52727 kB; lsn=0/7882E80, lsn de redo=0/48F5338
+2026-10-09 11:35:00.220 -05 [28456] LOG:  empezando checkpoint: time
+2026-10-09 11:38:16.218 -05 [32232] LOG:  no se pudo recibir datos del cliente: An existing connection was forcibly closed by the remote host.
+	
+2026-10-09 11:38:16.218 -05 [1644] LOG:  no se pudo recibir datos del cliente: An existing connection was forcibly closed by the remote host.
+	
+2026-10-09 11:38:16.221 -05 [1144] LOG:  no se pudo recibir datos del cliente: An existing connection was forcibly closed by the remote host.
+	
+2026-10-09 11:38:16.221 -05 [20928] LOG:  no se pudo recibir datos del cliente: An existing connection was forcibly closed by the remote host.
+	
+2026-10-09 11:38:16.221 -05 [32896] LOG:  no se pudo recibir datos del cliente: An existing connection was forcibly closed by the remote host.
+	
+2026-10-09 11:38:16.222 -05 [28504] LOG:  no se pudo recibir datos del cliente: An existing connection was forcibly closed by the remote host.
+	
+2026-10-09 11:38:16.222 -05 [30108] LOG:  no se pudo recibir datos del cliente: An existing connection was forcibly closed by the remote host.
+	
+2026-10-09 11:38:16.223 -05 [28980] LOG:  no se pudo recibir datos del cliente: An existing connection was forcibly closed by the remote host.
+	
+2026-10-09 11:38:16.223 -05 [12500] LOG:  no se pudo recibir datos del cliente: An existing connection was forcibly closed by the remote host.
+	
+2026-10-09 11:38:16.223 -05 [35796] LOG:  no se pudo recibir datos del cliente: An existing connection was forcibly closed by the remote host.
+	
+2026-10-09 11:38:16.223 -05 [964] LOG:  no se pudo recibir datos del cliente: An existing connection was forcibly closed by the remote host.
+	
+2026-10-09 11:38:16.265 -05 [16680] LOG:  se recibió petición de apagado rápido
+2026-10-09 11:38:16.284 -05 [16680] LOG:  abortando transacciones activas
+2026-10-09 11:38:16.290 -05 [16680] LOG:  proceso ayudante «logical replication launcher» (PID 2352) terminó con código de salida 1
+2026-10-09 11:38:16.341 -05 [28456] LOG:  checkpoint completo: escritos 4696 búfers (28.7%); 0 archivos WAL añadidos, 0 eliminados, 3 reciclados; write=196.079 s, sync=0.019 s, total=196.122 s; archivos sincronizados=24, más largo=0.004 s, promedio=0.001 s; distancia=53448 kB, estimación=53448 kB; lsn=0/AC93FE8, lsn de redo=0/7D27498
+2026-10-09 11:38:16.342 -05 [28456] LOG:  apagando
+2026-10-09 11:38:16.343 -05 [28456] LOG:  empezando checkpoint: shutdown immediate
+2026-10-09 11:38:16.415 -05 [28456] LOG:  checkpoint completo: escritos 3198 búfers (19.5%); 0 archivos WAL añadidos, 0 eliminados, 3 reciclados; write=0.024 s, sync=0.040 s, total=0.074 s; archivos sincronizados=21, más largo=0.012 s, promedio=0.002 s; distancia=48562 kB, estimación=52959 kB; lsn=0/AC94078, lsn de redo=0/AC94078
+2026-10-09 11:38:16.441 -05 [16680] LOG:  el sistema de bases de datos está apagado
