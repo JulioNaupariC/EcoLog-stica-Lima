@@ -115,9 +115,9 @@ def test_conductor_persistence_and_rejections(migration_database):
                 session.flush()
             session.rollback()
 
-        account_b = session.query(Usuario).filter_by(
-            email="driver-b@sample.invalid"
-        ).one()
+        account_b = (
+            session.query(Usuario).filter_by(email="driver-b@sample.invalid").one()
+        )
         start = datetime(2026, 10, 9, 8, tzinfo=timezone.utc)
         good = data(
             account_b,

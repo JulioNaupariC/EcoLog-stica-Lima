@@ -45,9 +45,7 @@ class Conductor(Base):
             "AND disponible_desde < disponible_hasta)",
             name="ck_conductor_disponibilidad_intervalo",
         ),
-        CheckConstraint(
-            "estado IN ('ACTIVO', 'INACTIVO')", name="ck_conductor_estado"
-        ),
+        CheckConstraint("estado IN ('ACTIVO', 'INACTIVO')", name="ck_conductor_estado"),
     )
 
     conductor_id: Mapped[UUID] = mapped_column(

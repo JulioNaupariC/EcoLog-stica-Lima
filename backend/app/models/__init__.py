@@ -1,4 +1,3 @@
-
 """Import models to register their Alembic metadata."""
 
 from app.models.auditoria import Auditoria
