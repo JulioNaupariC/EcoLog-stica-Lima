@@ -80,6 +80,9 @@ def test_client_order_revision_and_metadata(migration_database):
             "0006_create_cliente_pedido"
         )
 
+    # This test verifies the 0006 shape above. Upgrade to the current head
+    # before comparing the entire ORM metadata (including conductor/0007).
+    command.upgrade(config, "head")
     command.check(config)
     with engine.connect() as connection:
         context = MigrationContext.configure(
