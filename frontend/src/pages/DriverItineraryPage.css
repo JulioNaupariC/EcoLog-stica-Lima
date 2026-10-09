@@ -44,6 +44,15 @@
 .driver-page button:focus-visible, .driver-page select:focus-visible { outline: 3px solid #1d4ed8; outline-offset: 3px; }
 .driver-page h1:focus { outline: none; }
 .driver-footnote { color: #526158; font-size: .75rem; }
+.offline-report-actions { display: grid; gap: .75rem; }
+.offline-report-actions button {
+  min-height: 2.75rem;
+  max-width: 100%;
+  padding: .75rem;
+  font: inherit;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
 @media (max-width: 30rem) {
   .main-content:has(.driver-page) { width: calc(100% - 2rem); padding-block: 1rem; }
 }
