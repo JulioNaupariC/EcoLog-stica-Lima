@@ -1,0 +1,38 @@
+{
+  "controlled_failures": {
+    "separate_in_process_api": true,
+    "database_connection_refused": 503,
+    "process_liveness_during_db_failure": 200,
+    "database_recovered": 200,
+    "controlled_unhandled_exception": 500,
+    "five_xx_counted": true
+  },
+  "checked_at": "2026-10-09T07:54:18.468045+00:00",
+  "base_url": "http://127.0.0.1:8001",
+  "environment": "local synthetic preview, PostgreSQL 16/PostGIS Docker",
+  "real_http": true,
+  "health": 200,
+  "ready": 200,
+  "unauthenticated_metrics": 401,
+  "authenticated_metrics": 200,
+  "business_sql_observed": true,
+  "available_samples": 2,
+  "sampling": "two immediate smoke observations; not a 60-second campaign",
+  "sla_monthly_verified": false,
+  "capacity_campaign_executed": false,
+  "docker": {
+    "compose_config_quiet": true,
+    "backend_image_build": true,
+    "readiness_healthcheck": "healthy",
+    "python": "Python 3.12.10",
+    "image_id": "sha256:2e86dd095914e3938c888132a4eb6e414e0b3d1d9e1f9264ee14fa1cc5285399",
+    "temporary_smoke_container_removed": true
+  },
+  "quality": {
+    "unit_tests_passed": 450,
+    "integration_tests_passed": 104,
+    "backend_statement_coverage_percent": 92.87,
+    "ruff_check": true,
+    "ruff_format_check": true
+  }
+}

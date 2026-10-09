@@ -488,3 +488,18 @@ PATCH no permite cambiar cuenta, rol ni credenciales.
 El contrato, permisos, validaciones, pruebas y límites se describen en
 [VALIDACION_ST022.md](VALIDACION_ST022.md). Los endpoints están disponibles
 en /docs y /openapi.json.
+
+## Métricas y disponibilidad — ECL-60 / ST-034
+
+GET /metrics expone contadores HTTP, errores 5xx, solicitudes en vuelo e histogramas
+de latencia HTTP y SQL. Requiere sesión y permiso INDICADORES_CONSULTAR del RBAC existente.
+Las etiquetas usan rutas agrupadas y operaciones SQL; no contienen datos personales,
+cuerpos, SQL ni credenciales. El registro es por proceso y se reinicia con la API.
+
+GET /health conserva liveness. GET /health/ready comprueba SELECT 1 con un pool de
+lectura limitado y devuelve 200/503. El healthcheck Docker usa este segundo endpoint.
+Para observaciones externas: `python -m app.monitoring.poll --interval 60`, desde backend;
+produce JSONL y exige que API y BD respondan correctamente dentro de 5 s.
+
+Ver [VALIDACION_ST034.md](VALIDACION_ST034.md) y
+[evidencias ECL-60](evidencias/ECL-60/README.md) para permisos, límites y reproducción.

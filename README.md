@@ -94,8 +94,11 @@ pero el navegador llama al API mediante `http://127.0.0.1:8000`; el nombre
 el origen exacto `http://127.0.0.1:5173`. Mantener `127.0.0.1` en ambos lados
 para la cookie de sesión `SameSite=Strict`.
 
-Los healthchecks de API y frontend verifican que sus procesos responden. El
-healthcheck de base usa `pg_isready`; por sí solo no acredita PostGIS ni el
+El healthcheck del frontend verifica su proceso. El de API utiliza
+`/health/ready` y exige una lectura `SELECT 1` en PostgreSQL (ECL-60).
+`/health` sigue disponible como liveness independiente de BD. Las métricas
+protegidas y los sondeos se describen en
+[VALIDACION_ST034.md](backend/VALIDACION_ST034.md). El healthcheck de base usa `pg_isready`; por sí solo no acredita PostGIS ni el
 esquema. Para ello sirven `app.db.check`, la comparación `alembic current` /
 `alembic heads` y una inspección de las tablas de aplicación.
 Si falla un paso, consultar `docker compose --env-file .env ps` y los logs del

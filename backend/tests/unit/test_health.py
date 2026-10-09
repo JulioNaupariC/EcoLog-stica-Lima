@@ -21,6 +21,7 @@ def test_health_and_documentation():
 def test_engine_disposed_on_shutdown(monkeypatch):
     engine = MagicMock()
     audit_engine = MagicMock()
+    monkeypatch.setattr("app.main.instrument_engine", Mock())
     business_builder = Mock(return_value=engine)
     audit_builder = Mock(return_value=audit_engine)
     monkeypatch.setattr("app.main.build_engine", business_builder)
@@ -68,6 +69,7 @@ def test_later_initialization_failure_disposes_both_engines(monkeypatch):
     engine = MagicMock()
     audit_engine = MagicMock()
     original = RuntimeError("factory-failure")
+    monkeypatch.setattr("app.main.instrument_engine", Mock())
     factory_builder = Mock(side_effect=[MagicMock(), original])
     monkeypatch.setattr("app.main.build_engine", Mock(return_value=engine))
     monkeypatch.setattr("app.main.build_audit_engine", Mock(return_value=audit_engine))
