@@ -1,0 +1,105 @@
+{
+  "generated_at_utc": "2026-10-09T17:18:08.072953+00:00",
+  "database": "ecologistica_ecl63_queries_test",
+  "python": "3.13.3",
+  "postgresql": "PostgreSQL 16.9 (Debian 16.9-1.pgdg110+1) on x86_64-pc-linux-gnu, compiled by gcc (Debian 10.2.1-6) 10.2.1 20210110, 64-bit",
+  "postgis": "3.5.2",
+  "cliente_count": 100,
+  "pedido_count": 100000,
+  "states": {
+    "PENDIENTE": 10000,
+    "ENTREGADO": 90000
+  },
+  "indexes": [
+    {
+      "tablename": "cliente",
+      "indexname": "cliente_pkey",
+      "indexdef": "CREATE UNIQUE INDEX cliente_pkey ON public.cliente USING btree (cliente_id)"
+    },
+    {
+      "tablename": "pedido",
+      "indexname": "idx_pedido_pendiente_ventana",
+      "indexdef": "CREATE INDEX idx_pedido_pendiente_ventana ON public.pedido USING btree (estado, ventana_inicio)"
+    },
+    {
+      "tablename": "pedido",
+      "indexname": "idx_pedido_ubicacion",
+      "indexdef": "CREATE INDEX idx_pedido_ubicacion ON public.pedido USING gist (ubicacion)"
+    },
+    {
+      "tablename": "pedido",
+      "indexname": "pedido_pkey",
+      "indexdef": "CREATE UNIQUE INDEX pedido_pkey ON public.pedido USING btree (pedido_id)"
+    }
+  ],
+  "dashboard": {
+    "status": "NOT_IMPLEMENTED",
+    "bytes": null,
+    "limit_bytes": 250000,
+    "passes": null
+  },
+  "routes": {
+    "status": "NOT_IMPLEMENTED",
+    "plans": []
+  },
+  "method": "Five sequential SELECT EXPLAIN ANALYZE BUFFERS JSON runs; cache uncontrolled, no concurrent load, no HTTP latency",
+  "queries": {
+    "cliente_exists": {
+      "scope": "Existing ClienteRepository.exists: cold identity-map SELECT",
+      "execution_ms": [
+        0.019,
+        0.029,
+        0.015,
+        0.017,
+        0.013
+      ],
+      "median_execution_ms": 0.017,
+      "planning_ms": [
+        0.064,
+        0.061,
+        0.022,
+        0.024,
+        0.018
+      ],
+      "plan_file": "cliente_exists.json"
+    },
+    "pedido_coordinates": {
+      "scope": "Existing PedidoRepository.coordinates",
+      "execution_ms": [
+        0.046,
+        0.025,
+        0.023,
+        0.021,
+        0.016
+      ],
+      "median_execution_ms": 0.023,
+      "planning_ms": [
+        0.091,
+        0.04,
+        0.035,
+        0.029,
+        0.024
+      ],
+      "plan_file": "pedido_coordinates.json"
+    },
+    "candidate_pending_window": {
+      "scope": "Prospective query only: no production listing endpoint",
+      "execution_ms": [
+        0.046,
+        0.042,
+        0.037,
+        0.03,
+        0.029
+      ],
+      "median_execution_ms": 0.037,
+      "planning_ms": [
+        0.07,
+        0.037,
+        0.035,
+        0.03,
+        0.029
+      ],
+      "plan_file": "candidate_pending_window.json"
+    }
+  }
+}

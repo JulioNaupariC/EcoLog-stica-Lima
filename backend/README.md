@@ -549,3 +549,10 @@ P95 y 5xx observados son favorables; concurrencia sostenida y tablero no acredit
 El SLA mensual permanece NO MEDIDO. La
 [verificación derivada](evidencias/ECL-62/verificacion-fuentes.json) registra el
 recálculo numérico y las discrepancias de integridad sin modificar evidencias previas.
+
+## ECL-63 / ST-037: mediciones iniciales
+
+Consultar [INFORME_ST037.md](INFORME_ST037.md) y
+[evidencias/ECL-63](evidencias/ECL-63/README.md). Incluye planes reales de
+consultas de pedidos sobre datos sinteticos y oportunidades para ST-038.
+Dashboard y rutas permanecen pendientes; no se acredita RNF-012.
