@@ -1,0 +1,175 @@
+{
+  "ticket": "ECL-62 / ST-036",
+  "report_date_local": "2026-10-09",
+  "source_git_head": "803534542bcd0f6553811612fcfaa2d1093dd3a4",
+  "method": "Offline recalculation; source audit writer disabled; original sources unchanged",
+  "numerical_recalculation": {
+    "evidence_consistent": false,
+    "checks": {
+      "daily:baseline": true,
+      "daily:unique_attempts": true,
+      "daily:unique_persisted": true,
+      "daily:monotonic_durations": true,
+      "daily:summary_matches_raw": true,
+      "daily:persisted_population": true,
+      "daily:hourly_counts": true,
+      "daily:scheduled_and_actual_marks": true,
+      "daily:actual_hourly_counts": true,
+      "stress1:baseline": true,
+      "stress1:unique_attempts": true,
+      "stress1:unique_persisted": true,
+      "stress1:monotonic_durations": true,
+      "stress1:summary_matches_raw": true,
+      "stress1:persisted_population": true,
+      "stress1:stable_window_or_declared_invalid": true,
+      "stress2:baseline": true,
+      "stress2:unique_attempts": true,
+      "stress2:unique_persisted": true,
+      "stress2:monotonic_durations": true,
+      "stress2:summary_matches_raw": true,
+      "stress2:persisted_population": true,
+      "stress2:stable_window_or_declared_invalid": true,
+      "stress3:baseline": true,
+      "stress3:unique_attempts": true,
+      "stress3:unique_persisted": true,
+      "stress3:monotonic_durations": true,
+      "stress3:summary_matches_raw": true,
+      "stress3:persisted_population": true,
+      "stress3:stable_window_or_declared_invalid": true,
+      "stress2-recovery:baseline": true,
+      "stress2-recovery:unique_attempts": true,
+      "stress2-recovery:unique_persisted": true,
+      "stress2-recovery:monotonic_durations": true,
+      "stress2-recovery:summary_matches_raw": true,
+      "stress2-recovery:persisted_population": true,
+      "stress2-recovery:stable_window_or_declared_invalid": true,
+      "aggregate:raw_percentile": true,
+      "aggregate:population": true,
+      "scope:no_monthly_sla_claim": true,
+      "files:sha256": false
+    },
+    "availability_slots": {
+      "daily": {
+        "expected_slots": 211,
+        "observed_slots": 211,
+        "available_slots": 211,
+        "unavailable_slots": 0,
+        "missing_slots": 0,
+        "duplicate_samples": 0,
+        "conservative_available_percent": 100.0,
+        "observation_coverage_percent": 100.0
+      },
+      "stress1": {
+        "expected_slots": 782,
+        "observed_slots": 756,
+        "available_slots": 756,
+        "unavailable_slots": 0,
+        "missing_slots": 26,
+        "duplicate_samples": 26,
+        "conservative_available_percent": 96.67519181585678,
+        "observation_coverage_percent": 96.67519181585678
+      },
+      "stress2": {
+        "expected_slots": 24361,
+        "observed_slots": 148,
+        "available_slots": 147,
+        "unavailable_slots": 1,
+        "missing_slots": 24213,
+        "duplicate_samples": 4,
+        "conservative_available_percent": 0.6034235047822339,
+        "observation_coverage_percent": 0.6075284265834736
+      },
+      "stress3": {
+        "expected_slots": 782,
+        "observed_slots": 764,
+        "available_slots": 764,
+        "unavailable_slots": 0,
+        "missing_slots": 18,
+        "duplicate_samples": 18,
+        "conservative_available_percent": 97.69820971867007,
+        "observation_coverage_percent": 97.69820971867007
+      },
+      "stress2-recovery": {
+        "expected_slots": 783,
+        "observed_slots": 780,
+        "available_slots": 780,
+        "unavailable_slots": 0,
+        "missing_slots": 3,
+        "duplicate_samples": 3,
+        "conservative_available_percent": 99.61685823754789,
+        "observation_coverage_percent": 99.61685823754789
+      }
+    },
+    "daily_timing": {
+      "early_count": 55,
+      "max_early_seconds": 0.0012970225629942433,
+      "max_late_seconds": 0.09964321603547432
+    },
+    "note": "Evidence consistency does not imply performance acceptance."
+  },
+  "global_manifest": {
+    "file": "backend/evidencias/ECL-61/evidence-sha256.json",
+    "entries": 186,
+    "exact_matches": 177,
+    "compressed_files_exact_matches": 14,
+    "crlf_lf_equivalent": [
+      {
+        "path": "campaign-20261009/daily/generator-source.py",
+        "reason": "CRLF/LF",
+        "expected_sha256": "6830ccb55bd0064a28322996d80803c7514f857fbfe458f4b7a10b3c5b4fa565",
+        "working_copy_sha256": "c36909ebf103260a17bbe17b127a3fc55ca587e3b7134505ecf278470ddcf36e"
+      },
+      {
+        "path": "campaign-20261009/orchestrator-source.txt",
+        "reason": "CRLF/LF",
+        "expected_sha256": "a4f45fc313a5bdb13e43ff19f23536faa0a97d5a22e00ff8948ebf71c7a2b711",
+        "working_copy_sha256": "f6d3edfdcae456f321bce380989c93d92b614a9f895bd9bb2acab664d9f243d0"
+      },
+      {
+        "path": "INCIDENCIAS.md",
+        "reason": "CRLF/LF",
+        "expected_sha256": "7ff12445fe41a26729eadfa7d5fdd4d19f85e7d43625e0d5d01394f56fb1df69",
+        "working_copy_sha256": "72af464c1f2f8991e7cddcf4a50be1019a26add2b1667cd05256d17b90e50ef5"
+      },
+      {
+        "path": "README.md",
+        "reason": "CRLF/LF",
+        "expected_sha256": "4309d8154e745821222356cbc617a93fcef510bbf7028b9ac33cb6c74477749a",
+        "working_copy_sha256": "68e6dd9b6c827bb0fe2121f47e4a2ae8e120336187f46962eb62d101a9da98e1"
+      },
+      {
+        "path": "recovery-20261009/orchestrator-source.txt",
+        "reason": "CRLF/LF",
+        "expected_sha256": "d4da0910e4747f864f29d8cbad401b58605381eb52a8054a858cea3286cf2967",
+        "working_copy_sha256": "63b1ae05e5f574652c5180f0a4ef1fa177529285e737c91dd0e29cc5d1d4a390"
+      }
+    ],
+    "unresolved": [
+      {
+        "path": "campaign-20261009/postgres.log",
+        "reason": "unresolved byte mismatch",
+        "expected_sha256": "72b4bec4473ee3680fb71bb0489f40df8d6a0c9c694f0f61efc5481ae95e7e68",
+        "working_copy_sha256": "ad02a4c01c53fe466d4c10d9045daf2af67633670d6bd7ea0fc443bc40a825ab"
+      },
+      {
+        "path": "recovery-20261009/postgres.log",
+        "reason": "unresolved byte mismatch",
+        "expected_sha256": "033629c36169b74021d89e29956c72faed13b2747d1421531acd5cc73c491526",
+        "working_copy_sha256": "78e92e97692d852d11af4ca59684d53627747ed2bd086d933b85a682489bb061"
+      },
+      {
+        "path": "smoke2/postgres.log",
+        "reason": "unresolved byte mismatch",
+        "expected_sha256": "fd224852ece62d5ffa05957c82057cef7651577e26046b5a66c152dcf8a94edf",
+        "working_copy_sha256": "f0eeb7b81ca3af3c6b7309089e4459ea7b3982d427966ea78884e667c0fa3d89"
+      },
+      {
+        "path": "smoke3/postgres.log",
+        "reason": "unresolved byte mismatch",
+        "expected_sha256": "276c9a993ae442566a845ac0b4b43a3adefd863a808873d43f3d88ebe47796f7",
+        "working_copy_sha256": "4e6890cc8994566c50018c7a5cfd79e372947c07a77f5cfef6cd4e28af920385"
+      }
+    ]
+  },
+  "conclusion": "Numerical consistency verified; full byte integrity not accredited; no monthly SLA measurement"
+}

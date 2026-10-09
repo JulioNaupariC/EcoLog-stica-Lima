@@ -540,3 +540,12 @@ Los resultados, capturas e incidencias están en
 [VALIDACION_ST035.md](VALIDACION_ST035.md) y
 [evidencias/ECL-61](evidencias/ECL-61/README.md).
 El porcentaje de sondeos exitosos no acredita el SLA mensual.
+
+## Resultados, SLA y operación — ECL-62 / ST-036
+
+El [informe técnico ST-036](INFORME_ST036.md) consolida resultados medidos de ST-035,
+comparación con umbrales, fórmula mensual del SLA y procedimientos de diagnóstico.
+P95 y 5xx observados son favorables; concurrencia sostenida y tablero no acreditados.
+El SLA mensual permanece NO MEDIDO. La
+[verificación derivada](evidencias/ECL-62/verificacion-fuentes.json) registra el
+recálculo numérico y las discrepancias de integridad sin modificar evidencias previas.
