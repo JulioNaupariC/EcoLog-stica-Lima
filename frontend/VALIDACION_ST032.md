@@ -24,7 +24,7 @@
 ## Límite de integración
 
 La API autenticada e idempotente está implementada. La revisión
-`0008_driver_assignments_and_reports` depende de `0007_create_conductor` para
+`0008_driver_reports` depende de `0007_create_conductor` para
 evitar la colisión de revisiones Alembic. El backend ofrece
 `DriverReportService.provision_assignment(...)` como integración interna no HTTP.
 Hasta conectar el planificador confiable a esa operación,
@@ -49,7 +49,7 @@ sustituye pruebas con lector de pantalla, usuarios o dispositivos móviles.
 | `c:/python314/python.exe -m pytest --basetemp .pytest-tmp-st032 tests/unit --cov=app --cov-report=term --cov-fail-under=80` (desde `backend/`) | 322 pruebas aprobadas; cobertura total 90.42% |
 | `C:\python314\python.exe -m ruff check .` | Aprobado |
 | `python -m ruff format --check .` | 107 archivos ya formateados |
-| `python -m alembic heads` | Un único head: `0008_driver_assignments_and_reports` |
+| `python -m alembic heads` | Un único head: `0008_driver_reports` |
 | Navegador integrado: viewport 360 px; home/login | Sin scroll horizontal; campos y enlace de navegación de 44 px |
 | Navegador integrado: IndexedDB real con transporte simulado | Snapshot guardado/leído/borrado; reporte pendiente tras error y retirado de la cola tras ACK coincidente |
 | `$env:DATABASE_URL='postgresql+psycopg://offline:offline@localhost/offline'; C:\python314\python.exe -m alembic upgrade head --sql` | SQL PostgreSQL generado sin conectarse a una base |

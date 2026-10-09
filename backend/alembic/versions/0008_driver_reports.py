@@ -4,7 +4,7 @@ import sqlalchemy as sa
 
 from alembic import op
 
-revision = "0008_driver_assignments_and_reports"
+revision = "0008_driver_reports"
 down_revision = "0007_create_conductor"
 branch_labels = None
 depends_on = None

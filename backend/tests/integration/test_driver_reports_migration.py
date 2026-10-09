@@ -9,7 +9,7 @@ pytestmark = pytest.mark.integration
 def test_driver_assignment_and_report_migration(migration_database):
     engine, config = migration_database
     command.upgrade(config, "0006_create_cliente_pedido")
-    command.upgrade(config, "0008_driver_assignments_and_reports")
+    command.upgrade(config, "0008_driver_reports")
 
     with engine.connect() as connection:
         inspector = inspect(connection)
@@ -18,7 +18,7 @@ def test_driver_assignment_and_report_migration(migration_database):
             "driver_report",
         }
         assert connection.scalar(text("SELECT version_num FROM alembic_version")) == (
-            "0008_driver_assignments_and_reports"
+            "0008_driver_reports"
         )
         assert {
             column["name"] for column in inspector.get_columns("driver_stop_assignment")

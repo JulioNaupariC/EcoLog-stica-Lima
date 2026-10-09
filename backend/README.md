@@ -424,7 +424,7 @@ usan exclusivamente la `TEST_DATABASE_URL` validada por el fixture existente.
 
 ## Itinerario del conductor y reportes offline — ECL-58
 
-La revisión `0008_driver_assignments_and_reports` agrega asignaciones mínimas
+La revisión `0008_driver_reports` agrega asignaciones mínimas
 conductor-parada e informes persistidos. `GET /conductor/itinerario` y
 `POST /conductor/reportes` requieren sesión activa y rol `CONDUCTOR`; ambos
 permisos se auditan con alcance propio. El propietario siempre se obtiene de la
