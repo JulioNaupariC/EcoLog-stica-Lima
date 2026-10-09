@@ -7,6 +7,7 @@ import { NotFoundPage } from '../pages/NotFoundPage'
 import { OrderCreatePage } from '../pages/OrderCreatePage'
 import { VehiclesPage } from '../pages/VehiclesPage'
 import { DriversPage } from '../pages/DriversPage'
+import { DeliveryPreferencesPage } from '../pages/DeliveryPreferencesPage'
 import { logout, type AuthRole, type LoginResponse } from '../services/auth'
 import { clearItinerary } from '../services/offlineStorage'
 import { listPendingReports } from '../services/reportQueue'
@@ -115,6 +116,9 @@ export function App() {
             {createOrdersAllowed ? (
               <Link className="nav-link" to="/conductores">Conductores</Link>
             ) : null}
+            {createOrdersAllowed ? (
+              <Link className="nav-link" to="/clientes/preferencias">Preferencias de entrega</Link>
+            ) : null}
             {identity?.rol === 'CONDUCTOR' ? (
               <Link className="nav-link" to="/conductor/itinerario">Mi itinerario</Link>
             ) : null}
@@ -151,6 +155,9 @@ export function App() {
           />
           <Route path="/conductores" element={identity === null ? <Navigate to="/login" replace /> : (
             createOrdersAllowed ? <DriversPage key={identity.usuario_id} onSessionExpired={handleSessionExpired} /> : <AccessDenied />
+          )} />
+          <Route path="/clientes/preferencias" element={identity === null ? <Navigate to="/login" replace /> : (
+            createOrdersAllowed ? <DeliveryPreferencesPage key={identity.usuario_id} onSessionExpired={handleSessionExpired} /> : <AccessDenied />
           )} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>

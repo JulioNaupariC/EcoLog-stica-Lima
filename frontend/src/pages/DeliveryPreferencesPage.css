@@ -1,0 +1,22 @@
+.preferences-page { width: min(100%, 48rem); margin-inline: auto; min-width: 0; }
+.preferences-page h1 { font-size: clamp(2rem, 6vw, 3.25rem); }
+.preferences-lookup { margin-bottom: 1.5rem; }
+.preferences-form fieldset { margin: 0; padding: 0; border: 0; min-width: 0; }
+.preferences-form legend { font-weight: 700; margin-bottom: 1rem; }
+.preference-entry + .preference-entry { margin-top: 1.5rem; }
+.field-hint { margin: 0; color: #3f554c; font-size: .9rem; line-height: 1.5; }
+.preferences-page textarea { width: 100%; min-height: 2.75rem; resize: vertical; border: 1px solid #789488;
+  border-radius: .4rem; padding: .65rem .75rem; font: inherit; color: #102b22; background: #fff; }
+.preferences-page textarea:disabled { background: #f4f7f5; }
+.preferences-page textarea[aria-invalid="true"] { border-color: #a52a2a; }
+.preference-clear { display: flex; align-items: center; gap: .6rem; min-height: 2.75rem; line-height: 1.5; }
+.preference-clear input { width: 1.1rem; height: 1.1rem; flex-shrink: 0; accent-color: #125b3d; }
+.preferences-actions { display: flex; flex-wrap: wrap; gap: .75rem; }
+.preferences-secondary { min-height: 2.8rem; border: 1px solid #125b3d; border-radius: .4rem; padding: .65rem 1rem;
+  font: inherit; font-weight: 700; color: #125b3d; background: #fff; cursor: pointer; }
+.preferences-secondary:disabled { opacity: .65; cursor: default; }
+.preferences-change-client { margin-top: 1.25rem; }
+.preferences-client { overflow-wrap: anywhere; color: #3f554c; }
+.preferences-page :is(textarea, input, button, [tabindex="-1"]):focus-visible {
+  outline: 3px solid #f2a900; outline-offset: 3px; }
+@media (max-width: 30rem) { .preferences-actions { flex-direction: column; } }
