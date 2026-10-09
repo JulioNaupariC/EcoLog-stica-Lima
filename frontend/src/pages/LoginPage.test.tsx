@@ -125,7 +125,7 @@ describe('LoginPage', () => {
     submit()
     const alert = await screen.findByRole('alert')
     expect(alert).toHaveTextContent(message)
-    expect(alert).toHaveFocus()
+    await waitFor(() => { expect(alert).toHaveFocus() })
     expect(alert).not.toHaveTextContent('private-password')
     expect(screen.getByLabelText('Correo electrónico')).toHaveValue('User@example.test')
     expect(screen.getByLabelText('Contraseña')).toHaveValue('')

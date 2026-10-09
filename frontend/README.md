@@ -167,3 +167,15 @@ La cobertura excluye únicamente `src/main.tsx` (bootstrap del DOM),
 `src/env.d.ts` (declaraciones) y `src/test/setup.ts` (configuración del entorno
 de pruebas). Los módulos de aplicación, páginas y configuración del API sí se
 miden y deben alcanzar al menos 80% en líneas, sentencias, funciones y ramas.
+
+## Gestión de conductores — ECL-49 / ST-023
+
+La ruta `/conductores` permite a ADMINISTRADOR y OPERADOR registrar, listar,
+consultar y actualizar perfiles mediante la API ECL-48. Incluye paginación,
+validación de campos, disponibilidad en hora de Lima y estados de carga/error.
+El formulario de alta crea la cuenta con email y contraseña inicial; la edición
+gestiona el perfil sin modificar credenciales. Los demás roles no disponen del enlace
+y reciben acceso denegado al abrir la ruta.
+
+Validación y reproducción en [VALIDACION_ST023.md](VALIDACION_ST023.md).
+Capturas de Chrome y Firefox en [evidencias ECL-49](evidencias/ECL-49/README.md).
