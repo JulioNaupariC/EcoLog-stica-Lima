@@ -521,3 +521,12 @@ la referencia. El horario textual no se convierte automáticamente en una ventan
 El frontend de ese flujo corresponde a ST-027.
 
 Contrato, resultados y reproducción en [VALIDACION_ST026.md](VALIDACION_ST026.md).
+
+## Pruebas de gestión de conductores — ECL-50 / ST-024
+
+La suite cubre datos válidos e inválidos, permisos, disponibilidad y persistencia
+real en PostgreSQL. CI conserva JUnit y cobertura durante 30 días, incluso si
+fallan las pruebas, y exige cobertura unitaria de conductores de al menos 80 %.
+Consultar [VALIDACION_ST024.md](VALIDACION_ST024.md) para la matriz de casos y
+los resultados locales; [GUIA_JOSE_ST024.md](../GUIA_JOSE_ST024.md) explica cómo
+repetir las pruebas, subir la rama y obtener la evidencia de GitHub Actions.
