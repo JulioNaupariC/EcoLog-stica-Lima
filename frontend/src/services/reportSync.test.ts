@@ -1,8 +1,8 @@
-import { synchronizeReports } from './reportSync'
-import { listPendingReports, confirmReport, markAttempt } from './reportQueue'
+import { AcknowledgedReportPendingError, synchronizeReports } from './reportSync'
+import { listPendingReports, confirmAcknowledgedReport, markAttempt } from './reportQueue'
 import type { PendingDriverReport } from '../types/driverReport'
 
-vi.mock('./reportQueue', () => ({ listPendingReports: vi.fn(), confirmReport: vi.fn(), markAttempt: vi.fn() }))
+vi.mock('./reportQueue', () => ({ listPendingReports: vi.fn(), confirmAcknowledgedReport: vi.fn(), markAttempt: vi.fn() }))
 const owner = '123e4567-e89b-42d3-a456-426614174000'
 const report: PendingDriverReport = {
   ownerId: owner, stopId: '223e4567-e89b-42d3-a456-426614174000',
@@ -10,7 +10,7 @@ const report: PendingDriverReport = {
   status: 'ENTREGADO', createdAt: 10000, attemptCount: 0,
 }
 const list = vi.mocked(listPendingReports)
-const confirm = vi.mocked(confirmReport)
+const confirm = vi.mocked(confirmAcknowledgedReport)
 const attempt = vi.mocked(markAttempt)
 
 beforeEach(() => { vi.clearAllMocks() })
@@ -20,7 +20,7 @@ describe('Sincronización segura ST-032', () => {
     list.mockResolvedValueOnce([report]).mockResolvedValueOnce([])
     const result = await synchronizeReports(owner, { send: vi.fn().mockResolvedValue({ operationId: report.operationId, acknowledged: true }) })
     expect(result).toEqual({ sent: 1, pending: 0 })
-    expect(confirm).toHaveBeenCalledWith(owner, report.operationId)
+    expect(confirm).toHaveBeenCalledWith(report)
   })
   it('conserva pendiente cuando falla la red', async () => {
     list.mockResolvedValueOnce([report]).mockResolvedValueOnce([report])
@@ -34,5 +34,14 @@ describe('Sincronización segura ST-032', () => {
     await synchronizeReports(owner, { send: vi.fn().mockResolvedValue({ operationId: owner, acknowledged: true }) })
     expect(confirm).not.toHaveBeenCalled()
     expect(attempt).toHaveBeenCalledWith(report)
+  })
+  it('propaga un fallo local tras el ACK para reintentar con el mismo identificador', async () => {
+    list.mockResolvedValueOnce([report])
+    confirm.mockRejectedValueOnce(new Error('IndexedDB'))
+    await expect(synchronizeReports(owner, {
+      send: vi.fn().mockResolvedValue({ operationId: report.operationId, acknowledged: true }),
+    })).rejects.toBeInstanceOf(AcknowledgedReportPendingError)
+    expect(confirm).toHaveBeenCalledWith(report)
+    expect(attempt).not.toHaveBeenCalled()
   })
 })

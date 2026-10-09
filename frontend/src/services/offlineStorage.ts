@@ -43,7 +43,7 @@ function validUserId(value: string): boolean {
   return UUID_PATTERN.test(value)
 }
 
-function isItinerarySnapshot(value: unknown): value is ItinerarySnapshot {
+export function isItinerarySnapshot(value: unknown): value is ItinerarySnapshot {
   if (typeof value !== 'object' || value === null) return false
   const snapshot = value as Record<string, unknown>
   if (

@@ -1,5 +1,5 @@
 /** Sync orchestration. A real authenticated/idempotent backend adapter is REQUIRED. */
-import { confirmReport, listPendingReports, markAttempt } from './reportQueue'
+import { confirmAcknowledgedReport, listPendingReports, markAttempt } from './reportQueue'
 import type { PendingDriverReport } from '../types/driverReport'
 
 export interface ReportTransport {
@@ -9,7 +9,18 @@ export interface ReportTransport {
 
 const inProgress = new Set<string>()
 
-export async function synchronizeReports(ownerId: string, transport: ReportTransport): Promise<{ sent: number; pending: number }> {
+export class AcknowledgedReportPendingError extends Error {
+  constructor() {
+    super('El servidor confirmó el reporte, pero falta completar la confirmación en este dispositivo. Con conexión, ve a Inicio y vuelve a Mi itinerario para actualizarlo. Después pulsa Sincronizar pendientes. Tu reporte conserva el mismo identificador.')
+    this.name = 'AcknowledgedReportPendingError'
+  }
+}
+
+export async function synchronizeReports(
+  ownerId: string,
+  transport: ReportTransport,
+  onConfirmed?: (report: PendingDriverReport) => void,
+): Promise<{ sent: number; pending: number }> {
   if (inProgress.has(ownerId)) throw new Error('Sincronización ya en curso')
   inProgress.add(ownerId)
   let sent = 0
@@ -22,13 +33,19 @@ export async function synchronizeReports(ownerId: string, transport: ReportTrans
         if (ack.acknowledged !== true || ack.operationId !== report.operationId) {
           throw new Error('Confirmación inválida del servidor')
         }
-        await confirmReport(ownerId, report.operationId)
-        sent += 1
       } catch {
         await markAttempt(report)
         // Preserve order and stop to avoid retry storms while server is unavailable.
         break
       }
+      // A local failure keeps the original operation ID for an idempotent retry.
+      try {
+        await confirmAcknowledgedReport(report)
+      } catch {
+        throw new AcknowledgedReportPendingError()
+      }
+      sent += 1
+      onConfirmed?.(report)
     }
     const remaining = await listPendingReports(ownerId)
     return { sent, pending: remaining.length }

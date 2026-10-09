@@ -10,7 +10,8 @@ vi.mock('../services/reportQueue', () => ({
   listPendingReports: vi.fn(),
 }))
 
-vi.mock('../services/reportSync', () => ({
+vi.mock('../services/reportSync', async importOriginal => ({
+  ...await importOriginal<typeof import('../services/reportSync')>(),
   synchronizeReports: vi.fn(),
 }))
 
@@ -34,7 +35,10 @@ describe('OfflineReportPanel', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     listPendingReportsMock.mockResolvedValue([pendingReport])
-    synchronizeReportsMock.mockResolvedValue({ sent: 1, pending: 0 })
+    synchronizeReportsMock.mockImplementation((_owner, _transport, onConfirmed) => {
+      onConfirmed?.(pendingReport)
+      return Promise.resolve({ sent: 1, pending: 0 })
+    })
   })
 
   it('impide crear un segundo resultado para la misma parada pendiente', async () => {
@@ -72,7 +76,7 @@ describe('OfflineReportPanel', () => {
     expect(screen.getByRole('button', { name: 'Registrar no entregado' })).toBeEnabled()
   })
 
-  it('habilita un nuevo reporte para la parada después de recibir ACK', async () => {
+  it('mantiene bloqueado un nuevo reporte para la parada después de recibir ACK', async () => {
     const user = userEvent.setup()
     listPendingReportsMock
       .mockResolvedValueOnce([pendingReport])
@@ -91,6 +95,18 @@ describe('OfflineReportPanel', () => {
 
     expect(await screen.findByText('Reportes pendientes: 0')).toBeInTheDocument()
     expect(screen.queryByText(/esta parada ya tiene un reporte pendiente/i)).not.toBeInTheDocument()
-    expect(screen.getByRole('button', { name: 'Registrar entrega pendiente' })).toBeEnabled()
+    expect(screen.getByRole('button', { name: 'Registrar entrega pendiente' })).toBeDisabled()
+  })
+
+  it('informa un fallo local y conserva bloqueada la parada pendiente', async () => {
+    const user = userEvent.setup()
+    synchronizeReportsMock.mockRejectedValueOnce(new Error('IndexedDB'))
+    render(<OfflineReportPanel ownerId={ownerId} stopId={stopId} transport={transport} />)
+
+    expect(await screen.findByText(/esta parada ya tiene un reporte pendiente/i)).toBeInTheDocument()
+    await user.click(screen.getByRole('button', { name: 'Sincronizar pendientes' }))
+
+    expect(await screen.findByText(/sincroniza los pendientes existentes con su mismo identificador/i)).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Registrar entrega pendiente' })).toBeDisabled()
   })
 })

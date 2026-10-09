@@ -1,22 +1,24 @@
 import { useCallback, useEffect, useState } from 'react'
 import { ConnectionStatus } from './ConnectionStatus'
 import { createPendingReport } from '../types/driverReport'
-import type { DriverReportStatus } from '../types/driverReport'
+import type { DriverReportStatus, PendingDriverReport } from '../types/driverReport'
 import { enqueueReport, listPendingReports } from '../services/reportQueue'
-import { synchronizeReports } from '../services/reportSync'
+import { AcknowledgedReportPendingError, synchronizeReports } from '../services/reportSync'
 import type { ReportTransport } from '../services/reportSync'
 
 /** Render only inside the existing CONDUCTOR-authorized itinerary route. */
-export function OfflineReportPanel({ ownerId, stopId, transport, allowNewReport = true }: {
+export function OfflineReportPanel({ ownerId, stopId, transport, allowNewReport = true, onConfirmed }: {
   ownerId: string
   stopId: string
   transport?: ReportTransport
   allowNewReport?: boolean
+  onConfirmed?: (report: PendingDriverReport) => void
 }) {
   const [pending, setPending] = useState<number | null>(null)
   const [message, setMessage] = useState('')
   const [busy, setBusy] = useState(false)
   const [hasPendingReportForStop, setHasPendingReportForStop] = useState(false)
+  const [confirmedForStop, setConfirmedForStop] = useState(false)
   const reload = useCallback(async () => {
     const reports = await listPendingReports(ownerId)
     setPending(reports.length)
@@ -37,7 +39,7 @@ export function OfflineReportPanel({ ownerId, stopId, transport, allowNewReport 
   }, [ownerId, stopId])
 
   async function queue(status: DriverReportStatus) {
-    if (busy) return
+    if (busy || !allowNewReport || hasPendingReportForStop || confirmedForStop) return
     setBusy(true)
     try {
       await enqueueReport(createPendingReport(ownerId, stopId, status))
@@ -52,11 +54,16 @@ export function OfflineReportPanel({ ownerId, stopId, transport, allowNewReport 
     if (!transport || busy) return
     setBusy(true)
     try {
-      const result = await synchronizeReports(ownerId, transport)
+      const result = await synchronizeReports(ownerId, transport, report => {
+        if (report.stopId === stopId) setConfirmedForStop(true)
+        onConfirmed?.(report)
+      })
       await reload()
       setMessage(`${result.sent} confirmados por el servidor; ${result.pending} pendientes.`)
-    } catch {
-      setMessage('Sincronización no disponible. Los reportes se conservaron localmente.')
+    } catch (error) {
+      setMessage(error instanceof AcknowledgedReportPendingError
+        ? error.message
+        : 'No se pudo comprobar el estado local. Vuelve a abrir el itinerario y sincroniza los pendientes existentes con su mismo identificador.')
     } finally { setBusy(false) }
   }
 
@@ -66,8 +73,8 @@ export function OfflineReportPanel({ ownerId, stopId, transport, allowNewReport 
       <ConnectionStatus />
       <p role="status" aria-live="polite">Reportes pendientes: {pending ?? 'consultando…'}</p>
       <div className="offline-report-actions">
-        <button type="button" disabled={busy || !allowNewReport || hasPendingReportForStop} onClick={() => { void queue('ENTREGADO') }}>Registrar entrega pendiente</button>
-        <button type="button" disabled={busy || !allowNewReport || hasPendingReportForStop} onClick={() => { void queue('NO_ENTREGADO') }}>Registrar no entregado</button>
+        <button type="button" disabled={busy || !allowNewReport || hasPendingReportForStop || confirmedForStop} onClick={() => { void queue('ENTREGADO') }}>Registrar entrega pendiente</button>
+        <button type="button" disabled={busy || !allowNewReport || hasPendingReportForStop || confirmedForStop} onClick={() => { void queue('NO_ENTREGADO') }}>Registrar no entregado</button>
         <button type="button" disabled={busy || !transport} onClick={() => { void sync() }}>Sincronizar pendientes</button>
       </div>
       {hasPendingReportForStop ? (
