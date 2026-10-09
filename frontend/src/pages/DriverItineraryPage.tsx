@@ -1,10 +1,11 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { DEMO_ITINERARY } from '../data/demoDriverItinerary'
 import { DELIVERY_LABEL, getNextStop, getStopAlerts } from '../domain/driverItinerary'
 import type { DeliveryState, DemoItinerary, DriverAlert, DriverStop } from '../domain/driverItinerary'
 import { OfflineReportPanel } from '../components/OfflineReportPanel'
 import { clearItinerary, loadItinerary, saveItinerary } from '../services/offlineStorage'
 import type { StopSummary } from '../services/offlineStorage'
+import type { PendingDriverReport } from '../types/driverReport'
 import {
   DriverItineraryServiceError,
   driverReportTransport,
@@ -44,6 +45,12 @@ export function DriverItineraryPage({
   const [loadingAssignedStops, setLoadingAssignedStops] = useState(Boolean(ownerId))
   const [assignedStopsError, setAssignedStopsError] = useState('')
   const [usingCachedItinerary, setUsingCachedItinerary] = useState(false)
+  const handleConfirmed = useCallback((report: PendingDriverReport) => {
+    if (report.ownerId !== ownerId) return
+    setAssignedStops(stops => stops?.map(stop => stop.stopId === report.stopId
+      ? { ...stop, status: report.status }
+      : stop) ?? null)
+  }, [ownerId])
   const heading = useRef<HTMLHeadingElement>(null)
   const current = showEmpty ? null : itinerary
   const next = getNextStop(current?.stops ?? [])
@@ -57,18 +64,22 @@ export function DriverItineraryPage({
       try {
         const stops = await getDriverItinerary()
         if (!active) return
-        setAssignedStops(stops)
-        if (stops.length === 0) {
-          await clearItinerary(ownerId)
-        } else {
-          const savedAt = Date.now()
-          await saveItinerary({
-            ownerId,
-            savedAt,
-            expiresAt: savedAt + 24 * 60 * 60 * 1000,
-            stops,
-          })
+        try {
+          if (stops.length === 0) {
+            await clearItinerary(ownerId)
+          } else {
+            const savedAt = Date.now()
+            await saveItinerary({
+              ownerId,
+              savedAt,
+              expiresAt: savedAt + 24 * 60 * 60 * 1000,
+              stops,
+            })
+          }
+        } catch {
+          if (active) setAssignedStopsError('No se pudo actualizar el itinerario guardado en este dispositivo.')
         }
+        if (active) setAssignedStops(stops)
       } catch (error) {
         if (!active) return
         const retryable = error instanceof DriverItineraryServiceError && error.retryable
@@ -114,6 +125,7 @@ export function DriverItineraryPage({
         {usingCachedItinerary ? (
           <p role="status">Sin conexión: itinerario previamente guardado en este dispositivo.</p>
         ) : null}
+        {assignedStopsError ? <p role="alert">{assignedStopsError}</p> : null}
         <p>Paradas asignadas a tu sesión. Los reportes se almacenan localmente y se envían al servidor solo con confirmación.</p>
         <ol className="driver-stops">
           {assignedStops.map((stop) => (
@@ -126,6 +138,7 @@ export function DriverItineraryPage({
                 stopId={stop.stopId}
                 transport={driverReportTransport}
                 allowNewReport={stop.status === 'PENDIENTE' || stop.status === 'EN_RUTA'}
+                onConfirmed={handleConfirmed}
               />
             </li>
           ))}
@@ -139,6 +152,7 @@ export function DriverItineraryPage({
       <section className="driver-page" aria-labelledby="driver-title">
         <p className="driver-eyebrow">EcoLogística Lima</p>
         <h1 id="driver-title" tabIndex={-1}>Mi itinerario</h1>
+        {assignedStopsError ? <p role="alert">{assignedStopsError}</p> : null}
         <div className="driver-empty driver-panel">
           <h2>Aún no tienes un itinerario asignado</h2>
           <p>El servidor no tiene paradas asignadas a esta sesión.</p>
