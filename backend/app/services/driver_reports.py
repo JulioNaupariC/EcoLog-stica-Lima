@@ -6,6 +6,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session, sessionmaker
 
 from app.models.driver_stop_assignment import DriverStopAssignment
+from app.models.pedido import Pedido
 from app.models.usuario import Usuario
 from app.repositories.driver_reports import (
     DriverReportConcurrentOperation,
@@ -17,6 +18,7 @@ from app.repositories.driver_reports import (
 )
 from app.schemas.driver_report import (
     AssignedStopResponse,
+    DeliveryDetails,
     DriverReportAcknowledgement,
     DriverReportCreate,
 )
@@ -55,10 +57,11 @@ class DriverReportService:
                         stop_id=row.stop_id,
                         position=row.position,
                         status=row.status,
+                        delivery=self._delivery(session, row.pedido_id),
                     )
                     for row in rows
                 ]
-        except DriverReportStorageError:
+        except (DriverReportStorageError, SQLAlchemyError):
             raise DriverReportUnavailable("Driver itinerary unavailable") from None
 
     def save_report(
@@ -103,7 +106,13 @@ class DriverReportService:
             raise DriverReportUnavailable("Driver report unavailable") from None
 
     def provision_assignment(
-        self, *, stop_id: UUID, owner_id: UUID, position: int, status: str = "PENDIENTE"
+        self,
+        *,
+        stop_id: UUID,
+        owner_id: UUID,
+        position: int,
+        status: str = "PENDIENTE",
+        pedido_id: UUID | None = None,
     ) -> None:
         """Trusted route-planning integration point; never expose to driver clients."""
         if (
@@ -115,6 +124,8 @@ class DriverReportService:
             raise DriverAssignmentInvalid("Invalid driver assignment")
         try:
             with self._factory.begin() as session:
+                if pedido_id is not None and session.get(Pedido, pedido_id) is None:
+                    raise DriverAssignmentInvalid("Order does not exist")
                 driver = session.get(Usuario, owner_id)
                 if (
                     driver is None
@@ -124,11 +135,20 @@ class DriverReportService:
                     raise DriverReportStopNotAssigned("Driver is not active")
                 existing = session.get(DriverStopAssignment, stop_id)
                 if existing is not None:
+                    if pedido_id is not None and existing.pedido_id not in (
+                        None,
+                        pedido_id,
+                    ):
+                        raise DriverReportIdentityConflict(
+                            "Stop belongs to another order"
+                        )
                     if existing.owner_id != owner_id:
                         raise DriverReportIdentityConflict("Stop is assigned elsewhere")
                     if existing.status in ("ENTREGADO", "NO_ENTREGADO"):
                         raise DriverReportAlreadyFinal("Stop already reported")
                     existing.position = position
+                    if pedido_id is not None:
+                        existing.pedido_id = pedido_id
                     if status != "PENDIENTE":
                         existing.status = status
                 else:
@@ -138,6 +158,7 @@ class DriverReportService:
                             owner_id=owner_id,
                             position=position,
                             status=status,
+                            pedido_id=pedido_id,
                         )
                     )
         except (
@@ -148,3 +169,17 @@ class DriverReportService:
             raise
         except SQLAlchemyError:
             raise DriverReportUnavailable("Driver assignment unavailable") from None
+
+    @staticmethod
+    def _delivery(session: Session, pedido_id: UUID | None) -> DeliveryDetails | None:
+        if pedido_id is None:
+            return None
+        pedido = session.get(Pedido, pedido_id)
+        if pedido is None:
+            raise DriverReportStorageError("Assigned order unavailable")
+        return DeliveryDetails(
+            address=pedido.direccion,
+            reference=pedido.referencia,
+            window_start=pedido.ventana_inicio,
+            window_end=pedido.ventana_fin,
+        )

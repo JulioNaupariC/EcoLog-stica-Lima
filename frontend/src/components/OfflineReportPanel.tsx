@@ -5,6 +5,7 @@ import type { DriverReportStatus, PendingDriverReport } from '../types/driverRep
 import { enqueueReport, listPendingReports } from '../services/reportQueue'
 import { AcknowledgedReportPendingError, synchronizeReports } from '../services/reportSync'
 import type { ReportTransport } from '../services/reportSync'
+import { REPORTS_CHANGED } from '../hooks/useReportSynchronization'
 
 /** Render only inside the existing CONDUCTOR-authorized itinerary route. */
 export function OfflineReportPanel({ ownerId, stopId, transport, allowNewReport = true, onConfirmed }: {
@@ -27,15 +28,17 @@ export function OfflineReportPanel({ ownerId, stopId, transport, allowNewReport 
 
   useEffect(() => {
     let active = true
-    void listPendingReports(ownerId).then(items => {
+    const refresh = () => { void listPendingReports(ownerId).then(items => {
       if (active) {
         setPending(items.length)
         setHasPendingReportForStop(items.some(report => report.stopId === stopId))
       }
     }).catch(() => {
       if (active) setMessage('No se pudo abrir el almacenamiento local.')
-    })
-    return () => { active = false }
+    }) }
+    refresh()
+    window.addEventListener(REPORTS_CHANGED, refresh)
+    return () => { active = false; window.removeEventListener(REPORTS_CHANGED, refresh) }
   }, [ownerId, stopId])
 
   async function queue(status: DriverReportStatus) {
@@ -43,6 +46,7 @@ export function OfflineReportPanel({ ownerId, stopId, transport, allowNewReport 
     setBusy(true)
     try {
       await enqueueReport(createPendingReport(ownerId, stopId, status))
+      window.dispatchEvent(new Event(REPORTS_CHANGED))
       await reload()
       setMessage('Reporte guardado en este dispositivo; aún no se envió al servidor.')
     } catch {
@@ -60,6 +64,7 @@ export function OfflineReportPanel({ ownerId, stopId, transport, allowNewReport 
       })
       await reload()
       setMessage(`${result.sent} confirmados por el servidor; ${result.pending} pendientes.`)
+      window.dispatchEvent(new Event(REPORTS_CHANGED))
     } catch (error) {
       setMessage(error instanceof AcknowledgedReportPendingError
         ? error.message

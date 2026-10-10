@@ -1,11 +1,13 @@
 import { buildApiUrl } from './api'
 import type { ReportTransport } from './reportSync'
 import type { StopSummary } from './offlineStorage'
+import { isDeliveryDetails } from './offlineStorage'
 
 export class DriverItineraryServiceError extends Error {
   constructor(
     message: string,
     readonly retryable: boolean,
+    readonly status?: number,
   ) {
     super(message)
     this.name = 'DriverItineraryServiceError'
@@ -30,7 +32,7 @@ function isStopStatus(value: unknown): value is StopSummary['status'] {
 async function requestJson(url: string, init?: RequestInit): Promise<unknown> {
   let response: Response
   try {
-    response = await fetch(url, { ...init, credentials: 'include' })
+    response = await fetch(url, { ...init, credentials: 'include', cache: 'no-store' })
   } catch {
     throw new DriverItineraryServiceError('No se pudo conectar con el servicio.', true)
   }
@@ -40,6 +42,7 @@ async function requestJson(url: string, init?: RequestInit): Promise<unknown> {
         ? 'La sesión ya no permite consultar el itinerario.'
         : 'El servicio de itinerario no está disponible.',
       response.status >= 500,
+      response.status,
     )
   }
   try {
@@ -49,7 +52,7 @@ async function requestJson(url: string, init?: RequestInit): Promise<unknown> {
   }
 }
 
-export async function getDriverItinerary(): Promise<StopSummary[]> {
+export async function getDriverItinerary(expectedOwnerId?: string): Promise<StopSummary[]> {
   let url: string
   try {
     url = buildApiUrl('conductor/itinerario')
@@ -59,6 +62,9 @@ export async function getDriverItinerary(): Promise<StopSummary[]> {
   const body = await requestJson(url)
   if (!isRecord(body) || !Array.isArray(body.stops)) {
     throw new DriverItineraryServiceError('El servicio devolvió un itinerario inválido.', false)
+  }
+  if (expectedOwnerId && body.owner_id !== expectedOwnerId) {
+    throw new DriverItineraryServiceError('La sesión cambió. Vuelve a iniciar sesión.', false, 401)
   }
   return body.stops.map((item): StopSummary => {
     if (
@@ -70,10 +76,20 @@ export async function getDriverItinerary(): Promise<StopSummary[]> {
     ) {
       throw new DriverItineraryServiceError('El servicio devolvió una parada inválida.', false)
     }
+    const delivery = isRecord(item.delivery) ? {
+      address: item.delivery.address,
+      ...(item.delivery.reference === null ? {} : { reference: item.delivery.reference }),
+      windowStart: item.delivery.window_start,
+      windowEnd: item.delivery.window_end,
+    } : undefined
+    if (delivery !== undefined && !isDeliveryDetails(delivery)) {
+      throw new DriverItineraryServiceError('El servicio devolvió datos de entrega inválidos.', false)
+    }
     return {
       stopId: item.stop_id,
       position: Number(item.position),
       status: item.status,
+      ...(isDeliveryDetails(delivery) ? { delivery } : {}),
     }
   })
 }

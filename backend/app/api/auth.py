@@ -1,5 +1,6 @@
 """Login and current-session logout endpoints."""
 
+from datetime import datetime
 from typing import Annotated
 from uuid import UUID
 
@@ -32,9 +33,10 @@ class LoginRequest(BaseModel):
 class LoginResponse(BaseModel):
     usuario_id: UUID
     rol: Rol
+    expires_at: datetime | None = None
 
 
-@router.post("/login", response_model=LoginResponse)
+@router.post("/login", response_model=LoginResponse, response_model_exclude_none=True)
 def login(
     payload: LoginRequest,
     request: Request,
@@ -64,6 +66,7 @@ def login(
     return LoginResponse(
         usuario_id=result.identidad.usuario_id,
         rol=Rol(result.identidad.rol),
+        expires_at=result.expira_en if result.identidad.rol == Rol.CONDUCTOR else None,
     )
 
 

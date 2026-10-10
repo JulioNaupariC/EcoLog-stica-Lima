@@ -12,6 +12,7 @@ import {
   getDriverItinerary,
 } from '../services/driverItinerary'
 import './DriverItineraryPage.css'
+import { useReportSynchronization } from '../hooks/useReportSynchronization'
 
 function OperationalAlerts({ alerts }: { alerts: readonly DriverAlert[] }) {
   return <section className="driver-alerts" aria-label="Alertas operativas de demostración">
@@ -34,9 +35,11 @@ function StopCard({ stop, next = false }: { stop: DriverStop; next?: boolean }) 
 export function DriverItineraryPage({
   itinerary = DEMO_ITINERARY,
   ownerId,
+  onSessionExpired,
 }: {
   itinerary?: DemoItinerary | null
   ownerId?: string
+  onSessionExpired?: () => void
 }) {
   const [selected, setSelected] = useState<DriverStop | null>(null)
   const [filter, setFilter] = useState<'TODAS' | DeliveryState>('TODAS')
@@ -52,6 +55,26 @@ export function DriverItineraryPage({
       : stop) ?? null)
   }, [ownerId])
   const heading = useRef<HTMLHeadingElement>(null)
+  const verifyForSynchronization = useCallback(async () => {
+    if (!ownerId) return false
+    try {
+      const stops = await getDriverItinerary(ownerId)
+      if (stops.length) {
+        const savedAt = Date.now()
+        await saveItinerary({ ownerId, savedAt, expiresAt: savedAt + 24 * 60 * 60 * 1000, stops })
+      } else await clearItinerary(ownerId)
+      setAssignedStops(stops)
+      setUsingCachedItinerary(false)
+      return true
+    } catch (error) {
+      if (error instanceof DriverItineraryServiceError && (error.status === 401 || error.status === 403)) {
+        onSessionExpired?.()
+        return false
+      }
+      throw error
+    }
+  }, [ownerId, onSessionExpired])
+  const syncMessage = useReportSynchronization(ownerId, Boolean(assignedStops), verifyForSynchronization, handleConfirmed)
   const current = showEmpty ? null : itinerary
   const next = getNextStop(current?.stops ?? [])
   const visible = (current?.stops ?? []).filter((stop) => filter === 'TODAS' || stop.state === filter)
@@ -62,7 +85,7 @@ export function DriverItineraryPage({
     let active = true
     void (async () => {
       try {
-        const stops = await getDriverItinerary()
+        const stops = await getDriverItinerary(ownerId)
         if (!active) return
         try {
           if (stops.length === 0) {
@@ -82,6 +105,10 @@ export function DriverItineraryPage({
         if (active) setAssignedStops(stops)
       } catch (error) {
         if (!active) return
+        if (error instanceof DriverItineraryServiceError && (error.status === 401 || error.status === 403)) {
+          onSessionExpired?.()
+          return
+        }
         const retryable = error instanceof DriverItineraryServiceError && error.retryable
         if (retryable) {
           try {
@@ -106,7 +133,7 @@ export function DriverItineraryPage({
       }
     })()
     return () => { active = false }
-  }, [ownerId])
+  }, [ownerId, onSessionExpired])
 
   if (ownerId && loadingAssignedStops) {
     return (
@@ -125,6 +152,7 @@ export function DriverItineraryPage({
         {usingCachedItinerary ? (
           <p role="status">Sin conexión: itinerario previamente guardado en este dispositivo.</p>
         ) : null}
+        {syncMessage ? <p role="status">{syncMessage}</p> : null}
         {assignedStopsError ? <p role="alert">{assignedStopsError}</p> : null}
         <p>Paradas asignadas a tu sesión. Los reportes se almacenan localmente y se envían al servidor solo con confirmación.</p>
         <ol className="driver-stops">
@@ -133,6 +161,11 @@ export function DriverItineraryPage({
               <h2>Parada {stop.position}</h2>
               <p className="driver-card-state">{STOP_STATUS_LABEL[stop.status]}</p>
               <p className="driver-stop-id">Identificador: {stop.stopId}</p>
+              {stop.delivery ? <dl>
+                <dt>Dirección de entrega</dt><dd>{stop.delivery.address}</dd>
+                {stop.delivery.reference ? <><dt>Referencia</dt><dd>{stop.delivery.reference}</dd></> : null}
+                <dt>Horario de entrega</dt><dd>{new Date(stop.delivery.windowStart).toLocaleString('es-PE')} – {new Date(stop.delivery.windowEnd).toLocaleString('es-PE')}</dd>
+              </dl> : <p>La asignación todavía no contiene dirección ni horario. Solicita al coordinador una asignación vinculada a su pedido.</p>}
               <OfflineReportPanel
                 ownerId={ownerId}
                 stopId={stop.stopId}
@@ -154,6 +187,7 @@ export function DriverItineraryPage({
         <h1 id="driver-title" tabIndex={-1}>Mi itinerario</h1>
         {assignedStopsError ? <p role="alert">{assignedStopsError}</p> : null}
         <div className="driver-empty driver-panel">
+          {syncMessage ? <p role="status">{syncMessage}</p> : null}
           <h2>Aún no tienes un itinerario asignado</h2>
           <p>El servidor no tiene paradas asignadas a esta sesión.</p>
         </div>

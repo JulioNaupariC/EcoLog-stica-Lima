@@ -86,7 +86,8 @@ def test_provisions_assignment_only_for_active_conductor(service):
         assert assignment.position == 1
         assert assignment.status == "PENDIENTE"
     assert [
-        stop.model_dump(mode="json") for stop in reports.list_assignments(driver_id)
+        stop.model_dump(mode="json", exclude_none=True)
+        for stop in reports.list_assignments(driver_id)
     ] == [
         {
             "stop_id": str(stop_id),

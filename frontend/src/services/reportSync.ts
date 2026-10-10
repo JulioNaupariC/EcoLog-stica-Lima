@@ -16,7 +16,7 @@ export class AcknowledgedReportPendingError extends Error {
   }
 }
 
-export async function synchronizeReports(
+async function performSynchronization(
   ownerId: string,
   transport: ReportTransport,
   onConfirmed?: (report: PendingDriverReport) => void,
@@ -50,4 +50,17 @@ export async function synchronizeReports(
     const remaining = await listPendingReports(ownerId)
     return { sent, pending: remaining.length }
   } finally { inProgress.delete(ownerId) }
+}
+
+/** Web Locks coordinates tabs; backend operation_id remains the final duplicate guard. */
+export async function synchronizeReports(
+  ownerId: string,
+  transport: ReportTransport,
+  onConfirmed?: (report: PendingDriverReport) => void,
+): Promise<{ sent: number; pending: number }> {
+  if (typeof navigator !== 'undefined' && navigator.locks) {
+    return navigator.locks.request(`ecologistica-sync-${ownerId}`, () =>
+      performSynchronization(ownerId, transport, onConfirmed))
+  }
+  return performSynchronization(ownerId, transport, onConfirmed)
 }

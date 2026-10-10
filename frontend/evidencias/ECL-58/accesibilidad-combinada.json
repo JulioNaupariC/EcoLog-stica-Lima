@@ -1,0 +1,336 @@
+[
+  {
+    "browser": "chrome",
+    "version": "155.0.8059.40",
+    "api": "simulated; only UI accessibility evaluated",
+    "checks": [
+      {
+        "label": "01-login-360",
+        "dimensions": {
+          "viewport": 360,
+          "scroll": 360
+        },
+        "violations": [],
+        "incomplete": [],
+        "passes": 19
+      },
+      {
+        "label": "02-validacion-360",
+        "dimensions": {
+          "viewport": 360,
+          "scroll": 360
+        },
+        "violations": [],
+        "incomplete": [],
+        "passes": 23
+      },
+      {
+        "label": "03-itinerario-360",
+        "dimensions": {
+          "viewport": 360,
+          "scroll": 360
+        },
+        "violations": [],
+        "incomplete": [],
+        "passes": 23
+      },
+      {
+        "label": "05-itinerario-768",
+        "dimensions": {
+          "viewport": 768,
+          "scroll": 768
+        },
+        "violations": [],
+        "incomplete": [],
+        "passes": 23
+      },
+      {
+        "label": "05-itinerario-1280",
+        "dimensions": {
+          "viewport": 1280,
+          "scroll": 1280
+        },
+        "violations": [],
+        "incomplete": [],
+        "passes": 23
+      },
+      {
+        "label": "06-espaciado-360",
+        "dimensions": {
+          "viewport": 360,
+          "scroll": 360
+        },
+        "violations": [],
+        "incomplete": [],
+        "passes": 23
+      }
+    ],
+    "keyboard": [
+      {
+        "tag": "BUTTON",
+        "text": "Cerrar sesión",
+        "focusVisible": true,
+        "outlineColor": "rgb(29, 78, 216)",
+        "outlineStyle": "solid",
+        "outlineWidth": "3px"
+      },
+      {
+        "tag": "A",
+        "text": "Mi itinerario",
+        "focusVisible": true,
+        "outlineColor": "rgb(29, 78, 216)",
+        "outlineStyle": "solid",
+        "outlineWidth": "3px"
+      },
+      {
+        "tag": "BUTTON",
+        "text": "Registrar entrega pendiente",
+        "focusVisible": true,
+        "outlineColor": "rgb(29, 78, 216)",
+        "outlineStyle": "solid",
+        "outlineWidth": "3px"
+      },
+      {
+        "tag": "BUTTON",
+        "text": "Registrar no entregado",
+        "focusVisible": true,
+        "outlineColor": "rgb(29, 78, 216)",
+        "outlineStyle": "solid",
+        "outlineWidth": "3px"
+      },
+      {
+        "tag": "BUTTON",
+        "text": "Sincronizar pendientes",
+        "focusVisible": true,
+        "outlineColor": "rgb(29, 78, 216)",
+        "outlineStyle": "solid",
+        "outlineWidth": "3px"
+      },
+      {
+        "tag": "BUTTON",
+        "text": "Registrar entrega pendiente",
+        "focusVisible": true,
+        "outlineColor": "rgb(29, 78, 216)",
+        "outlineStyle": "solid",
+        "outlineWidth": "3px"
+      },
+      {
+        "tag": "BUTTON",
+        "text": "Registrar no entregado",
+        "focusVisible": true,
+        "outlineColor": "rgb(29, 78, 216)",
+        "outlineStyle": "solid",
+        "outlineWidth": "3px"
+      },
+      {
+        "tag": "BUTTON",
+        "text": "Sincronizar pendientes",
+        "focusVisible": true,
+        "outlineColor": "rgb(29, 78, 216)",
+        "outlineStyle": "solid",
+        "outlineWidth": "3px"
+      },
+      {
+        "tag": "BODY",
+        "text": "\n    Saltar al contenido principalEcoLogística LimaRol: CONDUCTORCerrar sesiónMi itinerarioEcoLogística LimaMi itinerarioParadas asignadas a tu sesión. Los reportes se almacenan localmente y se envían al servidor solo con confirmación.Parada 1PendienteIdentificador: 223e4567-e89b-42d3-a456-426614174001Dirección de entregaAv. Sintetica 123 - ingreso principal de pruebaReferenciaPuerta de pruebaHorario de entrega10/10/2026, 4:00:00 a. m. – 10/10/2026, 1:00:00 p. m.Reportes de la paradaDispositivo conectado. La disponibilidad del servidor no está verificada.Reportes pendientes: 0Registrar entrega pendienteRegistrar no entregadoSincronizar pendientesParada 2PendienteIdentificador: 223e4567-e89b-42d3-a456-426614174002Dirección de entregaAv. Sintetica 123 - ingreso principal de pruebaReferenciaPuerta de pruebaHorario de entrega10/10/2026, 4:00:00 a. m. – 10/10/2026, 1:00:00 p. m.Reportes de la paradaDispositivo conectado. La disponibilidad del servidor no está verificada.Reportes pendientes: 0Registrar entrega pendienteRegistrar no entregadoSincronizar pendientesBase técnica del optimizador de rutas sostenibles.\n    \n  \n\n",
+        "focusVisible": false,
+        "outlineColor": "rgb(24, 48, 40)",
+        "outlineStyle": "none",
+        "outlineWidth": "3px"
+      },
+      {
+        "tag": "A",
+        "text": "Saltar al contenido principal",
+        "focusVisible": true,
+        "outlineColor": "rgb(29, 78, 216)",
+        "outlineStyle": "solid",
+        "outlineWidth": "3px"
+      },
+      {
+        "tag": "A",
+        "text": "EcoLogística Lima",
+        "focusVisible": true,
+        "outlineColor": "rgb(29, 78, 216)",
+        "outlineStyle": "solid",
+        "outlineWidth": "3px"
+      },
+      {
+        "tag": "BUTTON",
+        "text": "Cerrar sesión",
+        "focusVisible": true,
+        "outlineColor": "rgb(29, 78, 216)",
+        "outlineStyle": "solid",
+        "outlineWidth": "3px"
+      }
+    ],
+    "skipLink": "passed",
+    "focusContrastWhite": 6.701618401398375
+  },
+  {
+    "browser": "firefox",
+    "version": "157.0",
+    "api": "simulated; only UI accessibility evaluated",
+    "checks": [
+      {
+        "label": "01-login-360",
+        "dimensions": {
+          "viewport": 360,
+          "scroll": 360
+        },
+        "violations": [],
+        "incomplete": [],
+        "passes": 19
+      },
+      {
+        "label": "02-validacion-360",
+        "dimensions": {
+          "viewport": 360,
+          "scroll": 360
+        },
+        "violations": [],
+        "incomplete": [],
+        "passes": 23
+      },
+      {
+        "label": "03-itinerario-360",
+        "dimensions": {
+          "viewport": 360,
+          "scroll": 360
+        },
+        "violations": [],
+        "incomplete": [],
+        "passes": 23
+      },
+      {
+        "label": "05-itinerario-768",
+        "dimensions": {
+          "viewport": 768,
+          "scroll": 768
+        },
+        "violations": [],
+        "incomplete": [],
+        "passes": 23
+      },
+      {
+        "label": "05-itinerario-1280",
+        "dimensions": {
+          "viewport": 1280,
+          "scroll": 1280
+        },
+        "violations": [],
+        "incomplete": [],
+        "passes": 23
+      },
+      {
+        "label": "06-espaciado-360",
+        "dimensions": {
+          "viewport": 360,
+          "scroll": 360
+        },
+        "violations": [],
+        "incomplete": [],
+        "passes": 23
+      }
+    ],
+    "keyboard": [
+      {
+        "tag": "BUTTON",
+        "text": "Cerrar sesión",
+        "focusVisible": true,
+        "outlineColor": "rgb(29, 78, 216)",
+        "outlineStyle": "solid",
+        "outlineWidth": "3px"
+      },
+      {
+        "tag": "A",
+        "text": "Mi itinerario",
+        "focusVisible": true,
+        "outlineColor": "rgb(29, 78, 216)",
+        "outlineStyle": "solid",
+        "outlineWidth": "3px"
+      },
+      {
+        "tag": "BUTTON",
+        "text": "Registrar entrega pendiente",
+        "focusVisible": true,
+        "outlineColor": "rgb(29, 78, 216)",
+        "outlineStyle": "solid",
+        "outlineWidth": "3px"
+      },
+      {
+        "tag": "BUTTON",
+        "text": "Registrar no entregado",
+        "focusVisible": true,
+        "outlineColor": "rgb(29, 78, 216)",
+        "outlineStyle": "solid",
+        "outlineWidth": "3px"
+      },
+      {
+        "tag": "BUTTON",
+        "text": "Sincronizar pendientes",
+        "focusVisible": true,
+        "outlineColor": "rgb(29, 78, 216)",
+        "outlineStyle": "solid",
+        "outlineWidth": "3px"
+      },
+      {
+        "tag": "BUTTON",
+        "text": "Registrar entrega pendiente",
+        "focusVisible": true,
+        "outlineColor": "rgb(29, 78, 216)",
+        "outlineStyle": "solid",
+        "outlineWidth": "3px"
+      },
+      {
+        "tag": "BUTTON",
+        "text": "Registrar no entregado",
+        "focusVisible": true,
+        "outlineColor": "rgb(29, 78, 216)",
+        "outlineStyle": "solid",
+        "outlineWidth": "3px"
+      },
+      {
+        "tag": "BUTTON",
+        "text": "Sincronizar pendientes",
+        "focusVisible": true,
+        "outlineColor": "rgb(29, 78, 216)",
+        "outlineStyle": "solid",
+        "outlineWidth": "3px"
+      },
+      {
+        "tag": "BUTTON",
+        "text": "Sincronizar pendientes",
+        "focusVisible": true,
+        "outlineColor": "rgb(29, 78, 216)",
+        "outlineStyle": "solid",
+        "outlineWidth": "3px"
+      },
+      {
+        "tag": "BUTTON",
+        "text": "Sincronizar pendientes",
+        "focusVisible": true,
+        "outlineColor": "rgb(29, 78, 216)",
+        "outlineStyle": "solid",
+        "outlineWidth": "3px"
+      },
+      {
+        "tag": "BUTTON",
+        "text": "Sincronizar pendientes",
+        "focusVisible": true,
+        "outlineColor": "rgb(29, 78, 216)",
+        "outlineStyle": "solid",
+        "outlineWidth": "3px"
+      },
+      {
+        "tag": "BUTTON",
+        "text": "Sincronizar pendientes",
+        "focusVisible": true,
+        "outlineColor": "rgb(29, 78, 216)",
+        "outlineStyle": "solid",
+        "outlineWidth": "3px"
+      }
+    ],
+    "skipLink": "passed",
+    "focusContrastWhite": 6.701618401398375
+  }
+]
