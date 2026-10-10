@@ -2,6 +2,7 @@
 
 from uuid import UUID
 
+from sqlalchemy import select
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 
@@ -18,6 +19,7 @@ class ClienteRepository:
 
     def exists(self, cliente_id: UUID) -> bool:
         try:
-            return self._session.get(Cliente, cliente_id) is not None
+            lookup = select(Cliente.cliente_id).where(Cliente.cliente_id == cliente_id)
+            return bool(self._session.scalar(select(lookup.exists())))
         except SQLAlchemyError:
             raise ClienteStorageError("Client storage unavailable") from None

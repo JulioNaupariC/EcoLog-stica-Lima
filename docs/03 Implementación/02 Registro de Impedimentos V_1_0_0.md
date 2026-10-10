@@ -1,38 +1,65 @@
-# Registro de impedimentos
+# Registro de impedimentos — Sprint 2
 
-**Nombre del Proyecto:** EcoLogística Lima, para DistriRápido S.A.C.
+**Nombre del Proyecto:** EcoLogística Lima — optimizador de rutas sostenibles para DistriRápido S.A.C.
 
-**Líder del Proyecto:** Julio Armando Naupari Camarena
+**Líder del Proyecto:** Julio Armando Naupari Camarena.
 
-**Versión:** 1.0.0
+**Asignatura:** Taller de Proyectos 2 — Ingeniería de Sistemas e Informática.
 
-**Fecha de corte:** noche del 01/10/2026 (America/Lima; hora exacta no registrada)
+**Sprint:** Sprint 2 — Gestión operativa y experiencia del conductor.
 
-**Estado de preparación:** registro previo a inspección; fechas históricas y responsables sin evidencia se mantienen explícitamente pendientes.
+**Periodo planificado:** 08/10/2026–23/10/2026, según el tablero compartido.
 
-La **fecha de registro** de estas filas es la incorporación al presente documento; no representa la fecha en que surgió el impedimento. La fecha de detección se consigna en comentarios cuando consta. Las fechas objetivo nuevas son propuestas de seguimiento, no compromisos aceptados.
+**Fecha de corte:** 09/10/2026, America/Lima.
 
-| Impedimento # | Fecha de Registro | Descripción del Impedimento así como el Impacto en el Proyecto | Prioridad | Reportado por | Fecha tope de Resolución | Estado | Fecha de Resolución | Resolución/Comentarios |
+**Versión del contenido:** 1.1.0.
+
+**Fuente del corte técnico:** repositorio local en `df55c72` y sus informes de validación.
+
+**Estado Jira aportado:** cinco padres y 19 subtareas finalizados; 27/27 SP de padres.
+Fuente: captura del tablero compartida por Giancarlo; sprint visible como activo.
+
+## Criterio del registro
+
+Los hallazgos se registran al corte documental del 09/10; esa fecha no atribuye
+una fecha de detección histórica que no consta. Los responsables de seguimiento
+y plazos son propuestas para confirmar en la retrospectiva. Ninguna fila vacía
+ni marcador de plantilla se presenta como dato real.
+
+| Impedimento # | Fecha de Registro | Descripción e impacto en el proyecto | Prioridad | Reportado por | Fecha tope de Resolución | Estado | Fecha de Resolución | Resolución/Comentarios |
 |---|---|---|---|---|---|---|---|---|
-| IMP-01 | 01/10/2026 | La política CORS impedía integrar desde el navegador las solicitudes con cookie al API en los orígenes documentados; afectaba la demostración de login y pedidos. | Alta | No registrado; falta atribución del reporte inicial. | No registrado; no consta plazo histórico. | Resuelto | No registrado; falta fecha de cierre en Jira. | Resuelto mediante [ECL-45](https://continental-team-il84x39k.atlassian.net/browse/ECL-45), que figura **Finalizada** en el corte. El [README backend](../../backend/README.md#integración-navegadorapi--ecl-45) y el [README frontend](../../frontend/README.md#configuración-de-entorno) documentan la configuración de integración. Fecha de detección: **No registrado**; falta historial del ticket. |
-| IMP-02 | 01/10/2026 | Al inicio faltaba `.env` en la raíz para validar el arranque Docker; la validación del entorno de ECL-29 quedó interrumpida hasta disponer de configuración local. No se registran valores ni secretos. | Alta | No registrado; falta atribución del reporte inicial. | No registrado; no consta plazo histórico. | Superado en validación local; ECL-29 continúa In Review / QA. | No registrado; falta bitácora fechada de la solución local. | La falta inicial fue superada en la implementación y validación local de [ECL-29](https://continental-team-il84x39k.atlassian.net/browse/ECL-29) aportadas por Antony al [PR #20](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/20), según el coordinador. Esto no acredita Compose integrado en `main` ni cierre del ticket. Fecha de detección: **No registrado**; falta bitácora. |
-| IMP-03 | 01/10/2026 | `alembic check` tiene una limitación al comparar objetos espaciales de PostGIS; puede producir una comprobación de esquema no concluyente y dificulta usar ese comando como única prueba de migraciones. | Media | No registrado; falta reporte con autor. | **02/10/2026, propuesta** para definir verificación alternativa; aceptación pendiente de confirmar. | Pendiente | Pendiente de realizar. | Conservar la limitación como conocida; contrastar migraciones y pruebas de integración contra PostGIS y documentar el resultado. El [README backend](../../backend/README.md#postgresql-16-y-postgis) documenta el comando, pero no esta limitación. La fuente del hallazgo es el dato del coordinador sobre validación local de [ECL-29](https://continental-team-il84x39k.atlassian.net/browse/ECL-29) en el [PR #20](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/20); falta log fechado. Fecha de detección: **No registrado**. |
-| IMP-04 | 01/10/2026 | Falta que un segundo integrante reproduzca el arranque siguiendo el README de ECL-29; sin esa prueba independiente no se acredita la reproducibilidad del entorno ni el DoD del enabler ECL-19. | Alta | No registrado; falta asignación formal del hallazgo. | **02/10/2026, propuesta** antes de la inspección; aceptación pendiente de confirmar. | Pendiente | Pendiente de realizar. | Solicitar evidencia del segundo integrante: comandos, entorno, resultado y errores sin secretos. [ECL-29](https://continental-team-il84x39k.atlassian.net/browse/ECL-29) está **In Review / QA** en [PR #20](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/20); [RNF-013](../01%20Inicio/07.%20Requisitos%20no%20funcionales%20V_1_1_0.md) exige instalación independiente. Fecha de detección: **No registrado**; falta primer aviso fechado. |
+| S2-01 | 09/10/2026, consolidación | Colisión de revisión Alembic de conductores/reportes; podía dejar varias ramas de migración incompatibles | Alta | Coordinador Giancarlo; conversación de integración | Superado al corte | Resuelto en código | Verificado al corte; fecha exacta de corrección no registrada | 0008_driver_reports depende de 0007_create_conductor. Mantener orden y pruebas; fuente ST-032 |
+| S2-02 | 09/10/2026 | Formulario de pedidos no propone las preferencias guardadas; impide el flujo P8/RF-005 | Alta | Validación ECL-54; consolidada por Giancarlo | Antes del cierre 23/10/2026, propuesta | Pendiente | No resuelto al corte | D-01 reproducido en Chrome/Firefox. Julio/Frank ratifican interacción; José/Giancarlo preparan UI con contrato de Antony |
+| S2-03 | 09/10/2026 | Planificador no conectado a provisionamiento de asignaciones; no hay itinerarios reales derivados de optimización | Alta | Informe ST-032 | Antes de aceptar rutas reales, plazo por acordar | Pendiente de integración | No resuelto al corte | Endpoint puede devolver lista vacía. Antony propone integración; José valida E2E. Los ejemplos se rotulan como demostración |
+| S2-04 | 09/10/2026 | Dashboard y consultas de rutas ausentes; impide medir payload agregado y cerrar RNF-012 | Alta | Informes ST-037/ST-038 | Antes de cerrar ECL-25, propuesta 23/10/2026 para revisión | Pendiente | No resuelto al corte | Dependencias ECL-15, ECL-12 y ECL-13. No sustituir dashboard por bundle o pedidos; Giancarlo/Antony coordinan medición |
+| S2-05 | 09/10/2026 | Campaña no acredita 100 POST sostenidos ni cobertura mensual del horario operativo; SLA no medido | Alta | Consolidación ST-036 | Plan de repetición antes del 23/10/2026, propuesta; medición mensual requiere periodo completo | Pendiente de acreditación | No resuelto al corte | P95 y 5xx favorables solo en población válida. Julio/José revisan concurrencia, sondeos y condiciones del host |
+| S2-06 | 09/10/2026 | BDD de preferencias sigue en borrador; dificulta aceptar formalmente escenarios y resolver diferencias | Media | DOC-01 de ST-028 | Antes de aceptar US-005, propuesta 23/10/2026 | Pendiente de ratificación | No resuelto al corte | Frank/Julio y Antony confirman reglas; actualizar estado con evidencia, sin inferir aprobación de tests verdes |
+| S2-07 | 09/10/2026 | Validación accesible/offline limitada; no acredita lector de pantalla, dispositivos o rutas reales | Media | Límites ST-030/ST-032 | Antes de cerrar EN-004, propuesta de plan al 23/10/2026 | Pendiente de ampliación | No resuelto al corte | José/Giancarlo proponen pruebas reales de desconexión, aislamiento, teclado y lector; conservar estados sin asignación |
+| S2-08 | 09/10/2026 | Review y retrospectiva sin acta del Sprint 2; falta evidencia de feedback y acuerdos | Media | Preparación documental solicitada por Giancarlo | Fecha de exposición/reunión por confirmar | Pendiente de reunión o registro | No consta realización | Julio coordina, Frank registra asistentes y acuerdos; usar el guion sin atribuir una reunión ya realizada |
+| S2-09 | 09/10/2026 | ST-032 registró un aviso de dependencia alta en su instalación; falta conclusión vigente sobre ese hallazgo | Media | Informe ST-032, registro histórico | Revisar antes de entrega final, propuesta 23/10/2026 | Pendiente de verificación actual | No consta cierre en la fuente | Antony/José verifican versión y resultado actual del análisis; no se declara vulnerabilidad vigente ni solución sin evidencia |
 
-## Fuentes y evidencia
+## Acciones de seguimiento
 
-- Estado de ECL-29 y ECL-45, validación local y pendientes comunicados por el coordinador para el corte del 01/10/2026. El [PR #20](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/20) aporta trazabilidad de ECL-29, no prueba de merge.
-- [Artefactos Jira V_1_0_0](../02%20Planificación/02%20Artefactos%20Jira%20V_1_0_0.md), [requisitos no funcionales V_1_1_0](../01%20Inicio/07.%20Requisitos%20no%20funcionales%20V_1_1_0.md), [README backend](../../backend/README.md) y [README frontend](../../frontend/README.md).
-- La consigna HTML y la plantilla Markdown `Registro de Impedimentos.md` del ZIP proporcionan los nueve campos. No se acreditaron fechas históricas de detección/resolución, autores originales ni acuerdos sobre plazos propuestos.
+Priorizar S2-02 y S2-06 para preferencias; S2-03 y S2-07 para experiencia móvil;
+S2-04/S2-05 para cerrar objetivos de rendimiento. Cada resolución debe indicar
+commit, prueba o decisión y fecha efectiva. Los impedimentos de reuniones se
+resuelven con actas reales, no únicamente mediante actualización del Markdown.
+
+## Fuentes
+
+- [ST-028: matriz y defectos](../../backend/VALIDACION_ST028.md).
+- [ST-032: límites, migración y validación](../../frontend/VALIDACION_ST032.md).
+- [ST-036: resultados y SLA](../../backend/INFORME_ST036.md).
+- [ST-037](../../backend/INFORME_ST037.md) y [ST-038](../../backend/VALIDACION_ST038.md).
 
 ## Historial de versiones
 
 | Versión | Fecha | Cambio |
 |---|---|---|
-| 1.0.0 | 01/10/2026 | Cuatro impedimentos acreditados, con fecha de registro diferenciada de detección y resolución. |
+| 1.0.0 | 01/10/2026 | Entregable del Sprint 1; contenido anterior conservado en el historial Git. |
+| 1.1.0 | 09/10/2026 | Sustitución del contenido por el entregable del Sprint 2, con evidencias y pendientes al corte. |
+
+El nombre V_1_0_0 del archivo se conserva por exigencia de la consigna.
+La versión del contenido se incrementa a 1.1.0 para identificar esta actualización.
 
 [← Volver al README principal](../../README.md)
-
-## Actualización posterior al corte — 02/10/2026
-
-El contenido V_1_0_0 anterior conserva el corte histórico del 01/10. La [adenda operativa V_1_0_1](<../02 Planificación/02 Artefactos Jira V_1_0_1.md>) registra la reprogramación ya aplicada en Jira, los merges de PR #20 y #21, la validación independiente de Giancarlo y el nuevo estado de padres/subtareas. Los pendientes sobre aprobación e integración de esos PR corresponden al corte anterior y están superados; demo, feedback, retrospectiva y aceptación siguen sin evidencia de realización.

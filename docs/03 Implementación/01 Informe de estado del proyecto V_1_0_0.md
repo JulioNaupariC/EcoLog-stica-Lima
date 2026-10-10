@@ -1,65 +1,117 @@
-# Informe de estado del proyecto
+# Informe de estado del proyecto — Sprint 2
 
-**Nombre del Proyecto:** EcoLogística Lima, para DistriRápido S.A.C.
+**Nombre del Proyecto:** EcoLogística Lima — optimizador de rutas sostenibles para DistriRápido S.A.C.
 
-**Líder del Proyecto:** Julio Armando Naupari Camarena
+**Líder del Proyecto:** Julio Armando Naupari Camarena.
 
-**Versión:** 1.0.0
+**Asignatura:** Taller de Proyectos 2 — Ingeniería de Sistemas e Informática.
 
-**Fecha de corte:** noche del 01/10/2026 (America/Lima; hora exacta no registrada)
+**Sprint:** Sprint 2 — Gestión operativa y experiencia del conductor.
 
-**Periodo del informe:** Sprint 1, desde el 11/09/2026 hasta el corte; la línea base fijaba el fin el 25/09/2026.
+**Periodo planificado:** 08/10/2026–23/10/2026, según el tablero compartido.
 
-**Estado de preparación:** informe previo a la inspección G5117 del 02/10/2026, 15:40–16:00; demostración y aceptación pendientes de realizar.
+**Fecha de corte:** 09/10/2026, America/Lima.
 
-## Estado del proyecto
+**Versión del contenido:** 1.1.0.
 
-| Variable de control | Descripción del estado al corte |
-|---|---|
-| **Alcance** | Jira Sprint 1 (ID 4, board 3): seis elementos principales, 28 SP comprometidos. ECL-7 (3), ECL-8 (5), ECL-10 (5), ECL-20 (5) y ECL-24 (5) figuran **Finalizada**; ECL-19 (5) figura **Tareas por hacer**. Avance por estado de padres: **23/28 SP = 82,14 %**, cinco de seis elementos. ECL-27 a ECL-45: 18 de 19 subtareas **Finalizada** (94,74 %); ECL-29 sigue **In Review / QA**. Son métricas distintas; no se suman SP de padres y subtareas. No equivalen a velocidad final ni a aceptación del stakeholder. |
-| **Cronograma** | La planificación versionada y la consulta Jira conservan fin **25/09/2026 09:00**. Al corte del 01/10 hay desviación respecto de esa línea base y ECL-19 sigue abierto. Se propuso terminar el **02/10/2026 16:00**, pero falta evidencia de que el cambio se haya aplicado y aprobado en Jira. No se declara cumplimiento en plazo. |
-| **Costos** | Línea base empresarial: techo de desarrollo **S/ 500 000 (≈ USD 135 000)**; estimación detallada **USD 127 680** (USD 114 000 de subtotal más USD 13 680 de contingencia). **S/ 120 000 anuales** de mantenimiento y soporte posteriores son una línea separada. El gasto académico real y la ejecución financiera al corte **no están registrados**; faltan comprobantes, horas valorizadas y reporte de consumo. Por ello no pueden calcularse consumo real ni variación frente al presupuesto. |
-| **Calidad** | Según los logs revisados por el auditor remoto para el PR #20: CI #13 (`36947681206`) y CodeQL #4 (`36947681199`) terminaron en `success`; 244 pruebas frontend, 281 unitarias backend con cobertura **89,29 %**, y 98 de integración backend. Estas cifras corresponden a esa ejecución del PR, no al estado integrado de `main`. La auditoría remota quedó `READY FOR HUMAN REVIEW`, B0/H0/M0/L0/N2. No hay recuento consolidado de defectos del Sprint: **No registrado**. CI no construye ni arranca Compose; falta reproducción del README por un segundo integrante, aprobación humana y merge. |
+**Fuente del corte técnico:** repositorio local en `df55c72` y sus informes de validación.
 
-El alcance implementado del Sprint cubre acceso/roles, registro y listado de vehículos, registro de pedidos y controles de CI/CodeQL conforme a las subtareas acreditadas. La API de vehículos tiene operaciones adicionales, pero ECL-41 solo añadió formulario y listado en la interfaz; no se acredita edición, desactivación, filtros ni paginación frontend. El motor de optimización, mapas y dashboard pertenecen a incrementos futuros y no se declaran completos. ECL-29 aporta implementación y validación local por Antony en el PR #20 abierto (`8881b07f68ffe0e6ff095697d81fba7f1f6efd33`), todavía sin integración a `main`. ECL-35 sí quedó integrado mediante PR #19, merge `f0356d69fbecd752313ae6c2b8cf8dfb52561fde`; se establecieron CodeQL y protección de `main`, y se conserva la rama de evidencia según coordinación.
+**Estado Jira aportado:** cinco padres y 19 subtareas finalizados; 27/27 SP de padres.
+Fuente: captura del tablero compartida por Giancarlo; sprint visible como activo.
 
-## Riesgos
+## Resumen de avance
 
-| Riesgo | Responsable según registro de riesgos | Mitigación y situación al corte |
+El Sprint 2 amplía la base operativa con gestión de conductores y preferencias,
+experiencia móvil, almacenamiento offline, observabilidad y análisis de rendimiento.
+La captura Jira aportada por Giancarlo muestra cinco elementos principales y las
+19 subtareas ECL-46–64 en Finalizada: 27/27 Story Points de padres y 19/19 subtareas.
+Son medidas separadas; las subtareas no suman puntos adicionales. Los informes
+técnicos aún registran brechas y objetivos no acreditados que deben conciliarse
+con ese cierre operativo.
+
+La Review y la retrospectiva de este Sprint se preparan para la exposición.
+No se dispone de fecha, asistentes ni acuerdos de una reunión de Sprint 2 realizada.
+La captura todavía ofrece Completar sprint: el sprint aparece activo aunque sus
+actividades figuren finalizadas. El 100% corresponde a estado Jira; no equivale
+a acreditar todos los objetivos de rendimiento o aceptación en una Review.
+
+## Historias de Usuario completadas en este Sprint
+
+Los cinco padres figuran Finalizada en la captura aportada. La tabla registra
+el incremento comprobable y los límites técnicos que permanecen en sus fuentes.
+
+| Padre | Subtareas | Incremento disponible | Evaluación al corte |
+|---|---|---|---|
+| ECL-9 / US-003 — Conductores y disponibilidad | ECL-46–50 / ST-020–024 | Modelo, reglas, API protegida, formulario/listado y pruebas | Gestión implementada y validada; elegibilidad básica no equivale a factibilidad de una ruta |
+| ECL-11 / US-005 — Preferencias de entrega | ECL-51–54 / ST-025–028 | GET/PATCH, formulario, validación e aislamiento entre clientes | Gestión contrastada; propuesta en formulario de pedidos pendiente (P8); BDD sigue en borrador |
+| ECL-22 / EN-004 — Experiencia móvil y desconexión | ECL-55–58 / ST-029–032 | Diseño, itinerario/siguiente parada/alertas, mejoras móviles, IndexedDB y outbox | Incrementos disponibles; asignaciones reales dependen del planificador; revisión accesible completa pendiente |
+| ECL-23 / EN-005 — Capacidad y observabilidad | ECL-59–62 / ST-033–036 | Plan, métricas, sondeos, campaña y procedimientos operativos | Resultados locales disponibles; 100 solicitudes sostenidas y SLA mensual no acreditados |
+| ECL-25 / EN-007 — Transferencia y consultas | ECL-63–64 / ST-037–038 | EXPLAIN, mediciones y SELECT EXISTS para cliente | Mejora parcial verificada; payload de dashboard y consultas de rutas pendientes |
+
+## Demostración del trabajo completado
+
+La exposición puede mostrar alta/edición de conductores, rechazo de datos inválidos,
+preferencias por cliente, navegación móvil, cola offline y consulta de métricas.
+El [guion de Review](<03 Revisión del Sprint V_1_0_0.md>) organiza las demostraciones
+y especifica qué datos son sintéticos y qué escenarios se simulan.
+
+| Evidencia de calidad | Resultado documentado | Alcance |
 |---|---|---|
-| RSK-05: desviación del cronograma o cambio tardío de alcance | Julio Armando Naupari Camarena | Mantener el 25/09 como línea base; confirmar en Jira cualquier ajuste y dejar ECL-19/ECL-29 visibles hasta cumplir revisión e integración. |
-| RSK-06: seguridad o exposición de datos | Antony Munive Ríos | Mantener RBAC, pruebas y CodeQL. El éxito de CI/CodeQL del PR #20 no sustituye aprobación humana ni revisión del incremento integrado. |
-| RSK-09: evidencia de prueba insuficiente para aceptación | Frank Roy Yupanqui Acevedo | Preparar cuentas y datos sintéticos de demostración, conservar resultados y registrar feedback real tras la inspección. Las métricas de CI no prueban las metas del optimizador. |
-| RSK-10: dependencia de conocimiento para reproducir el entorno | Julio Armando Naupari Camarena | Un segundo integrante debe repetir el arranque documentado y registrar comandos, resultado y obstáculos antes de dar por cerrado ECL-29. |
+| ST-024 | 99 unitarias de conductores; 10 de integración; cobertura específica 98.13% | Validación de ese incremento, no total acumulado actual |
+| ST-038 | 556 unitarias backend; 117 integradas verificadas; repositorio afectado 100% | Ejecución de optimización y regresión |
+| ST-028 | 56 unitarias de preferencias; 8 integradas; 441 frontend; Chrome/Firefox | Gestión y asociación; P8 observado ausente |
+| ST-036 | P95 agregado 1.497054 s; 0% 5xx en poblaciones válidas completas | Diagnóstico local; no acredita concurrencia sostenida ni SLA |
+| ST-038 | Cinco campos del cliente → un booleano; 58 → 1 byte de valores internos | Minimización SQL; no equivale a tráfico HTTP ni demuestra aceleración |
 
-## Próximos avances
+Las ejecuciones corresponden a fechas y alcances distintos: sus conteos no se suman.
+No se afirma una nueva ejecución de pruebas por actualizar estos documentos.
 
-1. Reproducir el README de ECL-29 con un segundo integrante y conservar evidencia; completar revisión humana del PR #20 y decidir su integración sin anticipar el resultado.
-2. Confirmar con coordinación si se aplicará en Jira el fin propuesto del 02/10/2026 16:00, registrando aprobación y diferencia frente al 25/09.
-3. Preparar la demostración de 20 minutos para G5117 con operaciones de prueba autorizadas y datos sintéticos en un entorno de prueba. No afectar datos reales ni ejecutar asignación u optimización fuera del alcance implementado; registrar asistencia, resultado y feedback después, sin anticipar aceptación.
-4. Solicitar un registro de gasto académico real y de defectos del Sprint si se requiere medir costo y calidad más allá de las ejecuciones citadas.
+## Organización del código y configuración
 
-## Notas y coherencia documental
+Se conserva la arquitectura existente: backend FastAPI/SQLAlchemy/Alembic;
+frontend React/TypeScript/Vite; PostgreSQL/PostGIS y Docker Compose.
+Backend y frontend ya están separados en carpetas propias; src/frontend es
+un ejemplo de la consigna, no una necesidad de trasladar el código.
 
-- El [README principal](../../README.md) y [Artefactos Jira V_1_0_0](../02%20Planificación/02%20Artefactos%20Jira%20V_1_0_0.md) describen **18 subtareas** de la planificación inicial. La consulta operativa verificada para este corte comprende **19** (ECL-27 a ECL-45, incluida ECL-45). Cambio posterior mínimo propuesto: nota fechada en README y adenda de estado en Artefactos Jira **V_1_0_1**, preservando la fotografía original del compromiso.
-- El README y Artefactos Jira muestran Sprint activo con fin 25/09 como línea base; la propuesta de 02/10 no está confirmada aplicada. Cambio posterior mínimo propuesto: incorporar fecha real de cierre y decisión de replanificación solo cuando exista evidencia Jira; **V_1_0_1** para la adenda de Artefactos Jira. No alterar retroactivamente el [acta V_1_1_0](../01%20Inicio/02.%20Acta%20de%20constitución%20V_1_1_0.md) ni sus hitos.
-- El [modelo C4](../01%20Inicio/12.%20Modelo%20C4%20V_1_0_0.md) y los [requisitos funcionales](../01%20Inicio/06.%20Requisitos%20funcionales%20V_1_0_0.md) describen el sistema objetivo. Un ajuste posterior de documentación de implementación podría marcar explícitamente qué contenedores y funciones ya están integrados, sin rebajar requisitos para acomodarlos al avance. Los README de backend/frontend son las fuentes actuales para límites de la implementación.
-- La plantilla Markdown auténtica `Informe de Estado del Proyecto.md` del ZIP se usó para esta estructura; el HTML de la consigna duplica por error la plantilla de Review bajo el nombre de informe.
+.gitignore excluye .env privados, node_modules, entornos Python, caches y
+resultados temporales. Las evidencias sintéticas se mantienen en backend/evidencias
+y frontend/evidencias. docs/03 Implementación contiene únicamente estos cuatro Markdown.
 
-## Fuentes y evidencia
+Los requisitos, reglas y C4 describen el sistema objetivo. Los README técnicos
+y validaciones describen la implementación disponible; no se reducen requisitos
+para declarar terminadas funciones aún ausentes.
 
-- [Acta de constitución V_1_1_0](../01%20Inicio/02.%20Acta%20de%20constitución%20V_1_1_0.md), [planificación ágil](../02%20Planificación/01%20Transformando%20a%20ágil%20V_1_0_0.md), [Artefactos Jira](../02%20Planificación/02%20Artefactos%20Jira%20V_1_0_0.md), [presupuesto](../02%20Planificación/04%20Presupuesto%20del%20proyecto%20V_1_0_0.md) y [riesgos](../02%20Planificación/03%20Registro%20de%20riesgos%20V_1_0_0.md).
-- [Requisitos no funcionales V_1_1_0](../01%20Inicio/07.%20Requisitos%20no%20funcionales%20V_1_1_0.md), [README backend](../../backend/README.md) y [README frontend](../../frontend/README.md).
-- Datos de estado, inspección y logs suministrados por el coordinador para el corte del 01/10/2026; trazabilidad: [PR #20](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/20), [PR #19](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/19), Jira ECL-7, ECL-8, ECL-10, ECL-19, ECL-20, ECL-24 y ECL-27 a ECL-45. La inspección y la aceptación aún carecen de acta.
+## Pendientes
+
+1. Resolver la propuesta de preferencias en pedidos y ratificar el BDD ST-025.
+2. Conectar asignaciones del conductor al planificador y verificar rutas reales.
+3. Completar auditoría de accesibilidad y pruebas offline con el despliegue real.
+4. Acreditar concurrencia sostenida y disponibilidad durante el periodo operativo.
+5. Implementar dashboard/rutas antes de verificar el payload agregado de 250 KB.
+6. Registrar fecha, asistentes, feedback y acuerdos de Review/retrospectiva.
+7. Conciliar el cierre Jira aportado con los límites de los informes y adjuntar
+   revisión/CI correspondientes al commit final de entrega.
+
+## Fuentes y coherencia
+
+- [Conductores: API](../../backend/VALIDACION_ST022.md),
+  [interfaz](../../frontend/VALIDACION_ST023.md) y [pruebas](../../backend/VALIDACION_ST024.md).
+- [Preferencias: validación integral](../../backend/VALIDACION_ST028.md).
+- [Experiencia móvil](../../frontend/VALIDACION_ST030.md) y
+  [almacenamiento/sincronización](../../frontend/VALIDACION_ST032.md).
+- [Observabilidad](../../backend/VALIDACION_ST034.md),
+  [resultados y SLA](../../backend/INFORME_ST036.md),
+  [mediciones iniciales](../../backend/INFORME_ST037.md) y
+  [optimización](../../backend/VALIDACION_ST038.md).
 
 ## Historial de versiones
 
 | Versión | Fecha | Cambio |
 |---|---|---|
-| 1.0.0 | 01/10/2026 | Informe previo a inspección con estado Jira, integración GitHub y datos pendientes separados. |
+| 1.0.0 | 01/10/2026 | Entregable del Sprint 1; contenido anterior conservado en el historial Git. |
+| 1.1.0 | 09/10/2026 | Sustitución del contenido por el entregable del Sprint 2, con evidencias y pendientes al corte. |
+
+El nombre V_1_0_0 del archivo se conserva por exigencia de la consigna.
+La versión del contenido se incrementa a 1.1.0 para identificar esta actualización.
 
 [← Volver al README principal](../../README.md)
-
-## Actualización posterior al corte — 02/10/2026
-
-El contenido V_1_0_0 anterior conserva el corte histórico del 01/10. La [adenda operativa V_1_0_1](<../02 Planificación/02 Artefactos Jira V_1_0_1.md>) registra la reprogramación ya aplicada en Jira, los merges de PR #20 y #21, la validación independiente de Giancarlo y el nuevo estado de padres/subtareas. Los pendientes sobre aprobación e integración de esos PR corresponden al corte anterior y están superados; demo, feedback, retrospectiva y aceptación siguen sin evidencia de realización.

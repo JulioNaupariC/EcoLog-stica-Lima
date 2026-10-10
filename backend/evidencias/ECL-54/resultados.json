@@ -1,0 +1,78 @@
+{
+  "recorded_at_utc": "2026-10-09T17:45:43.208641+00:00",
+  "git_base": "3798d57f12379e6140a2679883cac6ff112caf62",
+  "source_bdd_status": "BORRADOR; approval not inferred",
+  "api_integration_passed": 8,
+  "backend_unit_passed": 56,
+  "backend_preferences_coverage_percent": 99.02,
+  "frontend_tests_passed": 441,
+  "frontend_test_files": 27,
+  "frontend_coverage": {
+    "statements": 95.65,
+    "branches": 93.93,
+    "functions": 96.06,
+    "lines": 97.76
+  },
+  "browsers": {
+    "chrome": "154.0.8037.98",
+    "firefox": "157.0"
+  },
+  "bdd": {
+    "matched": [
+      "P1",
+      "P2",
+      "P3",
+      "P4a",
+      "P4b",
+      "P4c",
+      "P5",
+      "P6",
+      "P7"
+    ],
+    "gap": [
+      "P8"
+    ]
+  },
+  "registered_findings": [
+    "D-01: order form does not propose saved preferences",
+    "DOC-01: source BDD remains draft"
+  ],
+  "simulated_case": "Browser PATCH 503 display; independent injected SQLAlchemyError tests rollback",
+  "checks": {
+    "ruff": true,
+    "frontend_lint": true,
+    "junit_counts": true,
+    "browser_scope_verified": true,
+    "no_preview_password_in_artifacts": true
+  },
+  "sha256": {
+    "backend/README.md": "d769ebba2eae4c9881b8f859990c40ef52694fbfaf11ca69b57c8ea3ad996d86",
+    "backend/VALIDACION_ST028.md": "5005e8fa1bdfee2e7bb9500d20d16df0ac5dd51a806d87e7ade043a054a677f4",
+    "backend/tests/integration/test_preferencias_bdd.py": "3e721bc25f82b88b1247cd1e467c4fd4d759c268f107e6f85a71a09e154cb497",
+    "frontend/scripts/verify-preferences-bdd.mjs": "8775d18224da16e6b5b0768073057a0c7568b12c2cfe8a59dbe7e0ddab968861",
+    "backend/evidencias/ECL-54/api-tests.xml": "2451f6f48bc036a1fd38f0c3b52ed79a47cc7cdc1ec224d193d342d1b0e567db",
+    "backend/evidencias/ECL-54/README.md": "cbe3d011f51224a28e6181a793cb68f5d19f5c1f116a5aa8f1854da1fa441249",
+    "backend/evidencias/ECL-54/unit-tests.xml": "93c856289c5c23bec21086c1e63f907e73fc782a5dfa275de347a761e2c7d443",
+    "frontend/evidencias/ECL-54/chrome-01-sin-preferencias.png": "b36734b438a28f5f2868e0fcbf3fb6fb1057d8e41177bc1586800950c52ca759",
+    "frontend/evidencias/ECL-54/chrome-02-guardado.png": "c61c43b3722f5f39f0bdf625301c5e6a61de0336f1b20dafd2217d9322bce50a",
+    "frontend/evidencias/ECL-54/chrome-03-recuperado.png": "513c4453c44fc6bdb0adb7ce78a3f78ec31d37ce5dc4c8d782158e2dd8eb1a69",
+    "frontend/evidencias/ECL-54/chrome-04-validacion.png": "fb475a66e1df1d3e401ff8a24e294c8c66f968cc3dfe48be1d412aa85fe8c35d",
+    "frontend/evidencias/ECL-54/chrome-05-movil-360.png": "4ce704471cfe310e6512ac8dd90318ff16194b5820719ea848ec17f2e9c4f413",
+    "frontend/evidencias/ECL-54/chrome-06-error-503.png": "68374a6356db68ced284824d381bf189fca18b80a7d866a7337f2ac0d41555ca",
+    "frontend/evidencias/ECL-54/chrome-07-cliente-inexistente.png": "b88ae7524a8e7e85cdc53d5de39ee0f57dee3685e014a6ea749ab798db2778bf",
+    "frontend/evidencias/ECL-54/chrome-08-acceso-denegado.png": "aa0e9960bf5244c87d796f84638fbef3e51728699fa4c9a0bee17a3fc0075fac",
+    "frontend/evidencias/ECL-54/chrome-09-P8-propuesta-ausente.png": "dedfab0c53ff90b8699a0f43ac04eba1a2c94966e30df8011b2adaf07897bf05",
+    "frontend/evidencias/ECL-54/firefox-01-sin-preferencias.png": "ce8108988ef398a5366e3021c906dc8eb278f3fc3d878f0ccb78eaafbe8fd002",
+    "frontend/evidencias/ECL-54/firefox-02-guardado.png": "1a4fbb23b306cd509f793f2a5cff9434022994ba9f4572a2ed2725a36ff96488",
+    "frontend/evidencias/ECL-54/firefox-03-recuperado.png": "e92ed53cc4411fed116a69feacec0ab416db91487555666973fc3d2695dac7c5",
+    "frontend/evidencias/ECL-54/firefox-04-validacion.png": "6aaaf1d6458c540955f7e2841cb520188b622361e68991ae47d5c0393da72320",
+    "frontend/evidencias/ECL-54/firefox-05-movil-360.png": "8ba4996ac6f098cb39f246bb81174712dc75d3fd6b80c8079058675c07de2f57",
+    "frontend/evidencias/ECL-54/firefox-06-error-503.png": "804fbb1fa9ac147f995776a50a4c59a62719bf28ab162d337dab44cfb639722e",
+    "frontend/evidencias/ECL-54/firefox-07-cliente-inexistente.png": "eae6c80ca1b1a0026a63f66154bda719ef8b736ac453b6aa1ce8f053fe9ad8d5",
+    "frontend/evidencias/ECL-54/firefox-08-acceso-denegado.png": "8247518a1581342c8c2f8e8fb7a0d49e3b7985b1228b87670730356e4ebb0b59",
+    "frontend/evidencias/ECL-54/firefox-09-P8-propuesta-ausente.png": "60294a89c36e1176f5fd56070ccf22dd803074c23de654d777ad0173ededf7fa",
+    "frontend/evidencias/ECL-54/README.md": "7d0c9e074ca67d97387a6449202abfa3474e0722174c329c8befaa6605bc1f8d",
+    "frontend/evidencias/ECL-54/resultados.json": "9c3129036b281c590e2dc5afff1068add259ca8e458bdb5c69518b0f14dc21ea",
+    "docs/02 Planificaci\u00f3n/BDD/ECL-51-ST-025-preferencias-entrega.md": "7aa05d2a87dcd524cee2b068171e4cb6438211884398a5e64d798e84586b307a"
+  }
+}
