@@ -15,6 +15,10 @@ usuarios, pedidos y direcciones sintéticos.
 - `backend-coverage.xml`: cobertura backend 93.17%; `frontend-coverage.json`:
   resumen de cobertura Vitest (líneas 97.23%).
 - `integration-tests.xml`, `integration.log`: 2 pruebas sobre base nueva.
+- `accesibilidad-combinada.json`: smoke de interfaz con los cambios ST-031 y
+  ST-032 aplicados juntos temporalmente: ambos navegadores, 360/768/1280 px,
+  teclado y axe sin infracciones. Aquí la API es simulada e incluye dirección
+  y ventana; no sustituye la campaña E2E real descrita arriba.
 - `SHA256SUMS.txt`: inventario para comprobar integridad de los archivos.
 
 El primer ciclo deja persistir el reporte y corta su respuesta. El reintento

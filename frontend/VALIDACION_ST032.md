@@ -30,6 +30,12 @@ cada operación después del ACK. La consulta SQL final contiene exactamente los
 20 UUID del navegador. Se comprueba logout y acceso con cuenta diferente.
 Resultados, registros y ocho capturas: [evidencias/ECL-58](evidencias/ECL-58/README.md).
 
+También se aplicaron temporalmente los cambios ST-031 sobre esta rama para un
+smoke de interfaz combinado: Chrome/Firefox, teclado y axe sin infracciones,
+360/768/1280 px sin desplazamiento horizontal. Ese smoke usa API simulada con
+dirección y ventana; su JSON se distingue de la campaña real. Se retiraron los
+cambios temporales y se conservan dos ramas independientes sin conflictos.
+
 Persisten avisos `act(...)` de algunos tests React y dos avisos Starlette/AnyIO;
 no fallaron las suites. GitHub Actions y revisión humana del nuevo PR quedan
 pendientes del push; no se presentan como ejecutados.
