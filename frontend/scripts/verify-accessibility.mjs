@@ -20,7 +20,7 @@ for (const [name, engine, options] of [['chrome', chromium, { channel: 'chrome' 
       const path = new URL(route.request().url()).pathname
       const body = path.endsWith('/login')
         ? { usuario_id: '123e4567-e89b-42d3-a456-426614174005', rol: 'CONDUCTOR' }
-        : { stops: [1, 2].map(position => ({ stop_id: `223e4567-e89b-42d3-a456-42661417400${position}`, position, status: 'PENDIENTE' })) }
+        : { owner_id: '123e4567-e89b-42d3-a456-426614174005', stops: [1, 2].map(position => ({ stop_id: `223e4567-e89b-42d3-a456-42661417400${position}`, position, status: 'PENDIENTE' })) }
       return route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(body) })
     })
     async function inspect(label) {
