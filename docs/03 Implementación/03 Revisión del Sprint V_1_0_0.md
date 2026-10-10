@@ -1,64 +1,106 @@
-# Revisión del Sprint
+# Revisión del Sprint — Sprint 2
 
-**Nombre del Proyecto:** EcoLogística Lima, para DistriRápido S.A.C.
+**Nombre del Proyecto:** EcoLogística Lima — optimizador de rutas sostenibles para DistriRápido S.A.C.
 
-**Líder del Proyecto:** Julio Armando Naupari Camarena
+**Líder del Proyecto:** Julio Armando Naupari Camarena.
 
-**Versión:** 1.0.0
+**Asignatura:** Taller de Proyectos 2 — Ingeniería de Sistemas e Informática.
 
-**Fecha de corte:** noche del 01/10/2026 (America/Lima; hora exacta no registrada)
+**Sprint:** Sprint 2 — Gestión operativa y experiencia del conductor.
 
-**Estado de preparación:** guion previo a la inspección G5117 del 02/10/2026, 15:40–16:00. **Demostración y feedback pendientes de realizar**.
+**Periodo planificado:** 08/10/2026–23/10/2026, según el tablero compartido.
 
-El Sprint 1 (ID 4, board 3) comprometió seis elementos principales y 28 SP. Al corte, cinco figuran **Finalizada**: 23/28 SP = **82,14 %** por estado de padres; ECL-19 (5 SP) sigue **Tareas por hacer**. De ECL-27 a ECL-45 hay 18 de 19 subtareas **Finalizada** (**94,74 %**); ECL-29 permanece **In Review / QA**. Las subtareas no aportan SP adicionales al total de padres. Estas cifras no son velocidad final ni aceptación del stakeholder.
+**Fecha de corte:** 09/10/2026, America/Lima.
+
+**Versión del contenido:** 1.1.0.
+
+**Fuente del corte técnico:** repositorio local en `df55c72` y sus informes de validación.
+
+**Estado Jira aportado:** cinco padres y 19 subtareas finalizados; 27/27 SP de padres.
+Fuente: captura del tablero compartida por Giancarlo; sprint visible como activo.
+
+**Estado de la ceremonia:** preparada para la exposición; sin acta aportada.
+Fecha, asistentes efectivos, observaciones y aceptación pendientes de registrar.
 
 ## Historias de Usuario completadas en este Sprint
 
-| HU / Jira | Estado Jira y SP | Alcance acreditado para el guion | Límite que debe explicarse |
-|---|---|---|---|
-| US-001 / ECL-7: autenticación y acceso por rol | Finalizada, 3 SP | Login, sesión por cookie HttpOnly y control de acceso por rol; interfaz de acceso y estados de error según ECL-36 a ECL-38. | La UI conserva identidad solo en memoria; tras recargar solicita iniciar sesión nuevamente. La autorización real corresponde al backend. |
-| US-002 / ECL-8: vehículos | Finalizada, 5 SP | API de vehículos y, por ECL-41, **formulario de registro y listado** con restricciones visuales por rol. | No afirmar que se mostró CRUD completo en la UI: ECL-41 no implementó edición, desactivación, reactivación, filtros ni paginación frontend. |
-| US-004 / ECL-10: pedidos | Finalizada, 5 SP | Reglas y casos BDD, API con validaciones, y formulario de registro de pedidos según ECL-42 a ECL-44. | Registrar un pedido lo deja disponible para planificación posterior; no crea ruta ni ejecuta optimización. |
+La captura aportada registra los cinco padres y las 19 subtareas como Finalizada
+(27/27 SP de padres y 19/19 subtareas). El incremento técnico se muestra por padre
+y se explica junto con los criterios todavía no acreditados en los informes.
 
-**Enablers técnicos, separados de las HU:** ECL-20 (seguridad OWASP/RBAC, 5 SP) y ECL-24 (CI/CD y puertas de calidad, 5 SP) figuran **Finalizada**. ECL-35 se integró mediante [PR #19](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/19), merge `f0356d69fbecd752313ae6c2b8cf8dfb52561fde`, con CodeQL y protección de `main`; la rama de evidencia se conserva según coordinación. ECL-19 (arquitectura reproducible, 5 SP) sigue **Tareas por hacer**: su subtarea ECL-29 está en revisión del [PR #20](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/20), head `8881b07f68ffe0e6ff095697d81fba7f1f6efd33`.
+| Historia/enabler | Trabajo demostrable | Evidencia | Elementos pendientes de aceptación |
+|---|---|---|---|
+| ECL-9 / US-003 | Alta, consulta, edición y disponibilidad de conductores; RBAC, DNI/licencia y errores | ST-022, ST-023 y ST-024 | Confirmar aceptación del equipo; elegibilidad no certifica optimización |
+| ECL-11 / US-005 | Consultar/guardar preferencias por UUID, limpiar un campo y rechazar inválidos | ST-026, ST-027 y ST-028 | P8 en formulario de pedido y aprobación BDD |
+| ECL-22 / EN-004 | Diseño móvil, siguiente parada, alertas, estado sin asignación y almacenamiento/cola | ST-029–032 | Planificador, rutas reales y validación accesible completa |
+| ECL-23 / EN-005 | Métricas protegidas, salud, sondeos y campaña documentada | ST-033–036 | Concurrencia sostenida, periodo de SLA y cobertura dashboard |
+| ECL-25 / EN-007 | EXPLAIN y consulta mínima de existencia de cliente | ST-037–038 | Payload real de dashboard y planes de rutas |
+
+La aprobación de código, la ejecución de pruebas y la aceptación del stakeholder
+son registros distintos. El cierre del 100% mostrado es operativo en Jira; la
+captura no acredita feedback ni aceptación en una reunión de Review. El sprint
+aparece activo con la acción Completar sprint.
 
 ## Demostración del trabajo completado
 
-**Demostración y feedback pendientes de realizar.** La inspección G5117 está programada para el 02/10/2026 de 15:40 a 16:00, después de este corte. No hay asistentes efectivos, capturas de la sesión, aceptación ni comentarios del stakeholder registrados.
+### Preparación
 
-| Minutos propuestos | Guion de 20 minutos | Evidencia que debe prepararse |
+Usar ambiente de pruebas con cuentas por rol y datos sintéticos. Comprobar login,
+migraciones y endpoints antes de la exposición. No mostrar contraseñas, cookies
+ni variables privadas. La siguiente agenda es un guion propuesto, no una demo
+ya realizada ante stakeholders.
+
+| Tiempo propuesto | Demostración | Resultado observable / límite |
 |---|---|---|
-| 0–2 | Estado del Sprint, objetivo y diferencia entre Jira, código integrado y aceptación. | Tablero Jira al corte y lista de seis padres; mantener visibles ECL-19 y ECL-29. |
-| 2–6 | Autenticación y roles: acceso válido, rechazo de credenciales inválidas y restricción por rol. | Cuentas de demostración de prueba con permisos conocidos; verificar que no se muestran credenciales ni datos reales. |
-| 6–10 | Vehículos: alta y listado con los roles admitidos. | Datos sintéticos y validaciones del formulario; mencionar explícitamente las operaciones UI ausentes. |
-| 10–14 | Pedidos: registro válido y rechazo de ventana o ubicación inválida. | Cliente y pedido sintéticos preparados, sin ejecutar asignación ni optimización. |
-| 14–17 | Calidad e infraestructura: resultados de CI/CodeQL y estado del PR #20. | Logs de CI #13 (`36947681206`, success) y CodeQL #4 (`36947681199`, success) del PR #20; 244 pruebas frontend, 281 unitarias backend con cobertura 89,29 % y 98 de integración backend, **según logs revisados por auditor remoto**. CI no construye ni arranca Compose. |
-| 17–20 | Pendientes y preguntas. | Lista de ECL-19/ECL-29, reproducción por segundo integrante, aprobación humana y merge; espacio para registrar feedback real. |
+| 0–2 min | Objetivo del Sprint y cinco líneas de trabajo | Incrementos y pendientes del informe de estado |
+| 2–5 min | Administrador/Operador registra y edita conductor | Persistencia y errores claros; datos inválidos rechazados |
+| 5–8 min | Preferencias de clientes A y B | Actualizar A conserva B; limpieza con null y rechazo de exceso de longitud |
+| 8–10 min | Crear pedido para el cliente | Mostrar referencia manual independiente; explicar brecha de propuesta P8 |
+| 10–13 min | Experiencia móvil a 360 px | Siguiente parada, alertas y detalle del ejemplo rotulado; estado real sin asignación |
+| 13–16 min | Consulta previa y cola offline | Mostrar snapshot/outbox en pruebas; distinguir transporte simulado de integración real pendiente |
+| 16–18 min | Salud de API/BD y métricas con sesión autorizada | Latencias, solicitudes y 5xx; /health no equivale a disponibilidad histórica |
+| 18–20 min | Campaña y comparación SQL | P95 agregado 1.497054 s; 5xx 0% en población válida; SELECT de cinco campos reducido a EXISTS |
+| 20–22 min | Preguntas y feedback | Registrar observaciones reales, decisiones y responsables acordados |
 
-**Preparación y demostración en entorno de prueba:** se permiten operaciones de prueba autorizadas, como iniciar sesión y registrar o consultar vehículos y pedidos sintéticos dentro del alcance implementado. Comprobar antes de la sesión que el entorno responde, que las cuentas de demo tienen el rol previsto y que los enlaces a logs/PR funcionan. No afectar datos reales ni ejecutar asignación u optimización fuera del alcance implementado. Registrar resultados y limitaciones; no presentar esta agenda como ejecución efectiva.
+### Evidencia disponible para apoyar la exposición
+
+- [Conductores: capturas y validación](../../frontend/VALIDACION_ST023.md).
+- [Preferencias: matriz](../../backend/VALIDACION_ST028.md) y
+  [capturas Chrome/Firefox](../../frontend/evidencias/ECL-54/README.md).
+- [Diseño de referencia](../../frontend/VALIDACION_ST030.md).
+- [Interfaz móvil](../../frontend/VALIDACION_ST030.md) y
+  [offline/sincronización](../../frontend/VALIDACION_ST032.md).
+- [Métricas API/BD](../../backend/VALIDACION_ST034.md).
+- [Capacidad y SLA](../../backend/INFORME_ST036.md).
+- [Comparación antes/después](../../backend/VALIDACION_ST038.md).
+
+### Registro de la sesión
+
+Al corte no hay registro de fecha de Sprint Review 2, asistentes, demostración
+a stakeholders, feedback ni decisión de aceptación. Julio y Frank podrán
+completar esa evidencia después de la exposición. Las capturas de pruebas
+locales respaldan funcionalidades; no sustituyen asistencia o aceptación real.
 
 ## Pendientes
 
-1. ECL-19 permanece **Tareas por hacer** y ECL-29 **In Review / QA**. La implementación y validación local de Antony y la auditoría remota `READY FOR HUMAN REVIEW` (B0/H0/M0/L0/N2) no sustituyen reproducción del README por un segundo integrante, aprobación humana ni merge. Docker/Compose no se declaran integrados en `main`.
-2. Resolver o documentar la limitación de `alembic check` con objetos espaciales de PostGIS y conservar verificación alternativa.
-3. Confirmar en Jira si se aplicó el fin propuesto **02/10/2026 16:00**. La planificación y la consulta actual conservan **25/09/2026**; la desviación no está cerrada.
-4. Realizar la inspección y recoger asistentes, evidencia, observaciones y decisión de aceptación. **Pendiente de realizar**; falta acta o registro de feedback.
-5. Continuar los módulos futuros de optimización, mapas y dashboard según backlog; su cumplimiento y las metas del MVP no se infieren de este Sprint.
+- Resolver y retestar D-01/P8; ratificar ST-025.
+- Conectar planificador y comprobar reportes offline con asignaciones reales.
+- Acreditar auditoría de accesibilidad con el alcance correspondiente.
+- Repetir condiciones de concurrencia y ampliar sondeos para SLA 05:00–22:00.
+- Obtener payload de dashboard sin mapa y planes de rutas antes de cerrar RNF-012.
+- Adjuntar feedback y actualizar decisiones del backlog tras la Review.
 
-## Fuentes y evidencia
-
-- [Planificación ágil](../02%20Planificación/01%20Transformando%20a%20ágil%20V_1_0_0.md), [Artefactos Jira](../02%20Planificación/02%20Artefactos%20Jira%20V_1_0_0.md), [requisitos funcionales](../01%20Inicio/06.%20Requisitos%20funcionales%20V_1_0_0.md), [README backend](../../backend/README.md) y [README frontend](../../frontend/README.md).
-- Estados Jira, programación G5117, hashes y resultados CI aportados por el coordinador al corte del 01/10/2026; trazabilidad de código en [PR #19](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/19) y [PR #20](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/20). Falta evidencia de la demostración efectiva.
-- La estructura de tres secciones sigue la plantilla Markdown auténtica `Revisión del Sprint.md` del ZIP de la consigna.
+Consultar el [registro de impedimentos](<02 Registro de Impedimentos V_1_0_0.md>)
+para prioridad, seguimiento propuesto y evidencia de cada diferencia.
 
 ## Historial de versiones
 
 | Versión | Fecha | Cambio |
 |---|---|---|
-| 1.0.0 | 01/10/2026 | Revisión preparatoria: HU, enablers, guion y pendientes diferenciados. |
+| 1.0.0 | 01/10/2026 | Entregable del Sprint 1; contenido anterior conservado en el historial Git. |
+| 1.1.0 | 09/10/2026 | Sustitución del contenido por el entregable del Sprint 2, con evidencias y pendientes al corte. |
+
+El nombre V_1_0_0 del archivo se conserva por exigencia de la consigna.
+La versión del contenido se incrementa a 1.1.0 para identificar esta actualización.
 
 [← Volver al README principal](../../README.md)
-
-## Actualización posterior al corte — 02/10/2026
-
-El contenido V_1_0_0 anterior conserva el corte histórico del 01/10. La [adenda operativa V_1_0_1](<../02 Planificación/02 Artefactos Jira V_1_0_1.md>) registra la reprogramación ya aplicada en Jira, los merges de PR #20 y #21, la validación independiente de Giancarlo y el nuevo estado de padres/subtareas. Los pendientes sobre aprobación e integración de esos PR corresponden al corte anterior y están superados; demo, feedback, retrospectiva y aceptación siguen sin evidencia de realización.

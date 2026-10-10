@@ -1,0 +1,49 @@
+{
+  "checkedAt": "2026-10-09T17:42:04.329Z",
+  "syntheticData": true,
+  "actualHttpApi": true,
+  "browsers": [
+    {
+      "browser": "chrome",
+      "version": "154.0.8037.98",
+      "passed": true,
+      "role": "ADMINISTRADOR",
+      "realLogin": true,
+      "realApiGetPatch": true,
+      "preferencesRetrieved": true,
+      "explicitClear": true,
+      "otherClientUnchanged": true,
+      "otherClientInitiallyPopulated": true,
+      "P8OrderProposalAvailable": false,
+      "localValidationPreservesData": true,
+      "unknownClient404": true,
+      "conductorDenied": true,
+      "mobileWidth": 360,
+      "horizontalOverflow": false,
+      "keyboardTab": true,
+      "pageErrors": 0,
+      "simulatedCase": "PATCH 503 intercepted only for error display and preservation of unsaved values"
+    },
+    {
+      "browser": "firefox",
+      "version": "157.0",
+      "passed": true,
+      "role": "OPERADOR",
+      "realLogin": true,
+      "realApiGetPatch": true,
+      "preferencesRetrieved": true,
+      "explicitClear": true,
+      "otherClientUnchanged": true,
+      "otherClientInitiallyPopulated": true,
+      "P8OrderProposalAvailable": false,
+      "localValidationPreservesData": true,
+      "unknownClient404": true,
+      "conductorDenied": true,
+      "mobileWidth": 360,
+      "horizontalOverflow": false,
+      "keyboardTab": true,
+      "pageErrors": 0,
+      "simulatedCase": "PATCH 503 intercepted only for error display and preservation of unsaved values"
+    }
+  ]
+}

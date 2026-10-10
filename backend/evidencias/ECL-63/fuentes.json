@@ -1,0 +1,26 @@
+{
+  "git_base": "8c380fb3a0cf33b20115e0f8e0f082ab4d466822",
+  "sha256": {
+    "backend/app/main.py": "d7ae0edbb7df9fbc7284d76fc0d4d5bf8720f654c50eac3f8d995cd10cdb7fa2",
+    "frontend/src/pages/HomePage.tsx": "94e47200c722f831194388558cf6844f850e2ae03a4ee6e085869e885e2f2c5d",
+    "backend/app/repositories/clientes.py": "a2715f036c1b54d0e6fae70276b33f5117f77d19b6c436222c0b384141bba50f",
+    "backend/app/repositories/pedidos.py": "8746a0ccbff7828c66b835911608835af5f4714d4a67f425ed3e57717a44ec87",
+    "backend/app/models/cliente.py": "62720bc19c42d452ffdb95947be052b5542e1971895c6289426d19c8b9f667e6",
+    "backend/app/models/pedido.py": "468102b4c0164f68cfa260a2a9308b9c0fa0d6d272a44d61f38297f58d071941",
+    "backend/scripts/measure_critical_queries.py": "21dd6662589c7fc1950cc291a0036b399f6e58b90c8bef1dd69ceca24533e1f0",
+    "docs/01 Inicio/07. Requisitos no funcionales V_1_1_0.md": "68627bc0b9da330b886dfd1b51eea9eb41c0a14c34786792d7cf171e31347ffa"
+  },
+  "checks": {
+    "median_and_plan_consistency": true,
+    "dedicated_database_guard": true,
+    "nonempty_seed_guard": true,
+    "guard_no_output_written": true,
+    "dashboard_not_claimed_measured": true
+  },
+  "evidence_sha256": {
+    "candidate_pending_window.json": "3d5f05d558389f6ecd5165c1be06ee5078399b69aa55ced160d6f37542a5989c",
+    "cliente_exists.json": "703a7e900e3f537bce11dd3196e281c42576e2b1a2f1cd275ef64596755596ba",
+    "pedido_coordinates.json": "2a50b82bb83f1eaf5e3c2532d50e0f91f32da5f75f1c1b4b2eeef934c0c98883",
+    "resultados.json": "ba9464098869860241ac0a259b7f9cd104f5bc2dc2ec97242383c481cc7c648c"
+  }
+}
