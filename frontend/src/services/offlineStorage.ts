@@ -1,6 +1,6 @@
 /**
  * ST-032 - Minimal offline itinerary snapshot store.
- * No credentials, DNI, phone numbers or personal customer details are stored.
+ * Only delivery location/window are cached; no identity/contact/credential fields.
  * IndexedDB is scoped by verified user UUID and a snapshot may expire.
  * The pending-report outbox shares this database but uses its own object store.
  */
@@ -8,6 +8,24 @@ export type StopSummary = {
   stopId: string
   position: number
   status: 'PENDIENTE' | 'EN_RUTA' | 'ENTREGADO' | 'NO_ENTREGADO'
+  delivery?: DeliveryDetails
+}
+
+export type DeliveryDetails = {
+  address: string
+  reference?: string
+  windowStart: string
+  windowEnd: string
+}
+
+export function isDeliveryDetails(value: unknown): value is DeliveryDetails {
+  if (typeof value !== 'object' || value === null) return false
+  const item = value as Record<string, unknown>
+  return typeof item.address === 'string' && item.address.trim().length > 0 && item.address.length <= 255 &&
+    (item.reference === undefined || (typeof item.reference === 'string' && item.reference.length <= 255)) &&
+    typeof item.windowStart === 'string' && typeof item.windowEnd === 'string' &&
+    Number.isFinite(Date.parse(item.windowStart)) && Number.isFinite(Date.parse(item.windowEnd)) &&
+    Date.parse(item.windowStart) < Date.parse(item.windowEnd)
 }
 
 export type ItinerarySnapshot = {
@@ -78,6 +96,7 @@ export function isItinerarySnapshot(value: unknown): value is ItinerarySnapshot 
       !['PENDIENTE', 'EN_RUTA', 'ENTREGADO', 'NO_ENTREGADO'].includes(status) ||
       stopIds.has(stopId) ||
       positions.has(position)
+      || (item.delivery !== undefined && !isDeliveryDetails(item.delivery))
     ) {
       return false
     }

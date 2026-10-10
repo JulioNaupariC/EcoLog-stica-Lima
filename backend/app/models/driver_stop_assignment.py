@@ -10,6 +10,7 @@ from sqlalchemy import (
     Index,
     Integer,
     String,
+    UniqueConstraint,
     text,
 )
 from sqlalchemy.orm import Mapped, mapped_column
@@ -22,6 +23,7 @@ STOP_STATES = ("PENDIENTE", "EN_RUTA", "ENTREGADO", "NO_ENTREGADO")
 class DriverStopAssignment(Base):
     __tablename__ = "driver_stop_assignment"
     __table_args__ = (
+        UniqueConstraint("pedido_id", name="uq_driver_stop_pedido"),
         CheckConstraint("position > 0", name="ck_driver_stop_position"),
         CheckConstraint(
             "status IN ('PENDIENTE','EN_RUTA','ENTREGADO','NO_ENTREGADO')",
@@ -39,6 +41,12 @@ class DriverStopAssignment(Base):
         )
     )
     position: Mapped[int] = mapped_column(Integer)
+    pedido_id: Mapped[UUID | None] = mapped_column(
+        ForeignKey(
+            "pedido.pedido_id", name="fk_driver_stop_pedido", ondelete="RESTRICT"
+        ),
+        nullable=True,
+    )
     status: Mapped[str] = mapped_column(String(15), server_default=text("'PENDIENTE'"))
     assigned_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=text("CURRENT_TIMESTAMP")

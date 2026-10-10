@@ -2,7 +2,7 @@
 
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, HTTPException, Request, status
+from fastapi import APIRouter, Depends, HTTPException, Request, Response, status
 
 from app.api.dependencies import require_permission
 from app.core.rbac import Contexto, Identidad, Permiso
@@ -35,8 +35,13 @@ def _self_context(identity: Identidad) -> Contexto:
     return Contexto(propietario_id=identity.usuario_id)
 
 
-@router.get("/itinerario", response_model=DriverItineraryResponse)
+@router.get(
+    "/itinerario",
+    response_model=DriverItineraryResponse,
+    response_model_exclude_none=True,
+)
 def get_itinerary(
+    response: Response,
     service: Annotated[DriverReportService, Depends(get_driver_report_service)],
     identity: Annotated[
         Identidad,
@@ -44,8 +49,10 @@ def get_itinerary(
     ],
 ) -> DriverItineraryResponse:
     try:
+        response.headers["Cache-Control"] = "no-store"
         return DriverItineraryResponse(
-            stops=service.list_assignments(identity.usuario_id)
+            owner_id=identity.usuario_id,
+            stops=service.list_assignments(identity.usuario_id),
         )
     except DriverReportUnavailable:
         raise HTTPException(

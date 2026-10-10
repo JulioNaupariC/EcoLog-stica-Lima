@@ -18,4 +18,5 @@ coverage/
 .tmp-st027-pg/
 .tmp-st024-pg/
 .tmp-st035-pg/
+.tmp-st032-pg/
 test-results/

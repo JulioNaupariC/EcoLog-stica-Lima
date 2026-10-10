@@ -67,13 +67,14 @@ def test_conductor_reads_only_authenticated_assignment_summary():
 
         assert response.status_code == 200
         assert response.json() == {
+            "owner_id": str(identity.usuario_id),
             "stops": [
                 {
                     "stop_id": str(stop_id),
                     "position": 2,
                     "status": "PENDIENTE",
                 }
-            ]
+            ],
         }
         service.list_assignments.assert_called_once_with(identity.usuario_id)
         assert (

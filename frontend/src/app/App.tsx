@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { Link, Navigate, Route, Routes, useNavigate } from 'react-router-dom'
 import { HomePage } from '../pages/HomePage'
 import { DriverItineraryPage } from '../pages/DriverItineraryPage'
@@ -11,6 +11,7 @@ import { DeliveryPreferencesPage } from '../pages/DeliveryPreferencesPage'
 import { logout, type AuthRole, type LoginResponse } from '../services/auth'
 import { clearItinerary } from '../services/offlineStorage'
 import { listPendingReports } from '../services/reportQueue'
+import { forgetDriver, recallDriver, rememberDriver } from '../services/offlineAccess'
 
 function canCreateOrders(role: AuthRole): boolean {
   return role === 'ADMINISTRADOR' || role === 'OPERADOR'
@@ -31,7 +32,7 @@ function AccessDenied() {
 }
 
 export function App() {
-  const [identity, setIdentity] = useState<LoginResponse | null>(null)
+  const [identity, setIdentity] = useState<LoginResponse | null>(recallDriver)
   const [logoutMessage, setLogoutMessage] = useState('')
   const [loggingOut, setLoggingOut] = useState(false)
   const navigate = useNavigate()
@@ -39,16 +40,25 @@ export function App() {
   const vehicleAccess = getVehicleAccess(identity?.rol)
 
   function handleLoginSuccess(loggedInIdentity: LoginResponse) {
+    rememberDriver(loggedInIdentity)
     setIdentity(loggedInIdentity)
     setLogoutMessage('')
     void navigate('/', { replace: true })
   }
 
   const handleSessionExpired = useCallback(() => {
+    forgetDriver()
     setIdentity(null)
     setLogoutMessage('Tu sesión ha vencido. Vuelve a iniciar sesión.')
     void navigate('/login', { replace: true })
   }, [navigate])
+
+  useEffect(() => {
+    if (!identity?.expires_at) return
+    const remaining = Date.parse(identity.expires_at) - Date.now()
+    const timer = setTimeout(handleSessionExpired, Math.max(0, remaining))
+    return () => clearTimeout(timer)
+  }, [identity, handleSessionExpired])
 
   async function handleLogout() {
     if (!identity || loggingOut) return
@@ -73,6 +83,7 @@ export function App() {
         }
       }
       await logout()
+      forgetDriver()
       setIdentity(null)
       await navigate('/login', { replace: true })
       if (identity.rol === 'CONDUCTOR') {
@@ -149,7 +160,7 @@ export function App() {
             path="/conductor/itinerario"
             element={identity === null ? <Navigate to="/login" replace /> : (
               identity.rol === 'CONDUCTOR' ? (
-                <DriverItineraryPage key={identity.usuario_id} ownerId={identity.usuario_id} />
+                <DriverItineraryPage key={identity.usuario_id} ownerId={identity.usuario_id} onSessionExpired={handleSessionExpired} />
               ) : <AccessDenied />
             )}
           />

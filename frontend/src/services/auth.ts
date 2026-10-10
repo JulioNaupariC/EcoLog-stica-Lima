@@ -18,6 +18,7 @@ export interface LoginRequest {
 export interface LoginResponse {
   usuario_id: string
   rol: AuthRole
+  expires_at?: string
 }
 
 export type AuthServiceErrorKind =
@@ -149,7 +150,9 @@ export async function login(payload: LoginRequest): Promise<LoginResponse> {
       status: response.status,
     })
   }
-  return { usuario_id: body.usuario_id, rol: body.rol }
+  return { usuario_id: body.usuario_id, rol: body.rol,
+    ...(typeof body.expires_at === 'string' && Number.isFinite(Date.parse(body.expires_at))
+      ? { expires_at: body.expires_at } : {}) }
 }
 
 export async function logout(): Promise<void> {

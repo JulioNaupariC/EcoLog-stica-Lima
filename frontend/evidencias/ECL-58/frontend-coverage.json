@@ -1,0 +1,18 @@
+{
+  "Statements": {
+    "percent": 95.16,
+    "covered_total": "1497/1573"
+  },
+  "Branches": {
+    "percent": 93.2,
+    "covered_total": "1220/1309"
+  },
+  "Functions": {
+    "percent": 95.76,
+    "covered_total": "339/354"
+  },
+  "Lines": {
+    "percent": 97.23,
+    "covered_total": "1266/1302"
+  }
+}

@@ -47,6 +47,28 @@ def test_login_contract_and_cookie(environment, secure):
     assert ("Secure" in cookie) is secure
 
 
+def test_driver_login_exposes_expiration_without_session_token():
+    app = create_app(Settings(database_url=None))
+    service = Mock()
+    expires = datetime.now(timezone.utc) + timedelta(minutes=60)
+    identity = Identidad(uuid4(), Rol.CONDUCTOR, "ACTIVO")
+    service.login.return_value = LoginResult(
+        "private-cookie-only", uuid4(), identity, expires
+    )
+    app.dependency_overrides[get_authentication_service] = lambda: service
+    with TestClient(app) as client:
+        response = client.post(
+            "/login", json={"email": "driver@example.test", "password": "synthetic"}
+        )
+    assert response.status_code == 200
+    assert response.json()["rol"] == "CONDUCTOR"
+    assert (
+        datetime.fromisoformat(response.json()["expires_at"].replace("Z", "+00:00"))
+        == expires
+    )
+    assert "private-cookie-only" not in response.text
+
+
 def test_login_rejects_client_identity_fields():
     app = create_app(Settings(database_url=None))
     service = Mock()

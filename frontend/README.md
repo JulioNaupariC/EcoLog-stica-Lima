@@ -1,5 +1,25 @@
 # Frontend de EcoLogística Lima
 
+## ST-032: itinerario offline y sincronización
+
+Validación y reproducción: [VALIDACION_ST032.md](VALIDACION_ST032.md).
+`npm run build` genera el shell público y manifiesto versionado; servir `dist/`
+sobre HTTPS o localhost. `npm run dev` no instala el Service Worker.
+Primero iniciar sesión y consultar la ruta online; después la misma pestaña puede
+recargar sin red hasta vencer la sesión. No existe login nuevo offline.
+
+IndexedDB guarda dirección, referencia y ventana por propietario durante 24 h,
+sin cifrado automático. No guarda credenciales ni campos de contacto.
+Logout borra la pista de identidad y el snapshot; advierte y conserva los
+reportes pendientes para recuperarlos autenticando la misma cuenta. Evitar datos
+personales innecesarios en referencias libres. El cache del Service Worker solo
+contiene recursos públicos, nunca respuestas API.
+
+Al reconectar se verifica la sesión, se actualiza el itinerario y se envía la cola;
+los errores de red se reintentan conservando el UUID hasta confirmar persistencia.
+El backend debe estar actualizado a `0009_driver_stop_order` y las asignaciones
+deben referenciar pedidos auténticos para incluir dirección y ventana.
+
 Base técnica React + TypeScript construida con Vite. Incluye navegación mínima,
 configuración externa de la URL del API, validaciones automáticas y estilos CSS
 responsive.

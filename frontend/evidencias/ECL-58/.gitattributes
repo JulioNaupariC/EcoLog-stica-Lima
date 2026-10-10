@@ -1,0 +1,2 @@
+# Preserve exported evidence bytes so SHA256 remains valid on every platform.
+* -text

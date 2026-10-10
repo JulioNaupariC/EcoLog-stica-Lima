@@ -45,7 +45,7 @@ describe('servicio de itinerario y reportes del conductor', () => {
     ])
     expect(fetchMock).toHaveBeenCalledExactlyOnceWith(
       'https://api.example.test/v1/conductor/itinerario',
-      { credentials: 'include' },
+      { credentials: 'include', cache: 'no-store' },
     )
   })
 
@@ -90,6 +90,7 @@ describe('servicio de itinerario y reportes del conductor', () => {
       {
         method: 'POST',
         credentials: 'include',
+        cache: 'no-store',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           operation_id: operationId,
@@ -110,5 +111,30 @@ describe('servicio de itinerario y reportes del conductor', () => {
       retryable: false,
       message: 'La confirmación del servidor es inválida.',
     })
+  })
+
+  it('refuses a different cookie owner before caching an itinerary', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(jsonResponse({ owner_id: stopId, stops: [] })))
+    await expect(getDriverItinerary(ownerId)).rejects.toMatchObject({ status: 401, retryable: false })
+  })
+
+  it('maps only delivery address/reference/window from an authenticated order', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(jsonResponse({ owner_id: ownerId, stops: [{
+      stop_id: stopId, position: 1, status: 'PENDIENTE', delivery: {
+        address: 'Av. Sintetica 1', reference: null,
+        window_start: '2026-10-09T10:00:00Z', window_end: '2026-10-09T11:00:00Z',
+        cliente_id: 'not exported', telefono: 'not exported',
+      },
+    }] })))
+    await expect(getDriverItinerary(ownerId)).resolves.toEqual([{ stopId, position: 1, status: 'PENDIENTE',
+      delivery: { address: 'Av. Sintetica 1', windowStart: '2026-10-09T10:00:00Z', windowEnd: '2026-10-09T11:00:00Z' } }])
+  })
+
+  it('rejects invalid delivery times rather than storing them offline', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(jsonResponse({ stops: [{
+      stop_id: stopId, position: 1, status: 'PENDIENTE',
+      delivery: { address: 'Av. Sintetica', window_start: 'bad', window_end: 'bad' },
+    }] })))
+    await expect(getDriverItinerary()).rejects.toMatchObject({ retryable: false })
   })
 })

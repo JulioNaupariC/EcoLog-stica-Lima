@@ -1,5 +1,30 @@
 # Backend EcoLogística Lima
 
+## ST-032: contrato del itinerario offline
+
+Aplicar `python -m alembic upgrade head` con `DATABASE_URL` del ambiente correcto
+antes de desplegar esta revisión; head `0009_driver_stop_order`.
+Agrega `driver_stop_assignment.pedido_id` nullable, FK a pedido y restricción única.
+Las asignaciones anteriores permanecen sin vínculo hasta que el productor
+confiable las migre; no se rellenan con datos ficticios.
+
+`POST /login` agrega `expires_at` únicamente para CONDUCTOR, sin token en el cuerpo.
+Es un vencimiento para la interfaz, no una autorización del cliente.
+`GET /conductor/itinerario` devuelve `owner_id` autenticado y `stops`; cada parada
+vinculada puede incluir `delivery: {address, reference, window_start, window_end}`.
+Se excluyen datos de contacto/cliente y se responde `Cache-Control: no-store`.
+Swagger/OpenAPI publica los esquemas actualizados.
+
+El productor interno llama
+`DriverReportService.provision_assignment(..., pedido_id=uuid_real)`;
+se comprueba la existencia del pedido y se impide cambiar un vínculo existente.
+No se agrega un endpoint público de aprovisionamiento ni un optimizador completo.
+La autorización e idempotencia de `POST /conductor/reportes` siguen en el servidor:
+mismo `operation_id` confirma la misma persistencia sin duplicarla.
+
+Pruebas aisladas: `python -m scripts.verify_driver_offline --help`.
+Procedimiento y evidencia: [VALIDACION_ST032.md](../frontend/VALIDACION_ST032.md).
+
 Bootstrap FastAPI con SQLAlchemy síncrono y Psycopg 3. Incluye el modelo de
 credenciales Usuario, hashing Argon2id, login HTTP con sesión por cookie HttpOnly,
 autorización RBAC con auditoría persistente y registro de pedidos. El arranque

@@ -14,8 +14,16 @@ const confirm = vi.mocked(confirmAcknowledgedReport)
 const attempt = vi.mocked(markAttempt)
 
 beforeEach(() => { vi.clearAllMocks() })
+afterEach(() => { vi.unstubAllGlobals() })
 
 describe('Sincronización segura ST-032', () => {
+  it('uses a per-owner Web Lock when the browser supports it', async () => {
+    const request = vi.fn((_name: string, callback: () => Promise<unknown>) => callback())
+    vi.stubGlobal('navigator', { locks: { request } })
+    list.mockResolvedValue([])
+    await expect(synchronizeReports(owner, { send: vi.fn() })).resolves.toEqual({ sent: 0, pending: 0 })
+    expect(request).toHaveBeenCalledWith(`ecologistica-sync-${owner}`, expect.any(Function))
+  })
   it('borra únicamente cuando el backend reconoce la operación correcta', async () => {
     list.mockResolvedValueOnce([report]).mockResolvedValueOnce([])
     const result = await synchronizeReports(owner, { send: vi.fn().mockResolvedValue({ operationId: report.operationId, acknowledged: true }) })

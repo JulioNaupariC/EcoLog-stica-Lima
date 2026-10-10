@@ -80,7 +80,7 @@ describe('OfflineReportPanel', () => {
     const user = userEvent.setup()
     listPendingReportsMock
       .mockResolvedValueOnce([pendingReport])
-      .mockResolvedValueOnce([])
+      .mockResolvedValue([])
 
     render(
       <OfflineReportPanel
