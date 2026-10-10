@@ -104,6 +104,7 @@ export function App() {
 
   return (
     <div className="app-shell">
+      <a className="skip-link" href="#contenido-principal">Saltar al contenido principal</a>
       <header className="site-header">
         <nav className="container" aria-label="Navegación principal">
           <Link className="brand" to="/">
@@ -137,7 +138,7 @@ export function App() {
         </nav>
       </header>
       {logoutMessage ? <p className="container" role="alert">{logoutMessage}</p> : null}
-      <main id="contenido-principal" className="container main-content">
+      <main id="contenido-principal" tabIndex={-1} className="container main-content">
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route
