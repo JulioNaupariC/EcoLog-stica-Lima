@@ -17,7 +17,7 @@ git diff
 ```
 
 La rama debe ser `feat/ECL-50-st024-pruebas-conductores`.
-El reporte está en [backend/VALIDACION_ST024.md](backend/VALIDACION_ST024.md).
+El reporte está en [VALIDACION_ST024.md](../validaciones/VALIDACION_ST024.md).
 Los XML conservados corresponden a pruebas locales ejecutadas.
 
 ## 2. Repetir backend
@@ -108,3 +108,7 @@ Descripción sugerida del PR:
 > aprobadas. Cobertura de conductores 98.13 %. Ruff, typecheck, lint y build
 > aprobados. Reporte: backend/VALIDACION_ST024.md. Añadir aquí el enlace de
 > GitHub Actions una vez finalice la ejecución remota.
+
+[↑ Índice del Sprint 2](../README.md)
+
+[← Volver al README principal](../../../../README.md)

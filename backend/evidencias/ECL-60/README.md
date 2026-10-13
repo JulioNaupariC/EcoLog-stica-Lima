@@ -1,7 +1,7 @@
 # Evidencias ECL-60 / ST-034
 
 Trazabilidad: ECL-60 → ECL-23 / EN-005.
-[Validación técnica](../../VALIDACION_ST034.md).
+[Validación técnica](<../../../docs/03 Implementación/Sprint 2/validaciones/VALIDACION_ST034.md>).
 
 | Archivo | Origen y significado |
 |---|---|
@@ -20,3 +20,5 @@ temporal. Se conservaron el contenedor de BD y sus bases.
 
 Reproducción: scripts/verify_metrics.py y app.monitoring.poll, según la validación.
 Estas evidencias verifican instrumentación; no acreditan campaña de capacidad ni SLA mensual.
+
+[← Volver al README principal](../../../README.md)

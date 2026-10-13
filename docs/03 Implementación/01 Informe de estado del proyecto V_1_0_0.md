@@ -94,15 +94,15 @@ para declarar terminadas funciones aún ausentes.
 
 ## Fuentes y coherencia
 
-- [Conductores: API](../../backend/VALIDACION_ST022.md),
-  [interfaz](../../frontend/VALIDACION_ST023.md) y [pruebas](../../backend/VALIDACION_ST024.md).
-- [Preferencias: validación integral](../../backend/VALIDACION_ST028.md).
-- [Experiencia móvil](../../frontend/VALIDACION_ST030.md) y
-  [almacenamiento/sincronización](../../frontend/VALIDACION_ST032.md).
-- [Observabilidad](../../backend/VALIDACION_ST034.md),
-  [resultados y SLA](../../backend/INFORME_ST036.md),
-  [mediciones iniciales](../../backend/INFORME_ST037.md) y
-  [optimización](../../backend/VALIDACION_ST038.md).
+- [Conductores: API](<Sprint 2/validaciones/VALIDACION_ST022.md>),
+  [interfaz](<Sprint 2/validaciones/VALIDACION_ST023.md>) y [pruebas](<Sprint 2/validaciones/VALIDACION_ST024.md>).
+- [Preferencias: validación integral](<Sprint 2/validaciones/VALIDACION_ST028.md>).
+- [Experiencia móvil](<Sprint 2/validaciones/VALIDACION_ST030.md>) y
+  [almacenamiento/sincronización](<Sprint 2/validaciones/VALIDACION_ST032.md>).
+- [Observabilidad](<Sprint 2/validaciones/VALIDACION_ST034.md>),
+  [resultados y SLA](<Sprint 2/informes/INFORME_ST036.md>),
+  [mediciones iniciales](<Sprint 2/informes/INFORME_ST037.md>) y
+  [optimización](<Sprint 2/validaciones/VALIDACION_ST038.md>).
 
 ## Historial de versiones
 

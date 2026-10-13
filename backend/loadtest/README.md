@@ -2,7 +2,7 @@
 
 Este paquete ejecuta HTTP real contra FastAPI y PostgreSQL/PostGIS locales.
 No modifica servicios, pools, permisos ni reglas de negocio de la aplicación.
-Referencia: [plan ST-033](../../docs/sprint-2/plan-pruebas-capacidad.md).
+Referencia: [plan ST-033](<../../docs/03 Implementación/Sprint 2/informes/plan-pruebas-capacidad.md>).
 
 ## Requisitos
 
@@ -140,3 +140,5 @@ CI ejecuta los casos negativos del analizador y conserva JUnit/cobertura.
 La campaña de 40 minutos se ejecuta localmente, no se dispara por cada PR.
 El código de salida 0 del comando significa que terminó y exportó evidencia;
 **no significa que pasó los umbrales**: consultar `campaign.json` y el informe.
+
+[← Volver al README principal](../../README.md)

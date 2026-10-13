@@ -44,7 +44,11 @@ node scripts/verify-accessibility.mjs
 
 Chrome debe estar instalado. El script falla si detecta desbordamiento,
 infracciones axe o regresiones de teclado verificadas. Las evidencias están en
-[evidencias/ECL-57](evidencias/ECL-57/resultados.json).
+[evidencias/ECL-57](../../../../frontend/evidencias/ECL-57/resultados.json).
 
 TypeScript, ESLint y build aprobados. Resultado de pruebas unitarias: 441
 aprobadas. CI remoto y revisión humana pendientes del nuevo PR.
+
+[↑ Índice del Sprint 2](../README.md)
+
+[← Volver al README principal](../../../../README.md)

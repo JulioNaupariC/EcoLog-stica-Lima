@@ -47,10 +47,10 @@ resuelven con actas reales, no únicamente mediante actualización del Markdown.
 
 ## Fuentes
 
-- [ST-028: matriz y defectos](../../backend/VALIDACION_ST028.md).
-- [ST-032: límites, migración y validación](../../frontend/VALIDACION_ST032.md).
-- [ST-036: resultados y SLA](../../backend/INFORME_ST036.md).
-- [ST-037](../../backend/INFORME_ST037.md) y [ST-038](../../backend/VALIDACION_ST038.md).
+- [ST-028: matriz y defectos](<Sprint 2/validaciones/VALIDACION_ST028.md>).
+- [ST-032: límites, migración y validación](<Sprint 2/validaciones/VALIDACION_ST032.md>).
+- [ST-036: resultados y SLA](<Sprint 2/informes/INFORME_ST036.md>).
+- [ST-037](<Sprint 2/informes/INFORME_ST037.md>) y [ST-038](<Sprint 2/validaciones/VALIDACION_ST038.md>).
 
 ## Historial de versiones
 

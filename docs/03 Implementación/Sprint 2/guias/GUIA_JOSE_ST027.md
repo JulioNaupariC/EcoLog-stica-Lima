@@ -44,8 +44,8 @@ mantiene el servidor Vite activo; detenerlo con Ctrl+C al terminar.
    acceso a esta vista.
 
 Las capturas realizadas están en
-[frontend/evidencias/ECL-53](frontend/evidencias/ECL-53/README.md), con el
-[reporte de validación](frontend/VALIDACION_ST027.md).
+[frontend/evidencias/ECL-53](../../../../frontend/evidencias/ECL-53/README.md), con el
+[reporte de validación](../validaciones/VALIDACION_ST027.md).
 
 ## 3. Repetir las capturas automatizadas
 
@@ -164,3 +164,7 @@ El horario es descriptivo; esta entrega no copia preferencias ni modifica pedido
 Seleccionar un compañero en **Reviewers**. Adjuntar el PR y las capturas en Jira.
 La ejecución remota de CI solo se puede dar por aprobada después de observar
 su resultado en GitHub Actions.
+
+[↑ Índice del Sprint 2](../README.md)
+
+[← Volver al README principal](../../../../README.md)

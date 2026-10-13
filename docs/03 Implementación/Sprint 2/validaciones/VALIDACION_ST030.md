@@ -57,7 +57,7 @@ regreso al ejemplo y escritorio. Se verificó acceso anónimo y denegación al
 Auditor con login simulado. No hubo errores de ejecución de página ni
 desbordamiento horizontal en las vistas comprobadas.
 
-[Capturas de interfaz y resultados](evidencias/ECL-56/README.md).
+[Capturas de interfaz y resultados](../../../../frontend/evidencias/ECL-56/README.md).
 Esto acredita estos recorridos en las versiones registradas, no una auditoría
 completa WCAG, validación con participantes o funcionamiento en móviles físicos.
 
@@ -113,3 +113,7 @@ finalizar automáticamente ECL-56/ST-030 ni ECL-22/EN-004.
 Registro anterior: `ea114f9` creó el prototipo parcial; `6f0cf39` corrigió la
 trazabilidad y pendientes documentales. Los checks de CI/CodeQL comunicados por
 el equipo corresponden a revisiones anteriores, no prueban esta nueva revisión.
+
+[↑ Índice del Sprint 2](../README.md)
+
+[← Volver al README principal](../../../../README.md)

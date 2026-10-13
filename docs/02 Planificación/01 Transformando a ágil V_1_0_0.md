@@ -1,6 +1,6 @@
 # Transformando a ágil — EcoLogística Lima
 
-- [Volver ->](</README.md>)
+- [Volver ->](<../../README.md>)
 
 | Metadato | Valor |
 |---|---|
@@ -638,4 +638,4 @@ Durante la planificación se detectaron dos inconsistencias de la línea base: e
 - `docs/01 Inicio/09. Reglas de negocio V_1_0_0.md`
 - `docs/01 Inicio/12. Modelo C4 V_1_0_0.md`
 
-[← Volver al README Principal](../../README.md)
+[← Volver al README principal](../../README.md)

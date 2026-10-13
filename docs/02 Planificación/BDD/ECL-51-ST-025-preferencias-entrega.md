@@ -299,3 +299,5 @@ Frank sobre omitido/null/vacío y roles deben quedar revisados por Antony y Juli
 Los ejemplos sintéticos respetan las capacidades existentes; ninguna
 validación semántica adicional queda aprobada por este borrador. No se declaran
 pruebas ejecutadas.
+
+[← Volver al README principal](../../../README.md)

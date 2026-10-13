@@ -69,7 +69,7 @@ Se mantienen las mismas aserciones y no se modifica su comportamiento productivo
 
 ## Verificación funcional en navegadores
 
-Resultado registrado en [resultados.json](evidencias/ECL-49/resultados.json),
+Resultado registrado en [resultados.json](../../../../frontend/evidencias/ECL-49/resultados.json),
 con fecha UTC `2026-10-09T07:20:18.898Z`.
 
 | Navegador | Versión | Cuenta autorizada | Resultado |
@@ -84,7 +84,7 @@ disponibilidad. Se verificaron el acceso denegado del rol CONDUCTOR y el rechazo
 
 Se capturaron escritorio de 1280 px y móvil de 360 px, sin desbordamiento horizontal
 en los estados comprobados y sin errores de página. Hay 24 capturas en
-[evidencias/ECL-49](evidencias/ECL-49/README.md).
+[evidencias/ECL-49](../../../../frontend/evidencias/ECL-49/README.md).
 
 El estado de carga utiliza un retraso controlado de respuesta. El error/reintento
 utiliza un GET 503 simulado en el navegador, seguido de una consulta real satisfactoria.
@@ -117,3 +117,7 @@ este documento no afirma que ya se hayan realizado.
 Las capturas proceden de navegadores automatizados en modo headless. No constituyen
 una auditoría WCAG completa ni pruebas de dispositivos físicos. La validación de gestión
 de conductores de ST-024 sigue siendo trabajo del ticket correspondiente.
+
+[↑ Índice del Sprint 2](../README.md)
+
+[← Volver al README principal](../../../../README.md)

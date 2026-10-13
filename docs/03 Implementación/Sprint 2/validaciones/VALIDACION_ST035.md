@@ -2,7 +2,7 @@
 
 Ticket: [ECL-61](https://continental-team-il84x39k.atlassian.net/browse/ECL-61).
 Padre ECL-23 / EN-005; referencias RNF-007/RNF-008 y
-[plan ST-033](../docs/sprint-2/plan-pruebas-capacidad.md).
+[plan ST-033](../informes/plan-pruebas-capacidad.md).
 
 ## Implementación
 
@@ -116,7 +116,7 @@ y los archivos crudos; entre perfiles queda tiempo no observado.
 
 ## Hallazgos y alcance
 
-Se documentan en [incidencias](evidencias/ECL-61/INCIDENCIAS.md), junto con
+Se documentan en [incidencias](../../../../backend/evidencias/ECL-61/INCIDENCIAS.md), junto con
 desviaciones, evidencia y acciones sugeridas. La tarea ejecuta y verifica;
 no modifica pools, arquitectura ni endpoints para corregir capacidad.
 
@@ -127,8 +127,8 @@ sin la concurrencia demostrada y esa cobertura funcional.
 
 ## Calidad y reproducción
 
-Ver [loadtest/README.md](loadtest/README.md) y
-[GUIA_JOSE_ST035.md](../GUIA_JOSE_ST035.md).
+Ver [loadtest/README.md](../../../../backend/loadtest/README.md) y
+[GUIA_JOSE_ST035.md](../guias/GUIA_JOSE_ST035.md).
 JUnit y cobertura están en `evidencias/ECL-61/`.
 Validación final: **556 pruebas unitarias aprobadas, cobertura global 93.00%**;
 gate de utilidades: **36 pruebas aprobadas, cobertura 90.99%**. El analizador
@@ -142,3 +142,7 @@ alteración de resúmenes, percentiles, poblaciones, afirmaciones de SLA y hashe
 La campaña completa es local; ejecución remota de CI, PR y revisión de un
 compañero quedan pendientes de que José suba la rama. No atribuir resultados
 remotos a esta validación.
+
+[↑ Índice del Sprint 2](../README.md)
+
+[← Volver al README principal](../../../../README.md)

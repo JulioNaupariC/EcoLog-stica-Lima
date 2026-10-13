@@ -36,6 +36,8 @@ primeras ventanas unas décimas antes del tiempo nominal desde test_start;
 se declaró tolerancia de muestreo de 1 s y se añadió un segundo de cierre con
 límite explícito de fase en la recuperación. No se relajaron P95/5xx/concurrencia.
 
-Consultar [VALIDACION_ST035.md](../../VALIDACION_ST035.md) y el reporte para
+Consultar [VALIDACION_ST035.md](<../../../docs/03 Implementación/Sprint 2/validaciones/VALIDACION_ST035.md>) y el reporte para
 todos los denominadores, huecos y condiciones. No se seleccionaron únicamente
 los segmentos favorables dentro de una repetición.
+
+[← Volver al README principal](../../../README.md)

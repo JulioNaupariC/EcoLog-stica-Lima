@@ -106,8 +106,12 @@ seguir el protocolo de ST-037: medir JSON UTF-8 sin mapa, bytes comprimidos y
 decodificados por separado, comparar con 250,000 bytes y obtener sus planes
 reales antes de decidir agregación, caché, paginación o índices adicionales.
 
-- [Análisis de partida ST-037](INFORME_ST037.md).
-- [Comparación y 80 planes](evidencias/ECL-64/comparacion.json).
-- [Registro de verificación y hashes](evidencias/ECL-64/verificacion.json).
-- [Instrucciones de evidencia](evidencias/ECL-64/README.md).
-- [Instrumento](scripts/compare_client_lookup.py).
+- [Análisis de partida ST-037](../informes/INFORME_ST037.md).
+- [Comparación y 80 planes](../../../../backend/evidencias/ECL-64/comparacion.json).
+- [Registro de verificación y hashes](../../../../backend/evidencias/ECL-64/verificacion.json).
+- [Instrucciones de evidencia](../../../../backend/evidencias/ECL-64/README.md).
+- [Instrumento](../../../../backend/scripts/compare_client_lookup.py).
+
+[↑ Índice del Sprint 2](../README.md)
+
+[← Volver al README principal](../../../../README.md)

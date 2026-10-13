@@ -78,11 +78,11 @@ Los enlaces siguientes apuntan a componentes reales del repositorio, relativos a
 
 | Elemento | Componente implementado | Uso previsto y límites |
 |---|---|---|
-| Esquema y entorno | [Arranque y migraciones](../../README.md#arranque-local-con-docker-compose--ecl-29), [migración de usuarios](../../backend/alembic/versions/0001_create_usuario.py), [vehículos](../../backend/alembic/versions/0004_create_vehiculo.py), [clientes/pedidos](../../backend/alembic/versions/0006_create_cliente_pedido.py) | Crear una base aislada y aplicar migraciones. Las migraciones crean esquema, no el conjunto sintético. |
-| Usuarios | [CredentialService.create](../../backend/app/services/credenciales.py), [UsuarioRepository](../../backend/app/repositories/usuarios.py), [contrato y transacción](../../backend/README.md#credenciales--ecl-30) | Crear credenciales con hash mediante el servicio interno; el llamador confirma o revierte la transacción. No existe alta pública de usuarios. |
-| Clientes | [Modelo Cliente](../../backend/app/models/cliente.py), [ejemplos create_user/create_client](../../backend/tests/integration/test_pedido_http_e2e.py) | El ejemplo persiste Cliente con una sesión SQLAlchemy y obtiene su UUID. No existe API de alta de clientes; su CRUD pertenece a ECL-11. Las funciones del test son referencias técnicas, no un script de preparación de carga. |
-| Vehículos | [POST /vehiculos](../../backend/app/api/vehiculos.py), [VehicleCreate](../../backend/app/schemas/vehiculo.py), [servicio](../../backend/app/services/vehiculos.py) | Alta autenticada con permiso vehiculos.crear y respuesta 201; usar placas únicas y campos válidos según VehicleCreate. |
-| Login y permisos | [POST /login](../../backend/app/api/auth.py), [RBAC](../../backend/app/core/rbac.py) | Obtener cookie de sesión después de persistir los usuarios; OPERADOR/ADMINISTRADOR para pedidos y altas de vehículos. |
+| Esquema y entorno | [Arranque y migraciones](../../../../README.md#arranque-local-con-docker-compose--ecl-29), [migración de usuarios](../../../../backend/alembic/versions/0001_create_usuario.py), [vehículos](../../../../backend/alembic/versions/0004_create_vehiculo.py), [clientes/pedidos](../../../../backend/alembic/versions/0006_create_cliente_pedido.py) | Crear una base aislada y aplicar migraciones. Las migraciones crean esquema, no el conjunto sintético. |
+| Usuarios | [CredentialService.create](../../../../backend/app/services/credenciales.py), [UsuarioRepository](../../../../backend/app/repositories/usuarios.py), [contrato y transacción](../../../../backend/README.md#credenciales--ecl-30) | Crear credenciales con hash mediante el servicio interno; el llamador confirma o revierte la transacción. No existe alta pública de usuarios. |
+| Clientes | [Modelo Cliente](../../../../backend/app/models/cliente.py), [ejemplos create_user/create_client](../../../../backend/tests/integration/test_pedido_http_e2e.py) | El ejemplo persiste Cliente con una sesión SQLAlchemy y obtiene su UUID. No existe API de alta de clientes; su CRUD pertenece a ECL-11. Las funciones del test son referencias técnicas, no un script de preparación de carga. |
+| Vehículos | [POST /vehiculos](../../../../backend/app/api/vehiculos.py), [VehicleCreate](../../../../backend/app/schemas/vehiculo.py), [servicio](../../../../backend/app/services/vehiculos.py) | Alta autenticada con permiso vehiculos.crear y respuesta 201; usar placas únicas y campos válidos según VehicleCreate. |
+| Login y permisos | [POST /login](../../../../backend/app/api/auth.py), [RBAC](../../../../backend/app/core/rbac.py) | Obtener cookie de sesión después de persistir los usuarios; OPERADOR/ADMINISTRADOR para pedidos y altas de vehículos. |
 
 **Pendiente de ECL-61:** no existe un script integrado de aprovisionamiento ni de snapshot/restauración de este conjunto de carga. ECL-61 deberá versionar ese procedimiento, sus dependencias y parámetros, siguiendo los componentes anteriores. No se presenta ningún nombre de archivo o comando de ejecución inexistente como implementado. Hasta disponer de él y verificar su repetibilidad, la preparación y la campaña de carga permanecen pendientes.
 
@@ -126,9 +126,9 @@ Los fallos de preparación, login o calentamiento se conservan fuera del P95 est
 
 ### 4.2. Consulta del tablero — cobertura pendiente de RNF-008
 
-RNF-008 exige registrar pedidos **y consultar el tablero**, según [requisitos no funcionales](<../01 Inicio/07. Requisitos no funcionales V_1_1_0.md>). En el estado revisado de la rama, [la aplicación FastAPI](../../backend/app/main.py) registra routers de salud, autenticación, pedidos y vehículos: **no existe un endpoint de consulta del tablero**. GET /vehiculos o GET /health no sustituyen esa función.
+RNF-008 exige registrar pedidos **y consultar el tablero**, según [requisitos no funcionales](<../../../01 Inicio/07. Requisitos no funcionales V_1_1_0.md>). En el estado revisado de la rama, [la aplicación FastAPI](../../../../backend/app/main.py) registra routers de salud, autenticación, pedidos y vehículos: **no existe un endpoint de consulta del tablero**. GET /vehiculos o GET /health no sustituyen esa función.
 
-La dependencia funcional es **ECL-15 / US-009 — Consultar dashboard de operación y sostenibilidad**, identificada en [la planificación](<../02 Planificación/02 Artefactos Jira V_1_0_0.md>). ECL-61 deberá integrar la consulta real cuando ECL-15 esté implementado y su contrato/permiso estén disponibles; ECL-60 aportará sus métricas. Antes de ejecutar esa cobertura, versionar ruta real, payload/filtros, rol, respuestas esperadas, proporción/cadencia de consultas y duración del escenario. Estos parámetros están pendientes; no se inventa una ruta ni se atribuye una ejecución.
+La dependencia funcional es **ECL-15 / US-009 — Consultar dashboard de operación y sostenibilidad**, identificada en [la planificación](<../../../02 Planificación/02 Artefactos Jira V_1_0_0.md>). ECL-61 deberá integrar la consulta real cuando ECL-15 esté implementado y su contrato/permiso estén disponibles; ECL-60 aportará sus métricas. Antes de ejecutar esa cobertura, versionar ruta real, payload/filtros, rol, respuestas esperadas, proporción/cadencia de consultas y duración del escenario. Estos parámetros están pendientes; no se inventa una ruta ni se atribuye una ejecución.
 
 La prueba prevista consultará el tablero durante el escenario de registro, con datos sintéticos conciliados, validando respuesta autorizada y contenido agregado frente a BD. Conservar intentos, respuestas, latencias, errores y comprobaciones por separado; una respuesta/cuerpo incorrecto, fallo de persistencia/consistencia de los datos consultados, 4xx, timeout o error de transporte impedirá aprobar esta cobertura. Informar la tasa 5xx de consulta y exigir <1 %, sin diluir la tasa de POST /pedidos con respuestas del tablero.
 
@@ -167,3 +167,7 @@ El P95 de registro y la evidencia de ≥100 POST /pedidos en vuelo mantienen su 
 - **Julio — ST-036:** documentar SLA, hallazgos y respuesta operativa cuando existan datos comprobados.
 
 **Estado de esta revisión:** únicamente **planificación metodológica**. No se ha ejecutado una campaña de carga, no se ha medido P95 ni se ha demostrado disponibilidad mensual.
+
+[↑ Índice del Sprint 2](../README.md)
+
+[← Volver al README principal](../../../../README.md)

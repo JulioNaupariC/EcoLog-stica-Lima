@@ -1,6 +1,6 @@
 # Evidencia ECL-54 / ST-028
 
-Consultar [VALIDACION_ST028.md](../../VALIDACION_ST028.md).
+Consultar [VALIDACION_ST028.md](<../../../docs/03 Implementación/Sprint 2/validaciones/VALIDACION_ST028.md>).
 
 api-tests.xml contiene 8 pruebas reales de HTTP integrado y PostgreSQL.
 unit-tests.xml contiene 56 pruebas de preferencias.
@@ -23,3 +23,5 @@ Para interfaz y regresión, ver
 [la evidencia frontend](../../../frontend/evidencias/ECL-54/README.md).
 P8 tiene una brecha documentada; aprobar pruebas de API no implica aprobar
 el flujo de propuesta en el formulario ni el borrador BDD.
+
+[← Volver al README principal](../../../README.md)

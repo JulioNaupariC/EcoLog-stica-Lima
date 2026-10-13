@@ -368,3 +368,5 @@ una propuesta para revisión, no un acuerdo. Tras la decisión de Julio, Antony 
 Frank, conservar, ajustar o retirar cada regla candidata y alinear los BDD con
 el contrato aprobado. Cualquier cambio a RF-003/RN-005 debe tramitarse mediante
 control de cambios; este documento no declara pruebas ejecutadas.
+
+[← Volver al README principal](../../../README.md)

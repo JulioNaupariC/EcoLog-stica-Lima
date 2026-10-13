@@ -3,7 +3,7 @@
 ## Trazabilidad
 
 ECL-60 / ST-034 → ECL-23 / EN-005.
-Referencia: [plan de ST-033](../docs/sprint-2/plan-pruebas-capacidad.md),
+Referencia: [plan de ST-033](../informes/plan-pruebas-capacidad.md),
 RNF-007 (disponibilidad) y RNF-008 (capacidad).
 Rama: `feat/ECL-60-metricas-api-bd`; base Git `ef5583b`.
 
@@ -145,7 +145,7 @@ no se cambiaron dependencias de otros tickets.
 
 ## Evidencias y reproducción
 
-Ver [evidencias ECL-60](evidencias/ECL-60/README.md).
+Ver [evidencias ECL-60](../../../../backend/evidencias/ECL-60/README.md).
 `scripts/verify_metrics.py` requiere dependencias de desarrollo y entorno local:
 MONITORING_TEST_EMAIL, MONITORING_TEST_PASSWORD y opcional MONITORING_TEST_URL.
 Usar cuentas sintéticas y variables privadas, nunca poner credenciales en comandos
@@ -168,3 +168,7 @@ Instrumentación y verificaciones locales completas. Commit, PR, CI y revisión 
 pendientes de entrega por el usuario. No se ejecutó la campaña de 1,000 pedidos /
 50 vehículos / 100 solicitudes, ni se demostró SLA mensual de 99.5%.
 Esa ejecución y su informe corresponden a ST-035 y ST-036.
+
+[↑ Índice del Sprint 2](../README.md)
+
+[← Volver al README principal](../../../../README.md)

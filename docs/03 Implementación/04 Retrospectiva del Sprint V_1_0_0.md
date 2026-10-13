@@ -109,10 +109,10 @@ promesa registrada de cada integrante.
 
 - [Estado del Sprint 2](<01 Informe de estado del proyecto V_1_0_0.md>) y
   [registro de impedimentos](<02 Registro de Impedimentos V_1_0_0.md>).
-- [Preferencias y brechas](../../backend/VALIDACION_ST028.md).
-- [Offline y límites](../../frontend/VALIDACION_ST032.md).
-- [Resultados de capacidad/SLA](../../backend/INFORME_ST036.md).
-- [Decisiones de optimización](../../backend/VALIDACION_ST038.md).
+- [Preferencias y brechas](<Sprint 2/validaciones/VALIDACION_ST028.md>).
+- [Offline y límites](<Sprint 2/validaciones/VALIDACION_ST032.md>).
+- [Resultados de capacidad/SLA](<Sprint 2/informes/INFORME_ST036.md>).
+- [Decisiones de optimización](<Sprint 2/validaciones/VALIDACION_ST038.md>).
 
 ## Historial de versiones
 

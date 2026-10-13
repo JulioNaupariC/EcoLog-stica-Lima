@@ -5,7 +5,7 @@ Ticket: https://continental-team-il84x39k.atlassian.net/browse/ECL-61
 Entrega: generador Locust reproducible, preparación aislada de datos, ejecución
 HTTP real, conciliación SQL, medición P95/5xx/concurrencia/disponibilidad,
 capturas, resultados y reporte de incidencias. Ver
-[VALIDACION_ST035.md](backend/VALIDACION_ST035.md) para el resultado medido.
+[VALIDACION_ST035.md](../validaciones/VALIDACION_ST035.md) para el resultado medido.
 
 ## 1. Revisar la rama
 
@@ -74,7 +74,7 @@ npm install --prefix ../frontend/node_modules/.st035-browser-check --no-package-
 node loadtest/capture.mjs evidencias/ECL-61/mi-nueva-campana ../frontend/node_modules/.st035-browser-check/node_modules/playwright/index.mjs
 ```
 
-Ver [loadtest/README.md](backend/loadtest/README.md) para preparación, timeout,
+Ver [loadtest/README.md](../../../../backend/loadtest/README.md) para preparación, timeout,
 fórmulas, población y límites. La disponibilidad medida es solo del ambiente y
 las ventanas publicadas; no se ha medido ni certificado un SLA mensual.
 
@@ -131,3 +131,7 @@ Jira: https://continental-team-il84x39k.atlassian.net/browse/ECL-61
 
 Adjuntar `01-resultados-disponibilidad.png` y `02-concurrencia.png` al PR,
 solicitar revisión y esperar CI. No mezclar a main sin revisión del equipo.
+
+[↑ Índice del Sprint 2](../README.md)
+
+[← Volver al README principal](../../../../README.md)

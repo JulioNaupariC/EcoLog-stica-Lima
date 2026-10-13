@@ -14,7 +14,7 @@ La API consulta e inicializa/actualiza preferencias de clientes ya existentes.
 No crea clientes, no cambia su nombre, no elimina clientes, no implementa formulario
 ni modifica automáticamente los pedidos.
 
-El documento [ST-025](<../docs/02 Planificación/BDD/ECL-51-ST-025-preferencias-entrega.md>)
+El documento [ST-025](<../../../02 Planificación/BDD/ECL-51-ST-025-preferencias-entrega.md>)
 está marcado como BORRADOR. La implementación adopta su contrato candidato y la
 semántica omitido/null/vacío como decisiones de este incremento, sujetas a la revisión
 del equipo; no se atribuye aprobación del borrador ni se modifica ese documento.
@@ -158,3 +158,7 @@ Backend implementado y verificado localmente. El usuario realiza commit, push y 
 No se declara CI, revisión o aprobación ya realizadas.
 El formulario de preferencias (ST-027) y la validación posterior del equipo (ST-028)
 mantienen su alcance independiente.
+
+[↑ Índice del Sprint 2](../README.md)
+
+[← Volver al README principal](../../../../README.md)

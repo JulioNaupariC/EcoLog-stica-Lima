@@ -157,3 +157,6 @@ EcoLog-stica-Lima/
 ├── infrastructure/
 ├── docs/
 └── .github/
+```
+
+[← Volver al README principal](README.md)

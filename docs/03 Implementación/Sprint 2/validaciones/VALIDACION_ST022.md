@@ -138,3 +138,7 @@ Giancarlo ejecutará add/commit/push y abrirá el PR de ECL-48.
 Faltan controles de CI/CodeQL sobre el commit publicado y revisión humana.
 No se declara cerrado ECL-48 ni US-003 sólo por esta validación local.
 ST-023 puede consumir este contrato para su formulario/listado en su propia rama.
+
+[↑ Índice del Sprint 2](../README.md)
+
+[← Volver al README principal](../../../../README.md)

@@ -1,7 +1,7 @@
 # Evidencias ECL-49 / ST-023
 
 Formulario y listado de conductores. Trazabilidad: ECL-49 → ECL-9 / US-003.
-Ver [validación técnica](../../VALIDACION_ST023.md) y [resultados](resultados.json).
+Ver [validación técnica](<../../../docs/03 Implementación/Sprint 2/validaciones/VALIDACION_ST023.md>) y [resultados](resultados.json).
 
 Chrome 154.0.8037.98 con ADMINISTRADOR y Firefox 157.0 con OPERADOR.
 Verificación registrada el 9 de octubre de 2026, 07:20:18 UTC.
@@ -38,3 +38,5 @@ licencia vencida y verifica que no habilita la asignación.
 Para reproducir: `scripts/verify-drivers.mjs`, con la configuración privada y el
 entorno descritos en la validación técnica. El script genera perfiles sintéticos
 persistentes; no ejecutar sobre datos reales.
+
+[← Volver al README principal](../../../README.md)

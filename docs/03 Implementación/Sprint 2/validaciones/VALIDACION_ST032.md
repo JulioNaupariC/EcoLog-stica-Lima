@@ -28,7 +28,7 @@ El primer ciclo pierde el ACK después de persistir y reintenta el mismo UUID.
 El segundo simula API inaccesible y recupera por temporizador. Además se repite
 cada operación después del ACK. La consulta SQL final contiene exactamente los
 20 UUID del navegador. Se comprueba logout y acceso con cuenta diferente.
-Resultados, registros y ocho capturas: [evidencias/ECL-58](evidencias/ECL-58/README.md).
+Resultados, registros y ocho capturas: [evidencias/ECL-58](../../../../frontend/evidencias/ECL-58/README.md).
 
 También se aplicaron temporalmente los cambios ST-031 sobre esta rama para un
 smoke de interfaz combinado: Chrome/Firefox, teclado y axe sin infracciones,
@@ -160,3 +160,7 @@ el umbral de cobertura del 80%. La ejecución Python se hizo con 3.14.4 en este
 entorno; no certifica por sí sola los demás intérpretes declarados. La simulación
 de transporte y las pruebas de unidad no sustituyen el end-to-end contra una API
 y una base PostgreSQL/PostGIS desplegadas.
+
+[↑ Índice del Sprint 2](../README.md)
+
+[← Volver al README principal](../../../../README.md)

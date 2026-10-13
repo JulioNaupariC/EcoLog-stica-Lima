@@ -24,14 +24,14 @@ de bytes del conjunto completo mientras no se aclaren.
 
 ## 2. Fuentes y entorno
 
-- [Plan ST-033](../docs/sprint-2/plan-pruebas-capacidad.md): objetivos y metodología.
-- [Validación ST-034](VALIDACION_ST034.md) y [evidencia de instrumentación](evidencias/ECL-60/README.md).
-- [Validación ST-035](VALIDACION_ST035.md) y [registro de incidencias](evidencias/ECL-61/INCIDENCIAS.md).
-- [Consolidación de campaña](evidencias/ECL-61/campaign-20261009/campaign-consolidated.json):
+- [Plan ST-033](plan-pruebas-capacidad.md): objetivos y metodología.
+- [Validación ST-034](../validaciones/VALIDACION_ST034.md) y [evidencia de instrumentación](../../../../backend/evidencias/ECL-60/README.md).
+- [Validación ST-035](../validaciones/VALIDACION_ST035.md) y [registro de incidencias](../../../../backend/evidencias/ECL-61/INCIDENCIAS.md).
+- [Consolidación de campaña](../../../../backend/evidencias/ECL-61/campaign-20261009/campaign-consolidated.json):
   incluye la recuperación y conserva la corrida interrumpida.
-- [Auditoría original](evidencias/ECL-61/campaign-20261009/audit.json), manifiestos,
+- [Auditoría original](../../../../backend/evidencias/ECL-61/campaign-20261009/audit.json), manifiestos,
   JSONL comprimidos de intentos/persistencia y series de sondeos.
-- [Verificación derivada de ST-036](evidencias/ECL-62/verificacion-fuentes.json).
+- [Verificación derivada de ST-036](../../../../backend/evidencias/ECL-62/verificacion-fuentes.json).
 
 Las mediciones ST-035 declaran base Git 468e4167c165f540668abaa5c04f0b292ef78c77
 con cambios locales aún sin commit. Las fuentes exportadas documentan ese estado:
@@ -268,7 +268,7 @@ Manifiesto global evidence-sha256.json: **186 entradas**, 177 hashes exactos,
 5 diferencias explicadas por CRLF/LF y 4 discrepancias sin resolver.
 Los archivos comprimidos de intentos/persistencia contrastados mantienen sus hashes.
 Ver valores esperados/actuales y comprobaciones en
-[verificacion-fuentes.json](evidencias/ECL-62/verificacion-fuentes.json).
+[verificacion-fuentes.json](../../../../backend/evidencias/ECL-62/verificacion-fuentes.json).
 
 Logs pendientes:
 - campaign-20261009/postgres.log
@@ -296,3 +296,7 @@ enlaces, fórmulas y diff de documentación.
 4. Resolver integridad de logs y ratificar responsables/procedimientos con el equipo.
 5. Esta entrega queda preparada para commit/PR y revisión; su versionado en GitHub
    se acredita cuando el usuario publique y el equipo revise, no por este archivo.
+
+[↑ Índice del Sprint 2](../README.md)
+
+[← Volver al README principal](../../../../README.md)

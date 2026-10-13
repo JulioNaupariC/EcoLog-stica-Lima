@@ -68,7 +68,7 @@ Los casos negativos aprobados significan que se obtuvo el rechazo esperado y
 se comprobaron sus efectos; no representan fallos de la suite.
 
 Los reportes XML de la ejecución final están en
-[evidencias/ECL-50](evidencias/ECL-50/README.md). Se eliminaron únicamente el
+[evidencias/ECL-50](../../../../backend/evidencias/ECL-50/README.md). Se eliminaron únicamente el
 hostname y las rutas absolutas del equipo al preparar las copias para Git.
 
 Durante la verificación inicial se corrigieron dos comparaciones de la prueba
@@ -102,3 +102,7 @@ GitHub Actions y peer review pendientes del push y PR del usuario. Para cerrar
 el ticket, adjuntar el enlace a una ejecución verde de esta rama/commit y sus
 artefactos, además de este reporte. Las evidencias locales no se presentan como
 una ejecución de GitHub Actions ni como una certificación SAST.
+
+[↑ Índice del Sprint 2](../README.md)
+
+[← Volver al README principal](../../../../README.md)

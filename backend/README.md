@@ -23,7 +23,7 @@ La autorización e idempotencia de `POST /conductor/reportes` siguen en el servi
 mismo `operation_id` confirma la misma persistencia sin duplicarla.
 
 Pruebas aisladas: `python -m scripts.verify_driver_offline --help`.
-Procedimiento y evidencia: [VALIDACION_ST032.md](../frontend/VALIDACION_ST032.md).
+Procedimiento y evidencia: [VALIDACION_ST032.md](<../docs/03 Implementación/Sprint 2/validaciones/VALIDACION_ST032.md>).
 
 Bootstrap FastAPI con SQLAlchemy síncrono y Psycopg 3. Incluye el modelo de
 credenciales Usuario, hashing Argon2id, login HTTP con sesión por cookie HttpOnly,
@@ -511,7 +511,7 @@ Las contraseñas son de sólo escritura y se hashean mediante Argon2id.
 PATCH no permite cambiar cuenta, rol ni credenciales.
 
 El contrato, permisos, validaciones, pruebas y límites se describen en
-[VALIDACION_ST022.md](VALIDACION_ST022.md). Los endpoints están disponibles
+[VALIDACION_ST022.md](<../docs/03 Implementación/Sprint 2/validaciones/VALIDACION_ST022.md>). Los endpoints están disponibles
 en /docs y /openapi.json.
 
 ## Métricas y disponibilidad — ECL-60 / ST-034
@@ -526,7 +526,7 @@ lectura limitado y devuelve 200/503. El healthcheck Docker usa este segundo endp
 Para observaciones externas: `python -m app.monitoring.poll --interval 60`, desde backend;
 produce JSONL y exige que API y BD respondan correctamente dentro de 5 s.
 
-Ver [VALIDACION_ST034.md](VALIDACION_ST034.md) y
+Ver [VALIDACION_ST034.md](<../docs/03 Implementación/Sprint 2/validaciones/VALIDACION_ST034.md>) y
 [evidencias ECL-60](evidencias/ECL-60/README.md) para permisos, límites y reproducción.
 
 ## Preferencias de entrega — ECL-52 / ST-026
@@ -545,15 +545,15 @@ El consumidor puede consultar preferencias al preparar un pedido y elegir usar
 la referencia. El horario textual no se convierte automáticamente en una ventana.
 El frontend de ese flujo corresponde a ST-027.
 
-Contrato, resultados y reproducción en [VALIDACION_ST026.md](VALIDACION_ST026.md).
+Contrato, resultados y reproducción en [VALIDACION_ST026.md](<../docs/03 Implementación/Sprint 2/validaciones/VALIDACION_ST026.md>).
 
 ## Pruebas de gestión de conductores — ECL-50 / ST-024
 
 La suite cubre datos válidos e inválidos, permisos, disponibilidad y persistencia
 real en PostgreSQL. CI conserva JUnit y cobertura durante 30 días, incluso si
 fallan las pruebas, y exige cobertura unitaria de conductores de al menos 80 %.
-Consultar [VALIDACION_ST024.md](VALIDACION_ST024.md) para la matriz de casos y
-los resultados locales; [GUIA_JOSE_ST024.md](../GUIA_JOSE_ST024.md) explica cómo
+Consultar [VALIDACION_ST024.md](<../docs/03 Implementación/Sprint 2/validaciones/VALIDACION_ST024.md>) para la matriz de casos y
+los resultados locales; [GUIA_JOSE_ST024.md](<../docs/03 Implementación/Sprint 2/guias/GUIA_JOSE_ST024.md>) explica cómo
 repetir las pruebas, subir la rama y obtener la evidencia de GitHub Actions.
 
 ## Pruebas de carga y disponibilidad — ST-035 / ECL-61
@@ -562,13 +562,13 @@ La campaña aislada y sus parámetros se describen en
 [loadtest/README.md](loadtest/README.md). Usa Locust con dependencias separadas
 en `requirements-load.lock`, HTTP real y bases nuevas por perfil.
 Los resultados, capturas e incidencias están en
-[VALIDACION_ST035.md](VALIDACION_ST035.md) y
+[VALIDACION_ST035.md](<../docs/03 Implementación/Sprint 2/validaciones/VALIDACION_ST035.md>) y
 [evidencias/ECL-61](evidencias/ECL-61/README.md).
 El porcentaje de sondeos exitosos no acredita el SLA mensual.
 
 ## Resultados, SLA y operación — ECL-62 / ST-036
 
-El [informe técnico ST-036](INFORME_ST036.md) consolida resultados medidos de ST-035,
+El [informe técnico ST-036](<../docs/03 Implementación/Sprint 2/informes/INFORME_ST036.md>) consolida resultados medidos de ST-035,
 comparación con umbrales, fórmula mensual del SLA y procedimientos de diagnóstico.
 P95 y 5xx observados son favorables; concurrencia sostenida y tablero no acreditados.
 El SLA mensual permanece NO MEDIDO. La
@@ -577,7 +577,7 @@ recálculo numérico y las discrepancias de integridad sin modificar evidencias 
 
 ## ECL-63 / ST-037: mediciones iniciales
 
-Consultar [INFORME_ST037.md](INFORME_ST037.md) y
+Consultar [INFORME_ST037.md](<../docs/03 Implementación/Sprint 2/informes/INFORME_ST037.md>) y
 [evidencias/ECL-63](evidencias/ECL-63/README.md). Incluye planes reales de
 consultas de pedidos sobre datos sinteticos y oportunidades para ST-038.
 Dashboard y rutas permanecen pendientes; no se acredita RNF-012.
@@ -585,12 +585,14 @@ Dashboard y rutas permanecen pendientes; no se acredita RNF-012.
 ## ECL-64 / ST-038: consulta minima de cliente
 
 La comprobacion de cliente para registrar pedidos usa SELECT EXISTS, evitando
-recuperar el perfil completo. Ver [VALIDACION_ST038.md](VALIDACION_ST038.md) y
+recuperar el perfil completo. Ver [VALIDACION_ST038.md](<../docs/03 Implementación/Sprint 2/validaciones/VALIDACION_ST038.md>) y
 [evidencias/ECL-64](evidencias/ECL-64/README.md) para comparacion y pruebas.
 El payload del dashboard sigue pendiente; este incremento no acredita RNF-012.
 
 ## ECL-54 / ST-028: validacion de preferencias
 
-Ver [VALIDACION_ST028.md](VALIDACION_ST028.md) para matriz BDD, resultados
+Ver [VALIDACION_ST028.md](<../docs/03 Implementación/Sprint 2/validaciones/VALIDACION_ST028.md>) para matriz BDD, resultados
 y diferencias registradas. La API y gestion de preferencias estan contrastadas;
 P8 presenta una brecha en la propuesta al crear pedidos. El BDD sigue en borrador.
+
+[← Volver al README principal](../README.md)

@@ -15,8 +15,24 @@ dist/
 node_modules/
 coverage/
 .npm-cache/
-.tmp-st027-pg/
-.tmp-st024-pg/
-.tmp-st035-pg/
-.tmp-st032-pg/
 test-results/
+
+# Bases temporales de validación locales
+.tmp-*/
+
+# Editores y sistema operativo
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Registros: las evidencias fechadas sí se versionan
+*.log
+!**/evidencias/**/*.log
+
+# Artefactos de herramientas
+.vite/
+*.tsbuildinfo
+playwright-report/
+.mypy_cache/
+pip-wheel-metadata/

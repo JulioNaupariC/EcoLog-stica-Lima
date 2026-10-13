@@ -1,6 +1,6 @@
 # Evidencia ECL-64 / ST-038
 
-Consultar [VALIDACION_ST038.md](../../VALIDACION_ST038.md).
+Consultar [VALIDACION_ST038.md](<../../../docs/03 Implementación/Sprint 2/validaciones/VALIDACION_ST038.md>).
 
 comparacion.json contiene SQL real, parámetros sintéticos, versiones,
 resultados funcionales y 80 planes antes/después. La comparación utiliza la
@@ -27,3 +27,5 @@ salida para conservar las mediciones originales. La semilla se prepara con las
 instrucciones de [ST-037](../ECL-63/README.md).
 
 Dashboard/rutas y comparación del límite de 250 KB siguen pendientes.
+
+[← Volver al README principal](../../../README.md)
