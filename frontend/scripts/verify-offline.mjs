@@ -32,7 +32,7 @@ for (const [name, engine, options] of [['chrome', chromium, { channel: 'chrome' 
     for (let n = 1; n <= 10; n++) {
       const card = () => page.locator('.driver-panel').filter({ has: page.getByRole('heading', { name: `Parada ${n}`, exact: true }) })
       await context.setOffline(true)
-      await card().getByRole('button', { name: 'Registrar entrega pendiente' }).click()
+      await card().getByRole('button', { name: 'Marcar como entregado' }).click()
       await card().getByText('Reportes pendientes: 1', { exact: true }).waitFor()
       if (n === 1) await page.screenshot({ path: resolve(output, `${name}-01-pendiente-offline.png`), fullPage: true })
       await page.reload()
@@ -67,7 +67,7 @@ for (const [name, engine, options] of [['chrome', chromium, { channel: 'chrome' 
       } else await context.setOffline(false)
       await card().getByText('Reportes pendientes: 0', { exact: true }).waitFor({ timeout: 20_000 })
       await card().getByText('Entregado', { exact: true }).waitFor()
-      assert(await card().getByRole('button', { name: 'Registrar entrega pendiente' }).isDisabled())
+      assert(await card().getByRole('button', { name: 'Marcar como entregado' }).isDisabled())
       const replay = await page.evaluate(async ({ api, report }) => {
         const response = await fetch(`${api}/conductor/reportes`, {
           method: 'POST', credentials: 'include', headers: { 'Content-Type': 'application/json' },

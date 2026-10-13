@@ -94,8 +94,8 @@ export function OfflineReportPanel({ ownerId, stopId, transport, allowNewReport 
       {syncControls ? <p role="status" aria-live="polite" className="report-count">Reportes pendientes: {pending ?? 'consultando…'}</p> : null}
       <div className="report-actions">
         {reportActions ? <>
-          <Button icon={PackageCheck} disabled={reportDisabled} onClick={() => { void queue('ENTREGADO') }}>Registrar entrega pendiente</Button>
-          <Button variant="secondary" icon={PackageX} disabled={reportDisabled} onClick={() => { void queue('NO_ENTREGADO') }}>Registrar no entregado</Button>
+          <Button icon={PackageCheck} disabled={reportDisabled} onClick={() => { void queue('ENTREGADO') }}>Marcar como entregado</Button>
+          <Button variant="secondary" icon={PackageX} disabled={reportDisabled} onClick={() => { void queue('NO_ENTREGADO') }}>Marcar como no entregado</Button>
         </> : null}
         {syncControls ? <Button variant={variant === 'sync' ? 'primary' : 'secondary'} icon={CloudUpload} disabled={busy || !transport} onClick={() => { void sync() }}>Sincronizar pendientes</Button> : null}
       </div>

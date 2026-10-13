@@ -32,14 +32,14 @@ it('parada pendiente, reporte y ACK: finaliza pantalla y snapshot sin permitir o
   const view = render(<DriverItineraryPage ownerId={ownerId} />)
   expect(await screen.findByText('Pendiente')).toBeInTheDocument()
   await waitFor(async () => expect((await loadItinerary(ownerId))?.stops[0].status).toBe('PENDIENTE'))
-  await user.click(screen.getByRole('button', { name: 'Registrar entrega pendiente' }))
+  await user.click(screen.getByRole('button', { name: 'Marcar como entregado' }))
   expect(await screen.findByText(/esta parada ya tiene un reporte pendiente/i)).toBeInTheDocument()
   const [pending] = await listPendingReports(ownerId)
 
   await user.click(screen.getByRole('button', { name: 'Sincronizar pendientes' }))
   expect(await screen.findByText('Entregado')).toBeInTheDocument()
-  expect(screen.getByRole('button', { name: 'Registrar entrega pendiente' })).toBeDisabled()
-  expect(screen.getByRole('button', { name: 'Registrar no entregado' })).toBeDisabled()
+  expect(screen.getByRole('button', { name: 'Marcar como entregado' })).toBeDisabled()
+  expect(screen.getByRole('button', { name: 'Marcar como no entregado' })).toBeDisabled()
   expect(await listPendingReports(ownerId)).toEqual([])
   expect((await loadItinerary(ownerId))?.stops[0].status).toBe('ENTREGADO')
   expect(vi.mocked(driverReportTransport).send.mock.calls[0][0].operationId).toBe(pending.operationId)
@@ -49,7 +49,7 @@ it('parada pendiente, reporte y ACK: finaliza pantalla y snapshot sin permitir o
   render(<DriverItineraryPage ownerId={ownerId} />)
   expect(await screen.findByText('Sin conexión: itinerario previamente guardado en este dispositivo.')).toBeInTheDocument()
   expect(screen.getByText('Entregado')).toBeInTheDocument()
-  expect(screen.getByRole('button', { name: 'Registrar entrega pendiente' })).toBeDisabled()
+  expect(screen.getByRole('button', { name: 'Marcar como entregado' })).toBeDisabled()
 })
 
 it('informa el ACK local pendiente y recupera un snapshot vigente sin crear otro identificador', async () => {
@@ -62,7 +62,7 @@ it('informa el ACK local pendiente y recupera un snapshot vigente sin crear otro
 
   const view = render(<DriverItineraryPage ownerId={recoveringOwnerId} />)
   expect(await screen.findByText('Pendiente')).toBeInTheDocument()
-  await user.click(screen.getByRole('button', { name: 'Registrar entrega pendiente' }))
+  await user.click(screen.getByRole('button', { name: 'Marcar como entregado' }))
   expect(await screen.findByText(/esta parada ya tiene un reporte pendiente/i)).toBeInTheDocument()
   const [pending] = await listPendingReports(recoveringOwnerId)
 
@@ -87,7 +87,7 @@ it('informa el ACK local pendiente y recupera un snapshot vigente sin crear otro
   expect(await screen.findByText(/el servidor confirmó el reporte, pero falta completar la confirmación en este dispositivo/i)).toBeInTheDocument()
   expect(await listPendingReports(recoveringOwnerId)).toEqual([pending])
   expect(await loadItinerary(recoveringOwnerId)).toBeNull()
-  expect(screen.getByRole('button', { name: 'Registrar entrega pendiente' })).toBeDisabled()
+  expect(screen.getByRole('button', { name: 'Marcar como entregado' })).toBeDisabled()
 
   view.unmount()
   getItinerary.mockResolvedValueOnce([{ stopId, position: 1, status: 'ENTREGADO' }])

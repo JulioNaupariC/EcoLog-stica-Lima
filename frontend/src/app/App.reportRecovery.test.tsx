@@ -79,7 +79,7 @@ it('recupera el snapshot al navegar por Inicio y Mi itinerario dentro de App', {
   await user.click(screen.getByRole('link', { name: 'Mi itinerario' }))
   expect(screen.getByTestId('current-path')).toHaveTextContent('/conductor/itinerario')
   expect(await screen.findByText('Pendiente')).toBeInTheDocument()
-  await user.click(screen.getByRole('button', { name: 'Registrar entrega pendiente' }))
+  await user.click(screen.getByRole('button', { name: 'Marcar como entregado' }))
   expect(await screen.findByText(/esta parada ya tiene un reporte pendiente/i)).toBeInTheDocument()
   const [pending] = await listPendingReports(ownerId)
 
@@ -88,7 +88,7 @@ it('recupera el snapshot al navegar por Inicio y Mi itinerario dentro de App', {
   expect(await screen.findByText(recoveryMessage)).toBeInTheDocument()
   expect(await listPendingReports(ownerId)).toEqual([pending])
   expect(await loadItinerary(ownerId)).toBeNull()
-  expect(screen.getByRole('button', { name: 'Registrar entrega pendiente' })).toBeDisabled()
+  expect(screen.getByRole('button', { name: 'Marcar como entregado' })).toBeDisabled()
 
   await user.click(screen.getByRole('link', { name: 'EcoLogística Lima' }))
   expect(screen.getByTestId('current-path')).toHaveTextContent('/')
@@ -103,8 +103,8 @@ it('recupera el snapshot al navegar por Inicio y Mi itinerario dentro de App', {
   expect(await screen.findByText('Reportes pendientes: 0')).toBeInTheDocument()
   expect(await listPendingReports(ownerId)).toEqual([])
   expect((await loadItinerary(ownerId))?.stops[0].status).toBe('ENTREGADO')
-  expect(screen.getByRole('button', { name: 'Registrar entrega pendiente' })).toBeDisabled()
-  expect(screen.getByRole('button', { name: 'Registrar no entregado' })).toBeDisabled()
+  expect(screen.getByRole('button', { name: 'Marcar como entregado' })).toBeDisabled()
+  expect(screen.getByRole('button', { name: 'Marcar como no entregado' })).toBeDisabled()
   expect(vi.mocked(driverReportTransport).send.mock.calls.map(([sent]) => sent.operationId)).toEqual([
     pending.operationId, pending.operationId,
   ])

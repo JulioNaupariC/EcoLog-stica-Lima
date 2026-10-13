@@ -53,8 +53,8 @@ describe('OfflineReportPanel', () => {
     expect(
       await screen.findByText(/esta parada ya tiene un reporte pendiente/i),
     ).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: 'Registrar entrega pendiente' })).toBeDisabled()
-    expect(screen.getByRole('button', { name: 'Registrar no entregado' })).toBeDisabled()
+    expect(screen.getByRole('button', { name: 'Marcar como entregado' })).toBeDisabled()
+    expect(screen.getByRole('button', { name: 'Marcar como no entregado' })).toBeDisabled()
     expect(screen.getByRole('button', { name: 'Sincronizar pendientes' })).toBeEnabled()
   })
 
@@ -72,8 +72,8 @@ describe('OfflineReportPanel', () => {
     )
 
     expect(await screen.findByText('Reportes pendientes: 1')).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: 'Registrar entrega pendiente' })).toBeEnabled()
-    expect(screen.getByRole('button', { name: 'Registrar no entregado' })).toBeEnabled()
+    expect(screen.getByRole('button', { name: 'Marcar como entregado' })).toBeEnabled()
+    expect(screen.getByRole('button', { name: 'Marcar como no entregado' })).toBeEnabled()
   })
 
   it('mantiene bloqueado un nuevo reporte para la parada después de recibir ACK', async () => {
@@ -95,7 +95,7 @@ describe('OfflineReportPanel', () => {
 
     expect(await screen.findByText('Reportes pendientes: 0')).toBeInTheDocument()
     expect(screen.queryByText(/esta parada ya tiene un reporte pendiente/i)).not.toBeInTheDocument()
-    expect(screen.getByRole('button', { name: 'Registrar entrega pendiente' })).toBeDisabled()
+    expect(screen.getByRole('button', { name: 'Marcar como entregado' })).toBeDisabled()
   })
 
   it('informa un fallo local y conserva bloqueada la parada pendiente', async () => {
@@ -107,6 +107,6 @@ describe('OfflineReportPanel', () => {
     await user.click(screen.getByRole('button', { name: 'Sincronizar pendientes' }))
 
     expect(await screen.findByText(/sincroniza los pendientes existentes con su mismo identificador/i)).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: 'Registrar entrega pendiente' })).toBeDisabled()
+    expect(screen.getByRole('button', { name: 'Marcar como entregado' })).toBeDisabled()
   })
 })
