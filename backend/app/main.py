@@ -7,6 +7,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.api.auth import router as auth_router
+from app.api.clientes import router as cliente_router
 from app.api.conductores import router as conductor_router
 from app.api.driver_reports import router as driver_report_router
 from app.api.health import router as health_router
@@ -90,4 +91,5 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.include_router(vehicle_router)
     app.include_router(conductor_router)
     app.include_router(preferencias_router)
+    app.include_router(cliente_router)
     return app
