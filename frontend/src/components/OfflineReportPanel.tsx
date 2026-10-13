@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
+import { CloudUpload, PackageCheck, PackageX } from 'lucide-react'
 import { ConnectionStatus } from './ConnectionStatus'
+import { Button } from './ui'
 import { createPendingReport } from '../types/driverReport'
 import type { DriverReportStatus, PendingDriverReport } from '../types/driverReport'
 import { enqueueReport, listPendingReports } from '../services/reportQueue'
@@ -7,13 +9,20 @@ import { AcknowledgedReportPendingError, synchronizeReports } from '../services/
 import type { ReportTransport } from '../services/reportSync'
 import { REPORTS_CHANGED } from '../hooks/useReportSynchronization'
 
-/** Render only inside the existing CONDUCTOR-authorized itinerary route. */
-export function OfflineReportPanel({ ownerId, stopId, transport, allowNewReport = true, onConfirmed }: {
+/**
+ * Render only inside the existing CONDUCTOR-authorized itinerary route.
+ * - full: report actions, connection, pending count and sync (standalone use).
+ * - stop: only the report actions of one stop (itinerary cards).
+ * - sync: one page-level block with connection, pending count and sync.
+ */
+export function OfflineReportPanel({ ownerId, stopId, transport, allowNewReport = true, onConfirmed, variant = 'full', stopLabel }: {
   ownerId: string
   stopId: string
   transport?: ReportTransport
   allowNewReport?: boolean
   onConfirmed?: (report: PendingDriverReport) => void
+  variant?: 'full' | 'stop' | 'sync'
+  stopLabel?: string
 }) {
   const [pending, setPending] = useState<number | null>(null)
   const [message, setMessage] = useState('')
@@ -72,21 +81,29 @@ export function OfflineReportPanel({ ownerId, stopId, transport, allowNewReport 
     } finally { setBusy(false) }
   }
 
+  const reportActions = variant !== 'sync'
+  const syncControls = variant !== 'stop'
+  const titleId = `offline-reports-title-${variant === 'sync' ? 'sync' : stopId}`
+  const reportDisabled = busy || !allowNewReport || hasPendingReportForStop || confirmedForStop
   return (
-    <section aria-labelledby={`offline-reports-title-${stopId}`}>
-      <h2 id={`offline-reports-title-${stopId}`}>Reportes de la parada</h2>
-      <ConnectionStatus />
-      <p role="status" aria-live="polite">Reportes pendientes: {pending ?? 'consultando…'}</p>
-      <div className="offline-report-actions">
-        <button type="button" disabled={busy || !allowNewReport || hasPendingReportForStop || confirmedForStop} onClick={() => { void queue('ENTREGADO') }}>Registrar entrega pendiente</button>
-        <button type="button" disabled={busy || !allowNewReport || hasPendingReportForStop || confirmedForStop} onClick={() => { void queue('NO_ENTREGADO') }}>Registrar no entregado</button>
-        <button type="button" disabled={busy || !transport} onClick={() => { void sync() }}>Sincronizar pendientes</button>
+    <section aria-labelledby={titleId} className={`report-panel report-panel--${variant}`}>
+      {variant === 'stop'
+        ? <h4 id={titleId} className="visually-hidden">Reportes de {stopLabel ?? 'la parada'}</h4>
+        : <h2 id={titleId} className={variant === 'sync' ? 'card-title' : undefined}>{variant === 'sync' ? 'Sincronización de reportes' : 'Reportes de la parada'}</h2>}
+      {syncControls ? <ConnectionStatus /> : null}
+      {syncControls ? <p role="status" aria-live="polite" className="report-count">Reportes pendientes: {pending ?? 'consultando…'}</p> : null}
+      <div className="report-actions">
+        {reportActions ? <>
+          <Button icon={PackageCheck} disabled={reportDisabled} onClick={() => { void queue('ENTREGADO') }}>Marcar como entregado</Button>
+          <Button variant="secondary" icon={PackageX} disabled={reportDisabled} onClick={() => { void queue('NO_ENTREGADO') }}>Marcar como no entregado</Button>
+        </> : null}
+        {syncControls ? <Button variant={variant === 'sync' ? 'primary' : 'secondary'} icon={CloudUpload} disabled={busy || !transport} onClick={() => { void sync() }}>Sincronizar pendientes</Button> : null}
       </div>
-      {hasPendingReportForStop ? (
-        <p role="status">Esta parada ya tiene un reporte pendiente. Sincronízalo antes de registrar otro resultado.</p>
+      {reportActions && hasPendingReportForStop ? (
+        <p role="status" className="report-note">Esta parada ya tiene un reporte pendiente. Sincronízalo antes de registrar otro resultado.</p>
       ) : null}
-      {!transport && <p>La sincronización no está configurada para esta vista.</p>}
-      {message && <p role="status" aria-live="polite">{message}</p>}
+      {syncControls && !transport && <p className="report-note">La sincronización no está configurada para esta vista.</p>}
+      {message && <p role="status" aria-live="polite" className="report-note">{message}</p>}
     </section>
   )
 }

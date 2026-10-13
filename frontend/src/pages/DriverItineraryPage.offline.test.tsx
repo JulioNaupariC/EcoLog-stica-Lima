@@ -22,7 +22,7 @@ it('preserves delivery details and automatically updates page/outbox/snapshot af
   render(<DriverItineraryPage ownerId={owner} />)
   expect(await screen.findByText(stop.delivery.address)).toBeInTheDocument()
   expect(screen.getByText('Horario de entrega')).toBeInTheDocument()
-  await userEvent.setup().click(screen.getByRole('button', { name: 'Registrar entrega pendiente' }))
+  await userEvent.setup().click(screen.getByRole('button', { name: 'Marcar como entregado' }))
   expect(await screen.findByText('Reportes pendientes: 1')).toBeInTheDocument()
   online.mockReturnValue(true)
   act(() => { window.dispatchEvent(new Event('online')) })

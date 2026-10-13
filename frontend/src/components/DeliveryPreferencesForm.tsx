@@ -1,4 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
+import { RotateCcw, Save } from 'lucide-react'
+import { Alert, Button, FormActions } from './ui'
+import { shortClientId } from '../services/clients'
 import type { FormEvent } from 'react'
 import { FormField } from './FormField'
 import { PREFERENCE_LIMITS, preferencesPatch, valuesFromPreferences } from '../domain/deliveryPreferencesForm'
@@ -21,8 +24,10 @@ interface Props {
   onAccessError: (error: PreferencesServiceError) => void
   onSavingChange: (saving: boolean) => void
   onEdit: () => void
+  /** Name of the selected client, shown instead of its identifier. */
+  clientName?: string
 }
-export function DeliveryPreferencesForm({ preferences, onSaved, onCancel, onAccessError, onSavingChange, onEdit }: Props) {
+export function DeliveryPreferencesForm({ preferences, onSaved, onCancel, onAccessError, onSavingChange, onEdit, clientName }: Props) {
   const [values, setValues] = useState(() => valuesFromPreferences(preferences))
   const [errors, setErrors] = useState<PreferencesErrors>({})
   const [message, setMessage] = useState('')
@@ -75,35 +80,44 @@ export function DeliveryPreferencesForm({ preferences, onSaved, onCancel, onAcce
       if (active.current) { setSaving(false); onSavingChange(false) }
     }
   }
-  return <section aria-labelledby="preferences-form-title">
-    <h2 id="preferences-form-title" ref={heading} tabIndex={-1}>Preferencias del cliente</h2>
-    <p className="preferences-client">Cliente: {preferences.cliente_id}</p>
-    <form className="order-form preferences-form" aria-label="Editar preferencias de entrega" aria-busy={saving}
-      noValidate onSubmit={event => { void submit(event) }}>
-      {message ? <div className="form-alert error-alert" role="alert" tabIndex={-1} ref={alert}>{message}</div> : null}
-      <fieldset disabled={saving || blocked}>
-        <legend>Condiciones de entrega</legend>
-        {FIELDS.map(field => {
-          const id = 'preference-' + field.name
-          const input = values[field.name]
-          return <div className="preference-entry" key={field.name}>
-            <FormField id={id} label={field.label} hint={field.hint} error={errors[field.name]}>
-              <textarea id={id} name={field.name} rows={field.name === 'horario_preferido' ? 2 : 3}
-                value={input.value} disabled={input.cleared} onChange={event => change(field.name, event.target.value)}
-                aria-invalid={Boolean(errors[field.name])}
-                aria-describedby={`${id}-hint ${id}-count${errors[field.name] ? ` ${id}-error` : ''}`} />
-              <p className="field-hint" id={`${id}-count`}>{Array.from(input.value).length} / {PREFERENCE_LIMITS[field.name]} caracteres</p>
-            </FormField>
-            <label className="preference-clear"><input type="checkbox" checked={input.cleared}
-              onChange={event => change(field.name, undefined, event.target.checked)} />{field.clearLabel}</label>
-          </div>
-        })}
-      </fieldset>
-      <p className="field-hint">Marcar una opción “Sin…” elimina esa preferencia al guardar. Las demás se conservan.</p>
-      <div className="preferences-actions">
-        <button type="submit" className="submit-button" disabled={saving || blocked}>{saving ? 'Guardando…' : 'Guardar preferencias'}</button>
-        <button type="button" className="preferences-secondary" disabled={saving} onClick={onCancel}>Cancelar cambios</button>
+  return <section className="card" aria-labelledby="preferences-form-title">
+    <div className="card-header">
+      <div className="card-heading">
+        <h2 id="preferences-form-title" className="card-title" ref={heading} tabIndex={-1}>Preferencias del cliente</h2>
+        <p className="card-description">
+          {clientName ? <>Cliente: <strong>{clientName}</strong> <span className="text-subtle">(ID {shortClientId(preferences.cliente_id)}…)</span></>
+            : <>Cliente: {preferences.cliente_id}</>}
+        </p>
       </div>
+    </div>
+    <form className="form-stack preferences-form" aria-label="Editar preferencias de entrega" aria-busy={saving}
+      noValidate onSubmit={event => { void submit(event) }}>
+      {message ? <Alert tone="danger" tabIndex={-1} ref={alert}>{message}</Alert> : null}
+      <fieldset disabled={saving || blocked} className="form-section">
+        <legend className="form-section-legend">Condiciones de entrega</legend>
+        <p className="form-section-description">Marcar una opción “Sin…” elimina esa preferencia al guardar. Las demás se conservan.</p>
+        <div className="form-section-body">
+          {FIELDS.map(field => {
+            const id = 'preference-' + field.name
+            const input = values[field.name]
+            return <div className="preference-entry" key={field.name}>
+              <FormField id={id} label={field.label} hint={field.hint} error={errors[field.name]}>
+                <textarea id={id} name={field.name} rows={field.name === 'horario_preferido' ? 2 : 3}
+                  value={input.value} disabled={input.cleared} onChange={event => change(field.name, event.target.value)}
+                  aria-invalid={Boolean(errors[field.name])}
+                  aria-describedby={`${id}-hint ${id}-count${errors[field.name] ? ` ${id}-error` : ''}`} />
+                <p className="field-hint field-counter" id={`${id}-count`}>{Array.from(input.value).length} / {PREFERENCE_LIMITS[field.name]} caracteres</p>
+              </FormField>
+              <label className="checkbox-field"><input type="checkbox" checked={input.cleared}
+                onChange={event => change(field.name, undefined, event.target.checked)} /><span>{field.clearLabel}</span></label>
+            </div>
+          })}
+        </div>
+      </fieldset>
+      <FormActions>
+        <Button type="submit" icon={Save} disabled={saving || blocked}>{saving ? 'Guardando…' : 'Guardar preferencias'}</Button>
+        <Button variant="secondary" icon={RotateCcw} disabled={saving} onClick={onCancel}>Cancelar cambios</Button>
+      </FormActions>
     </form>
   </section>
 }

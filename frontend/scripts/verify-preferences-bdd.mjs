@@ -35,7 +35,7 @@ async function authenticate(page, prefix) {
   await page.getByLabel('Correo electrónico').fill(settings['ECL54_' + prefix + '_EMAIL'])
   await page.getByLabel('Contraseña', { exact: true }).fill(settings['ECL54_' + prefix + '_PASSWORD'])
   await page.getByRole('button', { name: 'Iniciar sesión', exact: true }).click()
-  await page.getByRole('heading', { name: 'Rutas sostenibles para Lima' }).waitFor()
+  await page.getByRole('heading', { name: 'Inicio', exact: true }).waitFor()
 }
 async function selectClient(page, id) {
   // The selector matches an exact client UUID as well as name fragments.
@@ -46,6 +46,12 @@ async function consult(page, id) {
   await selectClient(page, id)
   await page.getByRole('button', { name: 'Consultar preferencias', exact: true }).click()
   await page.getByRole('heading', { name: 'Preferencias del cliente', exact: true }).waitFor()
+}
+async function openNav(page, name) {
+  // Since ECL-22 the staff navigation is a drawer below 1024 px: open it first.
+  const menu = page.getByRole('button', { name: 'Abrir menú', exact: true })
+  if (await menu.isVisible()) await menu.click()
+  await page.getByRole('link', { name, exact: true }).click()
 }
 async function snapshot(page, filename) {
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth)
@@ -81,7 +87,7 @@ try {
       }
       const otherPreferences = {"horario_preferido": "Tarde (preferido)", "referencia": "Recepcion principal", "restriccion_acceso": "Avisar al llegar"}
       assert.equal((await context.request.patch(`${api}/clientes/${clientB}/preferencias`, { data: otherPreferences })).status(), 200)
-      await page.getByRole('link', { name: 'Preferencias de entrega', exact: true }).click()
+      await openNav(page, 'Preferencias de entrega')
       phase = name + ': empty preferences'
       await consult(page, clientA)
       assert.equal(await page.getByLabel('Sin horario preferido', { exact: true }).isChecked(), true)
@@ -170,7 +176,7 @@ try {
         if (request.url().startsWith(api + '/pedidos')) orderRequests.push(request.method())
       }
       page.on('request', monitor)
-      await page.getByRole('link', { name: 'Registrar pedido', exact: true }).click()
+      await openNav(page, 'Registrar pedido')
       await page.getByRole('heading', { name: 'Registrar pedido', exact: true }).waitFor()
       await page.getByLabel('Punto de referencia', { exact: true }).fill('Referencia propia del pedido')
       await page.locator('#ventana_inicio').fill('2026-10-10T09:00')
@@ -194,6 +200,8 @@ try {
       page.off('request', monitor)
 
       phase = name + ': denied conductor'
+      // «Cerrar sesión» lives in the account menu since ECL-22.
+      await page.getByRole('button', { name: /^Cuenta:/u }).click()
       await page.getByRole('button', { name: 'Cerrar sesión', exact: true }).click()
       await page.getByRole('heading', { name: 'Iniciar sesión', exact: true }).waitFor()
       await authenticate(page, 'DRIVER')
@@ -206,6 +214,8 @@ try {
       assert.equal((await context.request.get(`${api}/clientes/${clientA}/preferencias`)).status(), 403)
       await snapshot(page, name + '-08-acceso-denegado.png')
       assert.equal(errors.length, 0)
+      // «Cerrar sesión» lives in the account menu since ECL-22.
+      await page.getByRole('button', { name: /^Cuenta:/u }).click()
       await page.getByRole('button', { name: 'Cerrar sesión', exact: true }).click()
       results.push({ browser: name, version: browser.version(), passed: true, role: prefix === 'ADMIN' ? 'ADMINISTRADOR' : 'OPERADOR',
         realLogin: true, realApiGetPatch: true, preferencesRetrieved: true, explicitClear: true, otherClientUnchanged: true, otherClientInitiallyPopulated: true, P8OrderProposalAvailable: true, P8ExplicitReferenceCopy: true, P8WindowsUnchanged: true, P8ClientUnchanged: true,

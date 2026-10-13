@@ -2,11 +2,13 @@
 import assert from 'node:assert/strict'
 import { readFile, mkdir, writeFile } from 'node:fs/promises'
 import { resolve } from 'node:path'
-import { fileURLToPath } from 'node:url'
+import { fileURLToPath, pathToFileURL } from 'node:url'
 
 // The fictitious itinerary is opt-in: build the preview with VITE_DEMO_ITINERARY=true.
 
-const { chromium, firefox } = await import('../node_modules/.ecl56-browser-check/node_modules/playwright/index.mjs')
+const { chromium, firefox } = await import(process.env.ECL56_PLAYWRIGHT_MODULE
+  ? pathToFileURL(process.env.ECL56_PLAYWRIGHT_MODULE).href
+  : '../node_modules/.ecl56-browser-check/node_modules/playwright/index.mjs')
 const privateFile = await readFile(new URL('../../.env.st030', import.meta.url), 'utf8')
 const settings = Object.fromEntries(privateFile.split(/\r?\n/).filter((line) => line.includes('=')).map((line) => {
   const index = line.indexOf('=')
@@ -85,6 +87,9 @@ for (const [name, launcher, options] of [
     assert.equal(logout.status(), 204)
     phase = 'rol no autorizado (login simulado)'
     await page.setViewportSize({ width: 360, height: 800 })
+    // The API logout above does not clear the driver's same-tab hint (ECL-58); a new
+    // auditor session starts without it, as in a fresh tab.
+    await page.evaluate(() => sessionStorage.clear())
     await page.goto('http://127.0.0.1:5173/login')
     await page.route('http://127.0.0.1:8000/login', (route) => route.fulfill({
       status: 200, contentType: 'application/json',
@@ -94,8 +99,8 @@ for (const [name, launcher, options] of [
     await page.getByLabel('Correo electrónico').fill('auditor@example.test')
     await page.getByLabel('Contraseña').fill('valor-ficticio-de-prueba')
     await page.getByRole('button', { name: 'Iniciar sesión', exact: true }).click()
-    await page.getByRole('heading', { name: 'Rutas sostenibles para Lima' }).waitFor()
-    assert.equal(await page.getByRole('link', { name: 'Mi itinerario' }).count(), 0)
+    await page.getByRole('heading', { name: 'Inicio', exact: true }).waitFor()
+    assert.equal(await page.getByRole('link', { name: 'Mi itinerario', exact: true }).count(), 0)
     // Simula navegación SPA directa conservando la identidad en memoria.
     await page.evaluate(() => { history.pushState({}, '', '/conductor/itinerario'); window.dispatchEvent(new PopStateEvent('popstate')) })
     await page.getByRole('heading', { name: 'Acceso denegado', exact: true }).waitFor()

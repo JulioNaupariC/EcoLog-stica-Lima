@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
-import { Link, Navigate, Route, Routes, useNavigate } from 'react-router-dom'
+import type { ReactNode } from 'react'
+import { Navigate, Route, Routes, useNavigate } from 'react-router-dom'
+import { ShieldAlert } from 'lucide-react'
 import { HomePage } from '../pages/HomePage'
 import { DriverItineraryPage } from '../pages/DriverItineraryPage'
 import { LoginPage } from '../pages/LoginPage'
@@ -8,40 +10,40 @@ import { OrderCreatePage } from '../pages/OrderCreatePage'
 import { VehiclesPage } from '../pages/VehiclesPage'
 import { DriversPage } from '../pages/DriversPage'
 import { DeliveryPreferencesPage } from '../pages/DeliveryPreferencesPage'
-import { logout, type AuthRole, type LoginResponse } from '../services/auth'
+import { DriverShell, PublicShell, StaffShell } from '../components/layout/AppShell'
+import { Alert, EmptyState, LinkButton, ToastProvider, useToast } from '../components/ui'
+import { canListVehicles, canManageOperations, ROLE_LABEL } from '../domain/roles'
+import { logout, type LoginResponse } from '../services/auth'
 import { clearItinerary } from '../services/offlineStorage'
 import { listPendingReports } from '../services/reportQueue'
 import { forgetDriver, recallDriver, rememberDriver } from '../services/offlineAccess'
 
-function canCreateOrders(role: AuthRole): boolean {
-  return role === 'ADMINISTRADOR' || role === 'OPERADOR'
-}
-
-function getVehicleAccess(role: AuthRole | undefined) {
-  const canCreate = role === 'ADMINISTRADOR' || role === 'OPERADOR'
-  return { canList: canCreate || role === 'AUDITOR', canCreate }
-}
-
 function AccessDenied() {
-  return (
-    <section className="access-denied" aria-labelledby="access-denied-title">
-      <h1 id="access-denied-title">Acceso denegado</h1>
-      <p role="alert">No tienes permisos para acceder a esta función.</p>
-    </section>
-  )
+  return <EmptyState icon={ShieldAlert} title="Acceso denegado" headingLevel={1} titleId="access-denied-title"
+    action={<LinkButton to="/" variant="secondary">Volver al inicio</LinkButton>}>
+    <p role="alert">No tienes permisos para acceder a esta función.</p>
+  </EmptyState>
 }
 
 export function App() {
+  return <ToastProvider><AppRoutes /></ToastProvider>
+}
+
+function AppRoutes() {
   const [identity, setIdentity] = useState<LoginResponse | null>(recallDriver)
+  // Shown in the top bar only; kept in memory, never stored on the device.
+  const [accountEmail, setAccountEmail] = useState('')
   const [logoutMessage, setLogoutMessage] = useState('')
   const [loggingOut, setLoggingOut] = useState(false)
   const navigate = useNavigate()
-  const createOrdersAllowed = identity !== null && canCreateOrders(identity.rol)
-  const vehicleAccess = getVehicleAccess(identity?.rol)
+  const { notify } = useToast()
+  const createOrdersAllowed = identity !== null && canManageOperations(identity.rol)
+  const vehiclesAllowed = identity !== null && canListVehicles(identity.rol)
 
-  function handleLoginSuccess(loggedInIdentity: LoginResponse) {
+  function handleLoginSuccess(loggedInIdentity: LoginResponse, email: string) {
     rememberDriver(loggedInIdentity)
     setIdentity(loggedInIdentity)
+    setAccountEmail(email)
     setLogoutMessage('')
     void navigate('/', { replace: true })
   }
@@ -85,7 +87,9 @@ export function App() {
       await logout()
       forgetDriver()
       setIdentity(null)
+      setAccountEmail('')
       await navigate('/login', { replace: true })
+      notify('Sesión cerrada.')
       if (identity.rol === 'CONDUCTOR') {
         try {
           await clearItinerary(identity.usuario_id)
@@ -102,83 +106,40 @@ export function App() {
     }
   }
 
-  return (
-    <div className="app-shell">
-      <a className="skip-link" href="#contenido-principal">Saltar al contenido principal</a>
-      <header className="site-header">
-        <nav className="container" aria-label="Navegación principal">
-          <Link className="brand" to="/">
-            EcoLogística Lima
-          </Link>
-          <div className="nav-actions">
-            {identity ? <span className="identity-role">Rol: {identity.rol}</span> : (
-              <Link className="nav-link" to="/login">Iniciar sesión</Link>
-            )}
-            {identity ? (
-              <button className="nav-link" type="button" disabled={loggingOut} onClick={() => { void handleLogout() }}>
-                {loggingOut ? 'Cerrando sesión…' : 'Cerrar sesión'}
-              </button>
-            ) : null}
-            {createOrdersAllowed ? (
-              <Link className="nav-link" to="/pedidos/nuevo">Registrar pedido</Link>
-            ) : null}
-            {vehicleAccess.canList ? (
-              <Link className="nav-link" to="/vehiculos">Vehículos</Link>
-            ) : null}
-            {createOrdersAllowed ? (
-              <Link className="nav-link" to="/conductores">Conductores</Link>
-            ) : null}
-            {createOrdersAllowed ? (
-              <Link className="nav-link" to="/clientes/preferencias">Preferencias de entrega</Link>
-            ) : null}
-            {identity?.rol === 'CONDUCTOR' ? (
-              <Link className="nav-link" to="/conductor/itinerario">Mi itinerario</Link>
-            ) : null}
-          </div>
-        </nav>
-      </header>
-      {logoutMessage ? <p className="container" role="alert">{logoutMessage}</p> : null}
-      <main id="contenido-principal" tabIndex={-1} className="container main-content">
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route
-            path="/login"
-            element={identity ? <Navigate to="/" replace /> : <LoginPage onLoginSuccess={handleLoginSuccess} />}
-          />
-          <Route
-            path="/pedidos/nuevo"
-            element={identity === null ? <Navigate to="/login" replace /> : (
-              createOrdersAllowed ? <OrderCreatePage /> : <AccessDenied />
-            )}
-          />
-          <Route
-            path="/vehiculos"
-            element={identity === null ? <Navigate to="/login" replace /> : (
-              vehicleAccess.canList ? <VehiclesPage canCreate={vehicleAccess.canCreate} /> : <AccessDenied />
-            )}
-          />
-          <Route
-            path="/conductor/itinerario"
-            element={identity === null ? <Navigate to="/login" replace /> : (
-              identity.rol === 'CONDUCTOR' ? (
-                <DriverItineraryPage key={identity.usuario_id} ownerId={identity.usuario_id} onSessionExpired={handleSessionExpired} />
-              ) : <AccessDenied />
-            )}
-          />
-          <Route path="/conductores" element={identity === null ? <Navigate to="/login" replace /> : (
-            createOrdersAllowed ? <DriversPage key={identity.usuario_id} onSessionExpired={handleSessionExpired} /> : <AccessDenied />
-          )} />
-          <Route path="/clientes/preferencias" element={identity === null ? <Navigate to="/login" replace /> : (
-            createOrdersAllowed ? <DeliveryPreferencesPage key={identity.usuario_id} onSessionExpired={handleSessionExpired} /> : <AccessDenied />
-          )} />
-          <Route path="*" element={<NotFoundPage />} />
-        </Routes>
-      </main>
-      <footer className="site-footer">
-        <div className="container">
-          <p>Base técnica del optimizador de rutas sostenibles.</p>
-        </div>
-      </footer>
-    </div>
-  )
+  if (identity === null) {
+    return <PublicShell>
+      <Routes>
+        <Route path="/login" element={<LoginPage onLoginSuccess={handleLoginSuccess} notice={logoutMessage} />} />
+        <Route path="*" element={<Navigate to="/login" replace />} />
+      </Routes>
+    </PublicShell>
+  }
+
+  const banner = logoutMessage
+    ? <div className="shell-banner"><Alert tone="danger">{logoutMessage}</Alert></div>
+    : null
+  const guarded = (allowed: boolean, element: ReactNode) => allowed ? element : <AccessDenied />
+  const shellProps = {
+    role: identity.rol,
+    accountName: accountEmail || ROLE_LABEL[identity.rol],
+    loggingOut,
+    onLogout: () => { void handleLogout() },
+    banner,
+  }
+  const routes = <Routes>
+    <Route path="/" element={<HomePage role={identity.rol} ownerId={identity.usuario_id} />} />
+    <Route path="/login" element={<Navigate to="/" replace />} />
+    <Route path="/pedidos/nuevo" element={guarded(createOrdersAllowed, <OrderCreatePage />)} />
+    <Route path="/vehiculos" element={guarded(vehiclesAllowed, <VehiclesPage canCreate={createOrdersAllowed} />)} />
+    <Route path="/conductor/itinerario" element={guarded(identity.rol === 'CONDUCTOR',
+      <DriverItineraryPage key={identity.usuario_id} ownerId={identity.usuario_id} onSessionExpired={handleSessionExpired} />)} />
+    <Route path="/conductores" element={guarded(createOrdersAllowed,
+      <DriversPage key={identity.usuario_id} onSessionExpired={handleSessionExpired} />)} />
+    <Route path="/clientes/preferencias" element={guarded(createOrdersAllowed,
+      <DeliveryPreferencesPage key={identity.usuario_id} onSessionExpired={handleSessionExpired} />)} />
+    <Route path="*" element={<NotFoundPage />} />
+  </Routes>
+  return identity.rol === 'CONDUCTOR'
+    ? <DriverShell {...shellProps}>{routes}</DriverShell>
+    : <StaffShell {...shellProps}>{routes}</StaffShell>
 }

@@ -500,13 +500,15 @@ Crea, mediante los servicios de la aplicación:
 | Clientes | 8 | Nombres ficticios; 7 con preferencias y 1 sin ellas (ruta de borde) |
 | Vehículos | 5 | Placas `DEMO-001` a `DEMO-005` |
 | Conductores | 4 | Dos habilitados, uno con licencia vencida y otro sin disponibilidad (rutas de borde) |
-| Pedidos | 20 | Referencias `Pedido demo 01` a `Pedido demo 20`, ventanas de hoy y mañana en Lima |
-| Paradas | 5 | Asignadas a `conductor.demo` con `DriverReportService.provision_assignment` |
+| Pedidos | 20 | Referencias `Pedido demo 01` a `Pedido demo 20`; los 5 primeros, hoy (Lima) de 09:00 a 14:00 en franjas de una hora; el resto, hoy y mañana |
+| Paradas | 5 | Asignadas a `conductor.demo` con `DriverReportService.provision_assignment`, en orden de ventana (parada 1 a las 09:00, parada 5 a las 13:00) |
 
 No existe un servicio de alta de clientes (su CRUD queda para el Sprint 3), así
 que los clientes se insertan con el modelo ORM, no con SQL directo; sus
 preferencias se guardan con `PreferenciasService`. El script es idempotente:
-una segunda ejecución informa que todo «ya existía» y no duplica nada.
+una segunda ejecución informa que todo «ya existía» y no duplica nada. Las fechas
+se fijan en la primera ejecución: para demostrar otro día, recrear la base `*_demo`
+(`dropdb`/`createdb`, extensión PostGIS y `alembic upgrade head`) y sembrar ese día.
 Pruebas: `tests/unit/test_seed_demo.py` y `tests/integration/test_seed_demo.py`.
 
 ## Calidad

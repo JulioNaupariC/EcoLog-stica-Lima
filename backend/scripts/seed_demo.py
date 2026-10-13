@@ -21,6 +21,11 @@ mediante el modelo ORM, nunca con SQL directo.
 
 Es idempotente: si un dato ya existe (por correo, nombre, placa, DNI o
 referencia del pedido), no se duplica.
+
+Las 5 paradas de conductor.demo usan pedidos de hoy (hora de Lima) con
+ventanas de una hora crecientes por posición (09:00, 10:00…). Las fechas se
+fijan en la primera ejecución: para una demostración en otro día, recrear la
+base ``*_demo`` y volver a sembrar ese mismo día.
 """
 
 from __future__ import annotations
@@ -334,6 +339,23 @@ def _ensure_drivers(
     return accounts
 
 
+def order_window(index: int, today: date) -> tuple[datetime, timedelta]:
+    """Delivery window of demo order ``index`` (1-based).
+
+    The first ASSIGNED_ORDERS orders form conductor.demo's route: all today in
+    Lima, one-hour windows that grow with the stop position (09:00, 10:00…).
+    The rest stay spread over today and tomorrow.
+    """
+    if index <= ASSIGNED_ORDERS:
+        return datetime.combine(today, time(8 + index, 0), tzinfo=LIMA), timedelta(
+            hours=1
+        )
+    day = today + timedelta(days=index % 2)
+    return datetime.combine(day, time(8 + index % 8, 0), tzinfo=LIMA), timedelta(
+        hours=2
+    )
+
+
 def _order_reference(index: int) -> str:
     return f"Pedido demo {index:02d}"
 
@@ -356,8 +378,7 @@ def _ensure_orders(
             ids.append(existing)
             summary.count("pedidos", created=False)
             continue
-        day = today + timedelta(days=index % 2)
-        start = datetime.combine(day, time(8 + index % 8, 0), tzinfo=LIMA)
+        start, length = order_window(index, today)
         created = service.create(
             PedidoCreate(
                 cliente_id=clients[index % len(clients)],
@@ -368,7 +389,7 @@ def _ensure_orders(
                 peso_kg=Decimal(5 + index * 3),
                 volumen_m3=Decimal("0.050") * index,
                 ventana_inicio=start,
-                ventana_fin=start + timedelta(hours=2),
+                ventana_fin=start + length,
                 prioridad=PRIORITIES[index % len(PRIORITIES)],
                 tipo_producto=PRODUCTS[index % len(PRODUCTS)],
             )

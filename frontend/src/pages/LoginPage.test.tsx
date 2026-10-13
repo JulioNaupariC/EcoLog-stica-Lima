@@ -86,7 +86,8 @@ describe('LoginPage', () => {
     const onLoginSuccess = renderPage()
     fill(' User@example.test ', ' private-password ')
     submit()
-    await waitFor(() => expect(onLoginSuccess).toHaveBeenCalledWith(identity))
+    // The trimmed email is passed only to show it in the account menu.
+    await waitFor(() => expect(onLoginSuccess).toHaveBeenCalledWith(identity, 'User@example.test'))
     expect(loginMock).toHaveBeenCalledWith({
       email: ' User@example.test ',
       password: ' private-password ',
@@ -109,7 +110,7 @@ describe('LoginPage', () => {
     expect(screen.getByRole('status')).toHaveTextContent('Iniciando sesión…')
     expect(screen.getByRole('button', { name: 'Iniciando sesión…' })).toBeDisabled()
     act(() => { resolveLogin(identity) })
-    await waitFor(() => expect(onLoginSuccess).toHaveBeenCalledWith(identity))
+    await waitFor(() => expect(onLoginSuccess).toHaveBeenCalledWith(identity, 'User@example.test'))
     expect(form).toHaveAttribute('aria-busy', 'false')
   })
 

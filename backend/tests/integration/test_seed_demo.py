@@ -73,6 +73,10 @@ def test_ruta_feliz_conductor_demo_ve_su_itinerario_real(demo_factory):
     stops = DriverReportService(demo_factory).list_assignments(owner)
     assert [stop.position for stop in stops] == [1, 2, 3, 4, 5]
     assert all(stop.delivery is not None for stop in stops)
+    # Coherent demo route: same day (Lima), windows growing with the position.
+    starts = [stop.delivery.window_start.astimezone(LIMA) for stop in stops]
+    assert {start.date() for start in starts} == {NOW.date()}
+    assert [start.hour for start in starts] == [9, 10, 11, 12, 13]
 
 
 def test_ruta_de_borde_licencia_vencida_y_sin_disponibilidad(demo_factory):

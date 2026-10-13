@@ -2,6 +2,8 @@ import { FormEvent, useRef, useState } from 'react'
 import { ClientCombobox } from '../components/ClientCombobox'
 import { ClientPreferencesProposal } from '../components/ClientPreferencesProposal'
 import { FormField as Field } from '../components/FormField'
+import { CheckCircle2, Send } from 'lucide-react'
+import { Alert, Button, FormActions, FormSection, PageHeader } from '../components/ui'
 import type { ClientOption } from '../services/clients'
 import {
   createOrder,
@@ -214,92 +216,111 @@ export function OrderCreatePage() {
     }
   }
 
-  const describedBy = (field: FormField) => errors[field] ? `${field}-error` : undefined
+  const describedBy = (field: FormField) => [errors[field] ? `${field}-error` : null, `${field}-hint`].filter(Boolean).join(' ')
+  // Inline validation: re-check a field with content when the user leaves it.
+  const validateField = (field: FormField) => {
+    if (field === 'cliente_id' || !values[field as keyof OrderFormValues]) return
+    const fieldError = validate(values).errors[field]
+    setErrors((current) => ({ ...current, [field]: fieldError }))
+  }
+  const fieldProps = (field: FormField) => ({
+    'aria-invalid': Boolean(errors[field]),
+    'aria-describedby': describedBy(field),
+    onBlur: () => validateField(field),
+  })
 
   return (
     <section className="order-page" aria-labelledby="order-title">
-      <p className="eyebrow">Gestión de pedidos</p>
-      <h1 id="order-title">Registrar pedido</h1>
-      <p className="form-intro">
-        Busca un cliente existente por su nombre y completa los datos necesarios para la planificación.
-      </p>
+      <PageHeader titleId="order-title" title="Registrar pedido" eyebrow="Gestión de pedidos"
+        breadcrumbs={[{ label: 'Inicio', to: '/' }, { label: 'Registrar pedido' }]}
+        description="Busca un cliente existente por su nombre y completa los datos necesarios para la planificación." />
 
-      {globalError ? <div className="form-alert error-alert" role="alert">{globalError}</div> : null}
+      {globalError ? <Alert tone="danger">{globalError}</Alert> : null}
       {status === 'success' && createdOrder ? (
-        <div className="form-alert success-alert" role="status">
-          <strong>Pedido registrado.</strong>
-          <span>ID: {createdOrder.pedido_id}</span>
-          <span>Estado: {createdOrder.estado}</span>
-        </div>
+        <Alert tone="success" role="status" title="Pedido registrado.">
+          <span className="alert-line">ID: {createdOrder.pedido_id}</span>
+          <span className="alert-line">Estado: {createdOrder.estado}</span>
+        </Alert>
       ) : null}
 
-      <form className="order-form" onSubmit={(event) => { void handleSubmit(event) }} noValidate>
-        <ClientCombobox
-          id="cliente_id"
-          label="Cliente"
-          hint="Escribe parte del nombre o pega el identificador del cliente."
-          required
-          error={errors.cliente_id}
-          selected={client}
-          onSelect={(option) => {
-            setClient(option)
-            updateValue('cliente_id', option?.cliente_id ?? '')
-          }}
-        />
-
-        {client ? (
-          <ClientPreferencesProposal
-            key={client.cliente_id}
-            clientId={client.cliente_id}
-            orderReference={values.referencia}
-            onUseReference={(reference) => updateValue('referencia', reference)}
+      <form className="form-stack order-form" onSubmit={(event) => { void handleSubmit(event) }} noValidate>
+        <FormSection legend="Cliente" description="El pedido se asocia a un cliente registrado.">
+          <ClientCombobox
+            id="cliente_id"
+            label="Cliente"
+            hint="Escribe parte del nombre o pega el identificador del cliente."
+            required
+            error={errors.cliente_id}
+            selected={client}
+            onSelect={(option) => {
+              setClient(option)
+              updateValue('cliente_id', option?.cliente_id ?? '')
+            }}
           />
-        ) : null}
+          {client ? (
+            <ClientPreferencesProposal
+              key={client.cliente_id}
+              clientId={client.cliente_id}
+              orderReference={values.referencia}
+              onUseReference={(reference) => updateValue('referencia', reference)}
+            />
+          ) : null}
+        </FormSection>
 
-        <Field id="direccion" label="Dirección" error={errors.direccion}>
-          <input id="direccion" name="direccion" type="text" maxLength={255} required value={values.direccion} onChange={(event) => updateValue('direccion', event.target.value)} aria-invalid={Boolean(errors.direccion)} aria-describedby={describedBy('direccion')} />
-        </Field>
+        <FormSection legend="Lugar de entrega" description="Indica coordenadas completas o un punto de referencia verificable (RN-006).">
+          <Field id="direccion" label="Dirección" error={errors.direccion} hint="Calle, número y distrito.">
+            <input id="direccion" name="direccion" type="text" maxLength={255} required value={values.direccion} onChange={(event) => updateValue('direccion', event.target.value)} {...fieldProps('direccion')} />
+          </Field>
+          <Field id="referencia" label="Punto de referencia" error={errors.referencia} hint="Ayuda al conductor a ubicar la entrega.">
+            <input id="referencia" name="referencia" type="text" maxLength={255} value={values.referencia} onChange={(event) => updateValue('referencia', event.target.value)} {...fieldProps('referencia')} />
+          </Field>
+          <div className="form-grid">
+            <Field id="latitud" label="Latitud" error={errors.latitud} hint="Entre -90 y 90. Ej.: -12.0464.">
+              <input id="latitud" name="latitud" type="number" min="-90" max="90" step="any" value={values.latitud} onChange={(event) => updateValue('latitud', event.target.value)} {...fieldProps('latitud')} />
+            </Field>
+            <Field id="longitud" label="Longitud" error={errors.longitud} hint="Entre -180 y 180. Ej.: -77.0428.">
+              <input id="longitud" name="longitud" type="number" min="-180" max="180" step="any" value={values.longitud} onChange={(event) => updateValue('longitud', event.target.value)} {...fieldProps('longitud')} />
+            </Field>
+          </div>
+        </FormSection>
 
-        <Field id="referencia" label="Punto de referencia" error={errors.referencia}>
-          <input id="referencia" name="referencia" type="text" maxLength={255} value={values.referencia} onChange={(event) => updateValue('referencia', event.target.value)} aria-invalid={Boolean(errors.referencia)} aria-describedby={describedBy('referencia')} />
-        </Field>
+        <FormSection legend="Ventana de entrega" description="Horario en el que el cliente puede recibir el pedido.">
+          <div className="form-grid">
+            <Field id="ventana_inicio" label="Inicio de ventana" error={errors.ventana_inicio} hint="Fecha y hora de Lima.">
+              <input id="ventana_inicio" name="ventana_inicio" type="datetime-local" required value={values.ventana_inicio} onChange={(event) => updateValue('ventana_inicio', event.target.value)} {...fieldProps('ventana_inicio')} />
+            </Field>
+            <Field id="ventana_fin" label="Fin de ventana" error={errors.ventana_fin} hint="Debe ser posterior al inicio.">
+              <input id="ventana_fin" name="ventana_fin" type="datetime-local" required value={values.ventana_fin} onChange={(event) => updateValue('ventana_fin', event.target.value)} {...fieldProps('ventana_fin')} />
+            </Field>
+          </div>
+        </FormSection>
 
-        <div className="form-grid">
-          <Field id="latitud" label="Latitud" error={errors.latitud}>
-            <input id="latitud" name="latitud" type="number" min="-90" max="90" step="any" value={values.latitud} onChange={(event) => updateValue('latitud', event.target.value)} aria-invalid={Boolean(errors.latitud)} aria-describedby={describedBy('latitud')} />
-          </Field>
-          <Field id="longitud" label="Longitud" error={errors.longitud}>
-            <input id="longitud" name="longitud" type="number" min="-180" max="180" step="any" value={values.longitud} onChange={(event) => updateValue('longitud', event.target.value)} aria-invalid={Boolean(errors.longitud)} aria-describedby={describedBy('longitud')} />
-          </Field>
-          <Field id="peso_kg" label="Peso (kg)" error={errors.peso_kg}>
-            <input id="peso_kg" name="peso_kg" type="text" inputMode="decimal" required value={values.peso_kg} onChange={(event) => updateValue('peso_kg', event.target.value)} aria-invalid={Boolean(errors.peso_kg)} aria-describedby={describedBy('peso_kg')} />
-          </Field>
-          <Field id="volumen_m3" label="Volumen (m³)" error={errors.volumen_m3}>
-            <input id="volumen_m3" name="volumen_m3" type="text" inputMode="decimal" required value={values.volumen_m3} onChange={(event) => updateValue('volumen_m3', event.target.value)} aria-invalid={Boolean(errors.volumen_m3)} aria-describedby={describedBy('volumen_m3')} />
-          </Field>
-          <Field id="ventana_inicio" label="Inicio de ventana" error={errors.ventana_inicio}>
-            <input id="ventana_inicio" name="ventana_inicio" type="datetime-local" required value={values.ventana_inicio} onChange={(event) => updateValue('ventana_inicio', event.target.value)} aria-invalid={Boolean(errors.ventana_inicio)} aria-describedby={describedBy('ventana_inicio')} />
-          </Field>
-          <Field id="ventana_fin" label="Fin de ventana" error={errors.ventana_fin}>
-            <input id="ventana_fin" name="ventana_fin" type="datetime-local" required value={values.ventana_fin} onChange={(event) => updateValue('ventana_fin', event.target.value)} aria-invalid={Boolean(errors.ventana_fin)} aria-describedby={describedBy('ventana_fin')} />
-          </Field>
-        </div>
+        <FormSection legend="Carga" description="Datos que usará la planificación para asignar capacidad.">
+          <div className="form-grid">
+            <Field id="peso_kg" label="Peso (kg)" error={errors.peso_kg} hint="Hasta 2 decimales. Ej.: 12.50.">
+              <input id="peso_kg" name="peso_kg" type="text" inputMode="decimal" required value={values.peso_kg} onChange={(event) => updateValue('peso_kg', event.target.value)} {...fieldProps('peso_kg')} />
+            </Field>
+            <Field id="volumen_m3" label="Volumen (m³)" error={errors.volumen_m3} hint="Hasta 3 decimales. Ej.: 0.080.">
+              <input id="volumen_m3" name="volumen_m3" type="text" inputMode="decimal" required value={values.volumen_m3} onChange={(event) => updateValue('volumen_m3', event.target.value)} {...fieldProps('volumen_m3')} />
+            </Field>
+            <Field id="tipo_producto" label="Tipo de producto" error={errors.tipo_producto} hint="Hasta 20 caracteres. Ej.: Perecible.">
+              <input id="tipo_producto" name="tipo_producto" type="text" maxLength={20} required value={values.tipo_producto} onChange={(event) => updateValue('tipo_producto', event.target.value)} {...fieldProps('tipo_producto')} />
+            </Field>
+            <Field id="prioridad" label="Prioridad" hint="Express y perecible penalizan más la tardanza (RN-007).">
+              <select id="prioridad" name="prioridad" value={values.prioridad} aria-describedby="prioridad-hint" onChange={(event) => updateValue('prioridad', event.target.value)}>
+                <option value="EXPRESS">Express</option>
+                <option value="ESTANDAR">Estándar</option>
+                <option value="ECONOMICO">Económico</option>
+              </select>
+            </Field>
+          </div>
+        </FormSection>
 
-        <Field id="prioridad" label="Prioridad">
-          <select id="prioridad" name="prioridad" value={values.prioridad} onChange={(event) => updateValue('prioridad', event.target.value)}>
-            <option value="EXPRESS">Express</option>
-            <option value="ESTANDAR">Estándar</option>
-            <option value="ECONOMICO">Económico</option>
-          </select>
-        </Field>
-
-        <Field id="tipo_producto" label="Tipo de producto" error={errors.tipo_producto}>
-          <input id="tipo_producto" name="tipo_producto" type="text" maxLength={20} required value={values.tipo_producto} onChange={(event) => updateValue('tipo_producto', event.target.value)} aria-invalid={Boolean(errors.tipo_producto)} aria-describedby={describedBy('tipo_producto')} />
-        </Field>
-
-        <button className="submit-button" type="submit" disabled={status === 'submitting'}>
-          {status === 'submitting' ? 'Registrando…' : 'Registrar pedido'}
-        </button>
+        <FormActions>
+          <Button type="submit" icon={status === 'success' ? CheckCircle2 : Send} disabled={status === 'submitting'}>
+            {status === 'submitting' ? 'Registrando…' : 'Registrar pedido'}
+          </Button>
+        </FormActions>
       </form>
     </section>
   )

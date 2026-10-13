@@ -7,7 +7,6 @@ import {
   shortClientId,
 } from '../services/clients'
 import type { ClientOption, ClientPage } from '../services/clients'
-import './ClientCombobox.css'
 
 type SearchStatus = 'idle' | 'loading' | 'ready' | 'error'
 

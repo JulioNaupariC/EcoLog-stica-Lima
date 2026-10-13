@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { getDeliveryPreferences, PreferencesServiceError } from '../services/deliveryPreferences'
 import type { DeliveryPreferences } from '../services/deliveryPreferences'
-import './ClientPreferencesProposal.css'
 
 type LoadState =
   | { kind: 'loading' }

@@ -8,6 +8,11 @@ import { driverReportTransport, getDriverItinerary } from '../services/driverIti
 import { loadItinerary } from '../services/offlineStorage'
 import { listPendingReports } from '../services/reportQueue'
 
+/** The account menu (top bar) shows the readable role and holds «Cerrar sesión». */
+function accountButton(roleLabel: string) {
+  return screen.getByRole('button', { name: new RegExp(`^Cuenta: .*, ${roleLabel}$`, 'u') })
+}
+
 vi.mock('../services/auth', async importOriginal => ({
   ...await importOriginal<typeof import('../services/auth')>(),
   login: vi.fn(),
@@ -48,7 +53,11 @@ async function expireSnapshot(): Promise<void> {
   } finally { db.close() }
 }
 
-it('recupera el snapshot al navegar por Inicio y Mi itinerario dentro de App', async () => {
+// Scenario test with ~20 sequential UI steps over fake IndexedDB. Measured on
+// 13/10/2026: 0.9 s alone; 4.3-5.3 s inside the parallel suite (first render
+// ~1.1 s, then 0.3-0.45 s per step from CPU contention). No network wait or
+// timer causes it, so it gets an explicit budget instead of the 5 s default.
+it('recupera el snapshot al navegar por Inicio y Mi itinerario dentro de App', { timeout: 15_000 }, async () => {
   const user = userEvent.setup()
   vi.mocked(login).mockResolvedValue({ usuario_id: ownerId, rol: 'CONDUCTOR' })
   vi.mocked(getDriverItinerary)
@@ -58,15 +67,19 @@ it('recupera el snapshot al navegar por Inicio y Mi itinerario dentro de App', a
     Promise.resolve({ operationId: report.operationId, acknowledged: true }))
 
   render(<MemoryRouter initialEntries={['/login']}><CurrentPath /><App /></MemoryRouter>)
-  await user.type(screen.getByLabelText('Correo electrónico'), 'driver@example.test')
-  await user.type(screen.getByLabelText('Contraseña'), 'test-password')
+  // Credentials are not under test here: paste them (one input event each)
+  // instead of typing ~30 keystrokes that re-render the login form.
+  await user.click(screen.getByLabelText('Correo electrónico'))
+  await user.paste('driver@example.test')
+  await user.click(screen.getByLabelText('Contraseña'))
+  await user.paste('test-password')
   await user.click(screen.getByRole('button', { name: 'Iniciar sesión' }))
-  expect(await screen.findByRole('heading', { name: 'Rutas sostenibles para Lima' })).toBeInTheDocument()
+  expect(await screen.findByRole('heading', { name: 'Inicio' })).toBeInTheDocument()
 
   await user.click(screen.getByRole('link', { name: 'Mi itinerario' }))
   expect(screen.getByTestId('current-path')).toHaveTextContent('/conductor/itinerario')
   expect(await screen.findByText('Pendiente')).toBeInTheDocument()
-  await user.click(screen.getByRole('button', { name: 'Registrar entrega pendiente' }))
+  await user.click(screen.getByRole('button', { name: 'Marcar como entregado' }))
   expect(await screen.findByText(/esta parada ya tiene un reporte pendiente/i)).toBeInTheDocument()
   const [pending] = await listPendingReports(ownerId)
 
@@ -75,11 +88,11 @@ it('recupera el snapshot al navegar por Inicio y Mi itinerario dentro de App', a
   expect(await screen.findByText(recoveryMessage)).toBeInTheDocument()
   expect(await listPendingReports(ownerId)).toEqual([pending])
   expect(await loadItinerary(ownerId)).toBeNull()
-  expect(screen.getByRole('button', { name: 'Registrar entrega pendiente' })).toBeDisabled()
+  expect(screen.getByRole('button', { name: 'Marcar como entregado' })).toBeDisabled()
 
   await user.click(screen.getByRole('link', { name: 'EcoLogística Lima' }))
   expect(screen.getByTestId('current-path')).toHaveTextContent('/')
-  expect(screen.getByText('Rol: CONDUCTOR')).toBeInTheDocument()
+  expect(accountButton('Conductor')).toBeInTheDocument()
   await user.click(screen.getByRole('link', { name: 'Mi itinerario' }))
   expect(screen.getByTestId('current-path')).toHaveTextContent('/conductor/itinerario')
   expect(await screen.findByText('Entregado')).toBeInTheDocument()
@@ -90,8 +103,8 @@ it('recupera el snapshot al navegar por Inicio y Mi itinerario dentro de App', a
   expect(await screen.findByText('Reportes pendientes: 0')).toBeInTheDocument()
   expect(await listPendingReports(ownerId)).toEqual([])
   expect((await loadItinerary(ownerId))?.stops[0].status).toBe('ENTREGADO')
-  expect(screen.getByRole('button', { name: 'Registrar entrega pendiente' })).toBeDisabled()
-  expect(screen.getByRole('button', { name: 'Registrar no entregado' })).toBeDisabled()
+  expect(screen.getByRole('button', { name: 'Marcar como entregado' })).toBeDisabled()
+  expect(screen.getByRole('button', { name: 'Marcar como no entregado' })).toBeDisabled()
   expect(vi.mocked(driverReportTransport).send.mock.calls.map(([sent]) => sent.operationId)).toEqual([
     pending.operationId, pending.operationId,
   ])

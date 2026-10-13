@@ -109,14 +109,16 @@ function checkedId(id: string): string {
   if (!identifier(id)) throw new DriverServiceError('unexpected')
   return id
 }
-export async function listDrivers(page = 1): Promise<DriverPage> {
-  if (!Number.isInteger(page) || page < 1) throw new DriverServiceError('unexpected')
-  const body = await request('GET', 'conductores?page=' + page + '&page_size=10')
-  if (!record(body) || body.page !== page || body.page_size !== 10 || typeof body.total !== 'number' ||
-    !Number.isInteger(body.total) || body.total < 0 || !Array.isArray(body.items) || body.items.length > 10) {
+export async function listDrivers(page = 1, pageSize = 10): Promise<DriverPage> {
+  if (!Number.isInteger(page) || page < 1 || !Number.isInteger(pageSize) || pageSize < 1 || pageSize > 100) {
     throw new DriverServiceError('unexpected')
   }
-  return { items: (body.items as unknown[]).map(listItem), page, page_size: 10, total: body.total }
+  const body = await request('GET', 'conductores?page=' + page + '&page_size=' + pageSize)
+  if (!record(body) || body.page !== page || body.page_size !== pageSize || typeof body.total !== 'number' ||
+    !Number.isInteger(body.total) || body.total < 0 || !Array.isArray(body.items) || body.items.length > pageSize) {
+    throw new DriverServiceError('unexpected')
+  }
+  return { items: (body.items as unknown[]).map(listItem), page, page_size: pageSize, total: body.total }
 }
 export async function getDriver(id: string): Promise<DriverDetail> {
   return detail(await request('GET', 'conductores/' + checkedId(id)))

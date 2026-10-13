@@ -34,7 +34,7 @@ async function authenticate(page, prefix) {
   await page.getByLabel('Correo electrónico').fill(settings['ECL53_' + prefix + '_EMAIL'])
   await page.getByLabel('Contraseña', { exact: true }).fill(settings['ECL53_' + prefix + '_PASSWORD'])
   await page.getByRole('button', { name: 'Iniciar sesión', exact: true }).click()
-  await page.getByRole('heading', { name: 'Rutas sostenibles para Lima' }).waitFor()
+  await page.getByRole('heading', { name: 'Inicio', exact: true }).waitFor()
 }
 async function consult(page, id) {
   // The selector matches an exact client UUID as well as name fragments.
@@ -42,6 +42,12 @@ async function consult(page, id) {
   await page.locator('[role="listbox"] [role="option"]').first().click()
   await page.getByRole('button', { name: 'Consultar preferencias', exact: true }).click()
   await page.getByRole('heading', { name: 'Preferencias del cliente', exact: true }).waitFor()
+}
+async function openNav(page, name) {
+  // Since ECL-22 the staff navigation is a drawer below 1024 px: open it first.
+  const menu = page.getByRole('button', { name: 'Abrir menú', exact: true })
+  if (await menu.isVisible()) await menu.click()
+  await page.getByRole('link', { name, exact: true }).click()
 }
 async function snapshot(page, filename) {
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth)
@@ -75,7 +81,7 @@ try {
         })
         assert.equal(reset.status(), 200)
       }
-      await page.getByRole('link', { name: 'Preferencias de entrega', exact: true }).click()
+      await openNav(page, 'Preferencias de entrega')
       phase = name + ': empty preferences'
       await consult(page, clientA)
       assert.equal(await page.getByLabel('Sin horario preferido', { exact: true }).isChecked(), true)
@@ -152,6 +158,8 @@ try {
       await snapshot(page, name + '-07-cliente-inexistente.png')
 
       phase = name + ': denied conductor'
+      // «Cerrar sesión» lives in the account menu since ECL-22.
+      await page.getByRole('button', { name: /^Cuenta:/u }).click()
       await page.getByRole('button', { name: 'Cerrar sesión', exact: true }).click()
       await page.getByRole('heading', { name: 'Iniciar sesión', exact: true }).waitFor()
       await authenticate(page, 'DRIVER')
@@ -164,6 +172,8 @@ try {
       assert.equal((await context.request.get(`${api}/clientes/${clientA}/preferencias`)).status(), 403)
       await snapshot(page, name + '-08-acceso-denegado.png')
       assert.equal(errors.length, 0)
+      // «Cerrar sesión» lives in the account menu since ECL-22.
+      await page.getByRole('button', { name: /^Cuenta:/u }).click()
       await page.getByRole('button', { name: 'Cerrar sesión', exact: true }).click()
       results.push({ browser: name, version: browser.version(), passed: true, role: prefix === 'ADMIN' ? 'ADMINISTRADOR' : 'OPERADOR',
         realLogin: true, realApiGetPatch: true, preferencesRetrieved: true, explicitClear: true, otherClientUnchanged: true,
