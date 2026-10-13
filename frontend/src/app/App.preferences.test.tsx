@@ -4,9 +4,11 @@ import { App } from './App'
 import { login } from '../services/auth'
 import type { AuthRole } from '../services/auth'
 import { getDeliveryPreferences, PreferencesServiceError } from '../services/deliveryPreferences'
+import { searchClients } from '../services/clients'
 
 vi.mock('../services/auth', async original => ({ ...await original<typeof import('../services/auth')>(), login: vi.fn() }))
 vi.mock('../services/deliveryPreferences', async original => ({ ...await original<typeof import('../services/deliveryPreferences')>(), getDeliveryPreferences: vi.fn() }))
+vi.mock('../services/clients', async original => ({ ...await original<typeof import('../services/clients')>(), searchClients: vi.fn() }))
 function Controls() {
   const navigate = useNavigate()
   return <button onClick={() => { void navigate('/clientes/preferencias') }}>Abrir preferencias</button>
@@ -29,7 +31,7 @@ it.each(['ADMINISTRADOR', 'OPERADOR'] as const)('permite gestionar preferencias 
   show(); await signIn(role)
   fireEvent.click(screen.getByRole('link', { name: 'Preferencias de entrega' }))
   expect(await screen.findByRole('heading', { name: 'Preferencias de entrega' })).toBeInTheDocument()
-  expect(screen.getByLabelText('ID del cliente')).toBeEnabled()
+  expect(screen.getByRole('combobox', { name: 'Cliente' })).toBeEnabled()
 })
 it.each(['CONDUCTOR', 'AUDITOR', 'ANALISTA'] as const)('deniega ruta directa a %s sin consultar API', async role => {
   show(); await signIn(role)
@@ -42,7 +44,9 @@ it('elimina identidad ante 401 y vuelve al login', async () => {
   show(); await signIn('OPERADOR')
   fireEvent.click(screen.getByRole('link', { name: 'Preferencias de entrega' }))
   vi.mocked(getDeliveryPreferences).mockRejectedValueOnce(new PreferencesServiceError('unauthorized'))
-  fireEvent.change(screen.getByLabelText('ID del cliente'), { target: { value: '123e4567-e89b-12d3-a456-426614174000' } })
+  vi.mocked(searchClients).mockResolvedValue({ items: [{ cliente_id: '123e4567-e89b-12d3-a456-426614174000', nombre: 'Bodega Ficticia Norte' }], page: 1, page_size: 8, total: 1 })
+  fireEvent.change(screen.getByRole('combobox', { name: 'Cliente' }), { target: { value: 'Bodega' } })
+  fireEvent.click(await screen.findByRole('option', { name: /Bodega Ficticia Norte/u }))
   fireEvent.submit(screen.getByRole('form', { name: 'Consultar cliente' }))
   expect(await screen.findByRole('heading', { name: 'Iniciar sesión' })).toBeInTheDocument()
   expect(screen.queryByText('Rol: OPERADOR')).not.toBeInTheDocument()

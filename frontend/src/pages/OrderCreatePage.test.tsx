@@ -1,18 +1,39 @@
-import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { act, fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import {
   createOrder,
   OrderCreateResponse,
   OrderServiceError,
 } from '../services/orders'
+import { searchClients } from '../services/clients'
+import { getDeliveryPreferences, PreferencesServiceError } from '../services/deliveryPreferences'
 import { OrderCreatePage } from './OrderCreatePage'
 
 vi.mock('../services/orders', async (importOriginal) => {
   const actual = await importOriginal<typeof import('../services/orders')>()
   return { ...actual, createOrder: vi.fn() }
 })
+vi.mock('../services/clients', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('../services/clients')>()
+  return { ...actual, searchClients: vi.fn() }
+})
+vi.mock('../services/deliveryPreferences', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('../services/deliveryPreferences')>()
+  return { ...actual, getDeliveryPreferences: vi.fn() }
+})
 
 const createOrderMock = vi.mocked(createOrder)
+const searchClientsMock = vi.mocked(searchClients)
+const getPreferencesMock = vi.mocked(getDeliveryPreferences)
+
+const CLIENT = { cliente_id: '123e4567-e89b-12d3-a456-426614174000', nombre: 'Bodega Ficticia Norte' }
+const OTHER_CLIENT = { cliente_id: '323e4567-e89b-12d3-a456-426614174000', nombre: 'Farmacia Ejemplo Centro' }
+const PREFERENCES = {
+  cliente_id: CLIENT.cliente_id,
+  horario_preferido: 'Mañana (preferido)',
+  referencia: 'Puerta junto al parque',
+  restriccion_acceso: 'Ingreso por puerta lateral',
+}
 
 const createdOrder: OrderCreateResponse = {
   pedido_id: '223e4567-e89b-12d3-a456-426614174000',
@@ -31,7 +52,6 @@ const createdOrder: OrderCreateResponse = {
 }
 
 const validValues = {
-  'ID del cliente (UUID)': '123e4567-e89b-12d3-a456-426614174000',
   Dirección: ' Av. Principal 123 ',
   'Punto de referencia': ' Frente al parque ',
   Latitud: '-11.987654',
@@ -47,7 +67,17 @@ function change(label: string, value: string) {
   fireEvent.change(screen.getByLabelText(label), { target: { value } })
 }
 
-function fillValid(overrides: Partial<typeof validValues> = {}) {
+function clientInput() {
+  return screen.getByRole('combobox', { name: 'Cliente' })
+}
+
+async function selectClient(name = CLIENT.nombre) {
+  fireEvent.change(clientInput(), { target: { value: name.slice(0, 6) } })
+  fireEvent.click(await screen.findByRole('option', { name: new RegExp(name, 'u') }))
+}
+
+async function fillValid(overrides: Partial<typeof validValues> = {}, { withClient = true } = {}) {
+  if (withClient) await selectClient()
   for (const [label, value] of Object.entries({ ...validValues, ...overrides })) {
     change(label, value)
   }
@@ -61,11 +91,23 @@ describe('OrderCreatePage', () => {
   beforeEach(() => {
     createOrderMock.mockReset()
     createOrderMock.mockResolvedValue(createdOrder)
+    searchClientsMock.mockReset()
+    searchClientsMock.mockImplementation((term) => {
+      const items = [CLIENT, OTHER_CLIENT].filter(item => item.nombre.toLowerCase().includes(term.trim().toLowerCase()))
+      return Promise.resolve({ items, page: 1, page_size: 8, total: items.length })
+    })
+    getPreferencesMock.mockReset()
+    getPreferencesMock.mockImplementation((id) => Promise.resolve(
+      id === CLIENT.cliente_id
+        ? PREFERENCES
+        : { cliente_id: id, horario_preferido: null, referencia: null, restriccion_acceso: null },
+    ))
   })
 
   it('renderiza todos los controles con etiquetas accesibles', () => {
     render(<OrderCreatePage />)
 
+    expect(clientInput()).toHaveAttribute('aria-expanded', 'false')
     for (const label of Object.keys(validValues)) {
       expect(screen.getByLabelText(label)).toBeInTheDocument()
     }
@@ -74,38 +116,39 @@ describe('OrderCreatePage', () => {
   })
 
   it.each([
-    ['', 'El ID del cliente es obligatorio.'],
-    ['no-es-uuid', 'Ingresa un UUID de cliente válido.'],
-  ])('valida cliente_id: %s', (clienteId, message) => {
+    ['sin texto', ''],
+    ['texto sin seleccionar una opción', '123e4567-e89b-12d3-a456-426614174000'],
+  ])('ruta infeliz: exige seleccionar un cliente (%s)', async (_case, typed) => {
     render(<OrderCreatePage />)
-    fillValid({ 'ID del cliente (UUID)': clienteId })
+    await fillValid({}, { withClient: false })
+    if (typed) fireEvent.change(clientInput(), { target: { value: typed } })
     submit()
 
-    expect(screen.getByText(message)).toBeInTheDocument()
-    expect(screen.getByLabelText('ID del cliente (UUID)')).toHaveAttribute('aria-invalid', 'true')
+    expect(screen.getByText('Selecciona un cliente de la lista.')).toBeInTheDocument()
+    expect(clientInput()).toHaveAttribute('aria-invalid', 'true')
     expect(createOrderMock).not.toHaveBeenCalled()
   })
 
-  it('valida dirección vacía', () => {
+  it('valida dirección vacía', async () => {
     render(<OrderCreatePage />)
-    fillValid({ Dirección: '   ' })
+    await fillValid({ Dirección: '   ' })
     submit()
 
     expect(screen.getByText('La dirección es obligatoria.')).toBeInTheDocument()
   })
 
-  it('exige referencia o coordenadas completas', () => {
+  it('exige referencia o coordenadas completas', async () => {
     render(<OrderCreatePage />)
-    fillValid({ 'Punto de referencia': '', Latitud: '', Longitud: '' })
+    await fillValid({ 'Punto de referencia': '', Latitud: '', Longitud: '' })
     submit()
 
     expect(screen.getByText('Ingresa coordenadas completas o un punto de referencia.')).toBeInTheDocument()
     expect(createOrderMock).not.toHaveBeenCalled()
   })
 
-  it('rechaza una sola coordenada', () => {
+  it('rechaza una sola coordenada', async () => {
     render(<OrderCreatePage />)
-    fillValid({ 'Punto de referencia': '', Longitud: '' })
+    await fillValid({ 'Punto de referencia': '', Longitud: '' })
     submit()
 
     expect(screen.getAllByText('Latitud y longitud deben ingresarse juntas.')).toHaveLength(2)
@@ -114,9 +157,9 @@ describe('OrderCreatePage', () => {
   it.each([
     ['Latitud', '91', 'La latitud debe estar entre -90 y 90.'],
     ['Longitud', '-181', 'La longitud debe estar entre -180 y 180.'],
-  ])('rechaza %s fuera de rango', (label, value, message) => {
+  ])('rechaza %s fuera de rango', async (label, value, message) => {
     render(<OrderCreatePage />)
-    fillValid({ [label]: value })
+    await fillValid({ [label]: value })
     submit()
 
     expect(screen.getByText(message)).toBeInTheDocument()
@@ -127,9 +170,9 @@ describe('OrderCreatePage', () => {
     ['Peso (kg)', '1.001', 'El peso debe ser mayor que cero y tener como máximo 2 decimales.'],
     ['Volumen (m³)', '-1', 'El volumen debe ser mayor que cero y tener como máximo 3 decimales.'],
     ['Volumen (m³)', '1.0001', 'El volumen debe ser mayor que cero y tener como máximo 3 decimales.'],
-  ])('valida decimales de %s con valor %s', (label, value, message) => {
+  ])('valida decimales de %s con valor %s', async (label, value, message) => {
     render(<OrderCreatePage />)
-    fillValid({ [label]: value })
+    await fillValid({ [label]: value })
     submit()
 
     expect(screen.getByText(message)).toBeInTheDocument()
@@ -138,17 +181,17 @@ describe('OrderCreatePage', () => {
   it.each([
     ['', 'El tipo de producto es obligatorio.'],
     ['x'.repeat(21), 'El tipo de producto no puede superar 20 caracteres.'],
-  ])('valida tipo_producto', (value, message) => {
+  ])('valida tipo_producto', async (value, message) => {
     render(<OrderCreatePage />)
-    fillValid({ 'Tipo de producto': value })
+    await fillValid({ 'Tipo de producto': value })
     submit()
 
     expect(screen.getByText(message)).toBeInTheDocument()
   })
 
-  it('rechaza una ventana final igual o anterior al inicio', () => {
+  it('rechaza una ventana final igual o anterior al inicio', async () => {
     render(<OrderCreatePage />)
-    fillValid({ 'Fin de ventana': '2026-10-01T09:00' })
+    await fillValid({ 'Fin de ventana': '2026-10-01T09:00' })
     submit()
 
     expect(screen.getByText('La hora final debe ser posterior a la hora inicial.')).toBeInTheDocument()
@@ -156,7 +199,7 @@ describe('OrderCreatePage', () => {
 
   it('envía prioridad, strings decimales y fechas ISO timezone-aware', async () => {
     render(<OrderCreatePage />)
-    fillValid()
+    await fillValid()
     fireEvent.change(screen.getByLabelText('Prioridad'), { target: { value: 'EXPRESS' } })
     submit()
 
@@ -178,7 +221,7 @@ describe('OrderCreatePage', () => {
 
   it('envía null para referencia y coordenadas vacías cuando la otra ubicación existe', async () => {
     render(<OrderCreatePage />)
-    fillValid({ Latitud: '', Longitud: '' })
+    await fillValid({ Latitud: '', Longitud: '' })
     submit()
     await waitFor(() => expect(createOrderMock).toHaveBeenCalledTimes(1))
     expect(createOrderMock.mock.calls[0]?.[0]).toMatchObject({ latitud: null, longitud: null })
@@ -196,7 +239,7 @@ describe('OrderCreatePage', () => {
     let resolveRequest!: (order: OrderCreateResponse) => void
     createOrderMock.mockImplementation(() => new Promise((resolve) => { resolveRequest = resolve }))
     render(<OrderCreatePage />)
-    fillValid()
+    await fillValid()
 
     const form = screen.getByRole('button', { name: 'Registrar pedido' }).closest('form')!
     fireEvent.submit(form)
@@ -210,7 +253,7 @@ describe('OrderCreatePage', () => {
 
   it('muestra pedido_id y estado después del éxito', async () => {
     render(<OrderCreatePage />)
-    fillValid()
+    await fillValid()
     submit()
 
     expect(await screen.findByRole('status')).toHaveTextContent('Pedido registrado.')
@@ -227,7 +270,7 @@ describe('OrderCreatePage', () => {
   ] as const)('muestra el error de servicio %s y conserva el formulario', async (kind, message) => {
     createOrderMock.mockRejectedValue(new OrderServiceError(kind, message))
     render(<OrderCreatePage />)
-    fillValid()
+    await fillValid()
     submit()
 
     expect(await screen.findByRole('alert')).toHaveTextContent(message)
@@ -248,7 +291,7 @@ describe('OrderCreatePage', () => {
       },
     ))
     render(<OrderCreatePage />)
-    fillValid()
+    await fillValid()
     submit()
 
     expect(await screen.findByRole('alert')).toHaveTextContent('Revisa los datos ingresados.')
@@ -260,23 +303,124 @@ describe('OrderCreatePage', () => {
   it('limpia el error del campo cuando el usuario lo corrige', async () => {
     const user = userEvent.setup()
     render(<OrderCreatePage />)
-    fillValid({ 'ID del cliente (UUID)': 'inválido' })
+    await fillValid({}, { withClient: false })
     submit()
-    const input = screen.getByLabelText('ID del cliente (UUID)')
+    const input = clientInput()
     expect(input).toHaveAttribute('aria-invalid', 'true')
 
-    await user.clear(input)
-    await user.type(input, '123e4567-e89b-12d3-a456-426614174000')
+    await user.type(input, 'Bodega')
+    await user.click(await screen.findByRole('option', { name: /Bodega Ficticia Norte/u }))
     expect(input).toHaveAttribute('aria-invalid', 'false')
   })
 
   it('presenta un error seguro ante un rechazo no tipado', async () => {
     createOrderMock.mockRejectedValue(new Error('detalle interno'))
     render(<OrderCreatePage />)
-    fillValid()
+    await fillValid()
     submit()
 
     expect(await screen.findByRole('alert')).toHaveTextContent('No se pudo registrar el pedido.')
     expect(screen.queryByText('detalle interno')).not.toBeInTheDocument()
+  })
+})
+
+describe('OrderCreatePage — P8 / D-01: propuesta de preferencias del cliente', () => {
+  beforeEach(() => {
+    createOrderMock.mockReset()
+    createOrderMock.mockResolvedValue(createdOrder)
+    searchClientsMock.mockReset()
+    searchClientsMock.mockImplementation((term) => {
+      const items = [CLIENT, OTHER_CLIENT].filter(item => item.nombre.toLowerCase().includes(term.trim().toLowerCase()))
+      return Promise.resolve({ items, page: 1, page_size: 8, total: items.length })
+    })
+    getPreferencesMock.mockReset()
+    getPreferencesMock.mockImplementation((id) => Promise.resolve(
+      id === CLIENT.cliente_id
+        ? PREFERENCES
+        : { cliente_id: id, horario_preferido: null, referencia: null, restriccion_acceso: null },
+    ))
+  })
+
+  it('ruta dorada: propone las preferencias y copia la referencia solo con la acción explícita', async () => {
+    render(<OrderCreatePage />)
+    await fillValid({ 'Punto de referencia': 'Referencia propia del pedido' })
+
+    const panel = await screen.findByRole('region', { name: 'Preferencias del cliente' })
+    expect(await within(panel).findByText('Mañana (preferido)')).toBeInTheDocument()
+    expect(within(panel).getByText('Ingreso por puerta lateral')).toBeInTheDocument()
+    expect(getPreferencesMock).toHaveBeenCalledWith(CLIENT.cliente_id)
+
+    fireEvent.click(within(panel).getByRole('button', { name: 'Usar como referencia del pedido' }))
+    expect(screen.getByLabelText('Punto de referencia')).toHaveValue('Puerta junto al parque')
+    expect(within(panel).getByText('Referencia copiada al pedido. Puedes editarla antes de registrar.')).toBeInTheDocument()
+
+    submit()
+    await waitFor(() => expect(createOrderMock).toHaveBeenCalledTimes(1))
+    expect(createOrderMock.mock.calls[0]?.[0]).toMatchObject({
+      cliente_id: CLIENT.cliente_id,
+      referencia: 'Puerta junto al parque',
+      ventana_inicio: new Date('2026-10-01T09:00').toISOString(),
+      ventana_fin: new Date('2026-10-01T11:00').toISOString(),
+    })
+  })
+
+  it('ruta feliz: sin la acción, no copia horario, restricción ni referencia al pedido (RN-006)', async () => {
+    render(<OrderCreatePage />)
+    await fillValid({ 'Punto de referencia': 'Referencia propia del pedido' })
+    await screen.findByText('Mañana (preferido)')
+
+    expect(screen.getByLabelText('Punto de referencia')).toHaveValue('Referencia propia del pedido')
+    expect(screen.getByLabelText('Inicio de ventana')).toHaveValue('2026-10-01T09:00')
+    expect(screen.getByLabelText('Fin de ventana')).toHaveValue('2026-10-01T11:00')
+    submit()
+    await waitFor(() => expect(createOrderMock).toHaveBeenCalledTimes(1))
+    const payload = createOrderMock.mock.calls[0]?.[0]
+    expect(payload?.referencia).toBe('Referencia propia del pedido')
+    expect(JSON.stringify(payload)).not.toContain('Mañana')
+    expect(JSON.stringify(payload)).not.toContain('puerta lateral')
+  })
+
+  it.each([
+    ['forbidden', 'No tienes permisos para ver las preferencias de este cliente.'],
+    ['unavailable', 'No se pudieron cargar las preferencias del cliente. Puedes registrar el pedido igualmente.'],
+    ['not_found', 'No se pudieron cargar las preferencias del cliente. Puedes registrar el pedido igualmente.'],
+  ] as const)('ruta infeliz: si las preferencias fallan (%s) el pedido sigue registrable', async (kind, message) => {
+    getPreferencesMock.mockRejectedValue(new PreferencesServiceError(kind))
+    render(<OrderCreatePage />)
+    await fillValid()
+
+    expect(await screen.findByText(message)).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Usar como referencia del pedido' })).not.toBeInTheDocument()
+    submit()
+    await waitFor(() => expect(createOrderMock).toHaveBeenCalledTimes(1))
+  })
+
+  it('ruta infeliz: un cliente inexistente en el registro muestra el error del servicio', async () => {
+    createOrderMock.mockRejectedValue(new OrderServiceError('client-not-found', 'El cliente indicado no existe.'))
+    render(<OrderCreatePage />)
+    await fillValid()
+    submit()
+
+    expect(await screen.findByRole('alert')).toHaveTextContent('El cliente indicado no existe.')
+  })
+
+  it('ruta de borde: cliente sin preferencias y cambio de cliente recargan el panel', async () => {
+    render(<OrderCreatePage />)
+    await fillValid()
+    await screen.findByText('Mañana (preferido)')
+
+    await selectClient(OTHER_CLIENT.nombre)
+    await waitFor(() => expect(getPreferencesMock).toHaveBeenLastCalledWith(OTHER_CLIENT.cliente_id))
+    const panel = screen.getByRole('region', { name: 'Preferencias del cliente' })
+    await waitFor(() => expect(within(panel).getAllByText('Sin registrar')).toHaveLength(3))
+    expect(within(panel).queryByRole('button', { name: 'Usar como referencia del pedido' })).not.toBeInTheDocument()
+    expect(screen.queryByText('Mañana (preferido)')).not.toBeInTheDocument()
+  })
+
+  it('ruta de borde: la acción se deshabilita si la referencia del pedido ya coincide', async () => {
+    render(<OrderCreatePage />)
+    await fillValid({ 'Punto de referencia': 'Puerta junto al parque' })
+
+    expect(await screen.findByRole('button', { name: 'Usar como referencia del pedido' })).toBeDisabled()
   })
 })

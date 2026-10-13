@@ -45,8 +45,9 @@ npm run test:coverage
 npm run lint
 ```
 
-La repetición sobrescribe capturas ECL-54; preservar la evidencia existente
-antes de repetir. Solo PATCH 503 se intercepta; login, GET/PATCH, 404 y denegación
+Desde el 13/10/2026 el instrumento escribe en `retest-<fecha>/` (o en
+ECL54_OUTPUT) y se niega a sobrescribir esta carpeta. Reprueba de D-01:
+[retest-D01-20261013](retest-D01-20261013/README.md). Solo PATCH 503 se intercepta; login, GET/PATCH, 404 y denegación
 usan la API real. Ancho y teclado no equivalen a una auditoría WCAG completa.
 
 [← Volver al README principal](../../../README.md)

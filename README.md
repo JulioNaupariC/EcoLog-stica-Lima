@@ -261,6 +261,7 @@ Frontend:
 - [ECL-49](frontend/evidencias/ECL-49/README.md)
 - [ECL-53](frontend/evidencias/ECL-53/README.md)
 - [ECL-54](frontend/evidencias/ECL-54/README.md)
+- [ECL-54 — reprueba de D-01 (13/10/2026)](frontend/evidencias/ECL-54/retest-D01-20261013/README.md)
 - [ECL-56](frontend/evidencias/ECL-56/README.md)
 - [ECL-57](frontend/evidencias/ECL-57/README.md)
 - [ECL-58](frontend/evidencias/ECL-58/README.md)

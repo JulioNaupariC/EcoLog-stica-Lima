@@ -1,13 +1,14 @@
 import { useEffect, useRef, useState } from 'react'
 import type { FormEvent } from 'react'
 import { DeliveryPreferencesForm } from '../components/DeliveryPreferencesForm'
-import { FormField } from '../components/FormField'
+import { ClientCombobox } from '../components/ClientCombobox'
 import { getDeliveryPreferences, isClientId, PreferencesServiceError } from '../services/deliveryPreferences'
+import type { ClientOption } from '../services/clients'
 import type { DeliveryPreferences } from '../services/deliveryPreferences'
 import './DeliveryPreferencesPage.css'
 
 export function DeliveryPreferencesPage({ onSessionExpired }: { onSessionExpired: () => void }) {
-  const [clientId, setClientId] = useState('')
+  const [client, setClient] = useState<ClientOption | null>(null)
   const [idError, setIdError] = useState('')
   const [message, setMessage] = useState('')
   const [success, setSuccess] = useState('')
@@ -19,7 +20,6 @@ export function DeliveryPreferencesPage({ onSessionExpired }: { onSessionExpired
   const requestNumber = useRef(0)
   const busy = useRef(false)
   const alert = useRef<HTMLDivElement>(null)
-  const search = useRef<HTMLInputElement>(null)
   useEffect(() => {
     const requests = requestNumber
     return () => { requests.current++ }
@@ -46,10 +46,10 @@ export function DeliveryPreferencesPage({ onSessionExpired }: { onSessionExpired
     setSuccess('')
     setMessage('')
     setPreferences(null)
-    const id = clientId.trim()
+    const id = client?.cliente_id ?? ''
     if (!isClientId(id)) {
-      setIdError('Ingresa un identificador de cliente válido (UUID).')
-      setMessage('Revisa el identificador del cliente antes de consultar.')
+      setIdError('Selecciona un cliente de la lista.')
+      setMessage('Selecciona un cliente antes de consultar.')
       return
     }
     setIdError('')
@@ -74,13 +74,10 @@ export function DeliveryPreferencesPage({ onSessionExpired }: { onSessionExpired
     <p className="form-intro">Consulta y actualiza horarios, referencias y condiciones de acceso de un cliente existente.</p>
     <form className="order-form preferences-lookup" aria-label="Consultar cliente" aria-busy={loading}
       noValidate onSubmit={event => { void load(event) }}>
-      <FormField id="preferences-client-id" label="ID del cliente" error={idError}
-        hint="Usa el identificador del cliente que deseas consultar.">
-        <input id="preferences-client-id" ref={search} type="text" autoComplete="off" spellCheck={false} value={clientId}
-          disabled={loading || blocked || preferences !== null} aria-invalid={Boolean(idError)}
-          aria-describedby={`preferences-client-id-hint${idError ? ' preferences-client-id-error' : ''}`}
-          onChange={event => { setClientId(event.target.value); setIdError(''); setMessage(''); setSuccess('') }} />
-      </FormField>
+      <ClientCombobox id="preferences-client-id" label="Cliente" error={idError}
+        hint="Escribe parte del nombre o pega el identificador del cliente."
+        selected={client} disabled={loading || blocked || preferences !== null}
+        onSelect={option => { setClient(option); setIdError(''); setMessage(''); setSuccess('') }} />
       <button type="submit" className="submit-button" disabled={loading || blocked || preferences !== null}>
         {loading ? 'Consultando…' : 'Consultar preferencias'}</button>
     </form>
@@ -95,9 +92,9 @@ export function DeliveryPreferencesPage({ onSessionExpired }: { onSessionExpired
           setSuccess('Preferencias guardadas correctamente.'); setMessage('')
         }} onCancel={() => { setRevision(value => value + 1); setSuccess('Cambios descartados. Se muestran las preferencias consultadas.') }} />
       <button type="button" className="preferences-secondary preferences-change-client" disabled={saving} onClick={() => {
-        setPreferences(null); setSuccess(''); setMessage(''); search.current?.focus()
+        setPreferences(null); setSuccess(''); setMessage('')
         // Input becomes enabled after React commits the state change.
-        queueMicrotask(() => search.current?.focus())
+        queueMicrotask(() => document.getElementById('preferences-client-id')?.focus())
       }}>Consultar de nuevo u otro cliente</button>
     </> : null}
   </section>

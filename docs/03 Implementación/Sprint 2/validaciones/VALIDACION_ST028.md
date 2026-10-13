@@ -5,6 +5,8 @@
 **Rama:** `test/ECL-54-validacion-preferencias-clientes`.
 **Resultado:** validación ejecutada; nueve escenarios BDD compatibles con el
 comportamiento observado y una brecha en P8. No acredita completar US-005.
+**Actualización 13/10/2026:** D-01 corregido y reprobado en Chrome y Firefox;
+ver [Reprueba de D-01](#reprueba-de-d-01--13102026).
 
 ## Fuente y límites de aprobación
 
@@ -60,7 +62,7 @@ navegador verify-preferences-bdd.mjs y capturas ECL-54.
 | M14 | Contrato PATCH | Objeto vacío, campos extra y cambio de cliente_id rechazados; asociación intacta | Aprobado | A, B, U |
 | M15 | Atomicidad | Error después de flush devuelve 503 sanitizado y revierte preferencias | Aprobado | B |
 | M16 | Pedido / RN-006 | Llamador consulta preferencia y selecciona referencia explícitamente al POST; pedido y cliente permanecen independientes | Aprobado a nivel API | B |
-| M17 | P8 / RF-005 | Seleccionar cliente en formulario de pedido debe proponer preferencias y acción explícita de copia | Brecha reproducida; D-01 | N 09; OrderCreatePage.tsx |
+| M17 | P8 / RF-005 | Seleccionar cliente en formulario de pedido debe proponer preferencias y acción explícita de copia | 09/10: brecha reproducida (D-01). 13/10: aprobado en reprueba | N 09 (09/10); R 09–10 (13/10) |
 | M18 | Interfaz | Guardar, recuperar, conservar edición ante 503 simulado, 404 real, Tab y ancho 360 px | Aprobado para estas comprobaciones | N 01–08 |
 
 M16 no sustituye M17: copiar mediante código de prueba no acredita una propuesta
@@ -92,6 +94,9 @@ observables; no son nuevas reglas aprobadas.
   José/Giancarlo implementan la propuesta visual con el contrato de Antony.
   Retestar propuesta, copia editable, ausencia de copia implícita y aislamiento.
 - **Estado:** registrado localmente, sin ticket nuevo en Jira ni comentario remoto.
+- **Corrección (13/10/2026):** rama `fix/ECL-53-propuesta-preferencias-pedido`,
+  commits `215a8cb` (endpoint `GET /clientes`) y `074fd27` (selector y
+  propuesta). Reprueba aprobada; el cierre depende de la revisión del PR.
 
 ### DOC-01 — BDD todavía en borrador
 
@@ -130,6 +135,39 @@ CI/SAST del nuevo PR y revisión humana siguen pendientes.
 
 La evidencia no equivale a aprobación del contrato ni a cierre de US-005.
 El equipo puede revisar ST-028 con esta matriz y su registro de diferencias.
+
+## Reprueba de D-01 — 13/10/2026
+
+**Cambio probado:** el formulario «Registrar pedido» selecciona el cliente con
+un buscador accesible (`GET /clientes`) y, al elegirlo, muestra sus
+preferencias. Horario y restricción de acceso se muestran como información
+del cliente y no se copian al pedido (RN-006). La referencia solo se copia con
+el botón «Usar como referencia del pedido».
+
+**Entorno:** API FastAPI y vista previa del frontend en `127.0.0.1`, base
+desechable `ecologistica_ecl54_preview_test` (PostgreSQL 16.15 + PostGIS
+3.6.2) con dos clientes y tres cuentas sintéticas. Instrumento
+[`verify-preferences-bdd.mjs`](../../../../frontend/scripts/verify-preferences-bdd.mjs)
+con Playwright 1.58.2 y Node 22.18.0: Chrome 155.0.8059.40 como Administrador
+y Firefox 146.0.1 (compilación de Playwright) como Operador. El 09/10 se usó
+Firefox 157.0. El instrumento escribe ahora en una carpeta `retest-<fecha>` y
+no sobrescribe la evidencia del 09/10.
+
+| Tipo de ruta | Escenario | Resultado esperado | Resultado observado | Evidencia | Estado |
+|---|---|---|---|---|---|
+| Dorada | Operador/Administrador elige al cliente A y pulsa «Usar como referencia del pedido» | La referencia guardada pasa al campo del pedido; ventanas y cliente sin cambios; ningún `POST /pedidos` | Coincide en ambos navegadores | R 10 y `P8ExplicitReferenceCopy`, `P8WindowsUnchanged`, `P8ClientUnchanged` | Aprobado |
+| Feliz | Cliente A con horario, referencia y restricción | Las tres preferencias se muestran como contexto; sin la acción, la referencia propia del pedido se conserva | Coincide en ambos navegadores | R 09 y `P8OrderProposalAvailable` | Aprobado |
+| Infeliz | Identificador de cliente inexistente en el buscador | Sin opciones seleccionables; la API devuelve 404 para ese ID | «No se encontraron clientes con ese texto.» y 404 | R 07 | Aprobado |
+| Infeliz | Conductor intenta abrir preferencias | Acceso denegado en interfaz y 403 en API | Coincide | R 08 | Aprobado |
+| Borde | Fallo al cargar preferencias, cliente sin preferencias, cambio de cliente y referencia ya igual | Pedido registrable, «Sin registrar», recarga del panel y acción deshabilitada | Cubierto por pruebas de componente | [`OrderCreatePage.test.tsx`](../../../../frontend/src/pages/OrderCreatePage.test.tsx) | Aprobado (automatizado) |
+
+R = [capturas de la reprueba](../../../../frontend/evidencias/ECL-54/retest-D01-20261013/README.md).
+Los escenarios P1–P7 del instrumento se repitieron en la misma ejecución con
+el nuevo selector y también pasaron.
+
+**Límite:** la BDD ECL-51 sigue marcada BORRADOR. La aceptación formal de
+US-005 requiere que Julio y Frank la ratifiquen; esta reprueba acredita el
+comportamiento de P8 tal como está redactado.
 
 [↑ Índice del Sprint 2](../README.md)
 
