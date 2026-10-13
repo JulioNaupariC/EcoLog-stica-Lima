@@ -83,7 +83,8 @@
 .sidebar-backdrop {
   position: fixed;
   inset: 0;
-  z-index: var(--z-overlay);
+  /* Below the drawer, above the top bar: the open drawer must stay usable. */
+  z-index: calc(var(--z-sidebar) - 1);
   border: 0;
   background: var(--color-overlay);
 }

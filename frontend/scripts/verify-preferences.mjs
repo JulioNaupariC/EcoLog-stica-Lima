@@ -43,6 +43,12 @@ async function consult(page, id) {
   await page.getByRole('button', { name: 'Consultar preferencias', exact: true }).click()
   await page.getByRole('heading', { name: 'Preferencias del cliente', exact: true }).waitFor()
 }
+async function openNav(page, name) {
+  // Since ECL-22 the staff navigation is a drawer below 1024 px: open it first.
+  const menu = page.getByRole('button', { name: 'Abrir menú', exact: true })
+  if (await menu.isVisible()) await menu.click()
+  await page.getByRole('link', { name, exact: true }).click()
+}
 async function snapshot(page, filename) {
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth)
   assert.equal(overflow, false, 'Horizontal overflow')
@@ -75,7 +81,7 @@ try {
         })
         assert.equal(reset.status(), 200)
       }
-      await page.getByRole('link', { name: 'Preferencias de entrega', exact: true }).click()
+      await openNav(page, 'Preferencias de entrega')
       phase = name + ': empty preferences'
       await consult(page, clientA)
       assert.equal(await page.getByLabel('Sin horario preferido', { exact: true }).isChecked(), true)

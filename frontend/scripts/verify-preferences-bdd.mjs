@@ -47,6 +47,12 @@ async function consult(page, id) {
   await page.getByRole('button', { name: 'Consultar preferencias', exact: true }).click()
   await page.getByRole('heading', { name: 'Preferencias del cliente', exact: true }).waitFor()
 }
+async function openNav(page, name) {
+  // Since ECL-22 the staff navigation is a drawer below 1024 px: open it first.
+  const menu = page.getByRole('button', { name: 'Abrir menú', exact: true })
+  if (await menu.isVisible()) await menu.click()
+  await page.getByRole('link', { name, exact: true }).click()
+}
 async function snapshot(page, filename) {
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth)
   assert.equal(overflow, false, 'Horizontal overflow')
@@ -81,7 +87,7 @@ try {
       }
       const otherPreferences = {"horario_preferido": "Tarde (preferido)", "referencia": "Recepcion principal", "restriccion_acceso": "Avisar al llegar"}
       assert.equal((await context.request.patch(`${api}/clientes/${clientB}/preferencias`, { data: otherPreferences })).status(), 200)
-      await page.getByRole('link', { name: 'Preferencias de entrega', exact: true }).click()
+      await openNav(page, 'Preferencias de entrega')
       phase = name + ': empty preferences'
       await consult(page, clientA)
       assert.equal(await page.getByLabel('Sin horario preferido', { exact: true }).isChecked(), true)
@@ -170,7 +176,7 @@ try {
         if (request.url().startsWith(api + '/pedidos')) orderRequests.push(request.method())
       }
       page.on('request', monitor)
-      await page.getByRole('link', { name: 'Registrar pedido', exact: true }).click()
+      await openNav(page, 'Registrar pedido')
       await page.getByRole('heading', { name: 'Registrar pedido', exact: true }).waitFor()
       await page.getByLabel('Punto de referencia', { exact: true }).fill('Referencia propia del pedido')
       await page.locator('#ventana_inicio').fill('2026-10-10T09:00')
