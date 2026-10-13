@@ -48,3 +48,5 @@ npm run lint
 La repetición sobrescribe capturas ECL-54; preservar la evidencia existente
 antes de repetir. Solo PATCH 503 se intercepta; login, GET/PATCH, 404 y denegación
 usan la API real. Ancho y teclado no equivalen a una auditoría WCAG completa.
+
+[← Volver al README principal](../../../README.md)

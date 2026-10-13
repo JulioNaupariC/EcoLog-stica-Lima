@@ -158,3 +158,7 @@ Backend implementado y verificado localmente. El usuario realiza commit, push y 
 No se declara CI, revisión o aprobación ya realizadas.
 El formulario de preferencias (ST-027) y la validación posterior del equipo (ST-028)
 mantienen su alcance independiente.
+
+[↑ Índice del Sprint 2](../README.md)
+
+[← Volver al README principal](../../../../README.md)

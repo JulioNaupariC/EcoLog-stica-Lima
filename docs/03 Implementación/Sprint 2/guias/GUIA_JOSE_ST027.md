@@ -164,3 +164,7 @@ El horario es descriptivo; esta entrega no copia preferencias ni modifica pedido
 Seleccionar un compañero en **Reviewers**. Adjuntar el PR y las capturas en Jira.
 La ejecución remota de CI solo se puede dar por aprobada después de observar
 su resultado en GitHub Actions.
+
+[↑ Índice del Sprint 2](../README.md)
+
+[← Volver al README principal](../../../../README.md)

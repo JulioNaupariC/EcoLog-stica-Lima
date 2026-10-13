@@ -242,3 +242,5 @@ La Release se mantiene en estado **UNRELEASED** durante el desarrollo y consolid
 ## Actualización posterior — 02/10/2026
 
 Este documento conserva la línea base y las evidencias del 11/09. La reprogramación y el estado operativo posterior se registran en la [adenda V_1_0_1](<02 Artefactos Jira V_1_0_1.md>).
+
+[← Volver al README principal](../../README.md)

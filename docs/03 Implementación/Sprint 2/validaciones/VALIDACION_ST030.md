@@ -113,3 +113,7 @@ finalizar automáticamente ECL-56/ST-030 ni ECL-22/EN-004.
 Registro anterior: `ea114f9` creó el prototipo parcial; `6f0cf39` corrigió la
 trazabilidad y pendientes documentales. Los checks de CI/CodeQL comunicados por
 el equipo corresponden a revisiones anteriores, no prueban esta nueva revisión.
+
+[↑ Índice del Sprint 2](../README.md)
+
+[← Volver al README principal](../../../../README.md)

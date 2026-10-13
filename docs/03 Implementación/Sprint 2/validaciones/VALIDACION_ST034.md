@@ -168,3 +168,7 @@ Instrumentación y verificaciones locales completas. Commit, PR, CI y revisión 
 pendientes de entrega por el usuario. No se ejecutó la campaña de 1,000 pedidos /
 50 vehículos / 100 solicitudes, ni se demostró SLA mensual de 99.5%.
 Esa ejecución y su informe corresponden a ST-035 y ST-036.
+
+[↑ Índice del Sprint 2](../README.md)
+
+[← Volver al README principal](../../../../README.md)

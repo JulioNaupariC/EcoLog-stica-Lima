@@ -48,3 +48,7 @@ infracciones axe o regresiones de teclado verificadas. Las evidencias están en
 
 TypeScript, ESLint y build aprobados. Resultado de pruebas unitarias: 441
 aprobadas. CI remoto y revisión humana pendientes del nuevo PR.
+
+[↑ Índice del Sprint 2](../README.md)
+
+[← Volver al README principal](../../../../README.md)

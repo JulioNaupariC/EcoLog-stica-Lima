@@ -160,3 +160,7 @@ el umbral de cobertura del 80%. La ejecución Python se hizo con 3.14.4 en este
 entorno; no certifica por sí sola los demás intérpretes declarados. La simulación
 de transporte y las pruebas de unidad no sustituyen el end-to-end contra una API
 y una base PostgreSQL/PostGIS desplegadas.
+
+[↑ Índice del Sprint 2](../README.md)
+
+[← Volver al README principal](../../../../README.md)

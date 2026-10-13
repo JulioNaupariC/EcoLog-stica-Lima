@@ -24,3 +24,5 @@ de prueba de Playwright. Son pruebas headless de escritorio con viewport móvil,
 no pruebas en un teléfono físico ni una auditoría completa WCAG.
 
 La aprobación humana del incremento y la conexión con datos reales siguen pendientes.
+
+[← Volver al README principal](../../../README.md)

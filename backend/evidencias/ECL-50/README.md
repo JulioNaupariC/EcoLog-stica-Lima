@@ -22,3 +22,5 @@ esta ejecución final.
 La evidencia remota de GitHub Actions se genera al subir la rama y debe
 referenciarse en Jira junto con el commit y el PR. Estos archivos acreditan
 la ejecución local; no sustituyen los artefactos remotos.
+
+[← Volver al README principal](../../../README.md)

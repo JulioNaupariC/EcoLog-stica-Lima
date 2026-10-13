@@ -151,7 +151,13 @@ de nuevo los servicios. Las instrucciones de arranque sin Docker siguen en
 - [01 Transformando a ágil V_1_0_0](<docs/02 Planificación/01 Transformando a ágil V_1_0_0.md>)
 - [02 Artefactos Jira V_1_0_0](<docs/02 Planificación/02 Artefactos Jira V_1_0_0.md>)
 - [03 Registro de riesgos V_1_0_0](<docs/02 Planificación/03 Registro de riesgos V_1_0_0.md>)
+- [02 Artefactos Jira V_1_0_1 — adenda operativa del Sprint 1](<docs/02 Planificación/02 Artefactos Jira V_1_0_1.md>)
 - [04 Presupuesto del proyecto V_1_0_0](<docs/02 Planificación/04 Presupuesto del proyecto V_1_0_0.md>)
+
+### Especificaciones BDD del Sprint 2
+
+- [ECL-47 / ST-021 — Reglas y BDD de conductores](<docs/02 Planificación/BDD/ECL-47-ST-021-conductores.md>)
+- [ECL-51 / ST-025 — Reglas y BDD de preferencias de entrega](<docs/02 Planificación/BDD/ECL-51-ST-025-preferencias-entrega.md>)
 
 ### Estado de Jira — fotografía de planificación inicial
 
@@ -173,6 +179,38 @@ de nuevo los servicios. Las instrucciones de arranque sin Docker siguen en
 - [03 Revisión del Sprint](<docs/03 Implementación/03 Revisión del Sprint V_1_0_0.md>)
 - [04 Retrospectiva del Sprint](<docs/03 Implementación/04 Retrospectiva del Sprint V_1_0_0.md>)
 
+### Documentación técnica del Sprint 2
+
+- [Índice del Sprint 2 y mapa de reubicación](<docs/03 Implementación/Sprint 2/README.md>)
+
+Validaciones:
+
+- [ST-022 / ECL-48 — API de conductores](<docs/03 Implementación/Sprint 2/validaciones/VALIDACION_ST022.md>)
+- [ST-023 / ECL-49 — formulario y listado de conductores](<docs/03 Implementación/Sprint 2/validaciones/VALIDACION_ST023.md>)
+- [ST-024 / ECL-50 — pruebas de conductores](<docs/03 Implementación/Sprint 2/validaciones/VALIDACION_ST024.md>)
+- [ST-026 / ECL-52 — API de preferencias de entrega](<docs/03 Implementación/Sprint 2/validaciones/VALIDACION_ST026.md>)
+- [ST-027 / ECL-53 — interfaz de preferencias](<docs/03 Implementación/Sprint 2/validaciones/VALIDACION_ST027.md>)
+- [ST-028 / ECL-54 — matriz de preferencias y clientes](<docs/03 Implementación/Sprint 2/validaciones/VALIDACION_ST028.md>)
+- [ST-030 / ECL-56 — interfaz móvil del conductor](<docs/03 Implementación/Sprint 2/validaciones/VALIDACION_ST030.md>)
+- [ST-031 / ECL-57 — responsive y accesibilidad](<docs/03 Implementación/Sprint 2/validaciones/VALIDACION_ST031.md>)
+- [ST-032 / ECL-58 — offline y sincronización](<docs/03 Implementación/Sprint 2/validaciones/VALIDACION_ST032.md>)
+- [ST-034 / ECL-60 — métricas de API y base de datos](<docs/03 Implementación/Sprint 2/validaciones/VALIDACION_ST034.md>)
+- [ST-035 / ECL-61 — carga y disponibilidad](<docs/03 Implementación/Sprint 2/validaciones/VALIDACION_ST035.md>)
+- [ST-038 / ECL-64 — optimización de consultas](<docs/03 Implementación/Sprint 2/validaciones/VALIDACION_ST038.md>)
+
+Informes:
+
+- [ST-033 / ECL-59 — Plan de pruebas de capacidad y disponibilidad](<docs/03 Implementación/Sprint 2/informes/plan-pruebas-capacidad.md>)
+- [ST-036 / ECL-62 — Resultados, SLA y operación](<docs/03 Implementación/Sprint 2/informes/INFORME_ST036.md>)
+- [ST-037 / ECL-63 — Medición inicial de payload y consultas críticas](<docs/03 Implementación/Sprint 2/informes/INFORME_ST037.md>)
+
+Guías de integración:
+
+- [Guía ST-024](<docs/03 Implementación/Sprint 2/guias/GUIA_JOSE_ST024.md>)
+- [Guía ST-027](<docs/03 Implementación/Sprint 2/guias/GUIA_JOSE_ST027.md>)
+- [Guía ST-031 y ST-032](<docs/03 Implementación/Sprint 2/guias/GUIA_JOSE_ST031_ST032.md>)
+- [Guía ST-035](<docs/03 Implementación/Sprint 2/guias/GUIA_JOSE_ST035.md>)
+
 ### Estado del Sprint 2 — corte del 09/10/2026
 
 Periodo planificado comunicado: 08/10/2026–23/10/2026. Los cuatro documentos
@@ -191,3 +229,38 @@ La captura Jira aportada muestra los cinco padres y las 19 subtareas como
 Finalizada: 27/27 SP y 19/19 subtareas, medidas separadas. El sprint aparece
 activo con la accion Completar sprint; sus limites tecnicos estan documentados
 en los entregables.
+
+## Fase 04: Contribución
+
+- [01. Política de pull requests V_1_0_0](<docs/04 Contribución/01. Politica de pull requests V_1_0_0.md>)
+- [Plantilla de pull request](.github/pull_request_template.md)
+- [AGENTS.md — reglas para agentes de IA](AGENTS.md)
+
+## Código y operación
+
+- [Backend: instalación, pruebas y API](backend/README.md)
+- [Backend: pruebas de carga ST-035](backend/loadtest/README.md)
+- [Frontend: instalación, pruebas y verificaciones](frontend/README.md)
+
+## Evidencias
+
+Las evidencias ejecutables permanecen junto al código que las genera.
+
+Backend:
+
+- [ECL-50](backend/evidencias/ECL-50/README.md)
+- [ECL-54](backend/evidencias/ECL-54/README.md)
+- [ECL-60](backend/evidencias/ECL-60/README.md)
+- [ECL-61](backend/evidencias/ECL-61/README.md)
+- [ECL-61 — incidencias y límites](backend/evidencias/ECL-61/INCIDENCIAS.md)
+- [ECL-63](backend/evidencias/ECL-63/README.md)
+- [ECL-64](backend/evidencias/ECL-64/README.md)
+
+Frontend:
+
+- [ECL-49](frontend/evidencias/ECL-49/README.md)
+- [ECL-53](frontend/evidencias/ECL-53/README.md)
+- [ECL-54](frontend/evidencias/ECL-54/README.md)
+- [ECL-56](frontend/evidencias/ECL-56/README.md)
+- [ECL-57](frontend/evidencias/ECL-57/README.md)
+- [ECL-58](frontend/evidencias/ECL-58/README.md)

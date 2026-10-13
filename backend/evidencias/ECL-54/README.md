@@ -23,3 +23,5 @@ Para interfaz y regresión, ver
 [la evidencia frontend](../../../frontend/evidencias/ECL-54/README.md).
 P8 tiene una brecha documentada; aprobar pruebas de API no implica aprobar
 el flujo de propuesta en el formulario ni el borrador BDD.
+
+[← Volver al README principal](../../../README.md)

@@ -52,3 +52,5 @@ diferencias de medición se documentan sin reescribir los datos anteriores.
 Consultar [VALIDACION_ST035.md](<../../../docs/03 Implementación/Sprint 2/validaciones/VALIDACION_ST035.md>) y
 [INCIDENCIAS.md](INCIDENCIAS.md) antes de interpretar resultados como
 cumplimiento de capacidad. **No se ha medido el SLA mensual.**
+
+[← Volver al README principal](../../../README.md)

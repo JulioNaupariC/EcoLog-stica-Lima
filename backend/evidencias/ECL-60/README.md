@@ -20,3 +20,5 @@ temporal. Se conservaron el contenedor de BD y sus bases.
 
 Reproducción: scripts/verify_metrics.py y app.monitoring.poll, según la validación.
 Estas evidencias verifican instrumentación; no acreditan campaña de capacidad ni SLA mensual.
+
+[← Volver al README principal](../../../README.md)

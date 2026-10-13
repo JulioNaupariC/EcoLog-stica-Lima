@@ -102,3 +102,7 @@ GitHub Actions y peer review pendientes del push y PR del usuario. Para cerrar
 el ticket, adjuntar el enlace a una ejecución verde de esta rama/commit y sus
 artefactos, además de este reporte. Las evidencias locales no se presentan como
 una ejecución de GitHub Actions ni como una certificación SAST.
+
+[↑ Índice del Sprint 2](../README.md)
+
+[← Volver al README principal](../../../../README.md)

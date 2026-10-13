@@ -594,3 +594,5 @@ El payload del dashboard sigue pendiente; este incremento no acredita RNF-012.
 Ver [VALIDACION_ST028.md](<../docs/03 Implementación/Sprint 2/validaciones/VALIDACION_ST028.md>) para matriz BDD, resultados
 y diferencias registradas. La API y gestion de preferencias estan contrastadas;
 P8 presenta una brecha en la propuesta al crear pedidos. El BDD sigue en borrador.
+
+[← Volver al README principal](../README.md)

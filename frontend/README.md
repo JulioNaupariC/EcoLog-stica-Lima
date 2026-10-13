@@ -219,3 +219,5 @@ existentes de formularios y avisos. La regresión de pedidos permanece en verde.
 Ver [VALIDACION_ST027.md](<../docs/03 Implementación/Sprint 2/validaciones/VALIDACION_ST027.md>),
 [capturas ECL-53](evidencias/ECL-53/README.md) y la
 [guía para José](<../docs/03 Implementación/Sprint 2/guias/GUIA_JOSE_ST027.md>) para resultados, reproducción y PR.
+
+[← Volver al README principal](../README.md)

@@ -142,3 +142,7 @@ alteración de resúmenes, percentiles, poblaciones, afirmaciones de SLA y hashe
 La campaña completa es local; ejecución remota de CI, PR y revisión de un
 compañero quedan pendientes de que José suba la rama. No atribuir resultados
 remotos a esta validación.
+
+[↑ Índice del Sprint 2](../README.md)
+
+[← Volver al README principal](../../../../README.md)

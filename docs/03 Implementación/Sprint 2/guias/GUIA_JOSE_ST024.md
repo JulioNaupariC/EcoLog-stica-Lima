@@ -108,3 +108,7 @@ Descripción sugerida del PR:
 > aprobadas. Cobertura de conductores 98.13 %. Ruff, typecheck, lint y build
 > aprobados. Reporte: backend/VALIDACION_ST024.md. Añadir aquí el enlace de
 > GitHub Actions una vez finalice la ejecución remota.
+
+[↑ Índice del Sprint 2](../README.md)
+
+[← Volver al README principal](../../../../README.md)

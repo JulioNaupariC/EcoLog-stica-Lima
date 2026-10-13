@@ -10,3 +10,5 @@ superiores y espaciado. Son capturas de página completa; la altura puede ser
 mayor que la del viewport.
 
 Ver [checklist y procedimiento](<../../../docs/03 Implementación/Sprint 2/validaciones/VALIDACION_ST031.md>).
+
+[← Volver al README principal](../../../README.md)

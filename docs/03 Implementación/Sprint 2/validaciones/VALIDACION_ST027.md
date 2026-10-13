@@ -124,3 +124,7 @@ GitHub Actions/SAST remotos y peer review quedan pendientes del push del usuario
 CI existente ejecuta automáticamente typecheck, lint, pruebas con cobertura y
 build al abrir PR a `main`. No se atribuye una ejecución remota que aún no se
 ha observado. Guía y texto de PR en [GUIA_JOSE_ST027.md](../guias/GUIA_JOSE_ST027.md).
+
+[↑ Índice del Sprint 2](../README.md)
+
+[← Volver al README principal](../../../../README.md)

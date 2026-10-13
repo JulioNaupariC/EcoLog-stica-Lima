@@ -27,3 +27,5 @@ salida para conservar las mediciones originales. La semilla se prepara con las
 instrucciones de [ST-037](../ECL-63/README.md).
 
 Dashboard/rutas y comparación del límite de 250 KB siguen pendientes.
+
+[← Volver al README principal](../../../README.md)

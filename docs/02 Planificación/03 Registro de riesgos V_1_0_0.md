@@ -51,4 +51,4 @@
 
 Los riesgos High justifican la prioridad temprana de EN-001, EN-002, EN-003 y EN-006. La reserva de contingencia financiera se fija en **12% del subtotal planificado**, dentro del rango sugerido de 10%–15%.
 
-[← Volver al README Principal](../../README.md)
+[← Volver al README principal](../../README.md)

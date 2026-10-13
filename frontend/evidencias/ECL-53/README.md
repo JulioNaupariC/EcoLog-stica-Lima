@@ -29,3 +29,5 @@ El XML conserva los 431 casos aprobados de la ejecución local. Se retiraron
 ## Vista móvil
 
 ![Formulario a 360 px en Firefox](firefox-05-movil-360.png)
+
+[← Volver al README principal](../../../README.md)

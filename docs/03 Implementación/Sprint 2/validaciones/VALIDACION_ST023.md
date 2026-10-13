@@ -117,3 +117,7 @@ este documento no afirma que ya se hayan realizado.
 Las capturas proceden de navegadores automatizados en modo headless. No constituyen
 una auditoría WCAG completa ni pruebas de dispositivos físicos. La validación de gestión
 de conductores de ST-024 sigue siendo trabajo del ticket correspondiente.
+
+[↑ Índice del Sprint 2](../README.md)
+
+[← Volver al README principal](../../../../README.md)

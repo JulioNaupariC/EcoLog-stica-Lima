@@ -111,3 +111,7 @@ reales antes de decidir agregación, caché, paginación o índices adicionales.
 - [Registro de verificación y hashes](../../../../backend/evidencias/ECL-64/verificacion.json).
 - [Instrucciones de evidencia](../../../../backend/evidencias/ECL-64/README.md).
 - [Instrumento](../../../../backend/scripts/compare_client_lookup.py).
+
+[↑ Índice del Sprint 2](../README.md)
+
+[← Volver al README principal](../../../../README.md)

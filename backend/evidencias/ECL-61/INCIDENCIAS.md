@@ -39,3 +39,5 @@ límite explícito de fase en la recuperación. No se relajaron P95/5xx/concurre
 Consultar [VALIDACION_ST035.md](<../../../docs/03 Implementación/Sprint 2/validaciones/VALIDACION_ST035.md>) y el reporte para
 todos los denominadores, huecos y condiciones. No se seleccionaron únicamente
 los segmentos favorables dentro de una repetición.
+
+[← Volver al README principal](../../../README.md)

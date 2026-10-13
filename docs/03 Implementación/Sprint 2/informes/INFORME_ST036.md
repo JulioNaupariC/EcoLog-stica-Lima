@@ -296,3 +296,7 @@ enlaces, fórmulas y diff de documentación.
 4. Resolver integridad de logs y ratificar responsables/procedimientos con el equipo.
 5. Esta entrega queda preparada para commit/PR y revisión; su versionado en GitHub
    se acredita cuando el usuario publique y el equipo revise, no por este archivo.
+
+[↑ Índice del Sprint 2](../README.md)
+
+[← Volver al README principal](../../../../README.md)

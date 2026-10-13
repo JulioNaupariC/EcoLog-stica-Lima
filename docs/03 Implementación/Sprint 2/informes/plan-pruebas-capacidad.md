@@ -167,3 +167,7 @@ El P95 de registro y la evidencia de ≥100 POST /pedidos en vuelo mantienen su 
 - **Julio — ST-036:** documentar SLA, hallazgos y respuesta operativa cuando existan datos comprobados.
 
 **Estado de esta revisión:** únicamente **planificación metodológica**. No se ha ejecutado una campaña de carga, no se ha medido P95 ni se ha demostrado disponibilidad mensual.
+
+[↑ Índice del Sprint 2](../README.md)
+
+[← Volver al README principal](../../../../README.md)

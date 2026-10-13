@@ -38,3 +38,5 @@ licencia vencida y verifica que no habilita la asignación.
 Para reproducir: `scripts/verify-drivers.mjs`, con la configuración privada y el
 entorno descritos en la validación técnica. El script genera perfiles sintéticos
 persistentes; no ejecutar sobre datos reales.
+
+[← Volver al README principal](../../../README.md)

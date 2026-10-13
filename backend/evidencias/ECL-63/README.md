@@ -29,3 +29,5 @@ solo lectura. No se modifican índices. No publicar DATABASE_URL ni secretos.
 
 La candidata no acredita un endpoint de listado, rutas ni dashboard.
 No mide latencia HTTP o concurrencia. UUID y textos son sintéticos.
+
+[← Volver al README principal](../../../README.md)

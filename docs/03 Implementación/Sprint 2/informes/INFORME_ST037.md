@@ -110,3 +110,7 @@ antes/después. No se incorporan Redis, compresión, caché ni nuevos índices.
 Verificación local: 15 planes reales, medianas recalculadas y guardas de base
 exclusiva/siembra no repetible; Ruff del instrumento.
 CI y revisión humana pendientes del Pull Request.
+
+[↑ Índice del Sprint 2](../README.md)
+
+[← Volver al README principal](../../../../README.md)

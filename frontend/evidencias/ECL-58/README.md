@@ -40,3 +40,5 @@ temporal propio. No se modificaron bases ajenas.
 
 Reproducción y límites: [VALIDACION_ST032.md](<../../../docs/03 Implementación/Sprint 2/validaciones/VALIDACION_ST032.md>).
 La campaña local no acredita un SLA de producción.
+
+[← Volver al README principal](../../../README.md)

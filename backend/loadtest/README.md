@@ -140,3 +140,5 @@ CI ejecuta los casos negativos del analizador y conserva JUnit/cobertura.
 La campaña de 40 minutos se ejecuta localmente, no se dispara por cada PR.
 El código de salida 0 del comando significa que terminó y exportó evidencia;
 **no significa que pasó los umbrales**: consultar `campaign.json` y el informe.
+
+[← Volver al README principal](../../README.md)

@@ -92,4 +92,4 @@ La consigna establece **S/ 120,000 anuales** para mantenimiento y soporte. Ese O
 - Riesgos que sustentan contingencia: RSK-01, RSK-02, RSK-05, RSK-06 y RSK-07.
 - Detalle de control de cambios: `docs/01. Inicio/02. Acta de constitución V_1_1_0.md`.
 
-[← Volver al README Principal](../../README.md)
+[← Volver al README principal](../../README.md)

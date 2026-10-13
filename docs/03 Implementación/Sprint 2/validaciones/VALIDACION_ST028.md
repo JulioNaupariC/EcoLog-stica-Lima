@@ -130,3 +130,7 @@ CI/SAST del nuevo PR y revisión humana siguen pendientes.
 
 La evidencia no equivale a aprobación del contrato ni a cierre de US-005.
 El equipo puede revisar ST-028 con esta matriz y su registro de diferencias.
+
+[↑ Índice del Sprint 2](../README.md)
+
+[← Volver al README principal](../../../../README.md)

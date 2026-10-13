@@ -131,3 +131,7 @@ Jira: https://continental-team-il84x39k.atlassian.net/browse/ECL-61
 
 Adjuntar `01-resultados-disponibilidad.png` y `02-concurrencia.png` al PR,
 solicitar revisión y esperar CI. No mezclar a main sin revisión del equipo.
+
+[↑ Índice del Sprint 2](../README.md)
+
+[← Volver al README principal](../../../../README.md)

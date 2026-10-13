@@ -113,3 +113,7 @@ Configurar `VITE_API_BASE_URL` auténtica antes de compilar. Servir `dist/` sobr
 HTTPS o localhost. Para la prueba aislada reproducible, seguir
 `frontend/VALIDACION_ST032.md` en la rama ST-032; no apuntarla a la base compartida.
 Los resultados/checklist ST-031 están en su propia rama.
+
+[↑ Índice del Sprint 2](../README.md)
+
+[← Volver al README principal](../../../../README.md)
