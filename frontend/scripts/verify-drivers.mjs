@@ -6,8 +6,11 @@ import { fileURLToPath, pathToFileURL } from 'node:url'
 
 const frontend = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const root = resolve(frontend, '..')
-const output = resolve(frontend, 'evidencias/ECL-49')
-const settings = Object.fromEntries((await readFile(resolve(root, '.env.ecl49-preview'), 'utf8'))
+// The ECL-49 run in evidencias/ECL-49/ is a dated record: never overwrite it.
+const runDate = new Date().toISOString().slice(0, 10).replaceAll('-', '')
+const output = process.env.ECL49_OUTPUT || resolve(frontend, `evidencias/ECL-49/retest-${runDate}`)
+assert.notEqual(resolve(output), resolve(frontend, 'evidencias/ECL-49'), 'Historical ECL-49 evidence must not be overwritten')
+const settings = Object.fromEntries((await readFile(process.env.ECL49_PREVIEW_SETTINGS || resolve(root, '.env.ecl49-preview'), 'utf8'))
   .split(/\r?\n/u).filter(line => line.includes('=')).map(line => {
     const index = line.indexOf('='); return [line.slice(0, index), line.slice(index + 1)]
   }))
@@ -16,8 +19,10 @@ for (const prefix of ['ADMIN', 'OPERATOR', 'DRIVER']) {
 }
 const modulePath = process.env.ECL49_PLAYWRIGHT_MODULE || resolve(frontend, 'node_modules/.ecl49-browser-check/node_modules/playwright/index.mjs')
 const { chromium, firefox } = await import(pathToFileURL(modulePath).href)
-const origin = 'http://127.0.0.1:5173'
-const api = 'http://127.0.0.1:8000'
+const origin = settings.ECL49_ORIGIN || 'http://127.0.0.1:5173'
+assert.equal(new URL(origin).hostname, '127.0.0.1')
+const api = settings.ECL49_API || 'http://127.0.0.1:8000'
+assert.equal(new URL(api).hostname, '127.0.0.1')
 await mkdir(output, { recursive: true })
 const results = []
 let phase = 'startup'

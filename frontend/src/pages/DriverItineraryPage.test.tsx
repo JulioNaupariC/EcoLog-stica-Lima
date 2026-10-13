@@ -53,6 +53,17 @@ describe('DriverItineraryPage — producción, sin datos de demostración', () =
 describe('DriverItineraryPage — ECL-56, demostración (VITE_DEMO_ITINERARY=true)', () => {
   beforeEach(() => { vi.stubEnv('VITE_DEMO_ITINERARY', 'true') })
 
+  it('ruta de borde: con sesión y sin paradas reales muestra el ejemplo; el error sigue ofreciendo reintentar', async () => {
+    vi.mocked(getDriverItinerary).mockResolvedValueOnce([])
+    const view = render(<DriverItineraryPage ownerId="123e4567-e89b-12d3-a456-426614174000" />)
+    expect(await screen.findByRole('note')).toHaveTextContent('Datos de demostración')
+    view.unmount()
+    vi.mocked(getDriverItinerary).mockRejectedValueOnce(new Error('sin red'))
+    render(<DriverItineraryPage ownerId="123e4567-e89b-12d3-a456-426614174000" />)
+    expect(await screen.findByRole('heading', { name: 'No se pudo cargar tu itinerario' })).toBeInTheDocument()
+    expect(screen.queryByRole('note')).not.toBeInTheDocument()
+  })
+
   it('distingue la siguiente parada, la alerta y el aviso de datos ficticios', () => {
     render(<DriverItineraryPage />)
     expect(screen.getByRole('note')).toHaveTextContent('Datos de demostración')

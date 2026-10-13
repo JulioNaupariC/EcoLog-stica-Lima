@@ -237,7 +237,8 @@ export function DriverItineraryPage({
     </ItineraryLayout>
   }
 
-  if (ownerId && assignedStops?.length === 0) {
+  // With VITE_DEMO_ITINERARY=true a driver without real stops sees the fictitious example below.
+  if (ownerId && assignedStops?.length === 0 && !isDemoItineraryEnabled()) {
     return <ItineraryLayout>
       {assignedStopsError ? <Alert tone="danger">{assignedStopsError}</Alert> : null}
       {syncMessage ? <p className="field-hint" role="status">{syncMessage}</p> : null}
