@@ -120,10 +120,14 @@ def test_read_page_and_update_validate_resulting_profile():
     session.get.return_value = account(row.usuario_id)
     assert service.get(row.conductor_id).habilitado_asignacion
     session.scalar.return_value = 1
-    session.scalars.return_value = [row]
+    session.execute.return_value = [(row, account(row.usuario_id))]
+    session.get.reset_mock()
     result = service.list_page(1, 20)
     assert result.total == 1
+    assert result.items[0].habilitado_asignacion
     assert "dni" not in result.items[0].model_dump()
+    # The page carries the joined account: no per-row lookup (N+1).
+    session.get.assert_not_called()
     session.scalar.return_value = row
     assert (
         service.update(row.conductor_id, ConductorUpdate(nombre="Nuevo")).nombre
@@ -200,10 +204,11 @@ def test_repository_orders_paginates_and_locks():
     repository.get(uuid4(), lock=True)
     assert "FOR UPDATE" in str(session.scalar.call_args.args[0])
     session.scalar.return_value = 0
-    session.scalars.return_value = []
+    session.execute.return_value = []
     assert repository.list_page(2, 10) == ([], 0)
-    statement = str(session.scalars.call_args.args[0])
+    statement = str(session.execute.call_args.args[0])
     assert "ORDER BY conductor.conductor_id" in statement and "OFFSET" in statement
+    assert "LEFT OUTER JOIN usuario" in statement
 
 
 def test_license_is_valid_through_its_final_local_day():

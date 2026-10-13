@@ -112,6 +112,46 @@ reales antes de decidir agregación, caché, paginación o índices adicionales.
 - [Instrucciones de evidencia](../../../../backend/evidencias/ECL-64/README.md).
 - [Instrumento](../../../../backend/scripts/compare_client_lookup.py).
 
+## Corrección N+1 del listado de conductores — 13/10/2026
+
+**Defecto:** `ConductorService.list_page` llamaba a `session.get(Usuario, …)`
+por cada fila para calcular `habilitado_asignacion`, lo que generaba una
+consulta adicional por conductor.
+
+**Cambio:** `ConductorRepository.list_page` obtiene cada conductor y su cuenta
+en una sola sentencia (`SELECT conductor, usuario … LEFT OUTER JOIN usuario`),
+y el servicio calcula la elegibilidad con la cuenta ya cargada. El contrato
+HTTP de `GET /conductores` no cambia: mismos campos, orden y paginación.
+
+**Medición:** sentencias contadas con `before_cursor_execute` sobre la llamada
+al servicio, con 105 conductores sembrados. Entorno local: PostgreSQL 16.15 +
+PostGIS 3.6.2, Windows 11, Python 3.12.10.
+
+| `page_size` | Filas devueltas | Sentencias antes | Sentencias después |
+|---:|---:|---:|---:|
+| 20 | 20 | 22 | 2 |
+| 100 | 100 | 102 | 2 |
+
+Las dos sentencias restantes son el `COUNT(*)` del total y la página con el
+join.
+
+**Prueba de regresión:**
+[`test_conductor_list_queries.py`](../../../../backend/tests/integration/test_conductor_list_queries.py)
+exige como máximo 3 sentencias por página, sea cual sea `page_size`. Cubre:
+
+| Tipo de ruta | Escenario | Resultado |
+|---|---|---|
+| Dorada | 25 conductores elegibles, página 1 de 20 | 20 habilitados, ≤ 3 sentencias |
+| Feliz | `page_size` 1, 20 y 100 sobre 105 conductores | ≤ 3 sentencias en los tres casos |
+| Infeliz | 5 conductores con cuenta `INACTIVO` | Ninguno habilitado, ≤ 3 sentencias |
+| Borde | Tabla vacía, última página parcial (21 → página 2) y página fuera de rango | 0, 1 y 0 filas; ≤ 3 sentencias |
+
+Con el código anterior, 4 de los 8 casos fallan: todos los que devuelven 3 o
+más filas.
+
+Esta corrección no cambia el estado de ECL-64, ECL-25 ni RNF-012, que siguen
+dependiendo del dashboard según la sección anterior.
+
 [↑ Índice del Sprint 2](../README.md)
 
 [← Volver al README principal](../../../../README.md)
