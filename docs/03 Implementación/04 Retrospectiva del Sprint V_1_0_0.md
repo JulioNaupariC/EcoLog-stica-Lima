@@ -10,109 +10,106 @@
 
 **Periodo planificado:** 08/10/2026–23/10/2026, según el tablero compartido.
 
-**Fecha de corte:** 09/10/2026, America/Lima.
+**Fecha de corte:** 13/10/2026, America/Lima.
 
-**Versión del contenido:** 1.1.0.
+**Versión del contenido:** 1.2.0.
 
-**Fuente del corte técnico:** repositorio local en `df55c72` y sus informes de validación.
+**Fuente del corte técnico:** `main` en `480b4f3` (PR #47–#53 integrados) y PR #54 abierto.
 
-**Estado Jira aportado:** cinco padres y 19 subtareas finalizados; 27/27 SP de padres.
-Fuente: captura del tablero compartida por Giancarlo; sprint visible como activo.
+**Base del análisis:** datos de Jira (estados y Time in Status), historial de Git y
+PR de GitHub, y el feedback de la Review del 09/10/2026. El análisis es sin culpables:
+describe hechos del proceso y sus causas, no desempeños individuales.
 
-**Estado:** análisis de evidencias y propuestas para la retrospectiva.
-No se dispone de acta, asistentes ni acuerdos adoptados del Sprint 2.
-Las observaciones se basan en los informes; no se atribuyen opiniones individuales.
+## Hallazgos del Sprint 2
 
-## ¿Qué aprendimos?
+| # | Hallazgo | Dato verificable |
+|---|---|---|
+| H1 | Las subtareas pasaron por «En curso» sin trabajo registrado en ese estado | Casi todas las subtareas ECL-46 a ECL-64 estuvieron entre 0,5 y 3 segundos en «En curso» (Time in Status de Jira) |
+| H2 | El cierre se concentró al final y no reflejó el avance real | 19 subtareas pasaron a Finalizada en unas 36 horas de un sprint de 15 días |
+| H3 | La aprobación existió, pero el merge lo hizo el propio autor y muy rápido | PR #22–#46: 21 de 23 integrados por su autor; los 23 tienen aprobación de otra persona; 10 integrados a 6 minutos o menos de abrirse; mediana 13,8 minutos |
+| H4 | La autoría en Git no coincide con el responsable en Jira | ECL-9 y ECL-11 (responsable Frank): código de Antony y Giancarlo. `metrics.py` de ECL-23 (responsable Julio): Giancarlo. `compare_client_lookup.py` de ECL-25 (responsable Antony): Giancarlo |
+| H5 | Se implementó contra criterios no ratificados | Las BDD de ECL-47 y ECL-51 siguen en estado BORRADOR |
+| H6 | No se demostró el producto en la Review | Acta del 09/10/2026: demostración no realizada; criterio 3 de la rúbrica con 2/4 |
+| H7 | «Finalizada» en Jira no equivale a criterios acreditados | 27/27 SP cerrados frente a 3/27 SP con todos sus criterios acreditados ([informe de estado](<01 Informe de estado del proyecto V_1_0_0.md>)) |
 
-El trabajo paralelo exige dependencias claras: modelo y reglas preceden a API,
-API precede a formulario y pruebas integradas, y plan de carga precede a métricas
-y consolidación. La colisión de migraciones de conductores/reportes mostró que
-cada rama debe comprobar su revisión previa antes de integrarse.
-
-Las pruebas verdes de una API no acreditan un flujo completo de producto:
-ST-028 comprobó persistencia y aislamiento, pero P8 sigue ausente del formulario.
-De igual forma, una mediana favorable no acredita carga sostenida ni SLA mensual,
-y reducir valores de una consulta no demuestra disminuir el payload del dashboard.
-
-## ¿Qué estamos haciendo bien?
-
-Se separan frontend, servicios, repositorios y esquemas. La autorización se
-comprueba en backend, además de ocultar enlaces. Las pruebas usan bases aisladas,
-cuentas sintéticas y casos negativos con comprobación de ausencia de cambios.
-
-Los informes conservan versiones, planes, capturas, escenarios y límites.
-Las preferencias no alteran silenciosamente un pedido y los ejemplos móviles
-se identifican como demostración. La optimización ECL-64 se aplicó al hallazgo
-medido, con comparación y regresión funcional, manteniendo los índices existentes.
-
-## ¿Qué podemos hacer mejor?
+## Análisis por eje
 
 ### Personas
 
-Organizar revisión cruzada por componente para que otra persona pueda reproducir
-el flujo y entender su contrato. Cada responsable debe explicar también límites
-y errores, evitando que la exposición dependa de quien ejecutó las pruebas.
-La colaboración de Giancarlo en entregables de otras líneas debe reflejarse
-como trabajo del equipo, sin atribuir commits o pruebas a autores ficticios.
+- **Qué pasó:** el trabajo se concentró en pocas personas (H4) y la exposición
+  no incluyó la demostración (H6).
+- **Causa raíz:** no se repartió explícitamente quién demuestra cada historia ni
+  se ensayó; quien conocía el flujo técnico no era siempre el responsable en Jira.
+- **Qué mantener:** la colaboración entre líneas resolvió bloqueos, como la
+  colisión de migraciones del 09/10, corregida el mismo día.
 
 ### Relaciones
 
-Acordar con anticipación contratos, dependencias y decisiones de aceptación.
-La preferencia del cliente y el dato del pedido tienen semánticas diferentes;
-negocio, UX y backend necesitan ratificar la interacción de P8.
-Registrar qué se acordó y quién participó ayuda a resolver diferencias entre
-documentación, implementación y expectativas de compañeros.
+- **Qué pasó:** la revisión cruzada fue formal: hubo aprobaciones, pero el autor
+  integró minutos después (H3), con poco margen para que el revisor reprodujera
+  el cambio.
+- **Causa raíz:** no existe un acuerdo sobre el tiempo mínimo de revisión ni sobre
+  quién integra; la protección de `main` no está verificada (impedimento I-05).
+- **Qué pasó también:** los criterios de conductores y preferencias no se
+  ratificaron entre negocio, UX y backend antes de implementar (H5); el defecto
+  D-01 (preferencias no propuestas en el pedido) nació de esa ambigüedad.
 
 ### Procesos
 
-Usar una rama por unidad de trabajo y revisar compatibilidad con main y
-migraciones antes del merge. Incluir una lista de criterios de aceptación y
-evidencia por escenario en cada PR. Al cerrar padres Jira, comprobar pendientes
-del producto y dependencias, además de la entrega de las subtareas.
-
-Programar pruebas que cubran asociación entre clientes, roles negativos, rollback,
-reconexión e idempotencia. En carga, separar campañas completas e interrumpidas,
-registrar condiciones del host y no promediar percentiles. Las reuniones deben
-producir acta con fecha, feedback, decisiones y acciones aceptadas.
+- **Qué pasó:** el tablero se actualizó en bloque al final (H1, H2) y cerró
+  historias cuyos criterios no estaban acreditados (H7).
+- **Causa raíz:** el Definition of Done no se comprueba antes de mover a
+  Finalizada; el estado de Jira se usó como registro de entrega, no como
+  seguimiento diario. Tampoco hay Story Points en las subtareas, por lo que el
+  avance no se puede medir durante el sprint.
+- **Qué mantener:** cada subtarea dejó un informe de validación con escenarios,
+  evidencia y límites, y los informes declararon con honestidad lo no acreditado
+  (concurrencia sostenida, SLA mensual, payload del dashboard).
 
 ### Herramientas
 
-Mantener enlaces entre Jira, commits, PR e informes con nomenclatura ECL.
-Conservar artefactos de CI y capturas por navegador sin secretos.
-Asegurar un único head Alembic y comparar revisiones antes de aplicar migraciones.
-Revisar dependencias y el aviso histórico registrado en ST-032 con evidencia actual.
+- **Qué pasó:** las evidencias quedaron dispersas fuera de `docs/03 Implementación`
+  y sin navegación desde el README; no había datos para demostrar el producto.
+- **Causa raíz:** ninguna herramienta comprobaba la ubicación ni los enlaces de la
+  documentación, y no existía un script de datos de demostración.
+- **Corrección aplicada:** verificador `scripts/check_docs.py` en CI
+  ([PR #47](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/47)) y
+  `seed_demo.py` ([PR #52](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/52)).
 
-Los sondeos de disponibilidad deben cubrir el periodo comprometido, y las
-consultas/bytes del dashboard deben medirse cuando su endpoint exista.
-Las simulaciones siguen siendo útiles, identificadas junto con sus límites.
+## Seguimiento de las acciones del Sprint 1
 
-### Acciones a realizar
+| Acción del Sprint 1 | Responsable | Fecha comprometida | Resultado | Evidencia |
+|---|---|---|---|---|
+| Validación cruzada del README (ECL-29) | José Samuel Delgadillo Pantoja | 02/10/2026 | Cumplida por otra persona: la revisó Giancarlo | Revisión del PR #20 ([adenda V_1_0_1](<../02 Planificación/02 Artefactos Jira V_1_0_1.md>)) |
+| Preparar cuentas y datos de demostración | Giancarlo Marcio Soto Escobar | 02/10/2026 | No cumplida en plazo; causó la Review sin demostración. Resuelta el 13/10 con `seed_demo.py` | [PR #52](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/52) |
+| Conciliar el estado de Jira | Julio Armando Naupari Camarena | 02/10/2026 | Cumplida | [Adenda V_1_0_1](<../02 Planificación/02 Artefactos Jira V_1_0_1.md>) |
+| Revisión humana del PR #20 y de Docker Compose | Antony Munive Ríos con un revisor | 03/10/2026 | Cumplida: PR #20 aprobado por Giancarlo e integrado; Compose validado sin login ni persistencia de datos de negocio | Adenda V_1_0_1 |
+| Registrar el feedback del stakeholder | Frank Roy Yupanqui Acevedo | 02/10/2026 | No cumplida: no hay acta del Sprint 1 | — |
 
-Responsables y fechas siguientes son propuestas, pendientes de aceptación.
-La fecha 23/10/2026 corresponde al cierre planificado comunicado; no es una
-promesa registrada de cada integrante.
+Resultado: 3 de 5 acciones cumplidas, una con otra persona responsable. Las dos
+incumplidas reaparecieron en el Sprint 2 como la falta de demostración y de acta;
+por eso el plan siguiente fija una métrica y una forma de comprobación por acción.
 
-| Acción | Responsable propuesto | Plazo propuesto | Criterio verificable |
-|---|---|---|---|
-| Ratificar ST-025 y decidir propuesta en pedido | Frank y Julio, con Antony y Giancarlo | Antes del cierre de US-005 | Contrato aprobado y decisión sobre P8 registrada |
-| Implementar y retestar propuesta explícita | José/Giancarlo con revisión de Antony | Plan acordado antes del 23/10/2026 | Contexto visible, copia editable sin cambio del cliente ni ventanas; prueba E2E |
-| Revisar dependencias de asignaciones y planificador | Antony y José | Plan acordado antes del 23/10/2026 | Asignación válida consultada por su dueño; reporte offline sincronizado una vez |
-| Validar migraciones por revisión cruzada | Antony y revisor de otra línea | Antes de cada merge con esquema | Único head, upgrade/rollback y pruebas en base aislada |
-| Repetir campaña con concurrencia acreditable | José con Julio | Plan antes del 23/10/2026 | Serie de solicitudes en vuelo y huecos explicitados, población válida conciliada |
-| Definir periodo de disponibilidad y responsables de sondeos | Julio y Antony | Antes de declarar SLA | Cobertura 05:00–22:00, fórmula, huecos y mantenimiento registrados |
-| Medir dashboard y rutas al existir su contrato | Giancarlo y Antony | Antes de aceptar RNF-012 | JSON sin mapa ≤250,000 bytes y planes reales documentados |
-| Revisar accesibilidad y dependencias actuales | José y Giancarlo | Plan antes del cierre de EN-004 | Checklist de teclado/foco/contraste y resultados de análisis con fecha |
-| Registrar Review/retrospectiva y actualizar seguimiento | Julio y Frank | Después de la exposición o sesión real | Fecha, asistentes, feedback y responsables aceptados en acta |
+## Plan de acción
 
-## Fuentes del análisis
+Las acciones son compromisos del equipo. Se revisarán en la retrospectiva del
+Sprint 3 con la misma tabla de seguimiento.
 
-- [Estado del Sprint 2](<01 Informe de estado del proyecto V_1_0_0.md>) y
-  [registro de impedimentos](<02 Registro de Impedimentos V_1_0_0.md>).
-- [Preferencias y brechas](<Sprint 2/validaciones/VALIDACION_ST028.md>).
-- [Offline y límites](<Sprint 2/validaciones/VALIDACION_ST032.md>).
-- [Resultados de capacidad/SLA](<Sprint 2/informes/INFORME_ST036.md>).
-- [Decisiones de optimización](<Sprint 2/validaciones/VALIDACION_ST038.md>).
+| # | Acción | Responsable | Fecha límite | Métrica verificable | Cómo se comprobará |
+|---|---|---|---|---|---|
+| A1 | Comprobar el Definition of Done (criterios con evidencia enlazada, pruebas en verde, revisión) antes de mover una tarea a Finalizada | Julio Armando Naupari Camarena | 23/10/2026 | 100 % de las tareas finalizadas del Sprint 3 con enlace a evidencia; ninguna con menos de 1 hora en «En curso» | Time in Status de Jira y revisión de enlaces en la planificación del Sprint 3 |
+| A2 | Exigir la aprobación de una persona distinta del autor e impedir el merge sin ella (protección de `main`) | Julio Armando Naupari Camarena | 16/10/2026 | Regla activa con 1 aprobación obligatoria; 0 PR integrados sin aprobación de otra persona | Captura de la configuración en la política de PR y consulta de los PR del Sprint 3 en GitHub |
+| A3 | Alinear la autoría con Jira: quien hace el trabajo figura como responsable o como `Co-authored-by` en el commit | Antony Munive Ríos | 23/10/2026 | 100 % de los commits del Sprint 3 con autor o coautor igual al responsable Jira de su clave ECL | Script que cruza `git log` con las claves ECL y la exportación de Jira |
+| A4 | Ratificar las BDD antes de implementar | Frank Roy Yupanqui Acevedo | 20/10/2026 | ECL-47 y ECL-51 en estado APROBADO; 0 historias del Sprint 3 iniciadas con BDD en BORRADOR | Cabecera de estado de las BDD y fecha del commit de aprobación anterior a la primera rama de la historia |
+| A5 | Registrar Story Points en Jira para historias y subtareas | Frank Roy Yupanqui Acevedo | 23/10/2026 | 100 % de los elementos del Sprint 3 con Story Points antes de iniciar el sprint | Exportación del sprint en Jira |
+| A6 | Ensayar la demostración antes de la Review con `seed_demo.py` y el guion con tiempos | Giancarlo Marcio Soto Escobar | Un día hábil antes de la Review del Sprint 3 | 1 ensayo completo cronometrado ≤15 minutos con todas las historias demostradas | Grabación o capturas del ensayo enlazadas en la Revisión del Sprint 3 |
+
+## Fuentes
+
+- [Informe de estado](<01 Informe de estado del proyecto V_1_0_0.md>), [registro de impedimentos](<02 Registro de Impedimentos V_1_0_0.md>) y [revisión del Sprint](<03 Revisión del Sprint V_1_0_0.md>).
+- Jira: Time in Status y fechas de transición comunicadas al 12/10/2026.
+- GitHub: autoría, aprobaciones y tiempos de merge de los PR #22–#54, consultados el 13/10/2026.
+- Git: autoría de commits por archivo (`git log`) al 13/10/2026.
 
 ## Historial de versiones
 
@@ -120,8 +117,8 @@ promesa registrada de cada integrante.
 |---|---|---|
 | 1.0.0 | 01/10/2026 | Entregable del Sprint 1; contenido anterior conservado en el historial Git. |
 | 1.1.0 | 09/10/2026 | Sustitución del contenido por el entregable del Sprint 2, con evidencias y pendientes al corte. |
+| 1.2.0 | 13/10/2026 | Hallazgos verificables, causas raíz por eje, seguimiento de las acciones del Sprint 1 y plan SMART. |
 
 El nombre V_1_0_0 del archivo se conserva por exigencia de la consigna.
-La versión del contenido se incrementa a 1.1.0 para identificar esta actualización.
 
 [← Volver al README principal](../../README.md)
