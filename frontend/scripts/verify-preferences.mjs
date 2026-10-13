@@ -39,7 +39,7 @@ async function authenticate(page, prefix) {
 async function consult(page, id) {
   // The selector matches an exact client UUID as well as name fragments.
   await page.getByRole('combobox', { name: 'Cliente', exact: true }).fill(id)
-  await page.getByRole('option').first().click()
+  await page.locator('[role="listbox"] [role="option"]').first().click()
   await page.getByRole('button', { name: 'Consultar preferencias', exact: true }).click()
   await page.getByRole('heading', { name: 'Preferencias del cliente', exact: true }).waitFor()
 }
@@ -148,7 +148,7 @@ try {
       await page.getByRole('button', { name: 'Consultar de nuevo u otro cliente', exact: true }).click()
       await page.getByRole('combobox', { name: 'Cliente', exact: true }).fill('00000000-0000-4000-8000-000000000053')
       await page.getByText('No se encontraron clientes con ese texto.', { exact: true }).waitFor()
-      assert.equal(await page.getByRole('option').count(), 0)
+      assert.equal(await page.locator('[role="listbox"] [role="option"]').count(), 0)
       await snapshot(page, name + '-07-cliente-inexistente.png')
 
       phase = name + ': denied conductor'

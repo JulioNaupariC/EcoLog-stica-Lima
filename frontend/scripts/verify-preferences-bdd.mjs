@@ -40,7 +40,7 @@ async function authenticate(page, prefix) {
 async function selectClient(page, id) {
   // The selector matches an exact client UUID as well as name fragments.
   await page.getByRole('combobox', { name: 'Cliente', exact: true }).fill(id)
-  await page.getByRole('option').first().click()
+  await page.locator('[role="listbox"] [role="option"]').first().click()
 }
 async function consult(page, id) {
   await selectClient(page, id)
@@ -155,7 +155,7 @@ try {
       const unknownClient = '00000000-0000-4000-8000-000000000053'
       await page.getByRole('combobox', { name: 'Cliente', exact: true }).fill(unknownClient)
       await page.getByText('No se encontraron clientes con ese texto.', { exact: true }).waitFor()
-      assert.equal(await page.getByRole('option').count(), 0)
+      assert.equal(await page.locator('[role="listbox"] [role="option"]').count(), 0)
       assert.equal((await context.request.get(`${api}/clientes/${unknownClient}/preferencias`)).status(), 404)
       await snapshot(page, name + '-07-cliente-inexistente.png')
 
