@@ -475,6 +475,40 @@ sesión en IndexedDB. El cierre de sesión advierte sobre reportes sin ACK y no 
 borra; tras autenticarse nuevamente con la misma cuenta pueden sincronizarse.
 Sólo una confirmación HTTP con el mismo `operation_id` elimina un reporte local.
 
+## Datos de demostración — Sprint 2
+
+`scripts/seed_demo.py` crea un conjunto ficticio para la demostración del
+Sprint 2. **Solo se ejecuta contra una base cuyo nombre termine en `_demo`**;
+en cualquier otro caso, o con `APP_ENV=production`, termina sin modificar
+nada. Las contraseñas se leen de variables de entorno (mínimo 12 caracteres)
+y nunca se guardan en el repositorio ni se imprimen.
+
+```powershell
+# Base exclusiva y migrada, por ejemplo ecologistica_demo.
+$env:DATABASE_URL = "postgresql+psycopg://USUARIO:CONTRASENA@127.0.0.1:5432/ecologistica_demo"
+.venv/Scripts/python -m alembic upgrade head
+# Definir privadamente SEED_DEMO_PASSWORD_ADMINISTRADOR, _OPERADOR, _CONDUCTOR,
+# _ANALISTA y _AUDITOR (por ejemplo, con un gestor de contraseñas).
+.venv/Scripts/python -m scripts.seed_demo
+```
+
+Crea, mediante los servicios de la aplicación:
+
+| Dato | Cantidad | Detalle |
+|---|---:|---|
+| Usuarios | 1 por rol | `<rol>.demo@ecologistica.example`; la cuenta de conductor es `conductor.demo@ecologistica.example` |
+| Clientes | 8 | Nombres ficticios; 7 con preferencias y 1 sin ellas (ruta de borde) |
+| Vehículos | 5 | Placas `DEMO-001` a `DEMO-005` |
+| Conductores | 4 | Dos habilitados, uno con licencia vencida y otro sin disponibilidad (rutas de borde) |
+| Pedidos | 20 | Referencias `Pedido demo 01` a `Pedido demo 20`, ventanas de hoy y mañana en Lima |
+| Paradas | 5 | Asignadas a `conductor.demo` con `DriverReportService.provision_assignment` |
+
+No existe un servicio de alta de clientes (su CRUD queda para el Sprint 3), así
+que los clientes se insertan con el modelo ORM, no con SQL directo; sus
+preferencias se guardan con `PreferenciasService`. El script es idempotente:
+una segunda ejecución informa que todo «ya existía» y no duplica nada.
+Pruebas: `tests/unit/test_seed_demo.py` y `tests/integration/test_seed_demo.py`.
+
 ## Calidad
 
 ```powershell
