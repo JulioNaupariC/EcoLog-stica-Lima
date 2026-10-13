@@ -94,8 +94,8 @@ for (const [name, launcher, options] of [
     await page.getByLabel('Correo electrónico').fill('auditor@example.test')
     await page.getByLabel('Contraseña').fill('valor-ficticio-de-prueba')
     await page.getByRole('button', { name: 'Iniciar sesión', exact: true }).click()
-    await page.getByRole('heading', { name: 'Rutas sostenibles para Lima' }).waitFor()
-    assert.equal(await page.getByRole('link', { name: 'Mi itinerario' }).count(), 0)
+    await page.getByRole('heading', { name: 'Inicio', exact: true }).waitFor()
+    assert.equal(await page.getByRole('link', { name: 'Mi itinerario', exact: true }).count(), 0)
     // Simula navegación SPA directa conservando la identidad en memoria.
     await page.evaluate(() => { history.pushState({}, '', '/conductor/itinerario'); window.dispatchEvent(new PopStateEvent('popstate')) })
     await page.getByRole('heading', { name: 'Acceso denegado', exact: true }).waitFor()

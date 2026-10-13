@@ -27,7 +27,7 @@ async function authenticate(page, prefix) {
   await page.getByLabel('Correo electrónico').fill(settings['ECL49_' + prefix + '_EMAIL'])
   await page.getByLabel('Contraseña', { exact: true }).fill(settings['ECL49_' + prefix + '_PASSWORD'])
   await page.getByRole('button', { name: 'Iniciar sesión', exact: true }).click()
-  await page.getByRole('heading', { name: 'Rutas sostenibles para Lima' }).waitFor()
+  await page.getByRole('heading', { name: 'Inicio', exact: true }).waitFor()
 }
 async function fillProfile(page, data) {
   for (const [field, value] of Object.entries(data)) await page.locator('#driver-' + field).fill(value)
@@ -149,6 +149,8 @@ try {
       await page.unroute('**/conductores?**')
       await page.getByRole('button', { name: 'Reintentar carga', exact: true }).click()
       await page.waitForFunction(() => !document.querySelector('[aria-busy="true"]'))
+      // «Cerrar sesión» lives in the account menu since ECL-22.
+      await page.getByRole('button', { name: /^Cuenta:/u }).click()
       await page.getByRole('button', { name: 'Cerrar sesión', exact: true }).click()
       await page.getByRole('heading', { name: 'Iniciar sesión', exact: true }).waitFor()
 
@@ -163,6 +165,8 @@ try {
       await snapshot(page, name + '-12-conductor-denegado.png')
       assert.equal((await context.request.get(api + '/conductores')).status(), 403)
       assert.equal(errors.length, 0)
+      // «Cerrar sesión» lives in the account menu since ECL-22.
+      await page.getByRole('button', { name: /^Cuenta:/u }).click()
       await page.getByRole('button', { name: 'Cerrar sesión', exact: true }).click()
       results.push({ browser: name, version: browser.version(), role: prefix === 'ADMIN' ? 'ADMINISTRADOR' : 'OPERADOR',
         passed: true, realLogin: true, realRegistration: true, duplicateConflict: true, realPatch: true,

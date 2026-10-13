@@ -35,7 +35,7 @@ async function authenticate(page, prefix) {
   await page.getByLabel('Correo electrónico').fill(settings['ECL54_' + prefix + '_EMAIL'])
   await page.getByLabel('Contraseña', { exact: true }).fill(settings['ECL54_' + prefix + '_PASSWORD'])
   await page.getByRole('button', { name: 'Iniciar sesión', exact: true }).click()
-  await page.getByRole('heading', { name: 'Rutas sostenibles para Lima' }).waitFor()
+  await page.getByRole('heading', { name: 'Inicio', exact: true }).waitFor()
 }
 async function selectClient(page, id) {
   // The selector matches an exact client UUID as well as name fragments.
@@ -194,6 +194,8 @@ try {
       page.off('request', monitor)
 
       phase = name + ': denied conductor'
+      // «Cerrar sesión» lives in the account menu since ECL-22.
+      await page.getByRole('button', { name: /^Cuenta:/u }).click()
       await page.getByRole('button', { name: 'Cerrar sesión', exact: true }).click()
       await page.getByRole('heading', { name: 'Iniciar sesión', exact: true }).waitFor()
       await authenticate(page, 'DRIVER')
@@ -206,6 +208,8 @@ try {
       assert.equal((await context.request.get(`${api}/clientes/${clientA}/preferencias`)).status(), 403)
       await snapshot(page, name + '-08-acceso-denegado.png')
       assert.equal(errors.length, 0)
+      // «Cerrar sesión» lives in the account menu since ECL-22.
+      await page.getByRole('button', { name: /^Cuenta:/u }).click()
       await page.getByRole('button', { name: 'Cerrar sesión', exact: true }).click()
       results.push({ browser: name, version: browser.version(), passed: true, role: prefix === 'ADMIN' ? 'ADMINISTRADOR' : 'OPERADOR',
         realLogin: true, realApiGetPatch: true, preferencesRetrieved: true, explicitClear: true, otherClientUnchanged: true, otherClientInitiallyPopulated: true, P8OrderProposalAvailable: true, P8ExplicitReferenceCopy: true, P8WindowsUnchanged: true, P8ClientUnchanged: true,

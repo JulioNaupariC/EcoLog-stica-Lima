@@ -1,0 +1,336 @@
+[
+  {
+    "browser": "chrome",
+    "version": "155.0.8059.40",
+    "api": "simulated; only UI accessibility evaluated",
+    "checks": [
+      {
+        "label": "01-login-360",
+        "dimensions": {
+          "viewport": 360,
+          "scroll": 360
+        },
+        "violations": [],
+        "incomplete": [],
+        "passes": 23
+      },
+      {
+        "label": "02-validacion-360",
+        "dimensions": {
+          "viewport": 360,
+          "scroll": 360
+        },
+        "violations": [],
+        "incomplete": [],
+        "passes": 24
+      },
+      {
+        "label": "03-itinerario-360",
+        "dimensions": {
+          "viewport": 360,
+          "scroll": 360
+        },
+        "violations": [],
+        "incomplete": [],
+        "passes": 23
+      },
+      {
+        "label": "05-itinerario-768",
+        "dimensions": {
+          "viewport": 768,
+          "scroll": 768
+        },
+        "violations": [],
+        "incomplete": [],
+        "passes": 23
+      },
+      {
+        "label": "05-itinerario-1280",
+        "dimensions": {
+          "viewport": 1280,
+          "scroll": 1280
+        },
+        "violations": [],
+        "incomplete": [],
+        "passes": 23
+      },
+      {
+        "label": "06-espaciado-360",
+        "dimensions": {
+          "viewport": 360,
+          "scroll": 360
+        },
+        "violations": [],
+        "incomplete": [],
+        "passes": 23
+      }
+    ],
+    "keyboard": [
+      {
+        "tag": "BUTTON",
+        "text": "Ssynthetic@example.testConductor",
+        "focusVisible": true,
+        "outlineColor": "rgb(29, 78, 216)",
+        "outlineStyle": "solid",
+        "outlineWidth": "3px"
+      },
+      {
+        "tag": "BUTTON",
+        "text": "Registrar entrega pendiente",
+        "focusVisible": true,
+        "outlineColor": "rgb(29, 78, 216)",
+        "outlineStyle": "solid",
+        "outlineWidth": "3px"
+      },
+      {
+        "tag": "BUTTON",
+        "text": "Registrar no entregado",
+        "focusVisible": true,
+        "outlineColor": "rgb(29, 78, 216)",
+        "outlineStyle": "solid",
+        "outlineWidth": "3px"
+      },
+      {
+        "tag": "BUTTON",
+        "text": "Registrar entrega pendiente",
+        "focusVisible": true,
+        "outlineColor": "rgb(29, 78, 216)",
+        "outlineStyle": "solid",
+        "outlineWidth": "3px"
+      },
+      {
+        "tag": "BUTTON",
+        "text": "Registrar no entregado",
+        "focusVisible": true,
+        "outlineColor": "rgb(29, 78, 216)",
+        "outlineStyle": "solid",
+        "outlineWidth": "3px"
+      },
+      {
+        "tag": "BUTTON",
+        "text": "Sincronizar pendientes",
+        "focusVisible": true,
+        "outlineColor": "rgb(29, 78, 216)",
+        "outlineStyle": "solid",
+        "outlineWidth": "3px"
+      },
+      {
+        "tag": "A",
+        "text": "Inicio",
+        "focusVisible": true,
+        "outlineColor": "rgb(29, 78, 216)",
+        "outlineStyle": "solid",
+        "outlineWidth": "3px"
+      },
+      {
+        "tag": "A",
+        "text": "Mi itinerario",
+        "focusVisible": true,
+        "outlineColor": "rgb(29, 78, 216)",
+        "outlineStyle": "solid",
+        "outlineWidth": "3px"
+      },
+      {
+        "tag": "BODY",
+        "text": "\n    Saltar al contenido principalEcoLogística LimaSsynthetic@example.testConductorMi itinerario2 paradas asignadas · 0 completadas. Los reportes se guardan en el dispositivo y se envían con confirmación del servidor. Siguiente parada1Parada 1PendienteLa asignación todavía no contiene dirección ni horario. Solicita al coordinador una asignación vinculada a su pedido.Ref. de parada 223e4567Reportes de la parada 1Registrar entrega pendienteRegistrar no entregadoResto del recorrido2Parada 2PendienteLa asignación todavía no contiene dirección ni horario. Solicita al coordinador una asignación vinculada a su pedido.Ref. de parada 223e4567Reportes de la parada 2Registrar entrega pendienteRegistrar no entregadoSincronización de reportesDispositivo conectado. La disponibilidad del servidor no está verificada.Reportes pendientes: 0Sincronizar pendientesInicioMi itinerario\n\n  \n\n",
+        "focusVisible": false,
+        "outlineColor": "rgb(23, 37, 28)",
+        "outlineStyle": "none",
+        "outlineWidth": "3px"
+      },
+      {
+        "tag": "A",
+        "text": "Saltar al contenido principal",
+        "focusVisible": true,
+        "outlineColor": "rgb(29, 78, 216)",
+        "outlineStyle": "solid",
+        "outlineWidth": "3px"
+      },
+      {
+        "tag": "A",
+        "text": "EcoLogística Lima",
+        "focusVisible": true,
+        "outlineColor": "rgb(29, 78, 216)",
+        "outlineStyle": "solid",
+        "outlineWidth": "3px"
+      },
+      {
+        "tag": "BUTTON",
+        "text": "Ssynthetic@example.testConductor",
+        "focusVisible": true,
+        "outlineColor": "rgb(29, 78, 216)",
+        "outlineStyle": "solid",
+        "outlineWidth": "3px"
+      }
+    ],
+    "skipLink": "passed",
+    "focusContrastWhite": 6.701618401398375
+  },
+  {
+    "browser": "firefox",
+    "version": "146.0.1",
+    "api": "simulated; only UI accessibility evaluated",
+    "checks": [
+      {
+        "label": "01-login-360",
+        "dimensions": {
+          "viewport": 360,
+          "scroll": 360
+        },
+        "violations": [],
+        "incomplete": [],
+        "passes": 23
+      },
+      {
+        "label": "02-validacion-360",
+        "dimensions": {
+          "viewport": 360,
+          "scroll": 360
+        },
+        "violations": [],
+        "incomplete": [],
+        "passes": 24
+      },
+      {
+        "label": "03-itinerario-360",
+        "dimensions": {
+          "viewport": 360,
+          "scroll": 360
+        },
+        "violations": [],
+        "incomplete": [],
+        "passes": 23
+      },
+      {
+        "label": "05-itinerario-768",
+        "dimensions": {
+          "viewport": 768,
+          "scroll": 768
+        },
+        "violations": [],
+        "incomplete": [],
+        "passes": 23
+      },
+      {
+        "label": "05-itinerario-1280",
+        "dimensions": {
+          "viewport": 1280,
+          "scroll": 1280
+        },
+        "violations": [],
+        "incomplete": [],
+        "passes": 23
+      },
+      {
+        "label": "06-espaciado-360",
+        "dimensions": {
+          "viewport": 360,
+          "scroll": 360
+        },
+        "violations": [],
+        "incomplete": [],
+        "passes": 23
+      }
+    ],
+    "keyboard": [
+      {
+        "tag": "BUTTON",
+        "text": "Ssynthetic@example.testConductor",
+        "focusVisible": true,
+        "outlineColor": "rgb(29, 78, 216)",
+        "outlineStyle": "solid",
+        "outlineWidth": "3px"
+      },
+      {
+        "tag": "BUTTON",
+        "text": "Registrar entrega pendiente",
+        "focusVisible": true,
+        "outlineColor": "rgb(29, 78, 216)",
+        "outlineStyle": "solid",
+        "outlineWidth": "3px"
+      },
+      {
+        "tag": "BUTTON",
+        "text": "Registrar no entregado",
+        "focusVisible": true,
+        "outlineColor": "rgb(29, 78, 216)",
+        "outlineStyle": "solid",
+        "outlineWidth": "3px"
+      },
+      {
+        "tag": "BUTTON",
+        "text": "Registrar entrega pendiente",
+        "focusVisible": true,
+        "outlineColor": "rgb(29, 78, 216)",
+        "outlineStyle": "solid",
+        "outlineWidth": "3px"
+      },
+      {
+        "tag": "BUTTON",
+        "text": "Registrar no entregado",
+        "focusVisible": true,
+        "outlineColor": "rgb(29, 78, 216)",
+        "outlineStyle": "solid",
+        "outlineWidth": "3px"
+      },
+      {
+        "tag": "BUTTON",
+        "text": "Sincronizar pendientes",
+        "focusVisible": true,
+        "outlineColor": "rgb(29, 78, 216)",
+        "outlineStyle": "solid",
+        "outlineWidth": "3px"
+      },
+      {
+        "tag": "A",
+        "text": "Inicio",
+        "focusVisible": true,
+        "outlineColor": "rgb(29, 78, 216)",
+        "outlineStyle": "solid",
+        "outlineWidth": "3px"
+      },
+      {
+        "tag": "A",
+        "text": "Mi itinerario",
+        "focusVisible": true,
+        "outlineColor": "rgb(29, 78, 216)",
+        "outlineStyle": "solid",
+        "outlineWidth": "3px"
+      },
+      {
+        "tag": "A",
+        "text": "Mi itinerario",
+        "focusVisible": true,
+        "outlineColor": "rgb(29, 78, 216)",
+        "outlineStyle": "solid",
+        "outlineWidth": "3px"
+      },
+      {
+        "tag": "A",
+        "text": "Mi itinerario",
+        "focusVisible": true,
+        "outlineColor": "rgb(29, 78, 216)",
+        "outlineStyle": "solid",
+        "outlineWidth": "3px"
+      },
+      {
+        "tag": "A",
+        "text": "Mi itinerario",
+        "focusVisible": true,
+        "outlineColor": "rgb(29, 78, 216)",
+        "outlineStyle": "solid",
+        "outlineWidth": "3px"
+      },
+      {
+        "tag": "A",
+        "text": "Mi itinerario",
+        "focusVisible": true,
+        "outlineColor": "rgb(29, 78, 216)",
+        "outlineStyle": "solid",
+        "outlineWidth": "3px"
+      }
+    ],
+    "skipLink": "passed",
+    "focusContrastWhite": 6.701618401398375
+  }
+]

@@ -37,7 +37,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
   const value = useMemo(() => ({ notify }), [notify])
   return <ToastContext value={value}>
     {children}
-    <div className="toast-region" aria-live="polite" aria-relevant="additions" aria-label="Notificaciones">
+    <div className="toast-region" role="region" aria-live="polite" aria-relevant="additions" aria-label="Notificaciones">
       {items.map(item => {
         const Icon = item.tone === 'success' ? CheckCircle2 : Info
         return <div key={item.id} className={`toast toast--${item.tone}`}>

@@ -7,7 +7,10 @@ import { pathToFileURL } from 'node:url'
 const { chromium, firefox } = await import(pathToFileURL(resolve(process.env.PLAYWRIGHT_MODULE)))
 const axePath = resolve(process.env.AXE_SCRIPT)
 const base = process.env.PREVIEW_URL || 'http://127.0.0.1:5178'
-const output = resolve(process.env.EVIDENCE_DIR || 'evidencias/ECL-57')
+// The ECL-57 run in evidencias/ECL-57/ is a dated record: never overwrite it.
+const runDate = new Date().toISOString().slice(0, 10).replaceAll('-', '')
+const output = resolve(process.env.EVIDENCE_DIR || `evidencias/ECL-57/retest-${runDate}`)
+assert.notEqual(output, resolve('evidencias/ECL-57'), 'Historical ECL-57 evidence must not be overwritten')
 await mkdir(output, { recursive: true })
 const results = []
 for (const [name, engine, options] of [['chrome', chromium, { channel: 'chrome' }], ['firefox', firefox, {}]]) {
@@ -46,7 +49,7 @@ for (const [name, engine, options] of [['chrome', chromium, { channel: 'chrome' 
     await page.getByLabel('Correo electrónico').fill('synthetic@example.test')
     await page.getByLabel('Contraseña').fill('synthetic-test-password')
     await page.getByRole('button', { name: 'Iniciar sesión', exact: true }).click()
-    await page.getByRole('link', { name: 'Mi itinerario' }).click()
+    await page.getByRole('link', { name: 'Mi itinerario', exact: true }).click()
     await page.getByText('Reportes pendientes: 0', { exact: true }).first().waitFor()
     await inspect('03-itinerario-360')
     const keyboard = []
@@ -61,7 +64,7 @@ for (const [name, engine, options] of [['chrome', chromium, { channel: 'chrome' 
     }
     assert(keyboard.some(e => e.text === 'Sincronizar pendientes' && e.focusVisible))
     assert(keyboard.some(e => e.text === 'Mi itinerario' && e.outlineColor === 'rgb(29, 78, 216)'))
-    await page.getByRole('link', { name: 'Mi itinerario' }).focus()
+    await page.getByRole('link', { name: 'Mi itinerario', exact: true }).focus()
     await page.screenshot({ path: resolve(output, `${name}-04-foco-360.png`), fullPage: true })
     for (const width of [768, 1280]) {
       await page.setViewportSize({ width, height: 900 })

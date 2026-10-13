@@ -22,7 +22,7 @@ for (const [name, engine, options] of [['chrome', chromium, { channel: 'chrome' 
     await page.getByLabel('Correo electrónico').fill(`st032-${name}@example.test`)
     await page.getByLabel('Contraseña').fill(process.env.OFFLINE_TEST_PASSWORD)
     await page.getByRole('button', { name: 'Iniciar sesión', exact: true }).click()
-    await page.getByRole('link', { name: 'Mi itinerario' }).click()
+    await page.getByRole('link', { name: 'Mi itinerario', exact: true }).click()
     await page.getByRole('heading', { name: 'Parada 1', exact: true }).waitFor()
     await page.evaluate(async () => {
       await navigator.serviceWorker.ready
@@ -89,13 +89,15 @@ for (const [name, engine, options] of [['chrome', chromium, { channel: 'chrome' 
     assert(cachedUrls.every(url => !url.startsWith(api)))
     assert.equal(await page.evaluate(() => document.documentElement.scrollWidth), 360)
     // Same-browser logout clears local identity; the other account has no cached route.
+    // «Cerrar sesión» lives in the account menu since ECL-22.
+    await page.getByRole('button', { name: /^Cuenta:/u }).click()
     await page.getByRole('button', { name: 'Cerrar sesión', exact: true }).click()
     await page.getByRole('heading', { name: 'Iniciar sesión', exact: true }).waitFor()
     assert.equal(await page.evaluate(() => sessionStorage.getItem('ecologistica-driver-tab')), null)
     await page.getByLabel('Correo electrónico').fill('st032-other@example.test')
     await page.getByLabel('Contraseña').fill(process.env.OFFLINE_TEST_PASSWORD)
     await page.getByRole('button', { name: 'Iniciar sesión', exact: true }).click()
-    await page.getByRole('link', { name: 'Mi itinerario' }).click()
+    await page.getByRole('link', { name: 'Mi itinerario', exact: true }).click()
     await page.getByRole('heading', { name: 'Aún no tienes paradas asignadas', exact: true }).waitFor()
     assert.equal(await page.getByText(/Av. Sintetica/u).count(), 0)
     await page.screenshot({ path: resolve(output, `${name}-04-otra-cuenta.png`), fullPage: true })
