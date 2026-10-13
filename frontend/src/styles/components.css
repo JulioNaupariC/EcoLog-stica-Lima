@@ -511,6 +511,14 @@
   text-align: right;
 }
 
+@media (min-width: 48rem) {
+  .data-table th,
+  .data-table td {
+    padding-inline: var(--space-3);
+    white-space: nowrap;
+  }
+}
+
 @media (max-width: 47.99rem) {
   .data-table-wrap {
     border: 0;

@@ -169,6 +169,25 @@ la verificación adicional de navegador usa login real de conductor y login
 simulado de Auditor. Resultados y capturas en
 [VALIDACION_ST030.md](<../docs/03 Implementación/Sprint 2/validaciones/VALIDACION_ST030.md>) y [evidencias ECL-56](evidencias/ECL-56/README.md).
 
+## Sistema de diseño — ECL-22 / EN-004
+
+- Estilos en CSS plano: `src/styles/tokens.css` (único archivo con colores
+  literales; paleta, escala tipográfica 1.200, espaciado 4/8 px, radios,
+  sombras, z-index y duraciones), `base.css`, `layout.css` y `components.css`.
+- Modo oscuro por `prefers-color-scheme` y manual (menú de cuenta → Tema), con
+  `data-theme` en `<html>`; se respeta `prefers-reduced-motion`.
+- Fuente Inter Variable autoalojada (`@fontsource-variable/inter`, solo latin y
+  latin-ext) e iconos `lucide-react` con `aria-hidden` en los decorativos.
+  `build-offline.mjs` precachea los `.woff2` para el uso sin conexión.
+- Componentes en `src/components/ui/`: Button, Badge/StatusBadge, Card,
+  DataTable (tabla en escritorio, tarjetas en móvil), EmptyState, Skeleton,
+  Alert, Toast, PageHeader con migas de pan, FormSection/FormActions, StatCard y
+  Combobox (el de ECL-53).
+- Layout por rol en `src/components/layout/`: sidebar colapsable y menú de
+  cuenta para administración/operación; navegación inferior para el conductor.
+- `node scripts/check-contrast.mjs` verifica el contraste AA de los tokens.
+- Capturas y auditoría: [evidencias ECL-22](evidencias/ECL-22-rediseno/README.md).
+
 ## Desarrollo
 
 ```bash

@@ -156,8 +156,17 @@
 }
 
 .nav-item--soon {
+  flex-wrap: wrap;
   color: var(--color-text-muted);
   cursor: default;
+}
+
+.nav-item--soon .badge {
+  margin-left: calc(20px + var(--space-3));
+}
+
+.nav-section--soon {
+  margin-top: var(--space-5);
 }
 
 .nav-item--soon:hover {
@@ -201,11 +210,15 @@
 /* Escritorio: sidebar fija y colapsable. */
 @media (min-width: 64rem) {
   .app--staff {
-    grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
+    --sidebar-current: var(--sidebar-width);
+    grid-template-columns: var(--sidebar-current) minmax(0, 1fr);
+    /* Paint the sidebar column for the full page height (the panel itself is sticky). */
+    background: linear-gradient(90deg, var(--color-surface) 0 var(--sidebar-current),
+      var(--color-border) var(--sidebar-current) calc(var(--sidebar-current) + 1px), var(--color-bg) 0);
   }
 
   .app--staff[data-sidebar="collapsed"] {
-    grid-template-columns: var(--sidebar-collapsed-width) minmax(0, 1fr);
+    --sidebar-current: var(--sidebar-collapsed-width);
   }
 
   .sidebar {
@@ -218,9 +231,10 @@
     box-shadow: none;
   }
 
+  /* .icon-button (components.css) loads later: match its specificity. */
   .sidebar-backdrop,
-  .topbar-menu-button,
-  .sidebar-close {
+  .icon-button.topbar-menu-button,
+  .icon-button.sidebar-close {
     display: none;
   }
 
@@ -251,7 +265,7 @@
 }
 
 @media (max-width: 63.99rem) {
-  .sidebar-collapse {
+  .icon-button.sidebar-collapse {
     display: none;
   }
 }
