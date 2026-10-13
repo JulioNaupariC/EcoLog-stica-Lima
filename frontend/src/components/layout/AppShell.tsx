@@ -133,7 +133,7 @@ export function StaffShell({ role, accountName, loggingOut, onLogout, banner, ch
         </div>)}
       </nav>
       <div className="nav-section nav-section--soon">
-        <p className="nav-section-label">Sprint 3</p>
+        <p className="nav-section-label">Próximamente</p>
         <ul className="nav-list">
           {COMING_SOON.map(item => <li key={item.label}>
             <span className="nav-item nav-item--soon" title={collapsed ? `${item.label} (próximamente)` : undefined}>

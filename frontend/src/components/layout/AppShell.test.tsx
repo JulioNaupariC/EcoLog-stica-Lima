@@ -34,7 +34,9 @@ describe('StaffShell', () => {
     expect(within(nav).getByRole('link', { name: 'Vehículos' })).toHaveAttribute('aria-current', 'page')
     expect(within(nav).getByRole('link', { name: 'Registrar pedido' })).toBeInTheDocument()
     expect(screen.getByText('Rutas optimizadas')).not.toHaveAttribute('href')
-    expect(screen.getAllByText('Próximamente')).toHaveLength(2)
+    // Section label plus one badge per planned feature; no sprint names in the UI.
+    expect(screen.getAllByText('Próximamente')).toHaveLength(3)
+    expect(screen.queryByText(/Sprint/u)).not.toBeInTheDocument()
   })
 
   it('ruta feliz: el menú de cuenta muestra rol legible, cambia el tema y cierra sesión', async () => {

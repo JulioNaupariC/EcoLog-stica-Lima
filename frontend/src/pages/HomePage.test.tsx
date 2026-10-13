@@ -42,7 +42,9 @@ describe('HomePage — inicio por rol con datos reales', () => {
     expect(await screen.findByText('1 habilitado para asignación')).toBeInTheDocument()
     expect(listDrivers).toHaveBeenCalledWith(1, 100)
     expect(screen.getByRole('link', { name: /Registrar pedido/u })).toHaveAttribute('href', '/pedidos/nuevo')
-    expect(screen.getAllByText('Próximamente')).toHaveLength(2)
+    // Card title plus one badge per planned feature; no sprint names in the UI.
+    expect(screen.getAllByText('Próximamente')).toHaveLength(3)
+    expect(screen.queryByText(/Sprint/u)).not.toBeInTheDocument()
     // No invented sustainability figures.
     expect(screen.queryByText(/kg CO₂/u)).not.toBeInTheDocument()
   })

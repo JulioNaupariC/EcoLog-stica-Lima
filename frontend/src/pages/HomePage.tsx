@@ -45,7 +45,7 @@ function QuickLink({ to, icon: Icon, title, description }: { to: string, icon: L
 }
 
 function ComingSoon() {
-  return <Card title="En el Sprint 3" titleId="home-next-title" className="coming-soon" tone="muted"
+  return <Card title="Próximamente" titleId="home-next-title" className="coming-soon" tone="muted"
     description="Funciones planificadas que todavía no muestran datos.">
     <ul className="coming-soon-list">
       <li><RouteIcon aria-hidden="true" size={18} /> Rutas optimizadas (VRPTW) <Badge tone="neutral" icon={null}>Próximamente</Badge></li>
