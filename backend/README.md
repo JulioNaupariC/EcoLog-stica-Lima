@@ -547,6 +547,21 @@ El frontend de ese flujo corresponde a ST-027.
 
 Contrato, resultados y reproducción en [VALIDACION_ST026.md](<../docs/03 Implementación/Sprint 2/validaciones/VALIDACION_ST026.md>).
 
+## Búsqueda de clientes — ECL-53 / D-01
+
+GET /clientes?buscar=&page=&page_size= devuelve una página de clientes con la
+proyección mínima `cliente_id` y `nombre`, para los selectores de pedido y
+preferencias. Requiere CLIENTES_CONSULTAR con alcance general (Administrador u
+Operador); el resto de roles recibe 403. `page_size` admite de 1 a 50 (20 por
+defecto). `buscar` se recorta, admite como máximo 160 caracteres, rechaza
+caracteres de control, busca por fragmento del nombre sin distinguir
+mayúsculas (los comodines `%` y `_` se tratan literalmente) y coincide además
+con un `cliente_id` exacto. Los errores de validación no reflejan la entrada y
+la respuesta lleva `Cache-Control: no-store`.
+
+Pruebas: `tests/unit/test_clientes_api.py` y
+`tests/integration/test_clientes_http_e2e.py`.
+
 ## Pruebas de gestión de conductores — ECL-50 / ST-024
 
 La suite cubre datos válidos e inválidos, permisos, disponibilidad y persistencia
