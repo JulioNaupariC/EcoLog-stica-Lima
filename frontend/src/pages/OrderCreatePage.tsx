@@ -1,5 +1,8 @@
 import { FormEvent, useRef, useState } from 'react'
+import { ClientCombobox } from '../components/ClientCombobox'
+import { ClientPreferencesProposal } from '../components/ClientPreferencesProposal'
 import { FormField as Field } from '../components/FormField'
+import type { ClientOption } from '../services/clients'
 import {
   createOrder,
   datetimeLocalToIso,
@@ -76,9 +79,9 @@ function validate(values: OrderFormValues): {
   const tipoProducto = values.tipo_producto.trim()
 
   if (!clienteId) {
-    errors.cliente_id = 'El ID del cliente es obligatorio.'
+    errors.cliente_id = 'Selecciona un cliente de la lista.'
   } else if (!UUID_PATTERN.test(clienteId)) {
-    errors.cliente_id = 'Ingresa un UUID de cliente válido.'
+    errors.cliente_id = 'Selecciona un cliente válido de la lista.'
   }
   if (!direccion) {
     errors.direccion = 'La dirección es obligatoria.'
@@ -148,6 +151,7 @@ function validate(values: OrderFormValues): {
 
 export function OrderCreatePage() {
   const [values, setValues] = useState<OrderFormValues>(INITIAL_VALUES)
+  const [client, setClient] = useState<ClientOption | null>(null)
   const [errors, setErrors] = useState<FieldErrors>({})
   const [status, setStatus] = useState<SubmitStatus>('idle')
   const [globalError, setGlobalError] = useState('')
@@ -217,7 +221,7 @@ export function OrderCreatePage() {
       <p className="eyebrow">Gestión de pedidos</p>
       <h1 id="order-title">Registrar pedido</h1>
       <p className="form-intro">
-        Ingresa el UUID de un cliente existente y los datos necesarios para la planificación.
+        Busca un cliente existente por su nombre y completa los datos necesarios para la planificación.
       </p>
 
       {globalError ? <div className="form-alert error-alert" role="alert">{globalError}</div> : null}
@@ -230,9 +234,27 @@ export function OrderCreatePage() {
       ) : null}
 
       <form className="order-form" onSubmit={(event) => { void handleSubmit(event) }} noValidate>
-        <Field id="cliente_id" label="ID del cliente (UUID)" error={errors.cliente_id}>
-          <input id="cliente_id" name="cliente_id" type="text" autoComplete="off" required value={values.cliente_id} onChange={(event) => updateValue('cliente_id', event.target.value)} aria-invalid={Boolean(errors.cliente_id)} aria-describedby={describedBy('cliente_id')} />
-        </Field>
+        <ClientCombobox
+          id="cliente_id"
+          label="Cliente"
+          hint="Escribe parte del nombre o pega el identificador del cliente."
+          required
+          error={errors.cliente_id}
+          selected={client}
+          onSelect={(option) => {
+            setClient(option)
+            updateValue('cliente_id', option?.cliente_id ?? '')
+          }}
+        />
+
+        {client ? (
+          <ClientPreferencesProposal
+            key={client.cliente_id}
+            clientId={client.cliente_id}
+            orderReference={values.referencia}
+            onUseReference={(reference) => updateValue('referencia', reference)}
+          />
+        ) : null}
 
         <Field id="direccion" label="Dirección" error={errors.direccion}>
           <input id="direccion" name="direccion" type="text" maxLength={255} required value={values.direccion} onChange={(event) => updateValue('direccion', event.target.value)} aria-invalid={Boolean(errors.direccion)} aria-describedby={describedBy('direccion')} />

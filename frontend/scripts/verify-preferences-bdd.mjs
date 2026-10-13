@@ -6,7 +6,10 @@ import { fileURLToPath, pathToFileURL } from 'node:url'
 // Run only against a disposable preview with synthetic accounts and clients.
 const frontend = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const root = resolve(frontend, '..')
-const output = resolve(frontend, 'evidencias/ECL-54')
+// The 09/10/2026 run in evidencias/ECL-54/ is a dated record: never overwrite it.
+const runDate = new Date().toISOString().slice(0, 10).replaceAll('-', '')
+const output = process.env.ECL54_OUTPUT || resolve(frontend, `evidencias/ECL-54/retest-D01-${runDate}`)
+assert.notEqual(resolve(output), resolve(frontend, 'evidencias/ECL-54'), 'Historical ECL-54 evidence must not be overwritten')
 const settingsPath = process.env.ECL54_PREVIEW_SETTINGS || resolve(root, '.env.ecl54-preview')
 const settings = Object.fromEntries((await readFile(settingsPath, 'utf8')).split(/\r?\n/u)
   .filter(line => line.includes('=')).map(line => {
@@ -34,8 +37,13 @@ async function authenticate(page, prefix) {
   await page.getByRole('button', { name: 'Iniciar sesión', exact: true }).click()
   await page.getByRole('heading', { name: 'Rutas sostenibles para Lima' }).waitFor()
 }
+async function selectClient(page, id) {
+  // The selector matches an exact client UUID as well as name fragments.
+  await page.getByRole('combobox', { name: 'Cliente', exact: true }).fill(id)
+  await page.getByRole('option').first().click()
+}
 async function consult(page, id) {
-  await page.getByLabel('ID del cliente', { exact: true }).fill(id)
+  await selectClient(page, id)
   await page.getByRole('button', { name: 'Consultar preferencias', exact: true }).click()
   await page.getByRole('heading', { name: 'Preferencias del cliente', exact: true }).waitFor()
 }
@@ -144,29 +152,45 @@ try {
       await page.unroute('**/clientes/*/preferencias', controlledError)
       await page.getByRole('button', { name: 'Cancelar cambios', exact: true }).click()
       await page.getByRole('button', { name: 'Consultar de nuevo u otro cliente', exact: true }).click()
-      await page.getByLabel('ID del cliente', { exact: true }).fill('00000000-0000-4000-8000-000000000053')
-      await page.getByRole('button', { name: 'Consultar preferencias', exact: true }).click()
-      await page.getByText('No se encontró el cliente. Revisa su identificador.', { exact: true }).waitFor()
+      const unknownClient = '00000000-0000-4000-8000-000000000053'
+      await page.getByRole('combobox', { name: 'Cliente', exact: true }).fill(unknownClient)
+      await page.getByText('No se encontraron clientes con ese texto.', { exact: true }).waitFor()
+      assert.equal(await page.getByRole('option').count(), 0)
+      assert.equal((await context.request.get(`${api}/clientes/${unknownClient}/preferencias`)).status(), 404)
       await snapshot(page, name + '-07-cliente-inexistente.png')
 
-      phase = name + ': P8 order proposal gap'
-      const preferenceRequests = []
+      phase = name + ': P8 order proposal (D-01 retest)'
+      // P8 "Dado": client A with schedule, reference and access restriction.
+      assert.equal((await context.request.patch(`${api}/clientes/${clientA}/preferencias`, {
+        data: { restriccion_acceso: 'Ingreso por puerta lateral' },
+      })).status(), 200)
+      const proposed = await readPreferences(context, clientA)
+      const orderRequests = []
       const monitor = request => {
-        if (request.url().includes('/preferencias')) preferenceRequests.push(request.method())
+        if (request.url().startsWith(api + '/pedidos')) orderRequests.push(request.method())
       }
       page.on('request', monitor)
       await page.getByRole('link', { name: 'Registrar pedido', exact: true }).click()
       await page.getByRole('heading', { name: 'Registrar pedido', exact: true }).waitFor()
-      await page.getByLabel('ID del cliente (UUID)', { exact: true }).fill(clientA)
       await page.getByLabel('Punto de referencia', { exact: true }).fill('Referencia propia del pedido')
       await page.locator('#ventana_inicio').fill('2026-10-10T09:00')
       await page.locator('#ventana_fin').fill('2026-10-10T11:00')
-      await page.waitForLoadState('networkidle')
-      assert.equal(await page.getByRole('button', { name: 'Usar como referencia del pedido', exact: true }).count(), 0)
-      assert.equal(preferenceRequests.length, 0)
+      await selectClient(page, clientA)
+      const panel = page.getByRole('region', { name: 'Preferencias del cliente', exact: true })
+      await panel.getByText(proposed.horario_preferido, { exact: true }).waitFor()
+      await panel.getByText(proposed.restriccion_acceso, { exact: true }).waitFor()
+      const useReference = panel.getByRole('button', { name: 'Usar como referencia del pedido', exact: true })
+      assert.equal(await useReference.count(), 1)
+      // Without the explicit action nothing is copied into the order.
       assert.equal(await page.getByLabel('Punto de referencia', { exact: true }).inputValue(), 'Referencia propia del pedido')
+      await snapshot(page, name + '-09-P8-propuesta-disponible.png')
+      await useReference.click()
+      assert.equal(await page.getByLabel('Punto de referencia', { exact: true }).inputValue(), proposed.referencia)
       assert.equal(await page.locator('#ventana_inicio').inputValue(), '2026-10-10T09:00')
-      await snapshot(page, name + '-09-P8-propuesta-ausente.png')
+      assert.equal(await page.locator('#ventana_fin').inputValue(), '2026-10-10T11:00')
+      assert.deepEqual(await readPreferences(context, clientA), proposed)
+      assert.equal(orderRequests.length, 0)
+      await snapshot(page, name + '-10-P8-referencia-copiada.png')
       page.off('request', monitor)
 
       phase = name + ': denied conductor'
@@ -184,7 +208,7 @@ try {
       assert.equal(errors.length, 0)
       await page.getByRole('button', { name: 'Cerrar sesión', exact: true }).click()
       results.push({ browser: name, version: browser.version(), passed: true, role: prefix === 'ADMIN' ? 'ADMINISTRADOR' : 'OPERADOR',
-        realLogin: true, realApiGetPatch: true, preferencesRetrieved: true, explicitClear: true, otherClientUnchanged: true, otherClientInitiallyPopulated: true, P8OrderProposalAvailable: false,
+        realLogin: true, realApiGetPatch: true, preferencesRetrieved: true, explicitClear: true, otherClientUnchanged: true, otherClientInitiallyPopulated: true, P8OrderProposalAvailable: true, P8ExplicitReferenceCopy: true, P8WindowsUnchanged: true, P8ClientUnchanged: true,
         localValidationPreservesData: true, unknownClient404: true, conductorDenied: true, mobileWidth: 360,
         horizontalOverflow: false, keyboardTab: true, pageErrors: 0,
         simulatedCase: 'PATCH 503 intercepted only for error display and preservation of unsaved values' })

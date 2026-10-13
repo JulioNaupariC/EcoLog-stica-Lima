@@ -3,10 +3,15 @@ import userEvent from '@testing-library/user-event'
 import { DeliveryPreferencesPage } from './DeliveryPreferencesPage'
 import { getDeliveryPreferences, PreferencesServiceError, updateDeliveryPreferences } from '../services/deliveryPreferences'
 import type { DeliveryPreferences } from '../services/deliveryPreferences'
+import { searchClients } from '../services/clients'
 
 vi.mock('../services/deliveryPreferences', async original => ({
   ...await original<typeof import('../services/deliveryPreferences')>(), getDeliveryPreferences: vi.fn(), updateDeliveryPreferences: vi.fn(),
 }))
+vi.mock('../services/clients', async original => ({
+  ...await original<typeof import('../services/clients')>(), searchClients: vi.fn(),
+}))
+const CLIENT = { cliente_id: '123e4567-e89b-12d3-a456-426614174000', nombre: 'Bodega Ficticia Norte' }
 const get = vi.mocked(getDeliveryPreferences)
 const patch = vi.mocked(updateDeliveryPreferences)
 const saved: DeliveryPreferences = {
@@ -24,38 +29,58 @@ function show() {
   const view = render(<DeliveryPreferencesPage onSessionExpired={expired} />)
   return { ...view, expired, user: userEvent.setup() }
 }
-function consult(id = saved.cliente_id) {
-  fireEvent.change(screen.getByLabelText('ID del cliente'), { target: { value: id } })
+function clientInput() { return screen.getByRole('combobox', { name: 'Cliente' }) }
+async function selectClient() {
+  if (screen.queryByText(/Cliente seleccionado:/u)) return
+  fireEvent.change(clientInput(), { target: { value: 'Bodega' } })
+  fireEvent.click(await screen.findByRole('option', { name: /Bodega Ficticia Norte/u }))
+}
+async function consult() {
+  await selectClient()
   fireEvent.submit(screen.getByRole('form', { name: 'Consultar cliente' }))
 }
 async function ready() {
   const view = show()
-  consult()
+  await consult()
   await screen.findByRole('heading', { name: 'Preferencias del cliente' })
   return view
 }
 function submit() { fireEvent.submit(screen.getByRole('form', { name: 'Editar preferencias de entrega' })) }
-beforeEach(() => { get.mockReset().mockResolvedValue(saved); patch.mockReset().mockResolvedValue(saved) })
+beforeEach(() => {
+  get.mockReset().mockResolvedValue(saved); patch.mockReset().mockResolvedValue(saved)
+  vi.mocked(searchClients).mockReset().mockResolvedValue({ items: [CLIENT], page: 1, page_size: 8, total: 1 })
+})
 
-it('espera un cliente real y valida ID sin hacer solicitudes', async () => {
+it('ruta infeliz: exige seleccionar un cliente de la lista sin hacer solicitudes', async () => {
   show()
   expect(get).not.toHaveBeenCalled()
-  consult('invalid')
+  fireEvent.change(clientInput(), { target: { value: 'texto sin seleccionar' } })
+  fireEvent.submit(screen.getByRole('form', { name: 'Consultar cliente' }))
   expect(await screen.findByRole('alert')).toHaveFocus()
-  expect(screen.getByLabelText('ID del cliente')).toHaveAttribute('aria-invalid', 'true')
+  expect(screen.getByText('Selecciona un cliente de la lista.')).toBeInTheDocument()
+  expect(clientInput()).toHaveAttribute('aria-invalid', 'true')
   expect(get).not.toHaveBeenCalled()
-  fireEvent.change(screen.getByLabelText('ID del cliente'), { target: { value: saved.cliente_id } })
+  await selectClient()
   expect(screen.queryByRole('alert')).not.toBeInTheDocument()
+})
+it('ruta dorada: busca por nombre, selecciona y consulta las preferencias del cliente', async () => {
+  show()
+  await consult()
+  expect(await screen.findByRole('heading', { name: 'Preferencias del cliente' })).toBeInTheDocument()
+  const [term, options] = vi.mocked(searchClients).mock.calls[0]
+  expect(term).toBe('Bodega')
+  expect(options?.signal).toBeInstanceOf(AbortSignal)
+  expect(get).toHaveBeenCalledWith(CLIENT.cliente_id)
 })
 it('anuncia carga, impide doble consulta y recupera valores con foco', async () => {
   const pending = deferred<DeliveryPreferences>()
   get.mockReturnValueOnce(pending.promise)
   show()
-  consult()
+  await consult()
   fireEvent.submit(screen.getByRole('form', { name: 'Consultar cliente' }))
   expect(get).toHaveBeenCalledTimes(1)
   expect(screen.getByRole('status')).toHaveTextContent('Cargando preferencias')
-  expect(screen.getByLabelText('ID del cliente')).toBeDisabled()
+  expect(clientInput()).toBeDisabled()
   await act(async () => { pending.resolve(saved); await pending.promise })
   expect(await screen.findByRole('heading', { name: 'Preferencias del cliente' })).toHaveFocus()
   expect(screen.getByLabelText('Horario preferido')).toHaveValue('Mañana')
@@ -131,7 +156,7 @@ it('cancela cambios y puede consultar de nuevo el cliente guardado', async () =>
   expect(patch).not.toHaveBeenCalled()
   await user.click(screen.getByRole('button', { name: 'Consultar de nuevo u otro cliente' }))
   expect(screen.queryByLabelText('Horario preferido')).not.toBeInTheDocument()
-  consult()
+  await consult()
   expect(await screen.findByLabelText('Horario preferido')).toHaveValue('Mañana')
   expect(get).toHaveBeenCalledTimes(2)
 })
@@ -148,15 +173,15 @@ it.each(['network', 'validation', 'unavailable', 'unexpected'] as const)('conser
 })
 it.each(['not_found', 'network', 'unavailable', 'unexpected'] as const)('muestra error de consulta y permite reintentar: %s', async kind => {
   get.mockRejectedValueOnce(new PreferencesServiceError(kind))
-  show(); consult()
+  show(); await consult()
   expect(await screen.findByRole('alert')).toBeInTheDocument()
   expect(screen.queryByLabelText('Horario preferido')).not.toBeInTheDocument()
-  consult()
+  await consult()
   expect(await screen.findByLabelText('Horario preferido')).toHaveValue('Mañana')
 })
 it.each(['unauthorized', 'forbidden'] as const)('maneja acceso denegado al consultar: %s', async kind => {
   get.mockRejectedValueOnce(new PreferencesServiceError(kind))
-  const { expired } = show(); consult()
+  const { expired } = show(); await consult()
   await screen.findByRole('alert')
   if (kind === 'unauthorized') expect(expired).toHaveBeenCalledOnce()
   else expect(screen.getByRole('button', { name: 'Consultar preferencias' })).toBeDisabled()
@@ -172,9 +197,9 @@ it.each(['unauthorized', 'forbidden', 'not_found'] as const)('bloquea escritura 
 })
 it('no muestra excepciones privadas en carga ni guardado', async () => {
   get.mockRejectedValueOnce(new Error('private SQL'))
-  show(); consult()
+  show(); await consult()
   expect(await screen.findByRole('alert')).not.toHaveTextContent('private')
-  consult()
+  await consult()
   await screen.findByLabelText('Horario preferido')
   patch.mockRejectedValueOnce(new Error('private SQL'))
   fireEvent.change(screen.getByLabelText('Referencia de ubicación'), { target: { value: 'Cambio' } })
@@ -184,7 +209,7 @@ it('no muestra excepciones privadas en carga ni guardado', async () => {
 it.each(['load', 'save'] as const)('ignora respuestas y errores tardíos después de salir: %s', async operation => {
   const pending = deferred<DeliveryPreferences>()
   const view = operation === 'load' ? show() : await ready()
-  if (operation === 'load') { get.mockReturnValueOnce(pending.promise); consult() }
+  if (operation === 'load') { get.mockReturnValueOnce(pending.promise); await consult() }
   else {
     patch.mockReturnValueOnce(pending.promise)
     fireEvent.change(screen.getByLabelText('Referencia de ubicación'), { target: { value: 'Cambio' } }); submit()
