@@ -10,99 +10,98 @@
 
 **Periodo planificado:** 08/10/2026–23/10/2026, según el tablero compartido.
 
-**Fecha de corte:** 09/10/2026, America/Lima.
+**Fecha de corte:** 13/10/2026, America/Lima.
 
-**Versión del contenido:** 1.1.0.
+**Versión del contenido:** 1.2.0.
 
-**Fuente del corte técnico:** repositorio local en `df55c72` y sus informes de validación.
+**Fuente del corte técnico:** `main` en `480b4f3` (PR #47–#53 integrados) y PR #54 abierto.
 
-**Estado Jira aportado:** cinco padres y 19 subtareas finalizados; 27/27 SP de padres.
-Fuente: captura del tablero compartida por Giancarlo; sprint visible como activo.
+**Estado Jira:** cinco padres y 19 subtareas en Finalizada (27/27 SP de padres); sprint activo.
 
-## Resumen de avance
+## Resumen ejecutivo
 
-El Sprint 2 amplía la base operativa con gestión de conductores y preferencias,
-experiencia móvil, almacenamiento offline, observabilidad y análisis de rendimiento.
-La captura Jira aportada por Giancarlo muestra cinco elementos principales y las
-19 subtareas ECL-46–64 en Finalizada: 27/27 Story Points de padres y 19/19 subtareas.
-Son medidas separadas; las subtareas no suman puntos adicionales. Los informes
-técnicos aún registran brechas y objetivos no acreditados que deben conciliarse
-con ese cierre operativo.
+El Sprint 2 entregó la gestión de conductores y de preferencias de entrega, la
+experiencia móvil del conductor con almacenamiento offline, la instrumentación de
+métricas y un análisis de rendimiento. En Jira las cinco historias y enablers
+figuran **Finalizada**; contrastadas con sus criterios de aceptación, **una
+cumple** (ECL-11), **tres cumplen parcialmente** (ECL-9, ECL-22, ECL-23) y **una no
+cumple** (ECL-25). Esa diferencia es el dato principal de este informe.
 
-La Review y la retrospectiva de este Sprint se preparan para la exposición.
-No se dispone de fecha, asistentes ni acuerdos de una reunión de Sprint 2 realizada.
-La captura todavía ofrece Completar sprint: el sprint aparece activo aunque sus
-actividades figuren finalizadas. El 100% corresponde a estado Jira; no equivale
-a acreditar todos los objetivos de rendimiento o aceptación en una Review.
+Tras la Review del 09/10 (14/20) se aplicó un parche entre el 13/10 y hoy: se
+corrigió el defecto D-01 (las preferencias del cliente ya se proponen al
+registrar un pedido), se eliminó un problema N+1, se auditó la gestión de
+conductores, se rediseñó la interfaz y se preparó un conjunto de datos para
+demostrar el producto. Los PR #47–#53 están integrados en `main`; el PR #54
+(reconexión sin evento `online`) está en revisión.
 
-## Historias de Usuario completadas en este Sprint
+## Estado por historia y enabler
 
-Los cinco padres figuran Finalizada en la captura aportada. La tabla registra
-el incremento comprobable y los límites técnicos que permanecen en sus fuentes.
+«Cerrado en Jira» indica el estado del tablero. «Criterios» indica si los
+escenarios BDD de [Transformando a ágil](<../02 Planificación/01 Transformando a ágil V_1_0_0.md>)
+están acreditados con evidencia reproducible.
 
-| Padre | Subtareas | Incremento disponible | Evaluación al corte |
-|---|---|---|---|
-| ECL-9 / US-003 — Conductores y disponibilidad | ECL-46–50 / ST-020–024 | Modelo, reglas, API protegida, formulario/listado y pruebas | Gestión implementada y validada; elegibilidad básica no equivale a factibilidad de una ruta |
-| ECL-11 / US-005 — Preferencias de entrega | ECL-51–54 / ST-025–028 | GET/PATCH, formulario, validación e aislamiento entre clientes | Gestión contrastada; propuesta en formulario de pedidos pendiente (P8); BDD sigue en borrador |
-| ECL-22 / EN-004 — Experiencia móvil y desconexión | ECL-55–58 / ST-029–032 | Diseño, itinerario/siguiente parada/alertas, mejoras móviles, IndexedDB y outbox | Incrementos disponibles; asignaciones reales dependen del planificador; revisión accesible completa pendiente |
-| ECL-23 / EN-005 — Capacidad y observabilidad | ECL-59–62 / ST-033–036 | Plan, métricas, sondeos, campaña y procedimientos operativos | Resultados locales disponibles; 100 solicitudes sostenidas y SLA mensual no acreditados |
-| ECL-25 / EN-007 — Transferencia y consultas | ECL-63–64 / ST-037–038 | EXPLAIN, mediciones y SELECT EXISTS para cliente | Mejora parcial verificada; payload de dashboard y consultas de rutas pendientes |
+| Elemento | SP | Responsable Jira | Cerrado en Jira | Criterios | Evidencia | Acción |
+|---|---:|---|---|---|---|---|
+| ECL-9 / US-003 Conductores y disponibilidad | 5 | Frank Roy Yupanqui Acevedo | Finalizada | **Parcial**: alta y elegibilidad acreditadas; la asignación a rutas que debe impedir una licencia vencida y usar la nueva disponibilidad aún no existe | [ST-022](<Sprint 2/validaciones/VALIDACION_ST022.md>), [ST-024](<Sprint 2/validaciones/VALIDACION_ST024.md>), [PR #50](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/50) | Completar con el planificador de rutas (ECL-12, Sprint 3) |
+| ECL-11 / US-005 Preferencias de entrega | 3 | Frank Roy Yupanqui Acevedo | Finalizada | **Cumple**: preferencia válida asociada y propuesta en el pedido; datos inválidos rechazados | [ST-028 y reprueba D-01](<Sprint 2/validaciones/VALIDACION_ST028.md>), [PR #49](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/49) | Ratificar la BDD ECL-51 (impedimento I-03) |
+| ECL-22 / EN-004 Experiencia móvil, accesible y offline | 8 | Giancarlo Marcio Soto Escobar | Finalizada | **Parcial**: 360 px sin desplazamiento, WCAG 2.1 AA en axe y offline en Chrome/Firefox acreditados; no hay alertas operativas reales ni prueba con lector de pantalla | [Evidencias ECL-22](../../frontend/evidencias/ECL-22-rediseno/README.md), [reprueba offline](../../frontend/evidencias/ECL-58/retest-20261013/README.md), [PR #53](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/53) | Alertas con ECL-14 y prueba con lector de pantalla (Sprint 3) |
+| ECL-23 / EN-005 Capacidad, disponibilidad y observabilidad | 8 | Julio Armando Naupari Camarena | Finalizada | **Parcial**: P95 ≤2 s y 0 % de 5xx en tres corridas; carga sostenida de 100 solicitudes no acreditada (19–21 % de los segundos) y SLA mensual no medido | [ST-035](<Sprint 2/validaciones/VALIDACION_ST035.md>), [ST-036](<Sprint 2/informes/INFORME_ST036.md>) | Repetir la corrida de concurrencia y medir un mes operativo |
+| ECL-25 / EN-007 Transferencia de datos y consultas | 3 | Antony Munive Ríos | Finalizada | **No cumple**: el payload del dashboard no es medible porque el dashboard no existe; consultas de pedidos y conductores revisadas | [ST-037](<Sprint 2/informes/INFORME_ST037.md>), [ST-038](<Sprint 2/validaciones/VALIDACION_ST038.md>), [PR #48](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/48) | Medir con el dashboard (ECL-15, Sprint 3) |
 
-## Demostración del trabajo completado
+**Lectura:** 27/27 SP cerrados en Jira frente a 3/27 SP con todos sus criterios
+acreditados (ECL-11). Las subtareas ECL-46 a ECL-64 pasaron a Finalizada en unas
+36 horas y casi todas permanecieron entre 0,5 y 3 segundos en «En curso»; el
+análisis de causas está en la [retrospectiva](<04 Retrospectiva del Sprint V_1_0_0.md>).
 
-La exposición puede mostrar alta/edición de conductores, rechazo de datos inválidos,
-preferencias por cliente, navegación móvil, cola offline y consulta de métricas.
-El [guion de Review](<03 Revisión del Sprint V_1_0_0.md>) organiza las demostraciones
-y especifica qué datos son sintéticos y qué escenarios se simulan.
+## Métricas de calidad al corte
 
-| Evidencia de calidad | Resultado documentado | Alcance |
+Ejecutadas localmente el 13/10/2026 sobre la rama del PR #54 (Python 3.12.10,
+Node 22.18.0, PostgreSQL 16.15 + PostGIS 3.6.2). CI de GitHub en verde en los
+PR #47–#53.
+
+| Ámbito | Resultado | Antes del parche (12/10) |
 |---|---|---|
-| ST-024 | 99 unitarias de conductores; 10 de integración; cobertura específica 98.13% | Validación de ese incremento, no total acumulado actual |
-| ST-038 | 556 unitarias backend; 117 integradas verificadas; repositorio afectado 100% | Ejecución de optimización y regresión |
-| ST-028 | 56 unitarias de preferencias; 8 integradas; 441 frontend; Chrome/Firefox | Gestión y asociación; P8 observado ausente |
-| ST-036 | P95 agregado 1.497054 s; 0% 5xx en poblaciones válidas completas | Diagnóstico local; no acredita concurrencia sostenida ni SLA |
-| ST-038 | Cinco campos del cliente → un booleano; 58 → 1 byte de valores internos | Minimización SQL; no equivale a tráfico HTTP ni demuestra aceleración |
+| Backend: ruff y formato | Sin errores | Sin errores |
+| Backend: pruebas unitarias | 613 pasan; cobertura 93,35 % | 560; 93 % |
+| Backend: pruebas de integración | 143 pasan (PostgreSQL + PostGIS) | 120 |
+| Frontend: eslint y tsc | Sin errores | Sin errores |
+| Frontend: pruebas | 529 pasan; cobertura 95,47 % de sentencias | 471 |
+| Frontend: build | JS 392,9 KB (120,1 KB gzip); CSS 42,0 KB | JS 343,8 KB (104 KB gzip) |
+| Accesibilidad | axe-core 4.13.0 sin violaciones WCAG 2.1 AA en Chrome 155 y Firefox 157 | Sin auditoría automática del producto completo |
+| Contraste | 50 combinaciones de color cumplen AA (temas claro y oscuro) | No verificado |
+| Navegación de documentación | `scripts/check_docs.py` sin errores, en CI | 38 documentos sin enlazar |
+| Listado de conductores | 2 consultas SQL por página (antes 22 con 20 filas, 102 con 100) | N+1 |
+| Dependencias | `npm audit`: 1 vulnerabilidad alta transitiva (`source-map-js`, corrección disponible) | La misma (ST-032) |
 
-Las ejecuciones corresponden a fechas y alcances distintos: sus conteos no se suman.
-No se afirma una nueva ejecución de pruebas por actualizar estos documentos.
+## Resultado del parche posterior a la Review
 
-## Organización del código y configuración
+| Fase | Resultado | PR |
+|---|---|---|
+| 1. Estructura y navegación | Documentos del Sprint 2 dentro de `docs/03 Implementación/`, `.gitignore` completo, README con enlaces de ida y vuelta a los 63 documentos y verificador en CI | [#47](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/47) |
+| 2.1 N+1 de conductores | De 22 a 2 consultas por página, con prueba de regresión | [#48](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/48) |
+| 2.2 D-01 / P8 | Buscador de clientes y propuesta de preferencias en el pedido; reprueba en Chrome y Firefox aprobada | [#49](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/49) |
+| 2.3 Auditoría de conductores (RN-015) | Alta y actualización auditadas sin datos personales; migración 0010 | [#50](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/50) |
+| 2.4 Itinerario sin datos ficticios | El ejemplo solo aparece con `VITE_DEMO_ITINERARY=true` | [#51](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/51) |
+| 2.5 Datos de demostración | `seed_demo.py` idempotente, solo sobre bases `*_demo` | [#52](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/52) |
+| 3. Rediseño UI/UX | Sistema de diseño, modo oscuro, layout por rol e itinerario real; 84 capturas antes/después | [#53](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/53) |
+| 3. Reconexión sin evento `online` | Sincronización offline estable en Firefox; reprueba 3/3 | [#54](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/54) (en revisión) |
 
-Se conserva la arquitectura existente: backend FastAPI/SQLAlchemy/Alembic;
-frontend React/TypeScript/Vite; PostgreSQL/PostGIS y Docker Compose.
-Backend y frontend ya están separados en carpetas propias; src/frontend es
-un ejemplo de la consigna, no una necesidad de trasladar el código.
+## Riesgos para el Sprint 3
 
-.gitignore excluye .env privados, node_modules, entornos Python, caches y
-resultados temporales. Las evidencias sintéticas se mantienen en backend/evidencias
-y frontend/evidencias. docs/03 Implementación contiene únicamente estos cuatro Markdown.
+| Riesgo | Probabilidad / impacto | Respuesta |
+|---|---|---|
+| **El optimizador (EP-03: ECL-12, ECL-13, ECL-21, ECL-26) no está iniciado y de él dependen la asignación real de rutas, el dashboard y las métricas de CO₂.** Suma 34 SP de una sola persona responsable | Alta / alto | Empezar por EN-003 (ECL-21) y un VRPTW mínimo con datos de `seed_demo.py`; revisar el alcance del sprint si la primera iteración no está lista a mitad de sprint |
+| ECL-25 y RNF-012 siguen sin medirse hasta que exista el dashboard (ECL-15) | Alta / medio | Planificar ECL-15 inmediatamente después de la primera ruta optimizada y medir el payload con el protocolo de ST-037 |
+| Criterios cerrados en Jira sin evidencia (subtareas con 0,5–3 s en «En curso») | Media / alto | Aplicar el Definition of Done antes de mover a Finalizada (acción A1 de la retrospectiva) |
+| Carga sostenida de 100 solicitudes y SLA mensual sin acreditar | Media / medio | Repetir la corrida con el generador corregido y registrar disponibilidad durante el Sprint 3 |
+| BDD de conductores y preferencias en BORRADOR | Media / medio | Ratificación por Frank y Julio antes de implementar nuevas reglas (acción A4) |
+| Vulnerabilidad alta transitiva en `source-map-js` | Baja / medio | Actualizar la dependencia en el Sprint 3 y volver a ejecutar `npm audit` |
 
-Los requisitos, reglas y C4 describen el sistema objetivo. Los README técnicos
-y validaciones describen la implementación disponible; no se reducen requisitos
-para declarar terminadas funciones aún ausentes.
+## Fuentes
 
-## Pendientes
-
-1. Resolver la propuesta de preferencias en pedidos y ratificar el BDD ST-025.
-2. Conectar asignaciones del conductor al planificador y verificar rutas reales.
-3. Completar auditoría de accesibilidad y pruebas offline con el despliegue real.
-4. Acreditar concurrencia sostenida y disponibilidad durante el periodo operativo.
-5. Implementar dashboard/rutas antes de verificar el payload agregado de 250 KB.
-6. Registrar fecha, asistentes, feedback y acuerdos de Review/retrospectiva.
-7. Conciliar el cierre Jira aportado con los límites de los informes y adjuntar
-   revisión/CI correspondientes al commit final de entrega.
-
-## Fuentes y coherencia
-
-- [Conductores: API](<Sprint 2/validaciones/VALIDACION_ST022.md>),
-  [interfaz](<Sprint 2/validaciones/VALIDACION_ST023.md>) y [pruebas](<Sprint 2/validaciones/VALIDACION_ST024.md>).
-- [Preferencias: validación integral](<Sprint 2/validaciones/VALIDACION_ST028.md>).
-- [Experiencia móvil](<Sprint 2/validaciones/VALIDACION_ST030.md>) y
-  [almacenamiento/sincronización](<Sprint 2/validaciones/VALIDACION_ST032.md>).
-- [Observabilidad](<Sprint 2/validaciones/VALIDACION_ST034.md>),
-  [resultados y SLA](<Sprint 2/informes/INFORME_ST036.md>),
-  [mediciones iniciales](<Sprint 2/informes/INFORME_ST037.md>) y
-  [optimización](<Sprint 2/validaciones/VALIDACION_ST038.md>).
+- Tablero Jira del proyecto ECL (estados, fechas y Time in Status comunicados al 12/10/2026).
+- Pruebas y métricas: ejecuciones locales del 13/10/2026 y CI de los PR citados.
+- [Índice de la documentación técnica del Sprint 2](<Sprint 2/README.md>).
 
 ## Historial de versiones
 
@@ -110,8 +109,8 @@ para declarar terminadas funciones aún ausentes.
 |---|---|---|
 | 1.0.0 | 01/10/2026 | Entregable del Sprint 1; contenido anterior conservado en el historial Git. |
 | 1.1.0 | 09/10/2026 | Sustitución del contenido por el entregable del Sprint 2, con evidencias y pendientes al corte. |
+| 1.2.0 | 13/10/2026 | Estado por criterios frente a Jira, métricas tras el parche post-Review, PR #47–#54 y riesgos del Sprint 3. |
 
 El nombre V_1_0_0 del archivo se conserva por exigencia de la consigna.
-La versión del contenido se incrementa a 1.1.0 para identificar esta actualización.
 
 [← Volver al README principal](../../README.md)
