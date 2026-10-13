@@ -135,7 +135,7 @@ Registro comunicado por Antony Munive Ríos.
 | Comentario del docente | Acción | Referencia |
 |---|---|---|
 | «Los archivos del Sprint 2 deben estar dentro de la carpeta de implementación.» | Validaciones, informes y guías movidos a `docs/03 Implementación/Sprint 2/` con mapa de reubicación | [PR #47](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/47) |
-| «Algunos impedimentos se pueden gestionar como parte del proyecto.» | El registro separa impedimentos de defectos y brechas, que pasan al backlog con su clave Jira | [Registro de impedimentos 1.2.0](<02 Registro de Impedimentos V_1_0_0.md>), PR de la Fase 4 |
+| «Algunos impedimentos se pueden gestionar como parte del proyecto.» | El registro separa impedimentos de defectos y brechas, que pasan al backlog con su clave Jira | [Registro de impedimentos 1.2.0](<02 Registro de Impedimentos V_1_0_0.md>), [PR #55](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/55) |
 | «Los criterios de aceptación deben considerar las rutas doradas (golden paths), las rutas felices, las rutas infelices y las rutas de borde.» | Pruebas nombradas por tipo de ruta y tablas de criterios por ruta en esta revisión | [PR #48](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/48)–[#54](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/54) |
 | «Las acciones por realizar son compromisos que deben cumplirse.» | Plan de acción con métrica verificable y seguimiento de las acciones del Sprint 1 | [Retrospectiva 1.2.0](<04 Retrospectiva del Sprint V_1_0_0.md>) |
 | «La documentación no incluye la navegación por todos los archivos MD.» | README con enlaces de ida y vuelta a todos los `.md` y verificador `check_docs.py` en CI | [PR #47](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/47) |
