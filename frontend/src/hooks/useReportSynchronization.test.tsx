@@ -88,3 +88,18 @@ it('does not send while offline, even when a stale online event arrives', async 
   expect(verify).not.toHaveBeenCalled()
   view.unmount()
 })
+
+it('ruta de borde: sincroniza al recuperar la conexión aunque no llegue el evento «online»', async () => {
+  const onLine = vi.spyOn(navigator, 'onLine', 'get').mockReturnValue(false)
+  vi.mocked(listPendingReports).mockResolvedValue([pending])
+  const verify = vi.fn().mockResolvedValue(true), confirmed = vi.fn()
+  const view = renderHook(() => useReportSynchronization(owner, true, verify, confirmed))
+  await act(async () => { await Promise.resolve(); await vi.advanceTimersByTimeAsync(500) })
+  await act(async () => { await vi.advanceTimersByTimeAsync(5000) })
+  expect(verify).not.toHaveBeenCalled()
+  onLine.mockReturnValue(true)
+  await act(async () => { await vi.advanceTimersByTimeAsync(5000) })
+  expect(verify).toHaveBeenCalledOnce()
+  expect(synchronizeReports).toHaveBeenCalledOnce()
+  view.unmount()
+})
