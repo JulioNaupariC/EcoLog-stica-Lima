@@ -140,7 +140,9 @@ describe('App', () => {
     expect(screen.getByRole('heading', { name: 'Mi itinerario' })).toBeInTheDocument()
     await user.click(screen.getByRole('link', { name: 'EcoLogística Lima' }))
     await user.click(screen.getByRole('button', { name: 'Abrir ruta de itinerario' }))
-    expect(await screen.findByRole('note')).toHaveTextContent('Vista de demostración')
+    // Without VITE_DEMO_ITINERARY=true the page never shows fictitious stops.
+    expect(await screen.findByRole('heading', { name: 'Aún no tienes paradas asignadas' })).toBeInTheDocument()
+    expect(screen.queryByRole('note')).not.toBeInTheDocument()
   })
 
   it.each<AuthRole>(['ADMINISTRADOR', 'OPERADOR', 'ANALISTA', 'AUDITOR'])(

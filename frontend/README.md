@@ -154,6 +154,14 @@ y asignación. El backend local no ofrece endpoints de itinerarios ni alertas;
 no se inventó un contrato ni se consultan recursos de otros conductores. La
 integración de esos datos sigue pendiente y debe revisarse antes de cerrar el ticket.
 
+**Desde ECL-56 (13/10/2026) el itinerario ficticio está desactivado por
+defecto.** Solo se muestra si el build se genera con
+`VITE_DEMO_ITINERARY=true` (ver `.env.example`); cualquier otro valor lo
+desactiva. Sin esa variable, el conductor ve sus paradas reales o el estado
+vacío «Aún no tienes paradas asignadas», también cuando falla la carga, sin
+recurrir al ejemplo. `verify-driver-itinerary.mjs` recorre el ejemplo y
+requiere una vista previa generada con la variable activada.
+
 Para probar el acceso integrado se necesita el backend y una cuenta de prueba
 autorizada con rol `CONDUCTOR`. Revisar escritorio y 360 px, filtros, selección,
 teclado y denegación a otros roles. Las pruebas de React simulan autenticación;

@@ -1,4 +1,10 @@
 import type { DemoItinerary } from '../domain/driverItinerary'
+
+/** The fictitious itinerary is opt-in (VITE_DEMO_ITINERARY=true) and never the default. */
+export function isDemoItineraryEnabled(): boolean {
+  return import.meta.env.VITE_DEMO_ITINERARY === 'true'
+}
+
 export const DEMO_ITINERARY: DemoItinerary = {
   id: 'DEMO-04',
   stops: [

@@ -2,8 +2,52 @@ import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { DEMO_ITINERARY } from '../data/demoDriverItinerary'
 import { DriverItineraryPage } from './DriverItineraryPage'
+import { getDriverItinerary } from '../services/driverItinerary'
 
-describe('DriverItineraryPage — ECL-56, demostración', () => {
+vi.mock('../services/driverItinerary', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('../services/driverItinerary')>()
+  return { ...actual, getDriverItinerary: vi.fn() }
+})
+
+afterEach(() => { vi.unstubAllEnvs() })
+
+describe('DriverItineraryPage — producción, sin datos de demostración', () => {
+  it('ruta dorada: por defecto no muestra el itinerario ficticio', () => {
+    render(<DriverItineraryPage />)
+    expect(screen.getByRole('heading', { name: 'Aún no tienes paradas asignadas' })).toBeInTheDocument()
+    expect(screen.queryByRole('note')).not.toBeInTheDocument()
+    expect(screen.queryByText('Mercado Central')).not.toBeInTheDocument()
+    expect(screen.queryByText(/demostración/u)).not.toBeInTheDocument()
+  })
+
+  it('ruta feliz: con sesión y sin paradas asignadas muestra un estado vacío claro', async () => {
+    vi.mocked(getDriverItinerary).mockResolvedValueOnce([])
+    render(<DriverItineraryPage ownerId="123e4567-e89b-12d3-a456-426614174000" />)
+    expect(await screen.findByRole('heading', { name: 'Aún no tienes paradas asignadas' })).toBeInTheDocument()
+    expect(screen.getByText(/El servidor no tiene paradas asignadas/u)).toBeInTheDocument()
+    expect(screen.queryByRole('note')).not.toBeInTheDocument()
+  })
+
+  it('ruta infeliz: si falla la carga muestra el error y no recurre al ejemplo ficticio', async () => {
+    vi.mocked(getDriverItinerary).mockRejectedValueOnce(new Error('sin red'))
+    render(<DriverItineraryPage ownerId="123e4567-e89b-12d3-a456-426614174000" />)
+    expect(await screen.findByRole('alert')).toHaveTextContent('No se pudo cargar el itinerario asignado.')
+    expect(screen.getByRole('heading', { name: 'Aún no tienes paradas asignadas' })).toBeInTheDocument()
+    expect(screen.queryByText(/ejemplo ficticio/u)).not.toBeInTheDocument()
+    expect(screen.queryByText('Mercado Central')).not.toBeInTheDocument()
+  })
+
+  it.each(['false', 'TRUE', '1', ''])('ruta de borde: VITE_DEMO_ITINERARY=%j no activa el demo', (value) => {
+    vi.stubEnv('VITE_DEMO_ITINERARY', value)
+    render(<DriverItineraryPage />)
+    expect(screen.queryByRole('note')).not.toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Aún no tienes paradas asignadas' })).toBeInTheDocument()
+  })
+})
+
+describe('DriverItineraryPage — ECL-56, demostración (VITE_DEMO_ITINERARY=true)', () => {
+  beforeEach(() => { vi.stubEnv('VITE_DEMO_ITINERARY', 'true') })
+
   it('distingue la siguiente parada, la alerta y el aviso de datos ficticios', () => {
     render(<DriverItineraryPage />)
     expect(screen.getByRole('note')).toHaveTextContent('Datos de demostración')
