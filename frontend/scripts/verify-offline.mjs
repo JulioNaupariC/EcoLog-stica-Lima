@@ -7,7 +7,10 @@ import { pathToFileURL } from 'node:url'
 const { chromium, firefox } = await import(pathToFileURL(resolve(process.env.PLAYWRIGHT_MODULE)))
 const api = process.env.OFFLINE_API_URL
 const base = process.env.OFFLINE_PREVIEW_URL
-const output = resolve('evidencias/ECL-58')
+// The ECL-58 run in evidencias/ECL-58/ is a dated record: never overwrite it.
+const runDate = new Date().toISOString().slice(0, 10).replaceAll('-', '')
+const output = resolve(process.env.ECL58_OUTPUT || `evidencias/ECL-58/retest-${runDate}`)
+assert.notEqual(output, resolve('evidencias/ECL-58'), 'Historical ECL-58 evidence must not be overwritten')
 await mkdir(output, { recursive: true })
 const results = []
 for (const [name, engine, options] of [['chrome', chromium, { channel: 'chrome' }], ['firefox', firefox, {}]]) {
@@ -93,7 +96,7 @@ for (const [name, engine, options] of [['chrome', chromium, { channel: 'chrome' 
     await page.getByLabel('Contraseña').fill(process.env.OFFLINE_TEST_PASSWORD)
     await page.getByRole('button', { name: 'Iniciar sesión', exact: true }).click()
     await page.getByRole('link', { name: 'Mi itinerario' }).click()
-    await page.getByRole('heading', { name: 'Aún no tienes un itinerario asignado', exact: true }).waitFor()
+    await page.getByRole('heading', { name: 'Aún no tienes paradas asignadas', exact: true }).waitFor()
     assert.equal(await page.getByText(/Av. Sintetica/u).count(), 0)
     await page.screenshot({ path: resolve(output, `${name}-04-otra-cuenta.png`), fullPage: true })
     results.push({ browser: name, version: browser.version(), api: 'real FastAPI', database: 'real PostgreSQL/PostGIS', cases, shellCache: cachedUrls, logoutIsolation: 'passed', viewport: 360 })

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { DEMO_ITINERARY } from '../data/demoDriverItinerary'
+import { DEMO_ITINERARY, isDemoItineraryEnabled } from '../data/demoDriverItinerary'
 import { DELIVERY_LABEL, getNextStop, getStopAlerts } from '../domain/driverItinerary'
 import type { DeliveryState, DemoItinerary, DriverAlert, DriverStop } from '../domain/driverItinerary'
 import { OfflineReportPanel } from '../components/OfflineReportPanel'
@@ -22,6 +22,19 @@ function OperationalAlerts({ alerts }: { alerts: readonly DriverAlert[] }) {
         <p>{alert.instruction}</p><small>Alerta de demostración · Sin información de tráfico real</small>
       </div>
     ))}
+  </section>
+}
+
+function NoAssignedStops({ error, message, syncMessage }: { error: string, message: string, syncMessage?: string }) {
+  return <section className="driver-page" aria-labelledby="driver-title">
+    <p className="driver-eyebrow">EcoLogística Lima</p>
+    <h1 id="driver-title" tabIndex={-1}>Mi itinerario</h1>
+    {error ? <p role="alert">{error}</p> : null}
+    <div className="driver-empty driver-panel">
+      {syncMessage ? <p role="status">{syncMessage}</p> : null}
+      <h2>Aún no tienes paradas asignadas</h2>
+      <p>{message}</p>
+    </div>
   </section>
 }
 
@@ -181,18 +194,16 @@ export function DriverItineraryPage({
   }
 
   if (ownerId && assignedStops?.length === 0) {
-    return (
-      <section className="driver-page" aria-labelledby="driver-title">
-        <p className="driver-eyebrow">EcoLogística Lima</p>
-        <h1 id="driver-title" tabIndex={-1}>Mi itinerario</h1>
-        {assignedStopsError ? <p role="alert">{assignedStopsError}</p> : null}
-        <div className="driver-empty driver-panel">
-          {syncMessage ? <p role="status">{syncMessage}</p> : null}
-          <h2>Aún no tienes un itinerario asignado</h2>
-          <p>El servidor no tiene paradas asignadas a esta sesión.</p>
-        </div>
-      </section>
-    )
+    return <NoAssignedStops error={assignedStopsError} syncMessage={syncMessage}
+      message="El servidor no tiene paradas asignadas a esta sesión. Cuando el coordinador te asigne una ruta, aparecerá aquí." />
+  }
+
+  // Production default: never mix fictitious data with the driver's real state.
+  if (!isDemoItineraryEnabled()) {
+    return <NoAssignedStops error={assignedStopsError}
+      message={assignedStopsError
+        ? 'Vuelve a intentarlo más tarde o consulta a tu coordinador.'
+        : 'Cuando el coordinador te asigne una ruta, aparecerá aquí.'} />
   }
 
   return <section className="driver-page" aria-labelledby="driver-title">

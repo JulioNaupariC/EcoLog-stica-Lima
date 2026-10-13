@@ -1,7 +1,10 @@
 // Verificación local de ECL-56. Dependencia temporal: ver docs/03 Implementación/Sprint 2/validaciones/VALIDACION_ST030.md.
 import assert from 'node:assert/strict'
 import { readFile, mkdir, writeFile } from 'node:fs/promises'
+import { resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
+
+// The fictitious itinerary is opt-in: build the preview with VITE_DEMO_ITINERARY=true.
 
 const { chromium, firefox } = await import('../node_modules/.ecl56-browser-check/node_modules/playwright/index.mjs')
 const privateFile = await readFile(new URL('../../.env.st030', import.meta.url), 'utf8')
@@ -10,7 +13,11 @@ const settings = Object.fromEntries(privateFile.split(/\r?\n/).filter((line) => 
   return [line.slice(0, index), line.slice(index + 1)]
 }))
 assert(settings.ST030_DRIVER_EMAIL && settings.ST030_DRIVER_PASSWORD, 'Falta la cuenta privada local de conductor.')
-const output = fileURLToPath(new URL('../evidencias/ECL-56/', import.meta.url))
+// The ECL-56 run in evidencias/ECL-56/ is a dated record: never overwrite it.
+const historical = fileURLToPath(new URL('../evidencias/ECL-56/', import.meta.url))
+const runDate = new Date().toISOString().slice(0, 10).replaceAll('-', '')
+const output = process.env.ECL56_OUTPUT || resolve(historical, `retest-${runDate}`)
+assert.notEqual(resolve(output), resolve(historical), 'Historical ECL-56 evidence must not be overwritten')
 await mkdir(output, { recursive: true })
 const results = []
 
