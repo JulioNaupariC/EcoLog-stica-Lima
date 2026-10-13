@@ -121,11 +121,9 @@ class ConductorService:
                 rows, total = ConductorRepository(session).list_page(page, page_size)
                 items = [
                     ConductorListItem.model_validate(
-                        _response(
-                            row, session.get(Usuario, row.usuario_id)
-                        ).model_dump()
+                        _response(driver, account).model_dump()
                     )
-                    for row in rows
+                    for driver, account in rows
                 ]
                 return ConductorPage(
                     items=items, page=page, page_size=page_size, total=total
