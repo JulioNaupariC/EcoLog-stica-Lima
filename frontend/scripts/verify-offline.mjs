@@ -30,13 +30,16 @@ for (const [name, engine, options] of [['chrome', chromium, { channel: 'chrome' 
     })
     const cases = []
     for (let n = 1; n <= 10; n++) {
-      const card = () => page.locator('.driver-panel').filter({ has: page.getByRole('heading', { name: `Parada ${n}`, exact: true }) })
+      // Since ECL-22: one card per stop (.stop-card) and one page-level sync block
+      // (.report-sync) holding the device-wide pending count.
+      const sync = () => page.locator('.report-sync')
+      const card = () => page.locator('.stop-card').filter({ has: page.getByRole('heading', { name: `Parada ${n}`, exact: true }) })
       await context.setOffline(true)
       await card().getByRole('button', { name: 'Marcar como entregado' }).click()
-      await card().getByText('Reportes pendientes: 1', { exact: true }).waitFor()
+      await sync().getByText('Reportes pendientes: 1', { exact: true }).waitFor()
       if (n === 1) await page.screenshot({ path: resolve(output, `${name}-01-pendiente-offline.png`), fullPage: true })
       await page.reload()
-      await card().getByText('Reportes pendientes: 1', { exact: true }).waitFor()
+      await sync().getByText('Reportes pendientes: 1', { exact: true }).waitFor()
       assert.equal(await card().getByText(/Av. Sintetica/u).count(), 1)
       const pending = await page.evaluate(async () => {
         const db = await new Promise((resolve, reject) => { const r = indexedDB.open('ecologistica-offline-v1', 2); r.onsuccess = () => resolve(r.result); r.onerror = reject })
@@ -60,12 +63,12 @@ for (const [name, engine, options] of [['chrome', chromium, { channel: 'chrome' 
         await page.route(`${api}/conductor/itinerario`, down)
         await context.setOffline(false)
         await page.getByText('Sincronización pendiente. Se reintentará cuando el servicio esté disponible.', { exact: true }).waitFor()
-        assert.equal(await card().getByText('Reportes pendientes: 1', { exact: true }).count(), 1)
+        assert.equal(await sync().getByText('Reportes pendientes: 1', { exact: true }).count(), 1)
         await page.screenshot({ path: resolve(output, `${name}-03-api-no-disponible.png`), fullPage: true })
         await page.unroute(`${api}/conductor/itinerario`, down)
         // No new online event: backoff must recover automatically.
       } else await context.setOffline(false)
-      await card().getByText('Reportes pendientes: 0', { exact: true }).waitFor({ timeout: 20_000 })
+      await sync().getByText('Reportes pendientes: 0', { exact: true }).waitFor({ timeout: 20_000 })
       await card().getByText('Entregado', { exact: true }).waitFor()
       assert(await card().getByRole('button', { name: 'Marcar como entregado' }).isDisabled())
       const replay = await page.evaluate(async ({ api, report }) => {

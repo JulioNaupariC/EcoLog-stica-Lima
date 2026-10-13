@@ -1,0 +1,249 @@
+{
+  "completed_at_utc": "2026-10-13T23:38:59.218398+00:00",
+  "database": "fresh isolated st032_test",
+  "migration": "0010_extend_driver_audit_events",
+  "database_versions": [
+    "PostgreSQL 16.15, compiled by Visual C++ build 1944, 64-bit",
+    "POSTGIS=\"3.6.2 3.6.2\" [EXTENSION] PGSQL=\"160\" GEOS=\"3.14.1dev-CAPI-1.20.4\" PROJ=\"8.2.1 NETWORK_ENABLED=OFF URL_ENDPOINT=https://cdn.proj.org USER_WRITABLE_DIRECTORY=C:\\Users\\anton\\AppData\\Local/proj DATABASE_PATH=C:\\Program Files\\PostgreSQL\\16\\share\\contrib\\postgis-3.6\\proj\\proj.db\" (compiled against PROJ 8.2.1) LIBXML=\"2.12.5\" LIBJSON=\"0.12\" LIBPROTOBUF=\"1.2.1\" WAGYU=\"0.5.0 (Internal)\""
+  ],
+  "assignments": [
+    {
+      "browser": "chrome",
+      "position": 1,
+      "stop_id": "cc7df7dd-f743-4399-853a-f514672c176c",
+      "pedido_id": "4d493efe-9633-4c06-a864-051c77d66fda"
+    },
+    {
+      "browser": "chrome",
+      "position": 2,
+      "stop_id": "5f9e4234-9cb2-46c0-8453-55593aac7850",
+      "pedido_id": "11e21571-a567-4fce-8126-f20d8115d1e5"
+    },
+    {
+      "browser": "chrome",
+      "position": 3,
+      "stop_id": "b2c1730f-2d5a-4295-b4ca-af3f347900df",
+      "pedido_id": "0ca8467b-5233-4bbd-9f98-d92e4e8dd66d"
+    },
+    {
+      "browser": "chrome",
+      "position": 4,
+      "stop_id": "8bb39136-b49c-401e-ab2d-e99e63faf479",
+      "pedido_id": "bf3c7e77-fa95-4726-92fb-5addcd856922"
+    },
+    {
+      "browser": "chrome",
+      "position": 5,
+      "stop_id": "b7bd4332-6469-4b1d-8df0-a9f925f0e0d9",
+      "pedido_id": "8b648fb9-0b02-4543-8aee-0b29525faaf4"
+    },
+    {
+      "browser": "chrome",
+      "position": 6,
+      "stop_id": "a86569d8-a267-42d4-ade1-8195e353bcca",
+      "pedido_id": "363b2f87-d0da-4351-9bf6-db774838c192"
+    },
+    {
+      "browser": "chrome",
+      "position": 7,
+      "stop_id": "7b9152bf-d8cb-477d-906a-4bc2bfd90bbe",
+      "pedido_id": "a8f71eed-ed04-4557-9b1d-0cfec5c66972"
+    },
+    {
+      "browser": "chrome",
+      "position": 8,
+      "stop_id": "dd4fd89f-7e06-44a9-bdea-3c90d2b827c0",
+      "pedido_id": "22aad584-f96a-4873-8183-78a3c96d8a30"
+    },
+    {
+      "browser": "chrome",
+      "position": 9,
+      "stop_id": "4b9df63d-45d6-461b-85b4-a423b9368fb5",
+      "pedido_id": "04cbf6a8-367d-42ff-ab82-d2651ed26ddc"
+    },
+    {
+      "browser": "chrome",
+      "position": 10,
+      "stop_id": "bd53c5e8-f0b0-4c4f-bc12-11b377fc0ef8",
+      "pedido_id": "afd10118-4678-4bf5-b1c9-8ff9c48fb9ae"
+    },
+    {
+      "browser": "firefox",
+      "position": 1,
+      "stop_id": "e4d3fd2f-eea7-49d1-8cec-6bfb3e4dac51",
+      "pedido_id": "9770cb91-2142-473f-84c7-c238ff7574ad"
+    },
+    {
+      "browser": "firefox",
+      "position": 2,
+      "stop_id": "63ee4afe-9e5e-420f-9ea9-f1797230ce79",
+      "pedido_id": "9aeacc2b-df68-4097-801e-3532dc1bedc3"
+    },
+    {
+      "browser": "firefox",
+      "position": 3,
+      "stop_id": "dc900ba9-e575-438c-bac1-15aa5832081d",
+      "pedido_id": "4f80b9e8-8507-434a-99bd-7a808e8997fe"
+    },
+    {
+      "browser": "firefox",
+      "position": 4,
+      "stop_id": "217591b5-9999-478e-ad3e-5d204d4c9003",
+      "pedido_id": "c52a4b8f-8581-4aa9-840c-349c43dee2a6"
+    },
+    {
+      "browser": "firefox",
+      "position": 5,
+      "stop_id": "7aa77365-0a61-4604-9bc6-005444fd166e",
+      "pedido_id": "d89dc24f-f1b1-4bb4-a26e-b28b080eb7b5"
+    },
+    {
+      "browser": "firefox",
+      "position": 6,
+      "stop_id": "50b1ae0e-d404-4995-8c04-8f9da7213004",
+      "pedido_id": "bb24eec6-b704-48a4-b9c6-a0503a9a47e8"
+    },
+    {
+      "browser": "firefox",
+      "position": 7,
+      "stop_id": "c8f65fc9-23b5-4ece-bbca-0560f4384129",
+      "pedido_id": "56c3f6a5-fb06-4f05-b154-1d5f839ed539"
+    },
+    {
+      "browser": "firefox",
+      "position": 8,
+      "stop_id": "e890ac28-0255-454c-9545-1858963212d5",
+      "pedido_id": "3d738df5-9977-4b5d-af2f-e4e2b1beb27d"
+    },
+    {
+      "browser": "firefox",
+      "position": 9,
+      "stop_id": "f1271bb8-a468-41ba-a1a0-281cd9fb7ae3",
+      "pedido_id": "015f4e42-9380-4810-a83e-dddccd6c8097"
+    },
+    {
+      "browser": "firefox",
+      "position": 10,
+      "stop_id": "2956fcfa-113d-4428-a522-2717ce180c5a",
+      "pedido_id": "a1a3c972-7921-43fe-aca7-d8def18234ff"
+    }
+  ],
+  "persisted_reports": [
+    {
+      "operation_id": "9f8f17d4-e6b7-4cc0-a93a-0163d55e0b7f",
+      "stop_id": "cc7df7dd-f743-4399-853a-f514672c176c",
+      "status": "ENTREGADO"
+    },
+    {
+      "operation_id": "d151f5f6-d8bc-4cff-8047-5e4e1e22a74e",
+      "stop_id": "5f9e4234-9cb2-46c0-8453-55593aac7850",
+      "status": "ENTREGADO"
+    },
+    {
+      "operation_id": "c20df72d-d78a-4deb-9396-785368ed9868",
+      "stop_id": "b2c1730f-2d5a-4295-b4ca-af3f347900df",
+      "status": "ENTREGADO"
+    },
+    {
+      "operation_id": "16a900ba-0960-403c-ac05-abf7b560f615",
+      "stop_id": "8bb39136-b49c-401e-ab2d-e99e63faf479",
+      "status": "ENTREGADO"
+    },
+    {
+      "operation_id": "61966eda-72a5-49f7-b7cb-e6bb27f91bfb",
+      "stop_id": "b7bd4332-6469-4b1d-8df0-a9f925f0e0d9",
+      "status": "ENTREGADO"
+    },
+    {
+      "operation_id": "41958fde-deff-4163-9271-2e1ba30805a3",
+      "stop_id": "a86569d8-a267-42d4-ade1-8195e353bcca",
+      "status": "ENTREGADO"
+    },
+    {
+      "operation_id": "229e8d4e-4e72-45e9-a1b1-c7385dc0065e",
+      "stop_id": "7b9152bf-d8cb-477d-906a-4bc2bfd90bbe",
+      "status": "ENTREGADO"
+    },
+    {
+      "operation_id": "d65070d3-bbcc-4ffc-b161-8237b60ee3cd",
+      "stop_id": "dd4fd89f-7e06-44a9-bdea-3c90d2b827c0",
+      "status": "ENTREGADO"
+    },
+    {
+      "operation_id": "c912e1e1-f561-4a43-932a-28e173178c1d",
+      "stop_id": "4b9df63d-45d6-461b-85b4-a423b9368fb5",
+      "status": "ENTREGADO"
+    },
+    {
+      "operation_id": "9e25e670-ad0e-480c-928d-742a49323e7f",
+      "stop_id": "bd53c5e8-f0b0-4c4f-bc12-11b377fc0ef8",
+      "status": "ENTREGADO"
+    },
+    {
+      "operation_id": "68e5a912-1535-41a0-8f80-95d7f26b5c12",
+      "stop_id": "e4d3fd2f-eea7-49d1-8cec-6bfb3e4dac51",
+      "status": "ENTREGADO"
+    },
+    {
+      "operation_id": "b90aea64-16aa-48c1-bcde-e7c67785d7ac",
+      "stop_id": "63ee4afe-9e5e-420f-9ea9-f1797230ce79",
+      "status": "ENTREGADO"
+    },
+    {
+      "operation_id": "ee8212a3-97c2-4f6f-9e41-710d2607859e",
+      "stop_id": "dc900ba9-e575-438c-bac1-15aa5832081d",
+      "status": "ENTREGADO"
+    },
+    {
+      "operation_id": "344d81ef-24d3-4fc6-bc40-5693c84befc0",
+      "stop_id": "217591b5-9999-478e-ad3e-5d204d4c9003",
+      "status": "ENTREGADO"
+    },
+    {
+      "operation_id": "3800a57b-67fb-4d36-aab5-7261bfc2dc70",
+      "stop_id": "7aa77365-0a61-4604-9bc6-005444fd166e",
+      "status": "ENTREGADO"
+    },
+    {
+      "operation_id": "5735bd0f-7736-4ce5-8843-ce6c9fa97f81",
+      "stop_id": "50b1ae0e-d404-4995-8c04-8f9da7213004",
+      "status": "ENTREGADO"
+    },
+    {
+      "operation_id": "10c0fa22-9970-4d74-ba9b-5a1146dfad55",
+      "stop_id": "c8f65fc9-23b5-4ece-bbca-0560f4384129",
+      "status": "ENTREGADO"
+    },
+    {
+      "operation_id": "ecf51001-e171-4150-9444-8ca525b48332",
+      "stop_id": "e890ac28-0255-454c-9545-1858963212d5",
+      "status": "ENTREGADO"
+    },
+    {
+      "operation_id": "f43646c4-c2c1-4fb9-b746-505b7c7016d4",
+      "stop_id": "f1271bb8-a468-41ba-a1a0-281cd9fb7ae3",
+      "status": "ENTREGADO"
+    },
+    {
+      "operation_id": "982a8b6f-25bb-4539-9a93-d438b7ab67d0",
+      "stop_id": "2956fcfa-113d-4428-a522-2717ce180c5a",
+      "status": "ENTREGADO"
+    }
+  ],
+  "expected_reports": 20,
+  "actual_reports": 20,
+  "negative_cases": [
+    {
+      "role": "other",
+      "expected": 404,
+      "actual": 404
+    },
+    {
+      "role": "operator",
+      "expected": 403,
+      "actual": 403
+    }
+  ],
+  "credentials_exported": false,
+  "migration_upgrade_downgrade": "passed"
+}
