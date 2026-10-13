@@ -11,6 +11,14 @@ from sqlalchemy.orm import Session, sessionmaker
 from app.core.passwords import PasswordOperationError, hash_password
 from app.models.conductor import Conductor
 from app.models.usuario import Usuario
+from app.repositories.auditoria import (
+    AuditoriaRepository,
+    AuditStorageError,
+    DetalleConductorActualizado,
+    DetalleConductorRegistrado,
+    Evento,
+    Registro,
+)
 from app.repositories.conductores import ConductorRepository
 from app.schemas.conductor import (
     ConductorCreate,
@@ -78,7 +86,7 @@ class ConductorService:
     def __init__(self, factory: sessionmaker[Session]) -> None:
         self._factory = factory
 
-    def create(self, payload: ConductorCreate) -> ConductorSummary:
+    def create(self, payload: ConductorCreate, actor_id: UUID) -> ConductorSummary:
         try:
             # Hashing is centralized in the existing Argon2id adapter.
             encoded = hash_password(payload.password.get_secret_value())
@@ -97,12 +105,21 @@ class ConductorService:
                     **payload.model_dump(include=set(PROFILE_FIELDS), mode="python"),
                 )
                 ConductorRepository(session).add(driver)
+                # RN-015: same transaction, so the driver is not stored unaudited.
+                AuditoriaRepository(session).insert(
+                    Registro(
+                        usuario_id=actor_id,
+                        entidad_id=driver.conductor_id,
+                        evento=Evento.CONDUCTOR_REGISTRADO,
+                        detalle=DetalleConductorRegistrado(),
+                    )
+                )
                 return ConductorSummary.model_validate(
                     _response(driver, account).model_dump()
                 )
         except IntegrityError as error:
             _translate_integrity(error)
-        except (SQLAlchemyError, PasswordOperationError):
+        except (SQLAlchemyError, PasswordOperationError, AuditStorageError):
             raise ConductorUnavailable("Servicio no disponible") from None
 
     def get(self, driver_id: UUID) -> ConductorResponse:
@@ -131,7 +148,9 @@ class ConductorService:
         except SQLAlchemyError:
             raise ConductorUnavailable("Servicio no disponible") from None
 
-    def update(self, driver_id: UUID, payload: ConductorUpdate) -> ConductorResponse:
+    def update(
+        self, driver_id: UUID, payload: ConductorUpdate, actor_id: UUID
+    ) -> ConductorResponse:
         try:
             with self._factory.begin() as session:
                 driver = ConductorRepository(session).get(driver_id, lock=True)
@@ -145,11 +164,28 @@ class ConductorService:
                     ConductorData.model_validate(values)
                 except ValidationError:
                     raise ConductorInvalid("Perfil inválido") from None
+                modified = tuple(
+                    field
+                    for field in PROFILE_FIELDS
+                    if field in changes and getattr(driver, field) != changes[field]
+                )
                 for field, value in changes.items():
                     setattr(driver, field, value)
                 session.flush()
+                if modified:
+                    # RN-015: audit field names only, never personal values.
+                    AuditoriaRepository(session).insert(
+                        Registro(
+                            usuario_id=actor_id,
+                            entidad_id=driver.conductor_id,
+                            evento=Evento.CONDUCTOR_ACTUALIZADO,
+                            detalle=DetalleConductorActualizado(
+                                campos_modificados=modified
+                            ),
+                        )
+                    )
                 return _response(driver, session.get(Usuario, driver.usuario_id))
         except IntegrityError as error:
             _translate_integrity(error)
-        except SQLAlchemyError:
+        except (SQLAlchemyError, AuditStorageError):
             raise ConductorUnavailable("Servicio no disponible") from None
