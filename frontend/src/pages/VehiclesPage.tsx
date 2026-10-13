@@ -1,5 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import type { FormEvent } from 'react'
+import { Plus, RefreshCw, Truck } from 'lucide-react'
+import { Alert, Badge, Button, Card, DataTable, EmptyState, FormActions, FormSection, PageHeader, Skeleton, StatusBadge } from '../components/ui'
+import type { Column } from '../components/ui'
 import { createVehicle, listVehicles, VehicleServiceError } from '../services/vehicles'
 import type { VehicleCreatePayload, VehicleResponse, VehicleType } from '../services/vehicles'
 
@@ -17,15 +20,23 @@ const INITIAL_VALUES: FormValues = {
   anio_fabricacion: '',
 }
 
-const FIELDS: { name: VehicleField; label: string }[] = [
-  { name: 'placa', label: 'Placa' },
-  { name: 'tipo', label: 'Tipo' },
-  { name: 'capacidad_kg', label: 'Capacidad (kg)' },
-  { name: 'capacidad_m3', label: 'Capacidad (m³)' },
-  { name: 'rendimiento_km_l', label: 'Rendimiento (km/L)' },
-  { name: 'factor_co2_kg_km', label: 'Factor CO₂ (kg/km)' },
-  { name: 'anio_fabricacion', label: 'Año de fabricación' },
+const FIELDS: { name: VehicleField; label: string; hint: string }[] = [
+  { name: 'placa', label: 'Placa', hint: 'Hasta 10 caracteres; se guarda en mayúsculas. Ej.: ABC-123.' },
+  { name: 'tipo', label: 'Tipo', hint: 'Camioneta, furgón o moto.' },
+  { name: 'anio_fabricacion', label: 'Año de fabricación', hint: 'Entre 1980 y 2100.' },
+  { name: 'capacidad_kg', label: 'Capacidad (kg)', hint: 'Carga útil máxima. Ej.: 1200.' },
+  { name: 'capacidad_m3', label: 'Capacidad (m³)', hint: 'Volumen útil. Ej.: 8.50.' },
+  { name: 'rendimiento_km_l', label: 'Rendimiento (km/L)', hint: 'Kilómetros por litro. Ej.: 11.500.' },
+  { name: 'factor_co2_kg_km', label: 'Factor CO₂ (kg/km)', hint: 'Emisión por kilómetro; 0 si es eléctrico.' },
 ]
+
+const SECTIONS: { legend: string; description: string; fields: VehicleField[] }[] = [
+  { legend: 'Identificación', description: 'Datos con los que se reconoce la unidad.', fields: ['placa', 'tipo', 'anio_fabricacion'] },
+  { legend: 'Capacidad', description: 'Límites que usará la planificación de rutas.', fields: ['capacidad_kg', 'capacidad_m3'] },
+  { legend: 'Consumo y emisiones', description: 'Base para los indicadores de sostenibilidad.', fields: ['rendimiento_km_l', 'factor_co2_kg_km'] },
+]
+
+const TYPE_LABEL: Record<string, string> = { CAMIONETA: 'Camioneta', FURGON: 'Furgón', MOTO: 'Moto' }
 
 const DECIMAL_FIELDS = [
   { name: 'capacidad_kg', places: 2, allowZero: false },
@@ -139,20 +150,54 @@ function VehicleForm({ onCreated }: { onCreated: (vehicle: VehicleResponse) => v
     }
   }
 
+  function renderField(name: VehicleField) {
+    const field = FIELDS.find(item => item.name === name)!
+    const id = `vehicle-${name}`
+    const describedBy = [errors[name] ? `${id}-error` : null, `${id}-hint`].filter(Boolean).join(' ')
+    const inputProps = {
+      id,
+      name,
+      required: true,
+      disabled: submitting,
+      value: values[name],
+      'aria-invalid': Boolean(errors[name]),
+      'aria-describedby': describedBy,
+    }
+    return (
+      <div className="form-field" key={name}>
+        <label htmlFor={id}>{field.label}</label>
+        {name === 'tipo' ? (
+          <select {...inputProps} onChange={(event) => updateValue(name, event.target.value)}>
+            <option value="">Selecciona un tipo</option>
+            <option value="CAMIONETA">Camioneta</option>
+            <option value="FURGON">Furgón</option>
+            <option value="MOTO">Moto</option>
+          </select>
+        ) : (
+          <input
+            {...inputProps}
+            type="text"
+            inputMode={name === 'placa' ? 'text' : name === 'anio_fabricacion' ? 'numeric' : 'decimal'}
+            onChange={(event) => updateValue(name, event.target.value)}
+          />
+        )}
+        {errors[name] ? <p className="field-error" id={`${id}-error`}>{errors[name]}</p> : null}
+        <p className="field-hint" id={`${id}-hint`}>{field.hint}</p>
+      </div>
+    )
+  }
+
   return (
-    <section className="vehicle-registration" aria-labelledby="vehicle-form-title">
-      <h2 id="vehicle-form-title">Registrar vehículo</h2>
-      <p id="vehicle-format-help" className="form-intro">
+    <Card title="Registrar vehículo" titleId="vehicle-form-title" className="vehicle-registration">
+      <p id="vehicle-format-help" className="card-description">
         Todos los campos son obligatorios. Usa punto decimal, sin separadores de miles ni exponentes.
       </p>
       {globalError ? (
-        <div className="form-alert error-alert" role="alert" ref={errorRef} tabIndex={-1}>
-          {globalError}
-        </div>
+        <Alert tone="danger" ref={errorRef} tabIndex={-1}>{globalError}</Alert>
       ) : null}
-      {submitting ? <p className="vehicle-loading" role="status">Registrando vehículo…</p> : null}
+      {submitting ? <p className="field-hint" role="status">Registrando vehículo…</p> : null}
       <form
-        className="vehicle-form"
+        className="form-stack"
         aria-labelledby="vehicle-form-title"
         aria-describedby="vehicle-format-help"
         aria-busy={submitting}
@@ -160,78 +205,42 @@ function VehicleForm({ onCreated }: { onCreated: (vehicle: VehicleResponse) => v
         ref={formRef}
         onSubmit={(event) => { void handleSubmit(event) }}
       >
-        <div className="form-grid">
-          {FIELDS.map(({ name, label }) => {
-            const id = `vehicle-${name}`
-            const inputProps = {
-              id,
-              name,
-              required: true,
-              disabled: submitting,
-              value: values[name],
-              'aria-invalid': Boolean(errors[name]),
-              'aria-describedby': errors[name] ? `${id}-error` : undefined,
-            }
-            return (
-              <div className="form-field" key={name}>
-                <label htmlFor={id}>{label}</label>
-                {name === 'tipo' ? (
-                  <select {...inputProps} onChange={(event) => updateValue(name, event.target.value)}>
-                    <option value="">Selecciona un tipo</option>
-                    <option value="CAMIONETA">Camioneta</option>
-                    <option value="FURGON">Furgón</option>
-                    <option value="MOTO">Moto</option>
-                  </select>
-                ) : (
-                  <input
-                    {...inputProps}
-                    type="text"
-                    inputMode={name === 'placa' ? 'text' : name === 'anio_fabricacion' ? 'numeric' : 'decimal'}
-                    onChange={(event) => updateValue(name, event.target.value)}
-                  />
-                )}
-                {errors[name] ? <p className="field-error" id={`${id}-error`}>{errors[name]}</p> : null}
-              </div>
-            )
-          })}
-        </div>
-        <button type="submit" className="submit-button" disabled={submitting}>
-          {submitting ? 'Registrando…' : 'Registrar vehículo'}
-        </button>
+        {SECTIONS.map(section => (
+          <FormSection key={section.legend} legend={section.legend} description={section.description}>
+            <div className="form-grid">{section.fields.map(renderField)}</div>
+          </FormSection>
+        ))}
+        <FormActions>
+          <Button type="submit" icon={Plus} disabled={submitting}>
+            {submitting ? 'Registrando…' : 'Registrar vehículo'}
+          </Button>
+        </FormActions>
       </form>
-    </section>
+    </Card>
   )
 }
 
+function stateBadge(estado: string) {
+  if (estado === 'ACTIVO' || estado === 'INACTIVO') return <StatusBadge status={estado} />
+  // Unknown states are shown verbatim (as text) rather than guessed.
+  return <Badge tone="neutral" icon={null}>{estado}</Badge>
+}
+
+const VEHICLE_COLUMNS: Column<VehicleResponse>[] = [
+  { key: 'placa', header: 'Placa', primary: true, render: vehicle => <strong>{vehicle.placa}</strong> },
+  { key: 'tipo', header: 'Tipo', render: vehicle => TYPE_LABEL[vehicle.tipo] ?? vehicle.tipo },
+  { key: 'kg', header: 'Capacidad (kg)', align: 'end', render: vehicle => vehicle.capacidad_kg },
+  { key: 'm3', header: 'Capacidad (m³)', align: 'end', render: vehicle => vehicle.capacidad_m3 },
+  { key: 'rend', header: 'Rendimiento (km/L)', align: 'end', render: vehicle => vehicle.rendimiento_km_l },
+  { key: 'co2', header: 'Factor (kg CO₂/km)', align: 'end', render: vehicle => vehicle.factor_co2_kg_km },
+  { key: 'anio', header: 'Año', align: 'end', render: vehicle => vehicle.anio_fabricacion },
+  { key: 'estado', header: 'Estado', render: vehicle => stateBadge(vehicle.estado) },
+]
+
 function VehicleTable({ vehicles }: { vehicles: VehicleResponse[] }) {
-  return (
-    <div className="vehicle-table-scroll" role="region" aria-label="Tabla de vehículos, desplazamiento horizontal" tabIndex={0}>
-      <table className="vehicle-table">
-        <caption>Vehículos registrados, incluidos activos e inactivos</caption>
-        <thead>
-          <tr>
-            {['Placa', 'Tipo', 'Capacidad (kg)', 'Capacidad (m³)', 'Rendimiento (km/L)', 'Factor (kg CO₂/km)', 'Año', 'Estado'].map((label) => (
-              <th scope="col" key={label}>{label}</th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {vehicles.map((vehicle) => (
-            <tr key={vehicle.vehiculo_id}>
-              <td>{vehicle.placa}</td>
-              <td>{vehicle.tipo}</td>
-              <td>{vehicle.capacidad_kg}</td>
-              <td>{vehicle.capacidad_m3}</td>
-              <td>{vehicle.rendimiento_km_l}</td>
-              <td>{vehicle.factor_co2_kg_km}</td>
-              <td>{vehicle.anio_fabricacion}</td>
-              <td><span className="vehicle-state">{vehicle.estado}</span></td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  )
+  return <DataTable columns={VEHICLE_COLUMNS} rows={vehicles} rowKey={vehicle => vehicle.vehiculo_id}
+    caption="Vehículos registrados, incluidos activos e inactivos"
+    label="Tabla de vehículos, desplazamiento horizontal" />
 }
 
 interface ListState {
@@ -285,32 +294,37 @@ export function VehiclesPage({ canCreate }: { canCreate: boolean }) {
     refreshList(true)
   }
 
+  const active = list.vehicles.filter(vehicle => vehicle.estado === 'ACTIVO').length
   return (
     <section className="vehicles-page" aria-labelledby="vehicles-title">
-      <p className="eyebrow">Gestión de flota</p>
-      <h1 id="vehicles-title">Vehículos</h1>
+      <PageHeader titleId="vehicles-title" title="Vehículos" eyebrow="Gestión de flota"
+        breadcrumbs={[{ label: 'Inicio', to: '/' }, { label: 'Vehículos' }]}
+        description="Unidades disponibles para la planificación, con su capacidad y factor de emisión." />
       {createdVehicle ? (
-        <p className="form-alert success-alert" role="status">Vehículo registrado: {createdVehicle.placa}.</p>
+        <Alert tone="success" role="status">Vehículo registrado: {createdVehicle.placa}.</Alert>
       ) : null}
-      {list.status === 'loading' ? <p className="vehicle-loading" role="status">Cargando vehículos…</p> : null}
-      <section className="vehicle-list" aria-labelledby="vehicle-list-title" aria-busy={list.status === 'loading'}>
-        <div className="vehicle-list-heading">
-          <h2 id="vehicle-list-title">Listado de vehículos</h2>
-          <button className="submit-button" type="button" disabled={list.status === 'loading'} onClick={() => refreshList()}>
-            Actualizar listado
-          </button>
+      {list.status === 'loading' ? <p className="visually-hidden" role="status">Cargando vehículos…</p> : null}
+      <Card as="div" title="Listado de vehículos" titleId="vehicle-list-title" className="vehicle-list"
+        description={list.vehicles.length ? `${list.vehicles.length} registrados · ${active} activos` : undefined}
+        actions={<Button variant="secondary" size="sm" icon={RefreshCw} disabled={list.status === 'loading'} onClick={() => refreshList()}>
+          Actualizar listado
+        </Button>}>
+        <div aria-busy={list.status === 'loading'} className="card-body" role="region" aria-label="Listado de vehículos">
+          {list.status === 'loading' && list.vehicles.length === 0 ? <Skeleton lines={4} /> : null}
+          {list.status === 'error' ? (
+            <Alert tone="danger" ref={listErrorRef} tabIndex={-1}>
+              {list.error}
+              {list.vehicles.length > 0 ? <span> El listado mostrado puede estar desactualizado.</span> : null}
+            </Alert>
+          ) : null}
+          {list.status === 'ready' && list.vehicles.length === 0 ? (
+            <EmptyState icon={Truck} title="Sin vehículos" headingLevel={3}>
+              <p role="status">No hay vehículos registrados.</p>
+            </EmptyState>
+          ) : null}
+          {list.vehicles.length > 0 ? <VehicleTable vehicles={list.vehicles} /> : null}
         </div>
-        {list.status === 'error' ? (
-          <div className="form-alert error-alert" role="alert" tabIndex={-1} ref={listErrorRef}>
-            {list.error}
-            {list.vehicles.length > 0 ? <span>El listado mostrado puede estar desactualizado.</span> : null}
-          </div>
-        ) : null}
-        {list.status === 'ready' && list.vehicles.length === 0 ? (
-          <p className="vehicle-empty" role="status">No hay vehículos registrados.</p>
-        ) : null}
-        {list.vehicles.length > 0 ? <VehicleTable vehicles={list.vehicles} /> : null}
-      </section>
+      </Card>
       {canCreate ? <VehicleForm onCreated={handleCreated} /> : null}
     </section>
   )

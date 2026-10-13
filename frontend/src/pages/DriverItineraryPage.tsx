@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
+import type { ReactNode } from 'react'
 import { DEMO_ITINERARY, isDemoItineraryEnabled } from '../data/demoDriverItinerary'
-import { DELIVERY_LABEL, getNextStop, getStopAlerts } from '../domain/driverItinerary'
+import { DELIVERY_LABEL, formatWindow, getNextStop, getStopAlerts } from '../domain/driverItinerary'
 import type { DeliveryState, DemoItinerary, DriverAlert, DriverStop } from '../domain/driverItinerary'
 import { OfflineReportPanel } from '../components/OfflineReportPanel'
 import { clearItinerary, loadItinerary, saveItinerary } from '../services/offlineStorage'
@@ -11,7 +12,8 @@ import {
   driverReportTransport,
   getDriverItinerary,
 } from '../services/driverItinerary'
-import './DriverItineraryPage.css'
+import { CalendarClock, CheckCircle2, CloudOff, MapPin, MapPinned, Navigation, RefreshCw } from 'lucide-react'
+import { Alert, Button, EmptyState, PageHeader, Skeleton, StatusBadge } from '../components/ui'
 import { useReportSynchronization } from '../hooks/useReportSynchronization'
 
 function OperationalAlerts({ alerts }: { alerts: readonly DriverAlert[] }) {
@@ -25,17 +27,36 @@ function OperationalAlerts({ alerts }: { alerts: readonly DriverAlert[] }) {
   </section>
 }
 
-function NoAssignedStops({ error, message, syncMessage }: { error: string, message: string, syncMessage?: string }) {
+function ItineraryLayout({ children, description }: { children: ReactNode, description?: ReactNode }) {
   return <section className="driver-page" aria-labelledby="driver-title">
-    <p className="driver-eyebrow">EcoLogística Lima</p>
-    <h1 id="driver-title" tabIndex={-1}>Mi itinerario</h1>
-    {error ? <p role="alert">{error}</p> : null}
-    <div className="driver-empty driver-panel">
-      {syncMessage ? <p role="status">{syncMessage}</p> : null}
-      <h2>Aún no tienes paradas asignadas</h2>
-      <p>{message}</p>
-    </div>
+    <PageHeader titleId="driver-title" title="Mi itinerario" description={description} />
+    {children}
   </section>
+}
+
+function StopDetails({ stop }: { stop: StopSummary }) {
+  return <>
+    <div className="stop-head">
+      <span className="stop-position" aria-hidden="true">{stop.position}</span>
+      <h3 className="stop-title">Parada {stop.position}</h3>
+      <StatusBadge status={stop.status} />
+    </div>
+    {stop.delivery ? <dl className="stop-details">
+      <div className="stop-detail stop-detail--address">
+        <dt><MapPin aria-hidden="true" size={16} /> Dirección de entrega</dt>
+        <dd>{stop.delivery.address}</dd>
+      </div>
+      {stop.delivery.reference ? <div className="stop-detail">
+        <dt><MapPinned aria-hidden="true" size={16} /> Referencia</dt>
+        <dd>{stop.delivery.reference}</dd>
+      </div> : null}
+      <div className="stop-detail">
+        <dt><CalendarClock aria-hidden="true" size={16} /> Horario de entrega</dt>
+        <dd>{formatWindow(stop.delivery.windowStart, stop.delivery.windowEnd)}</dd>
+      </div>
+    </dl> : <p className="stop-missing">La asignación todavía no contiene dirección ni horario. Solicita al coordinador una asignación vinculada a su pedido.</p>}
+    <p className="stop-id">Ref. de parada {stop.stopId.slice(0, 8)}</p>
+  </>
 }
 
 function StopCard({ stop, next = false }: { stop: DriverStop; next?: boolean }) {
@@ -54,6 +75,7 @@ export function DriverItineraryPage({
   ownerId?: string
   onSessionExpired?: () => void
 }) {
+  const [reloadKey, setReloadKey] = useState(0)
   const [selected, setSelected] = useState<DriverStop | null>(null)
   const [filter, setFilter] = useState<'TODAS' | DeliveryState>('TODAS')
   const [showEmpty, setShowEmpty] = useState(false)
@@ -146,64 +168,92 @@ export function DriverItineraryPage({
       }
     })()
     return () => { active = false }
-  }, [ownerId, onSessionExpired])
+  }, [ownerId, onSessionExpired, reloadKey])
+
+  function retry() {
+    setAssignedStopsError('')
+    setLoadingAssignedStops(true)
+    setReloadKey(value => value + 1)
+  }
 
   if (ownerId && loadingAssignedStops) {
-    return (
-      <section className="driver-page" aria-labelledby="driver-title">
-        <h1 id="driver-title" tabIndex={-1}>Mi itinerario</h1>
-        <p role="status">Consultando paradas asignadas…</p>
-      </section>
-    )
+    return <ItineraryLayout>
+      <p className="field-hint" role="status">Consultando paradas asignadas…</p>
+      <div className="stop-list"><Skeleton variant="card" lines={4} /><Skeleton variant="card" lines={4} /></div>
+    </ItineraryLayout>
   }
 
   if (ownerId && assignedStops?.length) {
+    const nextStop = assignedStops
+      .filter(stop => stop.status === 'PENDIENTE' || stop.status === 'EN_RUTA')
+      .sort((a, b) => a.position - b.position)[0]
+    const rest = assignedStops.filter(stop => stop !== nextStop).sort((a, b) => a.position - b.position)
+    const done = assignedStops.filter(stop => stop.status === 'ENTREGADO' || stop.status === 'NO_ENTREGADO').length
+    const panel = (stop: StopSummary) => <OfflineReportPanel variant="stop"
+      ownerId={ownerId}
+      stopId={stop.stopId}
+      stopLabel={`la parada ${stop.position}`}
+      transport={driverReportTransport}
+      allowNewReport={stop.status === 'PENDIENTE' || stop.status === 'EN_RUTA'}
+      onConfirmed={handleConfirmed}
+    />
     return (
-      <section className="driver-page" aria-labelledby="driver-title">
-        <p className="driver-eyebrow">EcoLogística Lima</p>
-        <h1 id="driver-title" tabIndex={-1}>Mi itinerario</h1>
+      <ItineraryLayout description={`${assignedStops.length} ${assignedStops.length === 1 ? 'parada asignada' : 'paradas asignadas'} · ${done} ${done === 1 ? 'completada' : 'completadas'}. Los reportes se guardan en el dispositivo y se envían con confirmación del servidor.`}>
         {usingCachedItinerary ? (
-          <p role="status">Sin conexión: itinerario previamente guardado en este dispositivo.</p>
+          <Alert tone="warning" role="status">Sin conexión: itinerario previamente guardado en este dispositivo.</Alert>
         ) : null}
-        {syncMessage ? <p role="status">{syncMessage}</p> : null}
-        {assignedStopsError ? <p role="alert">{assignedStopsError}</p> : null}
-        <p>Paradas asignadas a tu sesión. Los reportes se almacenan localmente y se envían al servidor solo con confirmación.</p>
-        <ol className="driver-stops">
-          {assignedStops.map((stop) => (
-            <li className="driver-panel" key={stop.stopId}>
-              <h2>Parada {stop.position}</h2>
-              <p className="driver-card-state">{STOP_STATUS_LABEL[stop.status]}</p>
-              <p className="driver-stop-id">Identificador: {stop.stopId}</p>
-              {stop.delivery ? <dl>
-                <dt>Dirección de entrega</dt><dd>{stop.delivery.address}</dd>
-                {stop.delivery.reference ? <><dt>Referencia</dt><dd>{stop.delivery.reference}</dd></> : null}
-                <dt>Horario de entrega</dt><dd>{new Date(stop.delivery.windowStart).toLocaleString('es-PE')} – {new Date(stop.delivery.windowEnd).toLocaleString('es-PE')}</dd>
-              </dl> : <p>La asignación todavía no contiene dirección ni horario. Solicita al coordinador una asignación vinculada a su pedido.</p>}
-              <OfflineReportPanel
-                ownerId={ownerId}
-                stopId={stop.stopId}
-                transport={driverReportTransport}
-                allowNewReport={stop.status === 'PENDIENTE' || stop.status === 'EN_RUTA'}
-                onConfirmed={handleConfirmed}
-              />
-            </li>
-          ))}
-        </ol>
-      </section>
+        {assignedStopsError ? <Alert tone="danger">{assignedStopsError}</Alert> : null}
+        {syncMessage ? <p className="field-hint" role="status">{syncMessage}</p> : null}
+        {nextStop ? <section className="stop-card stop-card--next" aria-labelledby="next-stop-title">
+          <p className="stop-card-label" id="next-stop-title"><Navigation aria-hidden="true" size={16} /> Siguiente parada</p>
+          <StopDetails stop={nextStop} />
+          {panel(nextStop)}
+        </section> : <Alert tone="success" role="status" title="Recorrido completado">
+          Todas las paradas tienen un resultado registrado.
+        </Alert>}
+        {rest.length ? <section aria-labelledby="route-title" className="route-section">
+          <h2 id="route-title" className="section-title">{nextStop ? 'Resto del recorrido' : 'Recorrido'}</h2>
+          <ol className="stop-list">
+            {rest.map(stop => <li className="stop-card" key={stop.stopId}>
+              <StopDetails stop={stop} />
+              {panel(stop)}
+            </li>)}
+          </ol>
+        </section> : null}
+        <section className="card report-sync">
+          <OfflineReportPanel variant="sync" ownerId={ownerId} stopId="" transport={driverReportTransport} onConfirmed={handleConfirmed} />
+        </section>
+      </ItineraryLayout>
     )
   }
 
+  if (ownerId && assignedStops === null && assignedStopsError) {
+    return <ItineraryLayout>
+      <EmptyState icon={CloudOff} title="No se pudo cargar tu itinerario"
+        action={<Button icon={RefreshCw} onClick={retry}>Reintentar</Button>}>
+        <p role="alert">{assignedStopsError}</p>
+        <p>Comprueba tu conexión. Si el problema continúa, avisa a tu coordinador.</p>
+      </EmptyState>
+    </ItineraryLayout>
+  }
+
   if (ownerId && assignedStops?.length === 0) {
-    return <NoAssignedStops error={assignedStopsError} syncMessage={syncMessage}
-      message="El servidor no tiene paradas asignadas a esta sesión. Cuando el coordinador te asigne una ruta, aparecerá aquí." />
+    return <ItineraryLayout>
+      {assignedStopsError ? <Alert tone="danger">{assignedStopsError}</Alert> : null}
+      {syncMessage ? <p className="field-hint" role="status">{syncMessage}</p> : null}
+      <EmptyState icon={CheckCircle2} title="Aún no tienes paradas asignadas">
+        <p>El servidor no tiene paradas asignadas a esta sesión. Cuando el coordinador te asigne una ruta, aparecerá aquí.</p>
+      </EmptyState>
+    </ItineraryLayout>
   }
 
   // Production default: never mix fictitious data with the driver's real state.
   if (!isDemoItineraryEnabled()) {
-    return <NoAssignedStops error={assignedStopsError}
-      message={assignedStopsError
-        ? 'Vuelve a intentarlo más tarde o consulta a tu coordinador.'
-        : 'Cuando el coordinador te asigne una ruta, aparecerá aquí.'} />
+    return <ItineraryLayout>
+      <EmptyState icon={CheckCircle2} title="Aún no tienes paradas asignadas">
+        <p>Cuando el coordinador te asigne una ruta, aparecerá aquí.</p>
+      </EmptyState>
+    </ItineraryLayout>
   }
 
   return <section className="driver-page" aria-labelledby="driver-title">
@@ -260,11 +310,4 @@ export function DriverItineraryPage({
     </>}
     <p className="driver-footnote">Datos de demostración. No se consulta una ruta real ni se modifican entregas. Sin GPS o sincronización offline.</p>
   </section>
-}
-
-const STOP_STATUS_LABEL: Record<StopSummary['status'], string> = {
-  PENDIENTE: 'Pendiente',
-  EN_RUTA: 'En ruta',
-  ENTREGADO: 'Entregado',
-  NO_ENTREGADO: 'No entregado',
 }

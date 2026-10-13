@@ -33,3 +33,16 @@ export function getNextStop(stops: readonly DriverStop[]): DriverStop | undefine
 export function getStopAlerts(alerts: readonly DriverAlert[], stopId: string): DriverAlert[] {
   return alerts.filter((alert) => alert.stopIds.includes(stopId))
 }
+
+const LIMA_DAY = new Intl.DateTimeFormat('es-PE', { timeZone: 'America/Lima', weekday: 'short', day: '2-digit', month: '2-digit' })
+const LIMA_TIME = new Intl.DateTimeFormat('es-PE', { timeZone: 'America/Lima', hour: '2-digit', minute: '2-digit', hour12: false })
+
+/** "mar. 14/10 · 09:00–11:00" in Lima time; spans days when needed. */
+export function formatWindow(start: string, end: string): string {
+  const from = new Date(start)
+  const to = new Date(end)
+  const sameDay = LIMA_DAY.format(from) === LIMA_DAY.format(to)
+  return sameDay
+    ? `${LIMA_DAY.format(from)} · ${LIMA_TIME.format(from)}–${LIMA_TIME.format(to)}`
+    : `${LIMA_DAY.format(from)} ${LIMA_TIME.format(from)} – ${LIMA_DAY.format(to)} ${LIMA_TIME.format(to)}`
+}

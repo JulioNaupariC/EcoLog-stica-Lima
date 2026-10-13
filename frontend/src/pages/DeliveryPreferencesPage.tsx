@@ -2,10 +2,11 @@ import { useEffect, useRef, useState } from 'react'
 import type { FormEvent } from 'react'
 import { DeliveryPreferencesForm } from '../components/DeliveryPreferencesForm'
 import { ClientCombobox } from '../components/ClientCombobox'
+import { Search, Users } from 'lucide-react'
+import { Alert, Button, PageHeader } from '../components/ui'
 import { getDeliveryPreferences, isClientId, PreferencesServiceError } from '../services/deliveryPreferences'
 import type { ClientOption } from '../services/clients'
 import type { DeliveryPreferences } from '../services/deliveryPreferences'
-import './DeliveryPreferencesPage.css'
 
 export function DeliveryPreferencesPage({ onSessionExpired }: { onSessionExpired: () => void }) {
   const [client, setClient] = useState<ClientOption | null>(null)
@@ -69,33 +70,36 @@ export function DeliveryPreferencesPage({ onSessionExpired }: { onSessionExpired
     }
   }
   return <section className="preferences-page" aria-labelledby="preferences-title">
-    <p className="eyebrow">Gestión operativa</p>
-    <h1 id="preferences-title">Preferencias de entrega</h1>
-    <p className="form-intro">Consulta y actualiza horarios, referencias y condiciones de acceso de un cliente existente.</p>
-    <form className="order-form preferences-lookup" aria-label="Consultar cliente" aria-busy={loading}
+    <PageHeader titleId="preferences-title" title="Preferencias de entrega" eyebrow="Gestión operativa"
+      breadcrumbs={[{ label: 'Inicio', to: '/' }, { label: 'Preferencias de entrega' }]}
+      description="Consulta y actualiza horarios, referencias y condiciones de acceso de un cliente existente." />
+    <form className="card preferences-lookup" aria-label="Consultar cliente" aria-busy={loading}
       noValidate onSubmit={event => { void load(event) }}>
       <ClientCombobox id="preferences-client-id" label="Cliente" error={idError}
         hint="Escribe parte del nombre o pega el identificador del cliente."
         selected={client} disabled={loading || blocked || preferences !== null}
         onSelect={option => { setClient(option); setIdError(''); setMessage(''); setSuccess('') }} />
-      <button type="submit" className="submit-button" disabled={loading || blocked || preferences !== null}>
-        {loading ? 'Consultando…' : 'Consultar preferencias'}</button>
+      <div className="lookup-actions">
+        <Button type="submit" icon={Search} disabled={loading || blocked || preferences !== null}>
+          {loading ? 'Consultando…' : 'Consultar preferencias'}</Button>
+      </div>
     </form>
-    {loading ? <p role="status">Cargando preferencias…</p> : null}
-    {message ? <div className="form-alert error-alert" role="alert" ref={alert} tabIndex={-1}>{message}</div> : null}
-    {success ? <p className="form-alert success-alert" role="status">{success}</p> : null}
+    {loading ? <p className="field-hint" role="status">Cargando preferencias…</p> : null}
+    {message ? <Alert tone="danger" ref={alert} tabIndex={-1}>{message}</Alert> : null}
+    {success ? <Alert tone="success" role="status">{success}</Alert> : null}
     {preferences ? <>
       <DeliveryPreferencesForm key={`${preferences.cliente_id}-${revision}`} preferences={preferences}
+        clientName={client?.cliente_id === preferences.cliente_id ? client.nombre : undefined}
         onAccessError={accessError} onEdit={() => setSuccess('')} onSavingChange={value => { setSaving(value); if (value) setSuccess('') }} onSaved={saved => {
           setPreferences(saved); setRevision(value => value + 1)
           setSaving(false)
           setSuccess('Preferencias guardadas correctamente.'); setMessage('')
         }} onCancel={() => { setRevision(value => value + 1); setSuccess('Cambios descartados. Se muestran las preferencias consultadas.') }} />
-      <button type="button" className="preferences-secondary preferences-change-client" disabled={saving} onClick={() => {
+      <Button variant="ghost" icon={Users} className="preferences-change-client" disabled={saving} onClick={() => {
         setPreferences(null); setSuccess(''); setMessage('')
         // Input becomes enabled after React commits the state change.
         queueMicrotask(() => document.getElementById('preferences-client-id')?.focus())
-      }}>Consultar de nuevo u otro cliente</button>
+      }}>Consultar de nuevo u otro cliente</Button>
     </> : null}
   </section>
 }

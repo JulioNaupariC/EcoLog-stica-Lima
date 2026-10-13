@@ -90,9 +90,10 @@ describe('VehiclesPage', () => {
     expect(within(rows[1]).getAllByRole('cell')[0]).toHaveTextContent('ZZZ-123')
     expect(within(rows[2]).getAllByRole('cell')[0]).toHaveTextContent('ABC-123')
     expect(within(rows[2]).getAllByRole('cell').map((cell) => cell.textContent)).toEqual([
-      'ABC-123', 'CAMIONETA', '1000.00', '8.00', '10.000', '0.30000', '2024', 'ACTIVO',
+      'ABC-123', 'Camioneta', '1000.00', '8.00', '10.000', '0.30000', '2024', 'Activo',
     ])
-    expect(screen.getByText('INACTIVO')).toBeInTheDocument()
+    // Type and state are shown with readable labels; unknown states stay verbatim.
+    expect(screen.getByText('Inactivo')).toBeInTheDocument()
     expect(screen.getByText('<script>otro</script>')).toBeInTheDocument()
     expect(table.querySelector('script')).toBeNull()
     for (const header of within(table).getAllByRole('columnheader')) expect(header).toHaveAttribute('scope', 'col')
@@ -155,7 +156,8 @@ describe('VehiclesPage', () => {
     const plate = screen.getByLabelText('Placa')
     expect(plate).toHaveFocus()
     expect(plate).toHaveAttribute('aria-invalid', 'true')
-    expect(plate).toHaveAccessibleDescription('La placa es obligatoria.')
+    // Error first, then the persistent help text under the field.
+    expect(plate).toHaveAccessibleDescription(/^La placa es obligatoria\. /u)
     expect(screen.getByRole('alert')).toHaveTextContent('Revisa los campos indicados')
     for (const label of Object.keys(validValues)) expect(screen.getByLabelText(label)).toHaveAttribute('aria-invalid', 'true')
     expect(createMock).not.toHaveBeenCalled()
@@ -257,7 +259,7 @@ describe('VehiclesPage', () => {
     submit()
     fillValid()
     submit()
-    expect(await screen.findByText('Vehículo registrado: ABC-123.')).toHaveAttribute('role', 'status')
+    expect((await screen.findByText('Vehículo registrado: ABC-123.')).closest('[role="status"]')).not.toBeNull()
     expect(await screen.findByRole('table')).toBeInTheDocument()
     expect(listMock).toHaveBeenCalledTimes(2)
     expect(createMock).toHaveBeenCalledTimes(1)
@@ -318,7 +320,7 @@ describe('VehiclesPage', () => {
     submit()
     expect(await screen.findByRole('alert')).toHaveTextContent('La placa ya está registrada.')
     await waitFor(() => expect(screen.getByLabelText('Placa')).toHaveFocus())
-    expect(screen.getByLabelText('Placa')).toHaveAccessibleDescription('La placa ya está registrada.')
+    expect(screen.getByLabelText('Placa')).toHaveAccessibleDescription(/^La placa ya está registrada\. /u)
     for (const [label, value] of Object.entries(validValues)) expect(screen.getByLabelText(label)).toHaveValue(value)
     expect(listMock).toHaveBeenCalledTimes(1)
   })
@@ -334,8 +336,9 @@ describe('VehiclesPage', () => {
     fillValid()
     submit()
     expect(await screen.findByRole('alert')).toHaveTextContent('Revisa los datos ingresados.')
-    await waitFor(() => expect(screen.getByLabelText('Capacidad (m³)')).toHaveFocus())
-    expect(screen.getByLabelText('Capacidad (m³)')).toHaveAccessibleDescription('Revisa la capacidad en m³.')
+    // The redesigned form groups Año de fabricación with identification, before capacities.
+    await waitFor(() => expect(screen.getByLabelText('Año de fabricación')).toHaveFocus())
+    expect(screen.getByLabelText('Capacidad (m³)')).toHaveAccessibleDescription(/^Revisa la capacidad en m³\. /u)
     expect(screen.getByLabelText('Año de fabricación')).toHaveAttribute('aria-invalid', 'true')
     expect(screen.getByLabelText('Placa')).toHaveValue(validValues.Placa)
   })

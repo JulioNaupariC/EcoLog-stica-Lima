@@ -78,3 +78,9 @@ export function changedDriverFields(original: DriverDetail, values: DriverValues
   }
   return changes
 }
+
+/** True when the license expired before today in Lima. */
+export function licenseExpired(until: string, now = new Date()): boolean {
+  const today = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Lima' }).format(now)
+  return until < today
+}

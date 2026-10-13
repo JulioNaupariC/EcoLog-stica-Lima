@@ -28,13 +28,18 @@ describe('DriverItineraryPage — producción, sin datos de demostración', () =
     expect(screen.queryByRole('note')).not.toBeInTheDocument()
   })
 
-  it('ruta infeliz: si falla la carga muestra el error y no recurre al ejemplo ficticio', async () => {
+  it('ruta infeliz: si falla la carga sin itinerario guardado ofrece reintentar, sin ejemplo ficticio', async () => {
     vi.mocked(getDriverItinerary).mockRejectedValueOnce(new Error('sin red'))
+      .mockResolvedValueOnce([{ stopId: '223e4567-e89b-42d3-a456-426614174000', position: 1, status: 'PENDIENTE' }])
     render(<DriverItineraryPage ownerId="123e4567-e89b-12d3-a456-426614174000" />)
-    expect(await screen.findByRole('alert')).toHaveTextContent('No se pudo cargar el itinerario asignado.')
-    expect(screen.getByRole('heading', { name: 'Aún no tienes paradas asignadas' })).toBeInTheDocument()
+    expect(await screen.findByRole('heading', { name: 'No se pudo cargar tu itinerario' })).toBeInTheDocument()
+    expect(screen.getByRole('alert')).toHaveTextContent('No se pudo cargar el itinerario asignado.')
+    expect(screen.queryByRole('heading', { name: 'Aún no tienes paradas asignadas' })).not.toBeInTheDocument()
     expect(screen.queryByText(/ejemplo ficticio/u)).not.toBeInTheDocument()
     expect(screen.queryByText('Mercado Central')).not.toBeInTheDocument()
+    await userEvent.click(screen.getByRole('button', { name: 'Reintentar' }))
+    expect(await screen.findByRole('heading', { name: 'Parada 1' })).toBeInTheDocument()
+    expect(getDriverItinerary).toHaveBeenCalledTimes(2)
   })
 
   it.each(['false', 'TRUE', '1', ''])('ruta de borde: VITE_DEMO_ITINERARY=%j no activa el demo', (value) => {
