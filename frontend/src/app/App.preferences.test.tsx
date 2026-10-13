@@ -19,7 +19,7 @@ async function signIn(role: AuthRole) {
   fireEvent.change(screen.getByLabelText('Correo electrónico'), { target: { value: 'test@example.test' } })
   fireEvent.change(screen.getByLabelText('Contraseña'), { target: { value: 'synthetic-password' } })
   fireEvent.click(screen.getByRole('button', { name: 'Iniciar sesión' }))
-  await screen.findByRole('heading', { name: 'Rutas sostenibles para Lima' })
+  await screen.findByRole('heading', { name: 'Inicio' })
 }
 beforeEach(() => { vi.mocked(getDeliveryPreferences).mockReset() })
 it('solicita login al abrir preferencias sin identidad', async () => {
@@ -49,5 +49,5 @@ it('elimina identidad ante 401 y vuelve al login', async () => {
   fireEvent.click(await screen.findByRole('option', { name: /Bodega Ficticia Norte/u }))
   fireEvent.submit(screen.getByRole('form', { name: 'Consultar cliente' }))
   expect(await screen.findByRole('heading', { name: 'Iniciar sesión' })).toBeInTheDocument()
-  expect(screen.queryByText('Rol: OPERADOR')).not.toBeInTheDocument()
+  expect(screen.queryByRole('button', { name: /^Cuenta: .*, Operador$/u })).not.toBeInTheDocument()
 })

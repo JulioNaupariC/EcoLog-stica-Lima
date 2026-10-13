@@ -8,6 +8,7 @@ import type { VehicleResponse } from '../services/vehicles'
 import { listPendingReports } from '../services/reportQueue'
 import { clearItinerary } from '../services/offlineStorage'
 import { App } from './App'
+import { ROLE_LABEL } from '../domain/roles'
 
 vi.mock('../services/auth', async (importOriginal) => {
   const actual = await importOriginal<typeof import('../services/auth')>()
@@ -69,13 +70,21 @@ function renderAt(path: string, initialEntries?: string[]) {
   )
 }
 
+
+/** The account menu (top bar) shows the readable role and holds «Cerrar sesión». */
+function accountButton(roleLabel: string) {
+  return screen.getByRole('button', { name: new RegExp(`^Cuenta: .*, ${roleLabel}$`, 'u') })
+}
+
 async function signIn(role: AuthRole) {
   const user = userEvent.setup()
   loginMock.mockResolvedValue({ usuario_id, rol: role })
-  await user.type(screen.getByLabelText('Correo electrónico'), 'user@example.test')
-  await user.type(screen.getByLabelText('Contraseña'), 'private-password')
+  await user.click(screen.getByLabelText('Correo electrónico'))
+  await user.paste('user@example.test')
+  await user.click(screen.getByLabelText('Contraseña'))
+  await user.paste('private-password')
   await user.click(screen.getByRole('button', { name: 'Iniciar sesión' }))
-  expect(await screen.findByRole('heading', { name: 'Rutas sostenibles para Lima' })).toBeInTheDocument()
+  expect(await screen.findByRole('heading', { name: 'Inicio' })).toBeInTheDocument()
   return user
 }
 
@@ -89,33 +98,38 @@ describe('App', () => {
     createVehicleMock.mockReset().mockResolvedValue(vehicle)
   })
 
-  it('renderiza el inicio con landmarks y enlace de acceso anónimo', () => {
+  it('sin identidad redirige / al login, sin navegación ni enlaces de gestión', () => {
     renderAt('/')
-    expect(screen.getByRole('navigation')).toHaveAccessibleName('Navegación principal')
+    expect(screen.getByTestId('path')).toHaveTextContent('/login')
     expect(screen.getByRole('main')).toBeInTheDocument()
-    expect(screen.getByRole('contentinfo')).toBeInTheDocument()
-    expect(screen.getByRole('heading', { name: 'Rutas sostenibles para Lima' })).toBeInTheDocument()
-    expect(screen.getByRole('status')).toHaveTextContent('Aplicación iniciada correctamente')
-    expect(screen.getByRole('link', { name: 'Iniciar sesión' })).toHaveAttribute('href', '/login')
+    expect(screen.getByRole('heading', { name: 'Iniciar sesión' })).toBeInTheDocument()
+    expect(screen.queryByRole('navigation', { name: 'Navegación principal' })).not.toBeInTheDocument()
     expect(screen.queryByRole('link', { name: 'Registrar pedido' })).not.toBeInTheDocument()
     expect(screen.queryByRole('link', { name: 'Vehículos' })).not.toBeInTheDocument()
   })
 
-  it('abre /login desde el enlace anónimo', async () => {
-    const user = userEvent.setup()
-    renderAt('/')
-    await user.click(screen.getByRole('link', { name: 'Iniciar sesión' }))
+  it('sin identidad redirige una ruta desconocida al login', () => {
+    renderAt('/ruta-inexistente')
     expect(screen.getByTestId('path')).toHaveTextContent('/login')
     expect(screen.getByRole('heading', { name: 'Iniciar sesión' })).toBeInTheDocument()
   })
 
-  it('muestra la página 404 para una ruta desconocida y permite volver al inicio', async () => {
-    const user = userEvent.setup()
-    renderAt('/ruta-inexistente')
+  it('con sesión muestra la página 404 y permite volver al inicio', async () => {
+    renderAt('/login', ['/ruta-inexistente', '/login'])
+    const user = await signIn('OPERADOR')
+    await user.click(screen.getByRole('button', { name: 'Atrás' }))
     expect(screen.getByRole('heading', { name: 'Página no encontrada' })).toBeInTheDocument()
     expect(screen.getByRole('link', { name: 'Volver al inicio' })).toHaveAttribute('href', '/')
     await user.click(screen.getByRole('link', { name: 'Volver al inicio' }))
-    expect(screen.getByRole('heading', { name: 'Rutas sostenibles para Lima' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Inicio' })).toBeInTheDocument()
+  })
+
+  it('con sesión muestra la navegación principal y el rol legible', async () => {
+    renderAt('/login')
+    await signIn('ADMINISTRADOR')
+    expect(screen.getByRole('navigation', { name: 'Navegación principal' })).toBeInTheDocument()
+    expect(accountButton('Administrador')).toHaveAttribute('aria-expanded', 'false')
+    expect(screen.queryByText('ADMINISTRADOR')).not.toBeInTheDocument()
   })
 
   it('redirige /pedidos/nuevo a /login sin identidad', () => {
@@ -140,8 +154,10 @@ describe('App', () => {
     expect(screen.getByRole('heading', { name: 'Mi itinerario' })).toBeInTheDocument()
     await user.click(screen.getByRole('link', { name: 'EcoLogística Lima' }))
     await user.click(screen.getByRole('button', { name: 'Abrir ruta de itinerario' }))
-    // Without VITE_DEMO_ITINERARY=true the page never shows fictitious stops.
-    expect(await screen.findByRole('heading', { name: 'Aún no tienes paradas asignadas' })).toBeInTheDocument()
+    // No API in this test: the real itinerary fails to load and the page offers a retry.
+    // Without VITE_DEMO_ITINERARY=true it never falls back to fictitious stops.
+    expect(await screen.findByRole('heading', { name: 'No se pudo cargar tu itinerario' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Reintentar' })).toBeInTheDocument()
     expect(screen.queryByRole('note')).not.toBeInTheDocument()
   })
 
@@ -161,13 +177,14 @@ describe('App', () => {
     const user = userEvent.setup()
     loginMock.mockResolvedValue({ usuario_id, rol: 'OPERADOR' })
     renderAt('/login', ['/ruta-inexistente', '/login'])
-    await user.type(screen.getByLabelText('Correo electrónico'), 'user@example.test')
-    await user.type(screen.getByLabelText('Contraseña'), 'private-password')
+    await user.click(screen.getByLabelText('Correo electrónico'))
+    await user.paste('user@example.test')
+    await user.click(screen.getByLabelText('Contraseña'))
+    await user.paste('private-password')
     await user.click(screen.getByRole('button', { name: 'Iniciar sesión' }))
-    expect(await screen.findByRole('heading', { name: 'Rutas sostenibles para Lima' })).toBeInTheDocument()
+    expect(await screen.findByRole('heading', { name: 'Inicio' })).toBeInTheDocument()
     expect(screen.getByTestId('path')).toHaveTextContent('/')
-    expect(screen.getByText('Rol: OPERADOR')).toBeInTheDocument()
-    expect(screen.queryByRole('link', { name: 'Iniciar sesión' })).not.toBeInTheDocument()
+    expect(accountButton('Operador')).toBeInTheDocument()
     await user.click(screen.getByRole('button', { name: 'Atrás' }))
     expect(screen.getByTestId('path')).toHaveTextContent('/ruta-inexistente')
     expect(screen.getByRole('heading', { name: 'Página no encontrada' })).toBeInTheDocument()
@@ -178,7 +195,7 @@ describe('App', () => {
     async (role) => {
       renderAt('/login')
       const user = await signIn(role)
-      expect(screen.getByText(`Rol: ${role}`)).toBeInTheDocument()
+      expect(accountButton(ROLE_LABEL[role])).toBeInTheDocument()
       expect(screen.getByRole('link', { name: 'Registrar pedido' })).toHaveAttribute('href', '/pedidos/nuevo')
       await user.click(screen.getByRole('link', { name: 'Registrar pedido' }))
       expect(screen.getByRole('heading', { name: 'Registrar pedido' })).toBeInTheDocument()
@@ -191,7 +208,7 @@ describe('App', () => {
     async (role) => {
       renderAt('/login')
       const user = await signIn(role)
-      expect(screen.getByText(`Rol: ${role}`)).toBeInTheDocument()
+      expect(accountButton(ROLE_LABEL[role])).toBeInTheDocument()
       expect(screen.queryByRole('link', { name: 'Registrar pedido' })).not.toBeInTheDocument()
       await user.click(screen.getByRole('button', { name: 'Abrir ruta de pedido' }))
       expect(screen.getByRole('heading', { name: 'Acceso denegado' })).toBeInTheDocument()
@@ -213,6 +230,8 @@ describe('App', () => {
     await signIn('OPERADOR')
     expect(screen.getByRole('link', { name: 'Registrar pedido' })).toBeInTheDocument()
     first.unmount()
+    // The home summary of the first mount reads the vehicle list; only the second mount matters.
+    listVehiclesMock.mockClear()
     renderAt(path)
     expect(screen.getByTestId('path')).toHaveTextContent('/login')
     expect(screen.queryByRole('link', { name: 'Registrar pedido' })).not.toBeInTheDocument()
@@ -232,6 +251,8 @@ describe('App', () => {
     renderAt('/login')
     const user = await signIn(role)
     expect(screen.getByRole('link', { name: 'Vehículos' })).toHaveAttribute('href', '/vehiculos')
+    // The home summary already read the list once; count only the vehicles page.
+    listVehiclesMock.mockClear()
     await user.click(screen.getByRole('link', { name: 'Vehículos' }))
     expect(await screen.findByRole('table')).toBeInTheDocument()
     expect(listVehiclesMock).toHaveBeenCalledTimes(1)
@@ -286,11 +307,12 @@ describe('App', () => {
     renderAt('/login')
     await signIn('CONDUCTOR')
 
+    await user.click(accountButton('Conductor'))
     await user.click(screen.getByRole('button', { name: 'Cerrar sesión' }))
 
     expect(confirm).toHaveBeenCalledWith(expect.stringContaining('1 reporte pendiente'))
     expect(logoutMock).not.toHaveBeenCalled()
-    expect(screen.getByText('Rol: CONDUCTOR')).toBeInTheDocument()
+    expect(accountButton('Conductor')).toBeInTheDocument()
     confirm.mockRestore()
   })
 
@@ -310,12 +332,13 @@ describe('App', () => {
     renderAt('/login')
     await signIn('CONDUCTOR')
 
+    await user.click(accountButton('Conductor'))
     await user.click(screen.getByRole('button', { name: 'Cerrar sesión' }))
 
     expect(confirm).toHaveBeenCalledWith(expect.stringContaining('Se conservarán en este dispositivo'))
     expect(logoutMock).toHaveBeenCalledOnce()
     await waitFor(() => expect(screen.getByTestId('path')).toHaveTextContent('/login'))
-    expect(screen.queryByText('Rol: CONDUCTOR')).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: /^Cuenta: .*, Conductor$/u })).not.toBeInTheDocument()
     expect(clearItineraryMock).toHaveBeenCalledWith(usuario_id)
     confirm.mockRestore()
   })

@@ -19,7 +19,7 @@ async function signIn(role: AuthRole) {
   fireEvent.change(screen.getByLabelText('Correo electrónico'), { target: { value: 'test@example.test' } })
   fireEvent.change(screen.getByLabelText('Contraseña'), { target: { value: 'synthetic-password' } })
   fireEvent.click(screen.getByRole('button', { name: 'Iniciar sesión' }))
-  await screen.findByRole('heading', { name: 'Rutas sostenibles para Lima' })
+  await screen.findByRole('heading', { name: 'Inicio' })
 }
 beforeEach(() => {
   vi.mocked(listDrivers).mockReset().mockResolvedValue({ items: [], page: 1, page_size: 10, total: 0 })
@@ -48,9 +48,10 @@ it.each(['CONDUCTOR', 'AUDITOR', 'ANALISTA'] as const)('deniega ruta y oculta en
 it('401 de API limpia identidad y vuelve al login', async () => {
   show()
   await signIn('OPERADOR')
-  vi.mocked(listDrivers).mockRejectedValueOnce(new DriverServiceError('unauthorized'))
+  // Persistent rejection: the home summary may also read the list, in any order.
+  vi.mocked(listDrivers).mockRejectedValue(new DriverServiceError('unauthorized'))
   fireEvent.click(screen.getByRole('link', { name: 'Conductores' }))
   expect(await screen.findByRole('heading', { name: 'Iniciar sesión' })).toBeInTheDocument()
-  await waitFor(() => expect(screen.queryByText('Rol: OPERADOR')).not.toBeInTheDocument())
+  await waitFor(() => expect(screen.queryByRole('button', { name: /^Cuenta: .*, Operador$/u })).not.toBeInTheDocument())
   expect(screen.getByRole('alert')).toHaveTextContent('Tu sesión ha vencido')
 })
