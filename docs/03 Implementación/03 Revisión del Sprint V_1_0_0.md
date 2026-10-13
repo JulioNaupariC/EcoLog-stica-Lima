@@ -64,15 +64,15 @@ ya realizada ante stakeholders.
 
 ### Evidencia disponible para apoyar la exposición
 
-- [Conductores: capturas y validación](../../frontend/VALIDACION_ST023.md).
-- [Preferencias: matriz](../../backend/VALIDACION_ST028.md) y
+- [Conductores: capturas y validación](<Sprint 2/validaciones/VALIDACION_ST023.md>).
+- [Preferencias: matriz](<Sprint 2/validaciones/VALIDACION_ST028.md>) y
   [capturas Chrome/Firefox](../../frontend/evidencias/ECL-54/README.md).
-- [Diseño de referencia](../../frontend/VALIDACION_ST030.md).
-- [Interfaz móvil](../../frontend/VALIDACION_ST030.md) y
-  [offline/sincronización](../../frontend/VALIDACION_ST032.md).
-- [Métricas API/BD](../../backend/VALIDACION_ST034.md).
-- [Capacidad y SLA](../../backend/INFORME_ST036.md).
-- [Comparación antes/después](../../backend/VALIDACION_ST038.md).
+- [Diseño de referencia](<Sprint 2/validaciones/VALIDACION_ST030.md>).
+- [Interfaz móvil](<Sprint 2/validaciones/VALIDACION_ST030.md>) y
+  [offline/sincronización](<Sprint 2/validaciones/VALIDACION_ST032.md>).
+- [Métricas API/BD](<Sprint 2/validaciones/VALIDACION_ST034.md>).
+- [Capacidad y SLA](<Sprint 2/informes/INFORME_ST036.md>).
+- [Comparación antes/después](<Sprint 2/validaciones/VALIDACION_ST038.md>).
 
 ### Registro de la sesión
 

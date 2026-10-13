@@ -119,14 +119,14 @@ CI/SAST del nuevo PR y revisión humana siguen pendientes.
 
 ## Evidencia y reproducción
 
-- [JUnit de integración](evidencias/ECL-54/api-tests.xml).
-- [JUnit de unitarias](evidencias/ECL-54/unit-tests.xml).
-- [Resultados consolidados y hashes](evidencias/ECL-54/resultados.json).
-- [Guía de ejecución backend](evidencias/ECL-54/README.md).
-- [Capturas y navegador](../frontend/evidencias/ECL-54/README.md).
-- [Resultados de navegador](../frontend/evidencias/ECL-54/resultados.json).
-- [Test BDD](tests/integration/test_preferencias_bdd.py).
-- [Instrumento de navegador](../frontend/scripts/verify-preferences-bdd.mjs).
+- [JUnit de integración](../../../../backend/evidencias/ECL-54/api-tests.xml).
+- [JUnit de unitarias](../../../../backend/evidencias/ECL-54/unit-tests.xml).
+- [Resultados consolidados y hashes](../../../../backend/evidencias/ECL-54/resultados.json).
+- [Guía de ejecución backend](../../../../backend/evidencias/ECL-54/README.md).
+- [Capturas y navegador](../../../../frontend/evidencias/ECL-54/README.md).
+- [Resultados de navegador](../../../../frontend/evidencias/ECL-54/resultados.json).
+- [Test BDD](../../../../backend/tests/integration/test_preferencias_bdd.py).
+- [Instrumento de navegador](../../../../frontend/scripts/verify-preferences-bdd.mjs).
 
 La evidencia no equivale a aprobación del contrato ni a cierre de US-005.
 El equipo puede revisar ST-028 con esta matriz y su registro de diferencias.

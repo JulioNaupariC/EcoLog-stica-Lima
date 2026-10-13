@@ -1,8 +1,8 @@
 # Evidencia local de ST-024 / ECL-50
 
 Ejecución final del 09/10/2026, America/Lima. Entorno, casos, resultados y
-comandos descritos en [VALIDACION_ST024.md](../../VALIDACION_ST024.md) y en la
-[guía para José](../../../GUIA_JOSE_ST024.md).
+comandos descritos en [VALIDACION_ST024.md](<../../../docs/03 Implementación/Sprint 2/validaciones/VALIDACION_ST024.md>) y en la
+[guía para José](<../../../docs/03 Implementación/Sprint 2/guias/GUIA_JOSE_ST024.md>).
 
 | Archivo | Contenido |
 |---|---|

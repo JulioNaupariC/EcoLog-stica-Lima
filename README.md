@@ -98,7 +98,7 @@ El healthcheck del frontend verifica su proceso. El de API utiliza
 `/health/ready` y exige una lectura `SELECT 1` en PostgreSQL (ECL-60).
 `/health` sigue disponible como liveness independiente de BD. Las métricas
 protegidas y los sondeos se describen en
-[VALIDACION_ST034.md](backend/VALIDACION_ST034.md). El healthcheck de base usa `pg_isready`; por sí solo no acredita PostGIS ni el
+[VALIDACION_ST034.md](<docs/03 Implementación/Sprint 2/validaciones/VALIDACION_ST034.md>). El healthcheck de base usa `pg_isready`; por sí solo no acredita PostGIS ni el
 esquema. Para ello sirven `app.db.check`, la comparación `alembic current` /
 `alembic heads` y una inspección de las tablas de aplicación.
 Si falla un paso, consultar `docker compose --env-file .env ps` y los logs del

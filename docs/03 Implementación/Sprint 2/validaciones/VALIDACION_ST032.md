@@ -28,7 +28,7 @@ El primer ciclo pierde el ACK después de persistir y reintenta el mismo UUID.
 El segundo simula API inaccesible y recupera por temporizador. Además se repite
 cada operación después del ACK. La consulta SQL final contiene exactamente los
 20 UUID del navegador. Se comprueba logout y acceso con cuenta diferente.
-Resultados, registros y ocho capturas: [evidencias/ECL-58](evidencias/ECL-58/README.md).
+Resultados, registros y ocho capturas: [evidencias/ECL-58](../../../../frontend/evidencias/ECL-58/README.md).
 
 También se aplicaron temporalmente los cambios ST-031 sobre esta rama para un
 smoke de interfaz combinado: Chrome/Firefox, teclado y axe sin infracciones,

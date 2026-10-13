@@ -70,7 +70,7 @@ La suite usa Vitest/Testing Library y transporte simulado para casos unitarios.
 | Formulario de preferencias | 100 % statements/lines/functions, 97.56 % branches |
 | Página de preferencias | 100 % statements/lines/functions, 97.82 % branches |
 
-JUnit de la ejecución local: [frontend-tests.xml](evidencias/ECL-53/frontend-tests.xml).
+JUnit de la ejecución local: [frontend-tests.xml](../../../../frontend/evidencias/ECL-53/frontend-tests.xml).
 Los casos negativos aprobados verifican el rechazo y sus efectos esperados.
 Los casos de App verifican permisos para los cinco roles y ausencia de
 solicitudes cuando el usuario no tiene acceso.
@@ -103,8 +103,8 @@ registrar el aviso y comprobar conservación de edición/datos. No acredita una
 caída real de PostgreSQL. La revisión de teclado y ancho no constituye una
 auditoría completa WCAG 2.1 AA ni una matriz de dispositivos físicos.
 
-Las [16 capturas](evidencias/ECL-53/README.md) y
-[resultados de navegador](evidencias/ECL-53/resultados.json) incluyen solo datos
+Las [16 capturas](../../../../frontend/evidencias/ECL-53/README.md) y
+[resultados de navegador](../../../../frontend/evidencias/ECL-53/resultados.json) incluyen solo datos
 sintéticos. No contienen contraseñas ni cookies.
 
 ## Límites y revisión
@@ -112,7 +112,7 @@ sintéticos. No contienen contraseñas ni cookies.
 La selección usa UUID porque no existe endpoint de listado de clientes en la
 API actual. No se inventa un catálogo ni se crean clientes desde el formulario.
 Se mantiene el contrato de ST-026 documentado en
-[VALIDACION_ST026.md](../backend/VALIDACION_ST026.md). El BDD ST-025 sigue marcado
+[VALIDACION_ST026.md](VALIDACION_ST026.md). El BDD ST-025 sigue marcado
 como borrador y este trabajo no declara su aprobación.
 
 Esta entrega gestiona preferencias. Proponerlas o copiarlas al crear un pedido,
@@ -123,4 +123,4 @@ no se modifica silenciosamente un pedido ni la planificación aprobada.
 GitHub Actions/SAST remotos y peer review quedan pendientes del push del usuario.
 CI existente ejecuta automáticamente typecheck, lint, pruebas con cobertura y
 build al abrir PR a `main`. No se atribuye una ejecución remota que aún no se
-ha observado. Guía y texto de PR en [GUIA_JOSE_ST027.md](../GUIA_JOSE_ST027.md).
+ha observado. Guía y texto de PR en [GUIA_JOSE_ST027.md](../guias/GUIA_JOSE_ST027.md).

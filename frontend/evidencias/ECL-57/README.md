@@ -9,4 +9,4 @@ Los archivos `01`–`06` muestran login, errores, itinerario, foco, resoluciones
 superiores y espaciado. Son capturas de página completa; la altura puede ser
 mayor que la del viewport.
 
-Ver [checklist y procedimiento](../../VALIDACION_ST031.md).
+Ver [checklist y procedimiento](<../../../docs/03 Implementación/Sprint 2/validaciones/VALIDACION_ST031.md>).

@@ -57,7 +57,7 @@ regreso al ejemplo y escritorio. Se verificó acceso anónimo y denegación al
 Auditor con login simulado. No hubo errores de ejecución de página ni
 desbordamiento horizontal en las vistas comprobadas.
 
-[Capturas de interfaz y resultados](evidencias/ECL-56/README.md).
+[Capturas de interfaz y resultados](../../../../frontend/evidencias/ECL-56/README.md).
 Esto acredita estos recorridos en las versiones registradas, no una auditoría
 completa WCAG, validación con participantes o funcionamiento en móviles físicos.
 

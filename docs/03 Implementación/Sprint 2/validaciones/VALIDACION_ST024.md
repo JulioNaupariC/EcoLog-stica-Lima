@@ -68,7 +68,7 @@ Los casos negativos aprobados significan que se obtuvo el rechazo esperado y
 se comprobaron sus efectos; no representan fallos de la suite.
 
 Los reportes XML de la ejecución final están en
-[evidencias/ECL-50](evidencias/ECL-50/README.md). Se eliminaron únicamente el
+[evidencias/ECL-50](../../../../backend/evidencias/ECL-50/README.md). Se eliminaron únicamente el
 hostname y las rutas absolutas del equipo al preparar las copias para Git.
 
 Durante la verificación inicial se corrigieron dos comparaciones de la prueba

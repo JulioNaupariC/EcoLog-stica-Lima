@@ -3,7 +3,7 @@
 ## Trazabilidad
 
 ECL-60 / ST-034 → ECL-23 / EN-005.
-Referencia: [plan de ST-033](../docs/sprint-2/plan-pruebas-capacidad.md),
+Referencia: [plan de ST-033](../informes/plan-pruebas-capacidad.md),
 RNF-007 (disponibilidad) y RNF-008 (capacidad).
 Rama: `feat/ECL-60-metricas-api-bd`; base Git `ef5583b`.
 
@@ -145,7 +145,7 @@ no se cambiaron dependencias de otros tickets.
 
 ## Evidencias y reproducción
 
-Ver [evidencias ECL-60](evidencias/ECL-60/README.md).
+Ver [evidencias ECL-60](../../../../backend/evidencias/ECL-60/README.md).
 `scripts/verify_metrics.py` requiere dependencias de desarrollo y entorno local:
 MONITORING_TEST_EMAIL, MONITORING_TEST_PASSWORD y opcional MONITORING_TEST_URL.
 Usar cuentas sintéticas y variables privadas, nunca poner credenciales en comandos

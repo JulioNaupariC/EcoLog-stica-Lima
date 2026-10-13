@@ -38,5 +38,5 @@ Incidencias del arnés resueltas antes de la ejecución final: pipes heredados d
 de otro usuario. Se corrigieron usando salida separada, factory correcta y
 temporal propio. No se modificaron bases ajenas.
 
-Reproducción y límites: [VALIDACION_ST032.md](../../VALIDACION_ST032.md).
+Reproducción y límites: [VALIDACION_ST032.md](<../../../docs/03 Implementación/Sprint 2/validaciones/VALIDACION_ST032.md>).
 La campaña local no acredita un SLA de producción.

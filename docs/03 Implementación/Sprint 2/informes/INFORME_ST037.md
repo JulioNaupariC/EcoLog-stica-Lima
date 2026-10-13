@@ -99,13 +99,13 @@ antes/después. No se incorporan Redis, compresión, caché ni nuevos índices.
 
 ## Evidencia y reproducción
 
-- [Resultados y entorno](evidencias/ECL-63/resultados.json).
-- [Plan cliente](evidencias/ECL-63/cliente_exists.json).
-- [Plan coordenadas](evidencias/ECL-63/pedido_coordinates.json).
-- [Plan candidato](evidencias/ECL-63/candidate_pending_window.json).
-- [Fuentes y hashes](evidencias/ECL-63/fuentes.json).
-- [Reproducción](evidencias/ECL-63/README.md).
-- [Instrumento](scripts/measure_critical_queries.py).
+- [Resultados y entorno](../../../../backend/evidencias/ECL-63/resultados.json).
+- [Plan cliente](../../../../backend/evidencias/ECL-63/cliente_exists.json).
+- [Plan coordenadas](../../../../backend/evidencias/ECL-63/pedido_coordinates.json).
+- [Plan candidato](../../../../backend/evidencias/ECL-63/candidate_pending_window.json).
+- [Fuentes y hashes](../../../../backend/evidencias/ECL-63/fuentes.json).
+- [Reproducción](../../../../backend/evidencias/ECL-63/README.md).
+- [Instrumento](../../../../backend/scripts/measure_critical_queries.py).
 
 Verificación local: 15 planes reales, medianas recalculadas y guardas de base
 exclusiva/siembra no repetible; Ruff del instrumento.

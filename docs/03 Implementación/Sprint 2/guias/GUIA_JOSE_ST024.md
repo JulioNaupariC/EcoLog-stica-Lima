@@ -17,7 +17,7 @@ git diff
 ```
 
 La rama debe ser `feat/ECL-50-st024-pruebas-conductores`.
-El reporte está en [backend/VALIDACION_ST024.md](backend/VALIDACION_ST024.md).
+El reporte está en [VALIDACION_ST024.md](../validaciones/VALIDACION_ST024.md).
 Los XML conservados corresponden a pruebas locales ejecutadas.
 
 ## 2. Repetir backend

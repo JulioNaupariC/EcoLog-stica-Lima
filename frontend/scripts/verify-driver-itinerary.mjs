@@ -1,4 +1,4 @@
-// Verificación local de ECL-56. Dependencia temporal: ver VALIDACION_ST030.md.
+// Verificación local de ECL-56. Dependencia temporal: ver docs/03 Implementación/Sprint 2/validaciones/VALIDACION_ST030.md.
 import assert from 'node:assert/strict'
 import { readFile, mkdir, writeFile } from 'node:fs/promises'
 import { fileURLToPath } from 'node:url'
