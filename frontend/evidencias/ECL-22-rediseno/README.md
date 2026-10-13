@@ -11,6 +11,8 @@ API FastAPI y la vista previa del frontend en `127.0.0.1`.
   (Playwright 1.58.2, Chrome 155.0.8059.40, Node 22.18.0). En la fase «después» el
   script falla si alguna pantalla tiene desbordamiento horizontal: no hubo ninguno.
 
+Actualización 13/10/2026: tras la revisión se regeneraron solo `despues/02-inicio-*` (sección «Próximamente» sin nombres de sprint) y `despues/07-itinerario-*` (botones «Marcar como entregado» / «Marcar como no entregado» y paradas de la demo en el mismo día, 09:00–14:00) con `capture-redesign.mjs despues 02-inicio,07-itinerario`.
+
 Notas de lectura:
 
 - La interfaz anterior no tenía modo oscuro: sus capturas «oscuro» se ven igual que

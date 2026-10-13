@@ -1,5 +1,6 @@
 // Capturas antes/después de ECL-22 (rediseño UI) con los datos de seed_demo.py.
-// Uso: node scripts/capture-redesign.mjs <antes|despues>
+// Uso: node scripts/capture-redesign.mjs <antes|despues> [pantallas,separadas,por,comas]
+// Ej.: node scripts/capture-redesign.mjs despues 02-inicio,07-itinerario (solo esas pantallas)
 // Requiere API y vista previa locales sobre una base *_demo sembrada, Playwright
 // (CAPTURE_PLAYWRIGHT_MODULE) y CAPTURE_PASSWORDS: archivo privado con
 // SEED_DEMO_PASSWORD_ADMINISTRADOR y SEED_DEMO_PASSWORD_CONDUCTOR. No imprime credenciales.
@@ -10,6 +11,7 @@ import { pathToFileURL } from 'node:url'
 
 const phase = process.argv[2]
 assert(phase === 'antes' || phase === 'despues', 'Indica antes o despues')
+const only = process.argv[3] ? new Set(process.argv[3].split(',')) : null
 const origin = process.env.CAPTURE_ORIGIN || 'http://127.0.0.1:5173'
 assert.equal(new URL(origin).hostname, '127.0.0.1')
 const secrets = Object.fromEntries((await readFile(process.env.CAPTURE_PASSWORDS, 'utf8')).split(/\r?\n/u)
@@ -43,6 +45,7 @@ async function pickClient(page) {
   await page.locator('[role="listbox"] [role="option"]').first().click()
 }
 async function shot(page, name, width, scheme) {
+  if (only && !only.has(name)) return null
   await page.waitForLoadState('networkidle')
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth)
   if (phase === 'despues') assert.equal(overflow, false, `Desbordamiento horizontal en ${name} ${width}`)
@@ -90,5 +93,6 @@ try {
     }
   }
 } finally { await browser.close() }
-process.stdout.write(`${results.length} capturas en ${output}\n`)
-process.stdout.write(`Con desbordamiento horizontal: ${results.filter(item => item.overflow).map(item => `${item.name}-${item.width}-${item.scheme}`).join(', ') || 'ninguna'}\n`)
+const taken = results.filter(Boolean)
+process.stdout.write(`${taken.length} capturas en ${output}\n`)
+process.stdout.write(`Con desbordamiento horizontal: ${taken.filter(item => item.overflow).map(item => `${item.name}-${item.width}-${item.scheme}`).join(', ') || 'ninguna'}\n`)
