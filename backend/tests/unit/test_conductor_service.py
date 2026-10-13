@@ -22,6 +22,8 @@ from app.services.conductores import (
     _translate_integrity,
 )
 
+ACTOR = uuid4()
+
 
 def setup_service():
     session = MagicMock()
@@ -64,7 +66,7 @@ def test_registration_uses_hash_adapter_and_distinct_new_account():
     with patch(
         "app.services.conductores.hash_password", return_value="encoded"
     ) as hasher:
-        result = service.create(ConductorCreate.model_validate(payload()))
+        result = service.create(ConductorCreate.model_validate(payload()), ACTOR)
     hasher.assert_called_once_with(payload()["password"])
     user = session.add.call_args_list[0].args[0]
     assert user.rol == "CONDUCTOR" and user.password_hash == "encoded"
@@ -94,10 +96,10 @@ def test_storage_failures_are_sanitized(operation):
     session.flush.side_effect = SQLAlchemyError("private SQL")
     session.scalar.side_effect = SQLAlchemyError("private SQL")
     args = {
-        "create": (ConductorCreate.model_validate(payload()),),
+        "create": (ConductorCreate.model_validate(payload()), ACTOR),
         "get": (uuid4(),),
         "list_page": (1, 20),
-        "update": (uuid4(), ConductorUpdate(nombre="Nuevo")),
+        "update": (uuid4(), ConductorUpdate(nombre="Nuevo"), ACTOR),
     }
     with pytest.raises(ConductorUnavailable) as error:
         getattr(service, operation)(*args[operation])
@@ -110,7 +112,7 @@ def test_password_backend_failure_is_sanitized():
         "app.services.conductores.hash_password", side_effect=PasswordOperationError()
     ):
         with pytest.raises(ConductorUnavailable):
-            service.create(ConductorCreate.model_validate(payload()))
+            service.create(ConductorCreate.model_validate(payload()), ACTOR)
 
 
 def test_read_page_and_update_validate_resulting_profile():
@@ -130,7 +132,7 @@ def test_read_page_and_update_validate_resulting_profile():
     session.get.assert_not_called()
     session.scalar.return_value = row
     assert (
-        service.update(row.conductor_id, ConductorUpdate(nombre="Nuevo")).nombre
+        service.update(row.conductor_id, ConductorUpdate(nombre="Nuevo"), ACTOR).nombre
         == "Nuevo"
     )
     original = row.disponible_hasta
@@ -141,6 +143,7 @@ def test_read_page_and_update_validate_resulting_profile():
                 disponible_desde=original,
                 disponible_hasta=original - timedelta(hours=1),
             ),
+            ACTOR,
         )
     assert row.disponible_hasta == original
     assert (
@@ -150,6 +153,7 @@ def test_read_page_and_update_validate_resulting_profile():
                 disponible_desde=None,
                 disponible_hasta=None,
             ),
+            ACTOR,
         ).habilitado_asignacion
         is False
     )
@@ -160,7 +164,9 @@ def test_not_found(operation):
     service, session, _ = setup_service()
     session.scalar.return_value = None
     args = (
-        (uuid4(),) if operation == "get" else (uuid4(), ConductorUpdate(nombre="Nuevo"))
+        (uuid4(),)
+        if operation == "get"
+        else (uuid4(), ConductorUpdate(nombre="Nuevo"), ACTOR)
     )
     with pytest.raises(ConductorNotFound):
         getattr(service, operation)(*args)

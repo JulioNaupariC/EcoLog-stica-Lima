@@ -514,6 +514,18 @@ El contrato, permisos, validaciones, pruebas y límites se describen en
 [VALIDACION_ST022.md](<../docs/03 Implementación/Sprint 2/validaciones/VALIDACION_ST022.md>). Los endpoints están disponibles
 en /docs y /openapi.json.
 
+### Auditoría de conductores — RN-015
+
+Desde la migración `0010_extend_driver_audit_events`, el alta registra
+`CONDUCTOR_REGISTRADO` y cada PATCH que cambie algún valor registra
+`CONDUCTOR_ACTUALIZADO` con `campos_modificados` (solo nombres de campo, nunca
+DNI, teléfono ni otros valores). Ambos eventos guardan el actor y el conductor,
+y se escriben en la misma transacción: si la auditoría falla, la operación
+devuelve 503 y no se persiste. Un PATCH con los mismos valores no genera
+evento. El downgrade de 0010 se niega si ya existen eventos de conductor.
+Pruebas: `tests/unit/test_conductor_audit.py` y
+`tests/integration/test_conductor_audit.py`.
+
 ## Métricas y disponibilidad — ECL-60 / ST-034
 
 GET /metrics expone contadores HTTP, errores 5xx, solicitudes en vuelo e histogramas

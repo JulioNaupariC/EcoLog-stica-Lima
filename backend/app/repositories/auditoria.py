@@ -21,6 +21,8 @@ class Evento(str, Enum):
     SESION_CERRADA = "SESION_CERRADA"
     VEHICULO_PARAMETROS_ACTUALIZADOS = "VEHICULO_PARAMETROS_ACTUALIZADOS"
     VEHICULO_DESACTIVADO = "VEHICULO_DESACTIVADO"
+    CONDUCTOR_REGISTRADO = "CONDUCTOR_REGISTRADO"
+    CONDUCTOR_ACTUALIZADO = "CONDUCTOR_ACTUALIZADO"
 
 
 class ResultadoAcceso(str, Enum):
@@ -83,6 +85,47 @@ class DetalleVehiculoDesactivado(BaseModel):
     )
 
 
+# Field names only: personal values (DNI, phone, name) are never audited.
+CampoConductor = Literal[
+    "nombre",
+    "dni",
+    "licencia_numero",
+    "licencia_vigente_hasta",
+    "experiencia_anios",
+    "telefono",
+    "punto_partida",
+    "disponible_desde",
+    "disponible_hasta",
+]
+
+
+class DetalleConductorRegistrado(BaseModel):
+    model_config = ConfigDict(
+        frozen=True,
+        extra="forbid",
+        strict=True,
+        hide_input_in_errors=True,
+        revalidate_instances="always",
+    )
+
+
+class DetalleConductorActualizado(BaseModel):
+    model_config = ConfigDict(
+        frozen=True,
+        extra="forbid",
+        strict=True,
+        hide_input_in_errors=True,
+        revalidate_instances="always",
+    )
+    campos_modificados: tuple[CampoConductor, ...] = Field(min_length=1)
+
+    @model_validator(mode="after")
+    def campos_unicos(self) -> "DetalleConductorActualizado":
+        if len(set(self.campos_modificados)) != len(self.campos_modificados):
+            raise ValueError("Duplicate audit field")
+        return self
+
+
 class Registro(BaseModel):
     model_config = ConfigDict(
         frozen=True,
@@ -95,7 +138,12 @@ class Registro(BaseModel):
     entidad_id: UUID | None = None
     evento: Evento
     detalle: (
-        Detalle | DetalleAcceso | DetalleParametrosVehiculo | DetalleVehiculoDesactivado
+        Detalle
+        | DetalleAcceso
+        | DetalleParametrosVehiculo
+        | DetalleVehiculoDesactivado
+        | DetalleConductorRegistrado
+        | DetalleConductorActualizado
     )
 
     @model_validator(mode="after")
@@ -109,6 +157,8 @@ class Registro(BaseModel):
         )
         parameter_update = self.evento is Evento.VEHICULO_PARAMETROS_ACTUALIZADOS
         deactivation = self.evento is Evento.VEHICULO_DESACTIVADO
+        driver_created = self.evento is Evento.CONDUCTOR_REGISTRADO
+        driver_updated = self.evento is Evento.CONDUCTOR_ACTUALIZADO
         if authorization != isinstance(self.detalle, Detalle):
             raise ValueError("Invalid audit event")
         if access != isinstance(self.detalle, DetalleAcceso):
@@ -116,6 +166,10 @@ class Registro(BaseModel):
         if parameter_update != isinstance(self.detalle, DetalleParametrosVehiculo):
             raise ValueError("Invalid audit event")
         if deactivation != isinstance(self.detalle, DetalleVehiculoDesactivado):
+            raise ValueError("Invalid audit event")
+        if driver_created != isinstance(self.detalle, DetalleConductorRegistrado):
+            raise ValueError("Invalid audit event")
+        if driver_updated != isinstance(self.detalle, DetalleConductorActualizado):
             raise ValueError("Invalid audit event")
         if isinstance(self.detalle, Detalle):
             permitido = self.evento is Evento.PERMITIDA
@@ -129,6 +183,10 @@ class Registro(BaseModel):
             self.usuario_id is None or self.entidad_id is None
         ):
             raise ValueError("Invalid vehicle audit event")
+        elif (driver_created or driver_updated) and (
+            self.usuario_id is None or self.entidad_id is None
+        ):
+            raise ValueError("Invalid driver audit event")
         return self
 
 
@@ -156,6 +214,11 @@ class AuditoriaRepository:
             Evento.VEHICULO_DESACTIVADO,
         ):
             entidad = "vehiculo"
+        elif registro.evento in (
+            Evento.CONDUCTOR_REGISTRADO,
+            Evento.CONDUCTOR_ACTUALIZADO,
+        ):
+            entidad = "conductor"
         else:
             entidad = "autorizacion"
         row = Auditoria(

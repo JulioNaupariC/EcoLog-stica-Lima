@@ -83,13 +83,13 @@ def _candidate_self(identity: Identidad) -> Contexto:
 
 @router.post("", response_model=ConductorSummary, status_code=status.HTTP_201_CREATED)
 def create_conductor(
-    _identity: Annotated[
+    identity: Annotated[
         Identidad, Depends(require_permission(Permiso.CONDUCTORES_CREAR))
     ],
     payload: ConductorCreate,
     service: Annotated[ConductorService, Depends(get_conductor_service)],
 ) -> ConductorSummary:
-    return _translate(lambda: service.create(payload))
+    return _translate(lambda: service.create(payload, identity.usuario_id))
 
 
 @router.get("", response_model=ConductorPage)
@@ -134,10 +134,12 @@ def get_conductor(
 @router.patch("/{conductor_id}", response_model=ConductorResponse)
 def update_conductor(
     conductor_id: UUID,
-    _identity: Annotated[
+    identity: Annotated[
         Identidad, Depends(require_permission(Permiso.CONDUCTORES_ACTUALIZAR))
     ],
     payload: ConductorUpdate,
     service: Annotated[ConductorService, Depends(get_conductor_service)],
 ) -> ConductorResponse:
-    return _translate(lambda: service.update(conductor_id, payload))
+    return _translate(
+        lambda: service.update(conductor_id, payload, identity.usuario_id)
+    )

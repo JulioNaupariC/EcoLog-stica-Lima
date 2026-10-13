@@ -16,7 +16,8 @@ class Auditoria(Base):
         CheckConstraint(
             "accion IN ('AUTORIZACION_PERMITIDA','AUTORIZACION_DENEGADA',"
             "'LOGIN_EXITOSO','LOGIN_FALLIDO','CUENTA_BLOQUEADA','SESION_CERRADA',"
-            "'VEHICULO_PARAMETROS_ACTUALIZADOS','VEHICULO_DESACTIVADO')",
+            "'VEHICULO_PARAMETROS_ACTUALIZADOS','VEHICULO_DESACTIVADO',"
+            "'CONDUCTOR_REGISTRADO','CONDUCTOR_ACTUALIZADO')",
             name="ck_auditoria_accion",
         ),
         CheckConstraint(
