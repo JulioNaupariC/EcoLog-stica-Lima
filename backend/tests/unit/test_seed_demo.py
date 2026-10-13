@@ -1,17 +1,21 @@
 """Protecciones de scripts/seed_demo.py: nunca toca una base que no sea demo."""
 
+from datetime import date, timedelta
 from unittest.mock import patch
 
 import pytest
 
 from app.core.rbac import Rol
 from scripts.seed_demo import (
+    ASSIGNED_ORDERS,
     DRIVERS,
+    LIMA,
     PASSWORD_PREFIX,
     USERS,
     SeedRefused,
     ensure_demo_target,
     main,
+    order_window,
     read_passwords,
 )
 
@@ -84,3 +88,21 @@ def test_datos_claramente_ficticios():
     assert all(driver.dni.startswith("9000000") for driver in DRIVERS)
     assert sum(driver.licencia_vencida for driver in DRIVERS) == 1
     assert sum(driver.sin_disponibilidad for driver in DRIVERS) == 1
+
+
+def test_ruta_dorada_paradas_de_la_demo_hoy_con_ventanas_crecientes():
+    """Las paradas de conductor.demo: mismo día, 09:00, 10:00… de una hora."""
+    today = date(2026, 10, 14)
+    windows = [order_window(index, today) for index in range(1, ASSIGNED_ORDERS + 1)]
+    assert [start.date() for start, _ in windows] == [today] * ASSIGNED_ORDERS
+    assert [start.hour for start, _ in windows] == [9, 10, 11, 12, 13]
+    assert all(length == timedelta(hours=1) for _, length in windows)
+    assert all(start.tzinfo == LIMA for start, _ in windows)
+
+
+def test_ruta_de_borde_los_demas_pedidos_siguen_repartidos():
+    today = date(2026, 10, 14)
+    days = {
+        order_window(index, today)[0].date() for index in range(ASSIGNED_ORDERS + 1, 21)
+    }
+    assert days == {today, today + timedelta(days=1)}
