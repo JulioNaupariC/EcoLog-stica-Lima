@@ -3,7 +3,7 @@
 **Trazabilidad:** ECL-64 / ST-038 → ECL-25 / EN-007 → RNF-012.
 **Base Git:** `bc512a5`. **Fecha:** 09/10/2026.
 **Rama:** `feat/ECL-64-optimizacion-api-consultas`.
-**Estado:** incremento parcial validado; dashboard y rutas siguen pendientes.
+**Estado:** actualizado el 13/10/2026: el Inicio cumple el límite de 250 KB con regresión en CI; consultas de rutas pendientes de US-006 (ver la última sección).
 
 ## Cambio implementado
 
@@ -151,6 +151,75 @@ más filas.
 
 Esta corrección no cambia el estado de ECL-64, ECL-25 ni RNF-012, que siguen
 dependiendo del dashboard según la sección anterior.
+
+## Indicadores agregados del Inicio — 13/10/2026
+
+**Problema verificado:** el Inicio descargaba `GET /vehiculos` completo (sin
+paginación) solo para contar, y `GET /conductores?page_size=100` para contar
+habilitados en el navegador. Con 200 conductores mostraba «72 habilitados
+(primeros 100)» cuando había 145.
+
+**Cambio:** `GET /indicadores/operacion` (api → servicio → repositorio) devuelve
+solo agregados calculados en SQL con `COUNT`/`SUM … FILTER` y un `GROUP BY` de
+pedidos por estado y prioridad. La elegibilidad usa la misma regla que
+`habilitado_asignacion`: conductor ACTIVO, cuenta CONDUCTOR ACTIVA, licencia
+vigente en Lima y disponibilidad no vencida. Protegido con
+`indicadores.consultar` de alcance general: el conductor (alcance propio)
+recibe 403. Errores saneados a 503 y OpenAPI actualizado. El Inicio hace una
+sola petición.
+
+**Vigencia:** `Cache-Control: private, max-age=30`. Las cifras informan el
+Inicio, no deciden asignaciones; 30 s acotan la desactualización y evitan
+repetir la agregación al navegar. La respuesta incluye `generado_en` y la
+interfaz muestra la hora. No se comprime: 347 bytes no lo justifican.
+
+**Medición:** dataset ficticio de 50 vehículos, 200 conductores y 30 000 pedidos
+(30 días × 1 000) en `ecologistica_ecl25_test`; PostgreSQL 16.15 + PostGIS
+3.6.2, Python 3.12.10.
+
+| Medida | Antes | Después |
+|---|---:|---:|
+| Peticiones del Inicio | 2 | 1 |
+| Bytes UTF-8 del JSON | 35 871 (11 775 + 24 096) | 347 |
+| Sentencias SQL | 3 + 4 | 5 (sesión, autorización y 3 agregados) |
+| Conductores habilitados mostrados | 72 de los primeros 100 | 145 de 200 |
+
+| Consulta agregada | Plan sin índice nuevo | Plan con la migración 0011 |
+|---|---|---|
+| Vehículos | Seq Scan, 1 buffer, 0,04 ms | Igual (50 filas) |
+| Conductores | Hash Left Join con usuario, 9 buffers, 0,17 ms | Igual (200 filas) |
+| Pedidos por estado y prioridad | Seq Scan, 721 buffers, 8,67 ms | Index Only Scan, 28 buffers, 3,66 ms |
+
+Tiempos: mediana de 5 ejecuciones de `EXPLAIN (ANALYZE, BUFFERS)`.
+
+**Decisión sobre índices:** se crea `idx_pedido_estado_prioridad (estado,
+prioridad)` en la migración 0011, porque el plan pasa de leer la tabla completa
+a un index-only scan con 25 veces menos buffers. Coste: 224 kB y una entrada de
+B-tree por pedido (unos 1 000 al día). Vehículos y conductores no llevan índice:
+son tablas de decenas o cientos de filas y el seq scan cuesta menos de 0,2 ms.
+
+**Consultas de rutas:** no aplica hasta US-006 (ECL-12); justificación
+documentada: no existen tablas ni consultas de rutas optimizadas que revisar. Se
+revisarán con el mismo protocolo cuando existan.
+
+**Regresión en CI:**
+[`test_indicadores_operacion.py`](../../../../backend/tests/integration/test_indicadores_operacion.py)
+siembra el dataset y exige payload ≤ 250 000 bytes y exactamente 5 sentencias SQL,
+iguales con la base vacía y con 30 000 pedidos.
+
+| Tipo de ruta | Escenario | Resultado |
+|---|---|---|
+| Dorada | Administrador con el dataset completo | Agregados exactos, 347 bytes, 5 sentencias, sin datos personales |
+| Feliz | Operador, analista y auditor | 200 |
+| Infeliz | Sin sesión, conductor y fallo de base | 401, 403 y 503 saneado sin `Cache-Control` privado |
+| Borde | Base vacía; 200 conductores frente al listado paginado; licencia que vence hoy y disponibilidad terminada | Ceros; mismo total de habilitados que `habilitado_asignacion`; solo cuenta la licencia vigente con disponibilidad abierta |
+
+La US-009 (indicadores de sostenibilidad, ECL-15) debe ampliar este mismo
+endpoint en lugar de crear otro y mantener la prueba de 250 KB.
+
+- [Evidencias y reproducción](../../../../backend/evidencias/ECL-25-inicio/README.md).
+- [Medición antes](../../../../backend/evidencias/ECL-25-inicio/medicion-antes.json), [después sin índice](../../../../backend/evidencias/ECL-25-inicio/medicion-despues-sin-indice.json) y [después](../../../../backend/evidencias/ECL-25-inicio/medicion-despues.json).
+- [Instrumento](../../../../backend/scripts/measure_home_payload.py) y [dataset](../../../../backend/scripts/indicadores_dataset.py).
 
 [↑ Índice del Sprint 2](../README.md)
 
