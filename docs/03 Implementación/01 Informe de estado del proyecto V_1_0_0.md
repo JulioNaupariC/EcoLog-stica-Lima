@@ -14,7 +14,7 @@
 
 **Versión del contenido:** 1.2.0.
 
-**Fuente del corte técnico:** `main` en `480b4f3` (PR #47–#53 integrados) y PR #54 abierto.
+**Fuente del corte técnico:** `main` en `ea30983` (PR #47–#55 integrados).
 
 **Estado Jira:** cinco padres y 19 subtareas en Finalizada (27/27 SP de padres); sprint activo.
 
@@ -85,7 +85,7 @@ PR #47–#53.
 | 2.4 Itinerario sin datos ficticios | El ejemplo solo aparece con `VITE_DEMO_ITINERARY=true` | [#51](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/51) |
 | 2.5 Datos de demostración | `seed_demo.py` idempotente, solo sobre bases `*_demo` | [#52](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/52) |
 | 3. Rediseño UI/UX | Sistema de diseño, modo oscuro, layout por rol e itinerario real; 84 capturas antes/después | [#53](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/53) |
-| 3. Reconexión sin evento `online` | Sincronización offline estable; reprueba 3/3 en Chrome 155 y Firefox 157.0 | [#54](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/54) (en revisión) |
+| 3. Reconexión sin evento `online` | Sincronización offline estable; reprueba 3/3 en Chrome 155 y Firefox 157.0 | [#54](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/54) |
 
 ## Riesgos para el Sprint 3
 

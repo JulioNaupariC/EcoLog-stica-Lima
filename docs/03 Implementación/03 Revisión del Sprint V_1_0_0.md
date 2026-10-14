@@ -14,7 +14,7 @@
 
 **Versión del contenido:** 1.2.0.
 
-**Fuente del corte técnico:** `main` en `480b4f3` (PR #47–#53 integrados) y PR #54 abierto.
+**Fuente del corte técnico:** `main` en `ea30983` (PR #47–#55 integrados).
 
 **Estado de la ceremonia:** Review realizada el 09/10/2026 sin demostración; demostración complementaria grabada el 13/10/2026.
 
@@ -162,7 +162,6 @@ Registro comunicado por Antony Munive Ríos.
 | Mapa con alertas operativas reales | ECL-14 | Product Backlog — priorizar en el Sprint Planning 3 |
 | Carga sostenida de 100 solicitudes y SLA mensual | ECL-23 | Product Backlog — priorizar en el Sprint Planning 3 |
 | Ratificación de las BDD de conductores y preferencias | ECL-47, ECL-51 | Sprint 2 (antes del cierre) |
-| Revisión e integración de la reconexión sin evento `online` | ECL-58 (PR #54) | Sprint 2 |
 | Prueba con lector de pantalla | ECL-22 | Product Backlog — priorizar en el Sprint Planning 3 |
 
 ## Historial de versiones
