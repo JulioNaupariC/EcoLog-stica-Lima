@@ -14,7 +14,7 @@
 
 **Versión del contenido:** 1.2.0.
 
-**Fuente del corte técnico:** `main` en `480b4f3` (PR #47–#53 integrados) y PR #54 abierto.
+**Fuente del corte técnico:** `main` en `ea30983` (PR #47–#55 integrados).
 
 **Estado de la ceremonia:** Review realizada el 09/10/2026 sin demostración; demostración complementaria grabada el 13/10/2026.
 

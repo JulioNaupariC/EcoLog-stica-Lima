@@ -14,7 +14,7 @@
 
 **Versión del contenido:** 1.2.0.
 
-**Fuente del corte técnico:** `main` en `480b4f3` (PR #47–#53 integrados) y PR #54 abierto.
+**Fuente del corte técnico:** `main` en `ea30983` (PR #47–#55 integrados).
 
 **Estado Jira:** cinco padres y 19 subtareas en Finalizada (27/27 SP de padres); sprint activo.
 

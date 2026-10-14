@@ -14,7 +14,7 @@
 
 **Versión del contenido:** 1.2.0.
 
-**Fuente del corte técnico:** `main` en `480b4f3` (PR #47–#53 integrados) y PR #54 abierto.
+**Fuente del corte técnico:** `main` en `ea30983` (PR #47–#55 integrados).
 
 **Base del análisis:** datos de Jira (estados y Time in Status), historial de Git y
 PR de GitHub, y el feedback de la Review del 09/10/2026. El análisis es sin culpables:
