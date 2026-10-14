@@ -16,7 +16,7 @@
 
 **Fuente del corte técnico:** `main` en `480b4f3` (PR #47–#53 integrados) y PR #54 abierto.
 
-**Estado de la ceremonia:** Review realizada el 09/10/2026 sin demostración; demostración complementaria preparada.
+**Estado de la ceremonia:** Review realizada el 09/10/2026 sin demostración; demostración complementaria grabada el 13/10/2026.
 
 ## Resultado del Sprint
 
@@ -41,7 +41,7 @@ Los datos de la demostración son ficticios y se crean con `backend/scripts/seed
 | Dorada | El Administrador registra un conductor con licencia vigente y disponibilidad válida | Queda habilitado para asignación | `habilitado_asignacion = true`; alta auditada | `verify-drivers.mjs` (Chrome y Firefox, 13/10), [`test_conductor_audit.py`](../../backend/tests/integration/test_conductor_audit.py) | Cumple |
 | Feliz | El Operador cambia la disponibilidad de un conductor habilitado | La nueva franja se guarda | PATCH 200; evento `CONDUCTOR_ACTUALIZADO` con los campos modificados, sin valores personales | [`test_conductor_audit.py`](../../backend/tests/integration/test_conductor_audit.py) | Cumple |
 | Feliz | La nueva franja se usa en planificaciones posteriores | El planificador la considera | No existe planificador de rutas | — | Pendiente (ECL-12, candidato al Sprint 3) |
-| Infeliz | Conductor con licencia vencida | El sistema impide su asignación e informa la restricción | Aparece «No habilitado» y «Licencia vencida» en el perfil; no hay asignación de rutas que bloquear | Demo: «Conductor Demo Licencia Vencida»; [ST-024](<Sprint 2/validaciones/VALIDACION_ST024.md>) | Parcial |
+| Infeliz | Conductor con licencia vencida | El sistema impide su asignación e informa la restricción | Aparece «No habilitado» y «Licencia vencida» en el perfil; no hay asignación de rutas que bloquear | Demo: «Conductor Demo Licencia Vencida» ([video de la demostración complementaria](https://drive.google.com/file/d/1YC6s3QDTsN35XVCBZmUVEwc64c_F2rWO/view?usp=sharing)); [ST-024](<Sprint 2/validaciones/VALIDACION_ST024.md>) | Parcial |
 | Infeliz | Registro con un DNI ya registrado | Conflicto sin cambios | HTTP 409 y alerta; los datos no cambian | `verify-drivers.mjs`, [ST-024](<Sprint 2/validaciones/VALIDACION_ST024.md>) | Cumple |
 | Borde | Conductor sin franja de disponibilidad | No habilitado | «Sin disponibilidad» y «No habilitado» | [`test_seed_demo.py`](../../backend/tests/integration/test_seed_demo.py) | Cumple |
 | Borde | Listado de 100 conductores | Sin consultas por fila | 2 consultas SQL por página (antes 102) | [`test_conductor_list_queries.py`](../../backend/tests/integration/test_conductor_list_queries.py) | Cumple |
@@ -139,14 +139,17 @@ Registro comunicado por Antony Munive Ríos.
 | «Los criterios de aceptación deben considerar las rutas doradas (golden paths), las rutas felices, las rutas infelices y las rutas de borde.» | Pruebas nombradas por tipo de ruta y tablas de criterios por ruta en esta revisión | [PR #48](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/48)–[#54](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/54) |
 | «Las acciones por realizar son compromisos que deben cumplirse.» | Plan de acción con métrica verificable y seguimiento de las acciones del Sprint 1 | [Retrospectiva 1.2.0](<04 Retrospectiva del Sprint V_1_0_0.md>) |
 | «La documentación no incluye la navegación por todos los archivos MD.» | README con enlaces de ida y vuelta a todos los `.md` y verificador `check_docs.py` en CI | [PR #47](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/47) |
-| «No se realizó la demostración de las funcionalidades.» | Datos de demostración, rediseño de la interfaz y guion con tiempos; demostración complementaria | [PR #52](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/52), [PR #53](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/53) |
+| «No se realizó la demostración de las funcionalidades.» | Datos de demostración, rediseño de la interfaz y guion con tiempos; demostración complementaria grabada el 13/10/2026 | [PR #52](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/52), [PR #53](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/53), [video](https://drive.google.com/file/d/1YC6s3QDTsN35XVCBZmUVEwc64c_F2rWO/view?usp=sharing) |
 
 ## Demostración complementaria posterior
 
-Sigue el [guion de demostración](#guion-de-demostración) sobre `main` con los
-PR #47–#54 integrados. Estado al 13/10/2026: preparada y no ejecutada. Al
-realizarla se registrarán aquí su fecha real y el enlace a la grabación o a
-las capturas.
+| Campo | Registro |
+|---|---|
+| Fecha | 13/10/2026, por la noche (hora de Lima) |
+| Relación con la Review | Se realizó después de la Review del 09/10/2026 y no la sustituye; la evaluación de 14/20 se mantiene |
+| Entorno | `main` en `10737e3` (incluye los PR #47–#54); base `ecologistica_demo` sembrada el 13/10/2026 con `seed_demo.py`; datos ficticios |
+| Desarrollo | Siguió el [guion de demostración](#guion-de-demostración) de 15 minutos |
+| Grabación | [Video de la demostración complementaria](https://drive.google.com/file/d/1YC6s3QDTsN35XVCBZmUVEwc64c_F2rWO/view?usp=sharing) |
 
 ## Pendientes
 
