@@ -30,4 +30,15 @@ describe('useOnlineStatus', () => {
     })
     expect(screen.getByLabelText('conexión')).toHaveTextContent('online')
   })
+
+  it('ruta de borde: detecta la reconexión aunque el navegador no emita «online»', () => {
+    vi.useFakeTimers()
+    Object.defineProperty(window.navigator, 'onLine', { configurable: true, value: false })
+    render(<Probe />)
+    expect(screen.getByLabelText('conexión')).toHaveTextContent('offline')
+    Object.defineProperty(window.navigator, 'onLine', { configurable: true, value: true })
+    act(() => { vi.advanceTimersByTime(5000) })
+    expect(screen.getByLabelText('conexión')).toHaveTextContent('online')
+    vi.useRealTimers()
+  })
 })

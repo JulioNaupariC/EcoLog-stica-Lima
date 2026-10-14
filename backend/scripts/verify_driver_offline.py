@@ -55,9 +55,20 @@ def main() -> None:
     parser.add_argument("--pg-bin", required=True)
     parser.add_argument("--playwright-module", required=True)
     parser.add_argument("--integration-only", action="store_true")
+    # Some Windows hosts reserve 55401-55500 (netsh ... excludedportrange).
+    parser.add_argument("--pg-port", type=int, default=55456)
+    # The 09/10/2026 run in evidencias/ECL-58/ is a dated record: never overwrite it.
+    parser.add_argument("--output", type=Path, default=None)
     args = parser.parse_args()
     pg = Path(args.pg_bin).resolve()
-    for port in (55456, 8056, 5179):
+    pg_port = str(args.pg_port)
+    historical = (FRONTEND / "evidencias" / "ECL-58").resolve()
+    output = (
+        args.output or historical / f"retest-{datetime.now(timezone.utc):%Y%m%d}"
+    ).resolve()
+    if output == historical:
+        raise SystemExit("Historical ECL-58 evidence must not be overwritten")
+    for port in (args.pg_port, 8056, 5179):
         with socket.socket() as sock:
             sock.bind(("127.0.0.1", port))
     private = (
@@ -65,7 +76,6 @@ def main() -> None:
     )
     private.mkdir(parents=True)
     data = private / "data"
-    output = FRONTEND / "evidencias" / "ECL-58"
     output.mkdir(parents=True, exist_ok=True)
     processes, streams = [], []
     engine = None
@@ -96,7 +106,7 @@ def main() -> None:
                 "-l",
                 str(private / "postgres.log"),
                 "-o",
-                "-h 127.0.0.1 -p 55456",
+                f"-h 127.0.0.1 -p {pg_port}",
                 "-w",
                 "start",
             ],
@@ -110,14 +120,14 @@ def main() -> None:
                 "-h",
                 "127.0.0.1",
                 "-p",
-                "55456",
+                pg_port,
                 "-U",
                 "postgres",
                 "st032_test",
             ],
             capture_output=True,
         )
-        url = "postgresql+psycopg://postgres@127.0.0.1:55456/st032_test"
+        url = f"postgresql+psycopg://postgres@127.0.0.1:{pg_port}/st032_test"
         engine = build_engine(Settings(database_url=url, app_env="test"))
         with engine.begin() as connection:
             connection.execute(text("CREATE EXTENSION postgis"))
@@ -133,7 +143,9 @@ def main() -> None:
             test_env = dict(
                 os.environ,
                 TEST_DATABASE_URL=url,
-                DATABASE_URL="postgresql+psycopg://postgres@127.0.0.1:55456/st032_unused",
+                DATABASE_URL=(
+                    f"postgresql+psycopg://postgres@127.0.0.1:{pg_port}/st032_unused"
+                ),
             )
             with (output / "integration.log").open("w", encoding="utf-8") as log:
                 run(
@@ -282,6 +294,7 @@ def main() -> None:
             OFFLINE_API_URL="http://127.0.0.1:8056",
             OFFLINE_PREVIEW_URL="http://127.0.0.1:5179",
             OFFLINE_TEST_PASSWORD=password,
+            ECL58_OUTPUT=str(output),
         )
         with (output / "browser.log").open("w", encoding="utf-8") as log:
             run(

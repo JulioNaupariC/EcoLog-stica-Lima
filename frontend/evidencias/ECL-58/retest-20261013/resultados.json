@@ -1,0 +1,238 @@
+[
+  {
+    "browser": "chrome",
+    "version": "155.0.8059.40",
+    "api": "real FastAPI",
+    "database": "real PostgreSQL/PostGIS",
+    "cases": [
+      {
+        "round": 1,
+        "operationId": "9f8f17d4-e6b7-4cc0-a93a-0163d55e0b7f",
+        "stopId": "cc7df7dd-f743-4399-853a-f514672c176c",
+        "offlineReload": "passed",
+        "automaticSync": "passed",
+        "lostAck": true,
+        "sendCalls": 3,
+        "replay": 200
+      },
+      {
+        "round": 2,
+        "operationId": "d151f5f6-d8bc-4cff-8047-5e4e1e22a74e",
+        "stopId": "5f9e4234-9cb2-46c0-8453-55593aac7850",
+        "offlineReload": "passed",
+        "automaticSync": "passed",
+        "lostAck": false,
+        "sendCalls": 2,
+        "replay": 200
+      },
+      {
+        "round": 3,
+        "operationId": "c20df72d-d78a-4deb-9396-785368ed9868",
+        "stopId": "b2c1730f-2d5a-4295-b4ca-af3f347900df",
+        "offlineReload": "passed",
+        "automaticSync": "passed",
+        "lostAck": false,
+        "sendCalls": 2,
+        "replay": 200
+      },
+      {
+        "round": 4,
+        "operationId": "16a900ba-0960-403c-ac05-abf7b560f615",
+        "stopId": "8bb39136-b49c-401e-ab2d-e99e63faf479",
+        "offlineReload": "passed",
+        "automaticSync": "passed",
+        "lostAck": false,
+        "sendCalls": 2,
+        "replay": 200
+      },
+      {
+        "round": 5,
+        "operationId": "61966eda-72a5-49f7-b7cb-e6bb27f91bfb",
+        "stopId": "b7bd4332-6469-4b1d-8df0-a9f925f0e0d9",
+        "offlineReload": "passed",
+        "automaticSync": "passed",
+        "lostAck": false,
+        "sendCalls": 2,
+        "replay": 200
+      },
+      {
+        "round": 6,
+        "operationId": "41958fde-deff-4163-9271-2e1ba30805a3",
+        "stopId": "a86569d8-a267-42d4-ade1-8195e353bcca",
+        "offlineReload": "passed",
+        "automaticSync": "passed",
+        "lostAck": false,
+        "sendCalls": 2,
+        "replay": 200
+      },
+      {
+        "round": 7,
+        "operationId": "229e8d4e-4e72-45e9-a1b1-c7385dc0065e",
+        "stopId": "7b9152bf-d8cb-477d-906a-4bc2bfd90bbe",
+        "offlineReload": "passed",
+        "automaticSync": "passed",
+        "lostAck": false,
+        "sendCalls": 2,
+        "replay": 200
+      },
+      {
+        "round": 8,
+        "operationId": "d65070d3-bbcc-4ffc-b161-8237b60ee3cd",
+        "stopId": "dd4fd89f-7e06-44a9-bdea-3c90d2b827c0",
+        "offlineReload": "passed",
+        "automaticSync": "passed",
+        "lostAck": false,
+        "sendCalls": 2,
+        "replay": 200
+      },
+      {
+        "round": 9,
+        "operationId": "c912e1e1-f561-4a43-932a-28e173178c1d",
+        "stopId": "4b9df63d-45d6-461b-85b4-a423b9368fb5",
+        "offlineReload": "passed",
+        "automaticSync": "passed",
+        "lostAck": false,
+        "sendCalls": 2,
+        "replay": 200
+      },
+      {
+        "round": 10,
+        "operationId": "9e25e670-ad0e-480c-928d-742a49323e7f",
+        "stopId": "bd53c5e8-f0b0-4c4f-bc12-11b377fc0ef8",
+        "offlineReload": "passed",
+        "automaticSync": "passed",
+        "lostAck": false,
+        "sendCalls": 2,
+        "replay": 200
+      }
+    ],
+    "shellCache": [
+      "http://127.0.0.1:5179/index.html",
+      "http://127.0.0.1:5179/assets/index-BJuwDcpL.js",
+      "http://127.0.0.1:5179/assets/index-BOUO11eV.css",
+      "http://127.0.0.1:5179/assets/inter-latin-ext-wght-normal-DO1Apj_S.woff2",
+      "http://127.0.0.1:5179/assets/inter-latin-wght-normal-Dx4kXJAl.woff2",
+      "http://127.0.0.1:5179/offline-shell.json"
+    ],
+    "logoutIsolation": "passed",
+    "viewport": 360
+  },
+  {
+    "browser": "firefox",
+    "version": "157.0",
+    "api": "real FastAPI",
+    "database": "real PostgreSQL/PostGIS",
+    "cases": [
+      {
+        "round": 1,
+        "operationId": "68e5a912-1535-41a0-8f80-95d7f26b5c12",
+        "stopId": "e4d3fd2f-eea7-49d1-8cec-6bfb3e4dac51",
+        "offlineReload": "passed",
+        "automaticSync": "passed",
+        "lostAck": true,
+        "sendCalls": 3,
+        "replay": 200
+      },
+      {
+        "round": 2,
+        "operationId": "b90aea64-16aa-48c1-bcde-e7c67785d7ac",
+        "stopId": "63ee4afe-9e5e-420f-9ea9-f1797230ce79",
+        "offlineReload": "passed",
+        "automaticSync": "passed",
+        "lostAck": false,
+        "sendCalls": 2,
+        "replay": 200
+      },
+      {
+        "round": 3,
+        "operationId": "ee8212a3-97c2-4f6f-9e41-710d2607859e",
+        "stopId": "dc900ba9-e575-438c-bac1-15aa5832081d",
+        "offlineReload": "passed",
+        "automaticSync": "passed",
+        "lostAck": false,
+        "sendCalls": 2,
+        "replay": 200
+      },
+      {
+        "round": 4,
+        "operationId": "344d81ef-24d3-4fc6-bc40-5693c84befc0",
+        "stopId": "217591b5-9999-478e-ad3e-5d204d4c9003",
+        "offlineReload": "passed",
+        "automaticSync": "passed",
+        "lostAck": false,
+        "sendCalls": 2,
+        "replay": 200
+      },
+      {
+        "round": 5,
+        "operationId": "3800a57b-67fb-4d36-aab5-7261bfc2dc70",
+        "stopId": "7aa77365-0a61-4604-9bc6-005444fd166e",
+        "offlineReload": "passed",
+        "automaticSync": "passed",
+        "lostAck": false,
+        "sendCalls": 2,
+        "replay": 200
+      },
+      {
+        "round": 6,
+        "operationId": "5735bd0f-7736-4ce5-8843-ce6c9fa97f81",
+        "stopId": "50b1ae0e-d404-4995-8c04-8f9da7213004",
+        "offlineReload": "passed",
+        "automaticSync": "passed",
+        "lostAck": false,
+        "sendCalls": 2,
+        "replay": 200
+      },
+      {
+        "round": 7,
+        "operationId": "10c0fa22-9970-4d74-ba9b-5a1146dfad55",
+        "stopId": "c8f65fc9-23b5-4ece-bbca-0560f4384129",
+        "offlineReload": "passed",
+        "automaticSync": "passed",
+        "lostAck": false,
+        "sendCalls": 2,
+        "replay": 200
+      },
+      {
+        "round": 8,
+        "operationId": "ecf51001-e171-4150-9444-8ca525b48332",
+        "stopId": "e890ac28-0255-454c-9545-1858963212d5",
+        "offlineReload": "passed",
+        "automaticSync": "passed",
+        "lostAck": false,
+        "sendCalls": 2,
+        "replay": 200
+      },
+      {
+        "round": 9,
+        "operationId": "f43646c4-c2c1-4fb9-b746-505b7c7016d4",
+        "stopId": "f1271bb8-a468-41ba-a1a0-281cd9fb7ae3",
+        "offlineReload": "passed",
+        "automaticSync": "passed",
+        "lostAck": false,
+        "sendCalls": 2,
+        "replay": 200
+      },
+      {
+        "round": 10,
+        "operationId": "982a8b6f-25bb-4539-9a93-d438b7ab67d0",
+        "stopId": "2956fcfa-113d-4428-a522-2717ce180c5a",
+        "offlineReload": "passed",
+        "automaticSync": "passed",
+        "lostAck": false,
+        "sendCalls": 2,
+        "replay": 200
+      }
+    ],
+    "shellCache": [
+      "http://127.0.0.1:5179/index.html",
+      "http://127.0.0.1:5179/assets/index-BJuwDcpL.js",
+      "http://127.0.0.1:5179/assets/index-BOUO11eV.css",
+      "http://127.0.0.1:5179/assets/inter-latin-ext-wght-normal-DO1Apj_S.woff2",
+      "http://127.0.0.1:5179/assets/inter-latin-wght-normal-Dx4kXJAl.woff2",
+      "http://127.0.0.1:5179/offline-shell.json"
+    ],
+    "logoutIsolation": "passed",
+    "viewport": 360
+  }
+]

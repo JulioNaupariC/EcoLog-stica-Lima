@@ -5,6 +5,8 @@ import { listPendingReports } from '../services/reportQueue'
 import type { PendingDriverReport } from '../types/driverReport'
 
 export const REPORTS_CHANGED = 'ecologistica-reports-changed'
+/** Browsers may restore connectivity without firing `online` (MDN): re-check while offline. */
+export const ONLINE_CHECK_MS = 5000
 
 /** One coordinator per itinerary, not one per stop. Timers stop on unmount/offline. */
 export function useReportSynchronization(
@@ -19,7 +21,8 @@ export function useReportSynchronization(
     let active = true, running = false, delay = 2000
     let timer: ReturnType<typeof setTimeout> | undefined
     async function attempt() {
-      if (!active || running || !navigator.onLine) return
+      if (!active || running) return
+      if (!navigator.onLine) { waitForConnection(); return }
       running = true
       setMessage('Comprobando conexión y reportes pendientes…')
       try {
@@ -39,14 +42,24 @@ export function useReportSynchronization(
         }
       } finally { running = false }
     }
+    function waitForConnection() {
+      if (!active) return
+      clearTimeout(timer)
+      timer = setTimeout(() => { void attempt() }, ONLINE_CHECK_MS)
+    }
     function retry() {
-      if (!active || !navigator.onLine) return
+      if (!active) return
+      if (!navigator.onLine) { waitForConnection(); return }
       clearTimeout(timer)
       timer = setTimeout(() => { void attempt() }, delay)
       delay = Math.min(delay * 2, 60_000)
     }
     function online() { delay = 2000; clearTimeout(timer); void attempt() }
-    function offline() { clearTimeout(timer); setMessage('Sin conexión: los reportes permanecen pendientes.') }
+    function offline() {
+      clearTimeout(timer)
+      setMessage('Sin conexión: los reportes permanecen pendientes.')
+      waitForConnection()
+    }
     window.addEventListener('online', online)
     window.addEventListener('offline', offline)
     // Delay avoids competing with the initial authenticated itinerary fetch.

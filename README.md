@@ -265,4 +265,5 @@ Frontend:
 - [ECL-56](frontend/evidencias/ECL-56/README.md)
 - [ECL-57](frontend/evidencias/ECL-57/README.md)
 - [ECL-58](frontend/evidencias/ECL-58/README.md)
+- [ECL-58 — reprueba offline con el rediseño (13/10/2026)](frontend/evidencias/ECL-58/retest-20261013/README.md)
 - [ECL-22 — rediseño UI/UX, capturas antes/después y accesibilidad](frontend/evidencias/ECL-22-rediseno/README.md)
