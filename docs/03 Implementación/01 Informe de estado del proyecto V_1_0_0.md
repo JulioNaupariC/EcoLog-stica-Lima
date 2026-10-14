@@ -31,8 +31,9 @@ Tras la Review del 09/10 (14/20) se aplicó un parche entre el 13/10 y hoy: se
 corrigió el defecto D-01 (las preferencias del cliente ya se proponen al
 registrar un pedido), se eliminó un problema N+1, se auditó la gestión de
 conductores, se rediseñó la interfaz y se preparó un conjunto de datos para
-demostrar el producto. Los PR #47–#53 están integrados en `main`; el PR #54
-(reconexión sin evento `online`) está en revisión.
+demostrar el producto. Los PR #47–#54 están integrados en `main` (`10737e3`). El
+13/10/2026 se grabó una [demostración complementaria](https://drive.google.com/file/d/1YC6s3QDTsN35XVCBZmUVEwc64c_F2rWO/view?usp=sharing) con datos ficticios;
+es posterior a la Review y no sustituye su evaluación.
 
 ## Estado por historia y enabler
 
