@@ -247,6 +247,7 @@ Backend:
 - [ECL-61 — incidencias y límites](backend/evidencias/ECL-61/INCIDENCIAS.md)
 - [ECL-63](backend/evidencias/ECL-63/README.md)
 - [ECL-64](backend/evidencias/ECL-64/README.md)
+- [ECL-25 — Inicio con indicadores agregados](backend/evidencias/ECL-25-inicio/README.md)
 
 Frontend:
 
