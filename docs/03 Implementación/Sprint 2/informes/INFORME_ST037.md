@@ -3,7 +3,7 @@
 **Trazabilidad:** ECL-63 / ST-037 → ECL-25 / EN-007 → RNF-012.
 **Fecha:** 09/10/2026. **Base:** main `8c380fb`.
 **Rama:** `docs/ECL-63-payload-consultas-criticas`.
-**Estado:** análisis parcial; dashboard y rutas pendientes.
+**Estado:** actualizado el 13/10/2026: payload del Inicio medido y dentro del límite; consultas de rutas pendientes de US-006 (ver la última sección).
 
 ## Alcance y cobertura
 
@@ -110,6 +110,39 @@ antes/después. No se incorporan Redis, compresión, caché ni nuevos índices.
 Verificación local: 15 planes reales, medianas recalculadas y guardas de base
 exclusiva/siembra no repetible; Ruff del instrumento.
 CI y revisión humana pendientes del Pull Request.
+
+## Medición del Inicio con indicadores agregados — 13/10/2026
+
+El panel existente del producto es el Inicio. Se aplicó el protocolo anterior
+sobre él, antes y después de sustituir sus dos listados por
+`GET /indicadores/operacion` (detalle del cambio en
+[ST-038](../validaciones/VALIDACION_ST038.md)).
+
+| Paso del protocolo | Registro |
+|---|---|
+| 1. Endpoint, rol y dataset | `GET /indicadores/operacion` con rol Administrador; 50 vehículos, 200 conductores y 30 000 pedidos ficticios; PostgreSQL 16.15 + PostGIS 3.6.2 |
+| 2. Respuesta | HTTP 200, `application/json`, sin `Content-Encoding`; el Inicio no tiene mapa, así que no hay datos de mapa que separar |
+| 3. Bytes UTF-8 frente a 250 000 | 347 bytes (antes, 35 871 en dos respuestas) |
+| 4. Comprimido frente a decodificado | Sin compresión: el cuerpo transferido es el decodificado. La compresión no se aplica porque 347 bytes no la justifican |
+| 5. Planes | `EXPLAIN (ANALYZE, BUFFERS)` de las tres consultas agregadas, antes y después de la migración 0011 |
+
+| Medida | Antes | Después |
+|---|---:|---:|
+| Peticiones | 2 | 1 |
+| Bytes UTF-8 | 35 871 | 347 |
+| Límite de 250 000 bytes | Cumple, pero crece con la flota y los conductores | Cumple, independiente de las filas |
+| Habilitados mostrados | 72 de los primeros 100 (incorrecto) | 145 de 200 |
+
+La medición se hizo dentro del proceso con el cliente de pruebas de FastAPI, no
+con el inspector de red del navegador. Sin compresión, el tamaño del cuerpo es el
+mismo; las cabeceras HTTP no se cuentan.
+
+**Consultas de rutas:** no aplica hasta US-006 (ECL-12); justificación
+documentada: todavía no existen. **Dashboard de sostenibilidad:** la US-009
+(ECL-15) debe ampliar este mismo endpoint y mantener la prueba de 250 KB de CI.
+
+- [Evidencias y reproducción](../../../../backend/evidencias/ECL-25-inicio/README.md).
+- [Instrumento](../../../../backend/scripts/measure_home_payload.py).
 
 [↑ Índice del Sprint 2](../README.md)
 

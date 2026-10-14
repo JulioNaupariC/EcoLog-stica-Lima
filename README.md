@@ -213,12 +213,13 @@ Guías de integración:
 
 ### Estado del Sprint 2 — corte del 13/10/2026
 
-Periodo planificado: 08/10/2026–23/10/2026. Los cuatro documentos están en la
-versión de contenido 1.2.0; el historial del Sprint 1 permanece en Git.
+Periodo planificado: 08/10/2026–23/10/2026. El informe de estado, el registro de
+impedimentos y la revisión están en la versión de contenido 1.3.0, y la
+retrospectiva en la 1.2.0; el historial del Sprint 1 permanece en Git.
 
 En Jira, los cinco padres y las 19 subtareas figuran Finalizada (27/27 SP).
-Contrastados con sus criterios de aceptación: ECL-11 cumple; ECL-9, ECL-22 y
-ECL-23 cumplen parcialmente; ECL-25 no cumple. La Review del 09/10/2026 se
+Contrastados con sus criterios de aceptación: ECL-11 y ECL-25 cumplen; ECL-9,
+ECL-22 y ECL-23 cumplen parcialmente. La Review del 09/10/2026 se
 evaluó con 14/20 sin demostración; el parche posterior (PR #47–#54) y el guion
 de demostración están en la [Revisión del Sprint](<docs/03 Implementación/03 Revisión del Sprint V_1_0_0.md>).
 
@@ -247,6 +248,7 @@ Backend:
 - [ECL-61 — incidencias y límites](backend/evidencias/ECL-61/INCIDENCIAS.md)
 - [ECL-63](backend/evidencias/ECL-63/README.md)
 - [ECL-64](backend/evidencias/ECL-64/README.md)
+- [ECL-25 — Inicio con indicadores agregados](backend/evidencias/ECL-25-inicio/README.md)
 
 Frontend:
 

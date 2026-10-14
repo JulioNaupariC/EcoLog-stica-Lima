@@ -1,0 +1,65 @@
+{
+  "fase": "antes",
+  "fecha": "2026-10-13T23:36:54-05:00",
+  "dataset": "reutilizado",
+  "esperado": {
+    "vehiculos_total": 50,
+    "vehiculos_activos": 45,
+    "capacidad_kg_activa": 76500,
+    "conductores_total": 200,
+    "conductores_habilitados": 145,
+    "pedidos_total": 30000,
+    "pedidos_por_prioridad": {
+      "EXPRESS": 6000,
+      "ESTANDAR": 15000,
+      "ECONOMICO": 9000
+    }
+  },
+  "entorno": {
+    "python": "3.12.10",
+    "postgresql": "16.15"
+  },
+  "antes": {
+    "peticiones": 2,
+    "bytes_utf8_total": 35871,
+    "detalle": {
+      "/vehiculos": {
+        "status": 200,
+        "bytes_utf8": 11775,
+        "sentencias_sql": 3,
+        "cache_control": null,
+        "mediana_ms": 7.37
+      },
+      "/conductores?page=1&page_size=100": {
+        "status": 200,
+        "bytes_utf8": 24096,
+        "sentencias_sql": 4,
+        "cache_control": null,
+        "mediana_ms": 11.42
+      }
+    }
+  },
+  "cifras_inicio_anterior": {
+    "vehiculos_total": 50,
+    "vehiculos_activos": 45,
+    "conductores_total": 200,
+    "habilitados_mostrados": 72,
+    "conductores_evaluados": 100
+  },
+  "despues": {
+    "peticiones": 1,
+    "bytes_utf8_total": 0,
+    "detalle": {
+      "/indicadores/operacion": {
+        "status": 404,
+        "bytes_utf8": 22,
+        "sentencias_sql": 0,
+        "cache_control": null,
+        "mediana_ms": 0.62
+      }
+    }
+  },
+  "explain": {
+    "estado": "repositorio de indicadores aún no existe"
+  }
+}

@@ -1,0 +1,118 @@
+{
+  "fase": "despues-sin-indice",
+  "fecha": "2026-10-13T23:38:21-05:00",
+  "dataset": "reutilizado",
+  "esperado": {
+    "vehiculos_total": 50,
+    "vehiculos_activos": 45,
+    "capacidad_kg_activa": 76500,
+    "conductores_total": 200,
+    "conductores_habilitados": 145,
+    "pedidos_total": 30000,
+    "pedidos_por_prioridad": {
+      "EXPRESS": 6000,
+      "ESTANDAR": 15000,
+      "ECONOMICO": 9000
+    }
+  },
+  "entorno": {
+    "python": "3.12.10",
+    "postgresql": "16.15"
+  },
+  "antes": {
+    "peticiones": 2,
+    "bytes_utf8_total": 35871,
+    "detalle": {
+      "/vehiculos": {
+        "status": 200,
+        "bytes_utf8": 11775,
+        "sentencias_sql": 3,
+        "cache_control": null,
+        "mediana_ms": 11.34
+      },
+      "/conductores?page=1&page_size=100": {
+        "status": 200,
+        "bytes_utf8": 24096,
+        "sentencias_sql": 4,
+        "cache_control": null,
+        "mediana_ms": 13.39
+      }
+    }
+  },
+  "cifras_inicio_anterior": {
+    "vehiculos_total": 50,
+    "vehiculos_activos": 45,
+    "conductores_total": 200,
+    "habilitados_mostrados": 72,
+    "conductores_evaluados": 100
+  },
+  "despues": {
+    "peticiones": 1,
+    "bytes_utf8_total": 347,
+    "detalle": {
+      "/indicadores/operacion": {
+        "status": 200,
+        "bytes_utf8": 347,
+        "sentencias_sql": 5,
+        "cache_control": "private, max-age=30",
+        "mediana_ms": 15.94
+      }
+    }
+  },
+  "explain": {
+    "vehiculos": {
+      "sql": "SELECT count(*) AS total, count(*) FILTER (WHERE vehiculo.estado = %(estado_1)s) AS activos, coalesce(sum(vehiculo.capacidad_kg) FILTER (WHERE vehiculo.estado = %(estado_1)s), %(coalesce_1)s) AS capacidad_kg_activa \nFROM vehiculo",
+      "execution_ms_mediana": 0.038,
+      "plan_ultima_ejecucion": [
+        "Aggregate  (cost=2.13..2.14 rows=1 width=48) (actual time=0.036..0.036 rows=1 loops=1)",
+        "  Buffers: shared hit=1",
+        "  ->  Seq Scan on vehiculo  (cost=0.00..1.50 rows=50 width=12) (actual time=0.008..0.012 rows=50 loops=1)",
+        "        Buffers: shared hit=1",
+        "Planning Time: 0.063 ms",
+        "Execution Time: 0.052 ms"
+      ]
+    },
+    "conductores": {
+      "sql": "SELECT count(*) AS total, count(*) FILTER (WHERE conductor.estado = %(estado_1)s AND usuario.rol = %(rol_1)s AND usuario.estado = %(estado_2)s AND conductor.licencia_vigente_hasta >= %(licencia_vigente_hasta_1)s AND conductor.disponible_desde IS NOT NULL AND conductor.disponible_hasta IS NOT NULL AND conductor.disponible_hasta > %(disponible_hasta_1)s) AS habilitados \nFROM conductor LEFT OUTER JOIN usuario ON usuario.usuario_id = conductor.usuario_id",
+      "execution_ms_mediana": 0.169,
+      "plan_ultima_ejecucion": [
+        "Aggregate  (cost=19.56..19.57 rows=1 width=16) (actual time=0.154..0.154 rows=1 loops=1)",
+        "  Buffers: shared hit=9",
+        "  ->  Hash Left Join  (cost=8.52..16.06 rows=200 width=44) (actual time=0.062..0.118 rows=200 loops=1)",
+        "        Hash Cond: (conductor.usuario_id = usuario.usuario_id)",
+        "        Buffers: shared hit=9",
+        "        ->  Seq Scan on conductor  (cost=0.00..7.00 rows=200 width=43) (actual time=0.005..0.016 rows=200 loops=1)",
+        "              Buffers: shared hit=5",
+        "        ->  Hash  (cost=6.01..6.01 rows=201 width=33) (actual time=0.054..0.054 rows=201 loops=1)",
+        "              Buckets: 1024  Batches: 1  Memory Usage: 21kB",
+        "              Buffers: shared hit=4",
+        "              ->  Seq Scan on usuario  (cost=0.00..6.01 rows=201 width=33) (actual time=0.005..0.030 rows=201 loops=1)",
+        "                    Buffers: shared hit=4",
+        "Planning:",
+        "  Buffers: shared hit=8",
+        "Planning Time: 0.123 ms",
+        "Execution Time: 0.169 ms"
+      ]
+    },
+    "pedidos": {
+      "sql": "SELECT pedido.estado, pedido.prioridad, count(*) AS count_1 \nFROM pedido GROUP BY pedido.estado, pedido.prioridad ORDER BY pedido.estado, pedido.prioridad",
+      "execution_ms_mediana": 8.673,
+      "plan_ultima_ejecucion": [
+        "Sort  (cost=1246.05..1246.06 rows=3 width=27) (actual time=7.488..7.489 rows=3 loops=1)",
+        "  Sort Key: estado, prioridad",
+        "  Sort Method: quicksort  Memory: 25kB",
+        "  Buffers: shared hit=721",
+        "  ->  HashAggregate  (cost=1246.00..1246.03 rows=3 width=27) (actual time=7.478..7.479 rows=3 loops=1)",
+        "        Group Key: estado, prioridad",
+        "        Batches: 1  Memory Usage: 24kB",
+        "        Buffers: shared hit=721",
+        "        ->  Seq Scan on pedido  (cost=0.00..1021.00 rows=30000 width=19) (actual time=0.005..1.442 rows=30000 loops=1)",
+        "              Buffers: shared hit=721",
+        "Planning:",
+        "  Buffers: shared hit=4",
+        "Planning Time: 0.117 ms",
+        "Execution Time: 7.513 ms"
+      ]
+    }
+  }
+}
