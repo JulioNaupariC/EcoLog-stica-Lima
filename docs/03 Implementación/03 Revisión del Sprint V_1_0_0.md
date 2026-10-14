@@ -162,7 +162,6 @@ Registro comunicado por Antony Munive Ríos.
 | Mapa con alertas operativas reales | ECL-14 | Product Backlog — priorizar en el Sprint Planning 3 |
 | Carga sostenida de 100 solicitudes y SLA mensual | ECL-23 | Product Backlog — priorizar en el Sprint Planning 3 |
 | Ratificación de las BDD de conductores y preferencias | ECL-47, ECL-51 | Sprint 2 (antes del cierre) |
-| Revisión e integración de la reconexión sin evento `online` | ECL-58 (PR #54) | Sprint 2 |
 | Prueba con lector de pantalla | ECL-22 | Product Backlog — priorizar en el Sprint Planning 3 |
 
 ## Historial de versiones
