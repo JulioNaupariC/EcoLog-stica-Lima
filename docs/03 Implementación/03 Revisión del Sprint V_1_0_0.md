@@ -40,7 +40,7 @@ Los datos de la demostración son ficticios y se crean con `backend/scripts/seed
 |---|---|---|---|---|---|
 | Dorada | El Administrador registra un conductor con licencia vigente y disponibilidad válida | Queda habilitado para asignación | `habilitado_asignacion = true`; alta auditada | `verify-drivers.mjs` (Chrome y Firefox, 13/10), [`test_conductor_audit.py`](../../backend/tests/integration/test_conductor_audit.py) | Cumple |
 | Feliz | El Operador cambia la disponibilidad de un conductor habilitado | La nueva franja se guarda | PATCH 200; evento `CONDUCTOR_ACTUALIZADO` con los campos modificados, sin valores personales | [`test_conductor_audit.py`](../../backend/tests/integration/test_conductor_audit.py) | Cumple |
-| Feliz | La nueva franja se usa en planificaciones posteriores | El planificador la considera | No existe planificador de rutas | — | Pendiente (ECL-12, Sprint 3) |
+| Feliz | La nueva franja se usa en planificaciones posteriores | El planificador la considera | No existe planificador de rutas | — | Pendiente (ECL-12, candidato al Sprint 3) |
 | Infeliz | Conductor con licencia vencida | El sistema impide su asignación e informa la restricción | Aparece «No habilitado» y «Licencia vencida» en el perfil; no hay asignación de rutas que bloquear | Demo: «Conductor Demo Licencia Vencida»; [ST-024](<Sprint 2/validaciones/VALIDACION_ST024.md>) | Parcial |
 | Infeliz | Registro con un DNI ya registrado | Conflicto sin cambios | HTTP 409 y alerta; los datos no cambian | `verify-drivers.mjs`, [ST-024](<Sprint 2/validaciones/VALIDACION_ST024.md>) | Cumple |
 | Borde | Conductor sin franja de disponibilidad | No habilitado | «Sin disponibilidad» y «No habilitado» | [`test_seed_demo.py`](../../backend/tests/integration/test_seed_demo.py) | Cumple |
@@ -66,8 +66,8 @@ La aceptación formal requiere ratificar la BDD ECL-51, que sigue en BORRADOR (i
 | Feliz | Pierde y recupera la conexión con reportes pendientes | Conserva el itinerario y sincroniza | 10 rondas por navegador; 20 reportes persistidos una sola vez | [Reprueba ECL-58](../../frontend/evidencias/ECL-58/retest-20261013/README.md) (Chrome 155 y Firefox 157), PR #54 | Cumple |
 | Infeliz | La API no responde al reconectar | Reintenta sin duplicar | Reintento con espera creciente; sin duplicados | Ronda 2 de la reprueba | Cumple |
 | Infeliz | Falla la carga sin itinerario guardado | Mensaje claro y opción de reintentar | «No se pudo cargar tu itinerario» con «Reintentar» | [`DriverItineraryPage.test.tsx`](../../frontend/src/pages/DriverItineraryPage.test.tsx) | Cumple |
-| Borde | Alertas operativas en la ruta | Visibles junto a la siguiente parada | Solo existen en el ejemplo ficticio; no hay fuente real de alertas | — | Pendiente (ECL-14, Sprint 3) |
-| Borde | Uso con lector de pantalla | Navegación comprensible | No evaluado con lector de pantalla | — | Pendiente (Sprint 3) |
+| Borde | Alertas operativas en la ruta | Visibles junto a la siguiente parada | Solo existen en el ejemplo ficticio; no hay fuente real de alertas | — | Pendiente (ECL-14; Product Backlog — priorizar en el Sprint Planning 3) |
+| Borde | Uso con lector de pantalla | Navegación comprensible | No evaluado con lector de pantalla | — | Pendiente (Product Backlog — priorizar en el Sprint Planning 3) |
 
 ### ECL-23 / EN-005 — Capacidad, disponibilidad y observabilidad
 
@@ -86,7 +86,7 @@ La aceptación formal requiere ratificar la BDD ECL-51, que sigue en BORRADOR (i
 | Dorada | Consulta normal del dashboard | Respuesta ≤250 KB sin mapa | El dashboard no existe; no hay respuesta que medir | [ST-037](<Sprint 2/informes/INFORME_ST037.md>) | No cumple |
 | Feliz | Plan de las consultas de pedidos | Índices o justificación, sin datos innecesarios | Existencia de cliente con un booleano (de 58 a 1 byte de valores); índices justificados | [ST-038](<Sprint 2/validaciones/VALIDACION_ST038.md>) | Cumple |
 | Infeliz | Listado con una consulta por fila (N+1) | Detectado y corregido | De 22 a 2 consultas por página | ST-038, [PR #48](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/48) | Cumple |
-| Borde | Consultas de rutas optimizadas | Revisadas | No existen todavía | — | Pendiente (ECL-12, Sprint 3) |
+| Borde | Consultas de rutas optimizadas | Revisadas | No existen todavía | — | Pendiente (ECL-12, candidato al Sprint 3) |
 
 ## Guion de demostración
 
@@ -150,17 +150,17 @@ las capturas.
 
 ## Pendientes
 
-| Pendiente | Clave Jira | Sprint de destino |
+| Pendiente | Clave Jira | Destino |
 |---|---|---|
-| Planificador VRPTW y asignación real de rutas | ECL-12, ECL-21 | Sprint 3 |
-| Reoptimización ante incidencias | ECL-13 | Sprint 3 |
-| Versionado de parámetros y exactitud de cálculos | ECL-26 | Sprint 3 |
-| Dashboard y medición del payload ≤250 KB | ECL-15, ECL-25 | Sprint 3 |
-| Mapa con alertas operativas reales | ECL-14 | Sprint 3 |
-| Carga sostenida de 100 solicitudes y SLA mensual | ECL-23 | Sprint 3 |
+| Planificador VRPTW y asignación real de rutas | ECL-12, ECL-21 | Candidatos al Sprint 3 (primeros del backlog) |
+| Reoptimización ante incidencias | ECL-13 | Product Backlog — priorizar en el Sprint Planning 3 |
+| Versionado de parámetros y exactitud de cálculos | ECL-26 | Product Backlog — priorizar en el Sprint Planning 3 |
+| Dashboard y medición del payload ≤250 KB | ECL-15, ECL-25 | Product Backlog — priorizar en el Sprint Planning 3 |
+| Mapa con alertas operativas reales | ECL-14 | Product Backlog — priorizar en el Sprint Planning 3 |
+| Carga sostenida de 100 solicitudes y SLA mensual | ECL-23 | Product Backlog — priorizar en el Sprint Planning 3 |
 | Ratificación de las BDD de conductores y preferencias | ECL-47, ECL-51 | Sprint 2 (antes del cierre) |
 | Revisión e integración de la reconexión sin evento `online` | ECL-58 (PR #54) | Sprint 2 |
-| Prueba con lector de pantalla | ECL-22 | Sprint 3 |
+| Prueba con lector de pantalla | ECL-22 | Product Backlog — priorizar en el Sprint Planning 3 |
 
 ## Historial de versiones
 

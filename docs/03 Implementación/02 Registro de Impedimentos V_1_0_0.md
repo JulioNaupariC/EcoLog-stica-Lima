@@ -65,14 +65,14 @@ clave de Jira; los resueltos indican el PR que los cierra.
 | Alta y edición de conductores sin auditoría (RN-015) | ECL-48 | Incumplía una regla de negocio | Alta | Resuelto 13/10/2026 | [PR #50](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/50), migración 0010 |
 | El itinerario mostraba datos ficticios junto a los reales | ECL-56 | Información engañosa para el conductor | Alta | Resuelto 13/10/2026 | [PR #51](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/51) |
 | Sincronización offline no se reactivaba en Firefox si faltaba el evento `online` | ECL-58 | Reportes retenidos en el dispositivo | Alta | En revisión | [PR #54](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/54) |
-| Dashboard inexistente: el payload ≤250 KB (RNF-012) no es medible | ECL-15 / ECL-25 | ECL-25 no cumple | Alta | Pendiente | Sprint 3, después de la primera ruta optimizada |
-| Asignación real de rutas (planificador VRPTW) | ECL-12 (EP-03) | Licencia vencida y disponibilidad no se aplican en una asignación real | Alta | Pendiente | Sprint 3 |
-| Carga sostenida de 100 solicitudes no acreditada (19–21 % de segundos ≥100) | ECL-23 / ECL-61 | EN-005 parcial | Media | Pendiente | Sprint 3: repetir la corrida con el generador corregido |
-| SLA mensual ≥99,5 % no medido | ECL-23 / ECL-62 | EN-005 parcial | Media | Pendiente | Sprint 3: requiere un mes de observación |
-| Alertas operativas reales y prueba con lector de pantalla | ECL-14 / ECL-22 | EN-004 parcial | Media | Pendiente | Sprint 3 |
-| Vulnerabilidad alta transitiva en `source-map-js` (ya registrada en ST-032) | Sin clave; crear en el Sprint 3 | Riesgo en la cadena de dependencias de desarrollo | Media | Pendiente | `npm audit` del 13/10/2026: 1 alta, corrección disponible |
-| División del bundle por rutas (+49 KB tras el rediseño) | Sin clave; crear en el Sprint 3 | Carga inicial mayor | Baja | Pendiente | Al incorporar el mapa (ECL-14) |
-| Punto de partida como geografía PostGIS, ventanas estructuradas en preferencias y CRUD completo de clientes | Sin clave; crear en el Sprint 3 | Fuera del alcance del parche | Baja | Pendiente | Sprint 3 |
+| Dashboard inexistente: el payload ≤250 KB (RNF-012) no es medible | ECL-15 / ECL-25 | ECL-25 no cumple | Alta | Pendiente | Product Backlog — priorizar en el Sprint Planning 3; después de la primera ruta optimizada |
+| Asignación real de rutas (planificador VRPTW) | ECL-12 (EP-03) | Licencia vencida y disponibilidad no se aplican en una asignación real | Alta | Pendiente | Candidato al Sprint 3 (primeros del backlog) |
+| Carga sostenida de 100 solicitudes no acreditada (19–21 % de segundos ≥100) | ECL-23 / ECL-61 | EN-005 parcial | Media | Pendiente | Product Backlog — priorizar en el Sprint Planning 3: repetir la corrida con el generador corregido |
+| SLA mensual ≥99,5 % no medido | ECL-23 / ECL-62 | EN-005 parcial | Media | Pendiente | Product Backlog — priorizar en el Sprint Planning 3: requiere un mes de observación |
+| Alertas operativas reales y prueba con lector de pantalla | ECL-14 / ECL-22 | EN-004 parcial | Media | Pendiente | Product Backlog — priorizar en el Sprint Planning 3 |
+| Vulnerabilidad alta transitiva en `source-map-js` (ya registrada en ST-032) | Sin clave; registrar en el Product Backlog | Riesgo en la cadena de dependencias de desarrollo | Media | Pendiente | Product Backlog — priorizar en el Sprint Planning 3; `npm audit` del 13/10/2026: 1 alta, corrección disponible |
+| División del bundle por rutas (+49 KB tras el rediseño) | Sin clave; registrar en el Product Backlog | Carga inicial mayor | Baja | Pendiente | Product Backlog — priorizar en el Sprint Planning 3; al incorporar el mapa (ECL-14) |
+| Punto de partida como geografía PostGIS, ventanas estructuradas en preferencias y CRUD completo de clientes | Sin clave; registrar en el Product Backlog | Fuera del alcance del parche | Baja | Pendiente | Product Backlog — priorizar en el Sprint Planning 3 |
 
 ## Fuentes
 
