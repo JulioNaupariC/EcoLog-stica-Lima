@@ -16,3 +16,8 @@ export function canManageOperations(role: AuthRole | undefined): boolean {
 export function canListVehicles(role: AuthRole | undefined): boolean {
   return canManageOperations(role) || role === 'AUDITOR'
 }
+
+/** indicadores.consultar with general scope (RBAC): every role except the driver, whose scope is its own. */
+export function canViewOperationIndicators(role: AuthRole | undefined): boolean {
+  return role !== undefined && role !== 'CONDUCTOR'
+}

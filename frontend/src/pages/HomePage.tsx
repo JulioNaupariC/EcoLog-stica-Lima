@@ -1,14 +1,13 @@
 import { useEffect, useState } from 'react'
 import {
-  BarChart3, Building2, CheckCircle2, ClipboardList, Leaf, Map, Route as RouteIcon, Truck, UploadCloud, UserRound,
+  BarChart3, Building2, CheckCircle2, ClipboardList, Leaf, Map, Package, Route as RouteIcon, Truck, UploadCloud, UserRound,
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { Badge, Card, LinkButton, PageHeader, StatCard } from '../components/ui'
-import { canListVehicles, canManageOperations, ROLE_LABEL } from '../domain/roles'
+import { canListVehicles, canManageOperations, canViewOperationIndicators, ROLE_LABEL } from '../domain/roles'
 import type { AuthRole } from '../services/auth'
-import { listVehicles } from '../services/vehicles'
-import { listDrivers } from '../services/drivers'
+import { getOperationIndicators } from '../services/indicators'
 import { loadItinerary } from '../services/offlineStorage'
 import { listPendingReports } from '../services/reportQueue'
 
@@ -29,8 +28,11 @@ function useFigure<T>(enabled: boolean, load: () => Promise<T>): Figure<T> {
   return figure
 }
 
+const NUMBER = new Intl.NumberFormat('es-PE')
+const TIME = new Intl.DateTimeFormat('es-PE', { timeStyle: 'short', timeZone: 'America/Lima' })
+
 function plural(count: number, one: string, many: string) {
-  return `${count} ${count === 1 ? one : many}`
+  return `${NUMBER.format(count)} ${count === 1 ? one : many}`
 }
 
 const UNAVAILABLE = 'No disponible en este momento'
@@ -57,26 +59,30 @@ function ComingSoon() {
 function StaffHome({ role }: { role: AuthRole }) {
   const manage = canManageOperations(role)
   const vehiclesVisible = canListVehicles(role)
-  const vehicles = useFigure(vehiclesVisible, listVehicles)
-  const drivers = useFigure(manage, () => listDrivers(1, 100))
+  const summaryVisible = canViewOperationIndicators(role)
+  // One aggregated request (ECL-25): no lists are downloaded just to count them.
+  const indicators = useFigure(summaryVisible, getOperationIndicators)
+  const ready = indicators.status === 'ready' ? indicators.value : null
+  const loading = indicators.status === 'loading'
+  const unavailable = indicators.status === 'error' ? UNAVAILABLE : undefined
   return <>
-    {vehiclesVisible || manage ? <section aria-labelledby="home-summary-title" className="home-section">
-      <h2 id="home-summary-title" className="section-title">Resumen de recursos</h2>
+    {summaryVisible ? <section aria-labelledby="home-summary-title" className="home-section">
+      <h2 id="home-summary-title" className="section-title">Resumen de la operación</h2>
       <div className="stat-grid">
-        {vehiclesVisible ? <StatCard icon={Truck} label="Vehículos registrados" loading={vehicles.status === 'loading'}
-          value={vehicles.status === 'ready' ? vehicles.value.length : '—'}
-          detail={vehicles.status === 'ready'
-            ? plural(vehicles.value.filter(item => item.estado === 'ACTIVO').length, 'activo', 'activos')
-            : vehicles.status === 'error' ? UNAVAILABLE : undefined} /> : null}
-        {manage ? <StatCard icon={UserRound} label="Conductores registrados" loading={drivers.status === 'loading'}
-          value={drivers.status === 'ready' ? drivers.value.total : '—'}
-          detail={drivers.status === 'ready'
-            ? plural(drivers.value.items.filter(item => item.habilitado_asignacion).length,
-              'habilitado para asignación', 'habilitados para asignación')
-              + (drivers.value.total > drivers.value.items.length ? ' (primeros 100)' : '')
-            : drivers.status === 'error' ? UNAVAILABLE : undefined} /> : null}
+        <StatCard icon={Truck} label="Vehículos registrados" loading={loading}
+          value={ready ? NUMBER.format(ready.vehiculos.total) : '—'}
+          detail={ready ? plural(ready.vehiculos.activos, 'activo', 'activos') : unavailable} />
+        <StatCard icon={UserRound} label="Conductores registrados" loading={loading}
+          value={ready ? NUMBER.format(ready.conductores.total) : '—'}
+          detail={ready
+            ? plural(ready.conductores.habilitadosAsignacion, 'habilitado para asignación', 'habilitados para asignación')
+            : unavailable} />
+        <StatCard icon={Package} label="Pedidos registrados" loading={loading}
+          value={ready ? NUMBER.format(ready.pedidos.total) : '—'}
+          detail={ready ? plural(ready.pedidos.porEstado.PENDIENTE ?? 0, 'pendiente', 'pendientes') : unavailable} />
       </div>
-    </section> : <p className="page-description">Tu rol no tiene acceso a los listados operativos de esta versión.</p>}
+      {ready ? <p className="home-note">Cifras agregadas a las {TIME.format(new Date(ready.generadoEn))}.</p> : null}
+    </section> : <p className="page-description">Tu rol no tiene acceso a los indicadores de la operación.</p>}
     {manage || vehiclesVisible ? <section aria-labelledby="home-shortcuts-title" className="home-section">
       <h2 id="home-shortcuts-title" className="section-title">Accesos rápidos</h2>
       <ul className="quick-links">
