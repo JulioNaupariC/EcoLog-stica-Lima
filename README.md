@@ -211,24 +211,16 @@ Guías de integración:
 - [Guía ST-031 y ST-032](<docs/03 Implementación/Sprint 2/guias/GUIA_JOSE_ST031_ST032.md>)
 - [Guía ST-035](<docs/03 Implementación/Sprint 2/guias/GUIA_JOSE_ST035.md>)
 
-### Estado del Sprint 2 — corte del 09/10/2026
+### Estado del Sprint 2 — corte del 13/10/2026
 
-Periodo planificado comunicado: 08/10/2026–23/10/2026. Los cuatro documentos
-sustituyen su contenido anterior por el Sprint 2; el historial del Sprint 1
-permanece en Git. Se conservan los nombres exigidos por la consigna y se registra
-la versión de contenido 1.1.0 en encabezados e historial.
+Periodo planificado: 08/10/2026–23/10/2026. Los cuatro documentos están en la
+versión de contenido 1.2.0; el historial del Sprint 1 permanece en Git.
 
-El incremento incluye conductores, preferencias, experiencia móvil/offline,
-observabilidad y mediciones de rendimiento. La entrega de subtareas se distingue
-de la aceptación de historias: P8, rutas reales, payload de dashboard,
-concurrencia sostenida y SLA mantienen los límites documentados.
-Review y retrospectiva se preparan para la exposición; sus actas quedan pendientes.
-La planificación inicial de la fase 02 conserva su carácter histórico.
-
-La captura Jira aportada muestra los cinco padres y las 19 subtareas como
-Finalizada: 27/27 SP y 19/19 subtareas, medidas separadas. El sprint aparece
-activo con la accion Completar sprint; sus limites tecnicos estan documentados
-en los entregables.
+En Jira, los cinco padres y las 19 subtareas figuran Finalizada (27/27 SP).
+Contrastados con sus criterios de aceptación: ECL-11 cumple; ECL-9, ECL-22 y
+ECL-23 cumplen parcialmente; ECL-25 no cumple. La Review del 09/10/2026 se
+evaluó con 14/20 sin demostración; el parche posterior (PR #47–#54) y el guion
+de demostración están en la [Revisión del Sprint](<docs/03 Implementación/03 Revisión del Sprint V_1_0_0.md>).
 
 ## Fase 04: Contribución
 
