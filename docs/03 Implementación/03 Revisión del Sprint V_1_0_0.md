@@ -12,7 +12,7 @@
 
 **Fecha de corte:** 13/10/2026, America/Lima.
 
-**Versión del contenido:** 1.2.0.
+**Versión del contenido:** 1.3.0.
 
 **Fuente del corte técnico:** `main` en `ea30983` (PR #47–#55 integrados).
 
@@ -26,7 +26,7 @@
 | ECL-11 / US-005 Preferencias de entrega | 3 | Finalizada | Cumple (BDD pendiente de ratificar) |
 | ECL-22 / EN-004 Experiencia móvil, accesible y offline | 8 | Finalizada | Parcial |
 | ECL-23 / EN-005 Capacidad, disponibilidad y observabilidad | 8 | Finalizada | Parcial |
-| ECL-25 / EN-007 Transferencia de datos y consultas | 3 | Finalizada | No cumple |
+| ECL-25 / EN-007 Transferencia de datos y consultas | 3 | Finalizada | Cumple (desde el 13/10/2026; rutas justificadas hasta US-006) |
 
 Solo se presenta como completo lo que se demuestra a continuación. Los criterios
 proceden de las BDD de [Transformando a ágil](<../02 Planificación/01 Transformando a ágil V_1_0_0.md>).
@@ -83,10 +83,13 @@ La aceptación formal requiere ratificar la BDD ECL-51, que sigue en BORRADOR (i
 
 | Tipo de ruta | Escenario | Resultado esperado | Resultado observado | Evidencia | Estado |
 |---|---|---|---|---|---|
-| Dorada | Consulta normal del dashboard | Respuesta ≤250 KB sin mapa | El dashboard no existe; no hay respuesta que medir | [ST-037](<Sprint 2/informes/INFORME_ST037.md>) | No cumple |
+| Dorada | Consulta normal del Inicio, único panel existente | Respuesta agregada ≤250 KB sin mapa | 347 bytes en una petición con 50 vehículos, 200 conductores y 30 000 pedidos (antes 35 871 en dos) | [ST-037](<Sprint 2/informes/INFORME_ST037.md>), [evidencias](../../backend/evidencias/ECL-25-inicio/README.md) | Cumple |
+| Feliz | Indicadores agregados en SQL con caché privada | Sin listas descargadas para contar; vigencia acotada | `GET /indicadores/operacion`, 5 sentencias SQL fijas, `Cache-Control: private, max-age=30` | [ST-038](<Sprint 2/validaciones/VALIDACION_ST038.md>) | Cumple |
 | Feliz | Plan de las consultas de pedidos | Índices o justificación, sin datos innecesarios | Existencia de cliente con un booleano (de 58 a 1 byte de valores); índices justificados | [ST-038](<Sprint 2/validaciones/VALIDACION_ST038.md>) | Cumple |
 | Infeliz | Listado con una consulta por fila (N+1) | Detectado y corregido | De 22 a 2 consultas por página | ST-038, [PR #48](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/48) | Cumple |
-| Borde | Consultas de rutas optimizadas | Revisadas | No existen todavía | — | Pendiente (ECL-12, candidato al Sprint 3) |
+| Infeliz | Más de 100 conductores | Habilitados contados sobre el total | Antes 72 de los primeros 100; ahora 145 de 200, igual que `habilitado_asignacion` | [`test_indicadores_operacion.py`](../../backend/tests/integration/test_indicadores_operacion.py) | Cumple |
+| Borde | Base vacía y plan del agregado de pedidos | Ceros sin error; índice o justificación | Ceros; index-only scan con 28 buffers frente a 721 (migración 0011) | [ST-038](<Sprint 2/validaciones/VALIDACION_ST038.md>) | Cumple |
+| Borde | Consultas de rutas optimizadas | Índices o justificación documentada | No aplica hasta US-006: no existen; justificación documentada en ST-037 y ST-038 | [ST-038](<Sprint 2/validaciones/VALIDACION_ST038.md>) | Justificado (revisar con ECL-12) |
 
 ## Guion de demostración
 
@@ -158,7 +161,8 @@ Registro comunicado por Antony Munive Ríos.
 | Planificador VRPTW y asignación real de rutas | ECL-12, ECL-21 | Candidatos al Sprint 3 (primeros del backlog) |
 | Reoptimización ante incidencias | ECL-13 | Product Backlog — priorizar en el Sprint Planning 3 |
 | Versionado de parámetros y exactitud de cálculos | ECL-26 | Product Backlog — priorizar en el Sprint Planning 3 |
-| Dashboard y medición del payload ≤250 KB | ECL-15, ECL-25 | Product Backlog — priorizar en el Sprint Planning 3 |
+| Dashboard de sostenibilidad que amplíe `/indicadores/operacion` y mantenga la prueba de 250 KB | ECL-15 | Product Backlog — priorizar en el Sprint Planning 3 |
+| Revisión de las consultas de rutas cuando existan | ECL-12, ECL-25 | Candidato al Sprint 3 (primeros del backlog) |
 | Mapa con alertas operativas reales | ECL-14 | Product Backlog — priorizar en el Sprint Planning 3 |
 | Carga sostenida de 100 solicitudes y SLA mensual | ECL-23 | Product Backlog — priorizar en el Sprint Planning 3 |
 | Ratificación de las BDD de conductores y preferencias | ECL-47, ECL-51 | Sprint 2 (antes del cierre) |
@@ -171,6 +175,7 @@ Registro comunicado por Antony Munive Ríos.
 | 1.0.0 | 01/10/2026 | Entregable del Sprint 1; contenido anterior conservado en el historial Git. |
 | 1.1.0 | 09/10/2026 | Sustitución del contenido por el entregable del Sprint 2, con evidencias y pendientes al corte. |
 | 1.2.0 | 13/10/2026 | Criterios por tipo de ruta, guion de demostración con datos ficticios, acta de la Review del 09/10 y pendientes con clave Jira. |
+| 1.3.0 | 13/10/2026 | Criterios de ECL-25 acreditados con los indicadores agregados del Inicio; pendientes de dashboard y rutas actualizados. |
 
 El nombre V_1_0_0 del archivo se conserva por exigencia de la consigna.
 
