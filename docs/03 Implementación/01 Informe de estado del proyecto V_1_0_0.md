@@ -67,7 +67,7 @@ PR #47–#53.
 | Frontend: eslint y tsc | Sin errores | Sin errores |
 | Frontend: pruebas | 529 pasan; cobertura 95,47 % de sentencias | 471 |
 | Frontend: build | JS 392,9 KB (120,1 KB gzip); CSS 42,0 KB | JS 343,8 KB (104 KB gzip) |
-| Accesibilidad | axe-core 4.13.0 sin violaciones WCAG 2.1 AA en Chrome 155 y Firefox 157 | Sin auditoría automática del producto completo |
+| Accesibilidad | axe-core 4.13.0 sin violaciones WCAG 2.1 AA en Chrome 155 y Firefox 146.0.1 | Sin auditoría automática del producto completo |
 | Contraste | 50 combinaciones de color cumplen AA (temas claro y oscuro) | No verificado |
 | Navegación de documentación | `scripts/check_docs.py` sin errores, en CI | 38 documentos sin enlazar |
 | Listado de conductores | 2 consultas SQL por página (antes 22 con 20 filas, 102 con 100) | N+1 |
@@ -84,7 +84,7 @@ PR #47–#53.
 | 2.4 Itinerario sin datos ficticios | El ejemplo solo aparece con `VITE_DEMO_ITINERARY=true` | [#51](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/51) |
 | 2.5 Datos de demostración | `seed_demo.py` idempotente, solo sobre bases `*_demo` | [#52](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/52) |
 | 3. Rediseño UI/UX | Sistema de diseño, modo oscuro, layout por rol e itinerario real; 84 capturas antes/después | [#53](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/53) |
-| 3. Reconexión sin evento `online` | Sincronización offline estable en Firefox; reprueba 3/3 | [#54](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/54) (en revisión) |
+| 3. Reconexión sin evento `online` | Sincronización offline estable; reprueba 3/3 en Chrome 155 y Firefox 157.0 | [#54](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/54) (en revisión) |
 
 ## Riesgos para el Sprint 3
 

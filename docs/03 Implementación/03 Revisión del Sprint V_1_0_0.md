@@ -62,7 +62,7 @@ La aceptación formal requiere ratificar la BDD ECL-51, que sigue en BORRADOR (i
 
 | Tipo de ruta | Escenario | Resultado esperado | Resultado observado | Evidencia | Estado |
 |---|---|---|---|---|---|
-| Dorada | El conductor consulta su ruta a 360 px | Ve la siguiente parada sin desplazamiento horizontal y con WCAG 2.1 AA | Tarjeta destacada de la siguiente parada; 0 violaciones axe; sin desbordamiento a 360/768/1280 px | [Accesibilidad](../../frontend/evidencias/ECL-22-rediseno/README.md), capturas `07-itinerario-*` | Cumple |
+| Dorada | El conductor consulta su ruta a 360 px | Ve la siguiente parada sin desplazamiento horizontal y con WCAG 2.1 AA | Tarjeta destacada de la siguiente parada; 0 violaciones axe en Chrome 155 y Firefox 146.0.1; sin desbordamiento a 360/768/1280 px | [Accesibilidad](../../frontend/evidencias/ECL-22-rediseno/README.md), capturas `07-itinerario-*` | Cumple |
 | Feliz | Pierde y recupera la conexión con reportes pendientes | Conserva el itinerario y sincroniza | 10 rondas por navegador; 20 reportes persistidos una sola vez | [Reprueba ECL-58](../../frontend/evidencias/ECL-58/retest-20261013/README.md) (Chrome 155 y Firefox 157), PR #54 | Cumple |
 | Infeliz | La API no responde al reconectar | Reintenta sin duplicar | Reintento con espera creciente; sin duplicados | Ronda 2 de la reprueba | Cumple |
 | Infeliz | Falla la carga sin itinerario guardado | Mensaje claro y opción de reintentar | «No se pudo cargar tu itinerario» con «Reintentar» | [`DriverItineraryPage.test.tsx`](../../frontend/src/pages/DriverItineraryPage.test.tsx) | Cumple |
