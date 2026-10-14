@@ -48,6 +48,7 @@ class Pedido(Base):
             "tipo_producto ~ '[^[:space:]]'", name="ck_pedido_tipo_producto"
         ),
         Index("idx_pedido_pendiente_ventana", "estado", "ventana_inicio"),
+        Index("idx_pedido_estado_prioridad", "estado", "prioridad"),
         Index("idx_pedido_ubicacion", "ubicacion", postgresql_using="gist"),
     )
 
