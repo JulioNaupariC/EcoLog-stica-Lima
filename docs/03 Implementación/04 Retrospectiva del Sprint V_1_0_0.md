@@ -26,7 +26,7 @@ describe hechos del proceso y sus causas, no desempeños individuales.
 |---|---|---|
 | H1 | Las subtareas pasaron por «En curso» sin trabajo registrado en ese estado | Casi todas las subtareas ECL-46 a ECL-64 estuvieron entre 0,5 y 3 segundos en «En curso» (Time in Status de Jira) |
 | H2 | El cierre se concentró al final y no reflejó el avance real | 19 subtareas pasaron a Finalizada en unas 36 horas de un sprint de 15 días |
-| H3 | La aprobación existió, pero el merge lo hizo el propio autor y muy rápido | PR #22–#46: 21 de 23 integrados por su autor; los 23 tienen aprobación de otra persona; 10 integrados a 6 minutos o menos de abrirse; mediana 13,8 minutos |
+| H3 | La regla de aprobación independiente se cumplió, pero el tiempo de revisión fue muy corto | PR #22–#46: los 23 integrados tienen la aprobación de una persona distinta del autor antes del merge (0 sin aprobación independiente); 10 se integraron a 6 minutos o menos de abrirse; mediana 13,8 minutos |
 | H4 | La autoría en Git no coincide con el responsable en Jira | ECL-9 y ECL-11 (responsable Frank): código de Antony y Giancarlo. `metrics.py` de ECL-23 (responsable Julio): Giancarlo. `compare_client_lookup.py` de ECL-25 (responsable Antony): Giancarlo |
 | H5 | Se implementó contra criterios no ratificados | Las BDD de ECL-47 y ECL-51 siguen en estado BORRADOR |
 | H6 | No se demostró el producto en la Review | Acta del 09/10/2026: demostración no realizada; criterio 3 de la rúbrica con 2/4 |
@@ -45,11 +45,12 @@ describe hechos del proceso y sus causas, no desempeños individuales.
 
 ### Relaciones
 
-- **Qué pasó:** la revisión cruzada fue formal: hubo aprobaciones, pero el autor
-  integró minutos después (H3), con poco margen para que el revisor reprodujera
-  el cambio.
-- **Causa raíz:** no existe un acuerdo sobre el tiempo mínimo de revisión ni sobre
-  quién integra; la protección de `main` no está verificada (impedimento I-05).
+- **Qué pasó:** todos los PR tuvieron la aprobación de otra persona, exigida por la
+  protección de `main` (impedimento I-05, resuelto), pero 10 de 23 se aprobaron e
+  integraron a 6 minutos o menos de abrirse (H3), con poco margen para que el
+  revisor reprodujera el cambio.
+- **Causa raíz:** las integraciones se concentraron en pocas horas al final
+  (H2), y la revisión se hizo con prisa para cerrar el tablero.
 - **Qué pasó también:** los criterios de conductores y preferencias no se
   ratificaron entre negocio, UX y backend antes de implementar (H5); el defecto
   D-01 (preferencias no propuestas en el pedido) nació de esa ambigüedad.
@@ -98,7 +99,7 @@ Sprint 3 con la misma tabla de seguimiento.
 | # | Acción | Responsable | Fecha límite | Métrica verificable | Cómo se comprobará |
 |---|---|---|---|---|---|
 | A1 | Comprobar el Definition of Done (criterios con evidencia enlazada, pruebas en verde, revisión) antes de mover una tarea a Finalizada | Julio Armando Naupari Camarena | 23/10/2026 | 100 % de las tareas finalizadas del Sprint 3 con enlace a evidencia; ninguna con menos de 1 hora en «En curso» | Time in Status de Jira y revisión de enlaces en la planificación del Sprint 3 |
-| A2 | Exigir la aprobación de una persona distinta del autor e impedir el merge sin ella (protección de `main`) | Julio Armando Naupari Camarena | 16/10/2026 | Regla activa con 1 aprobación obligatoria; 0 PR integrados sin aprobación de otra persona | Captura de la configuración en la política de PR y consulta de los PR del Sprint 3 en GitHub |
+| A2 | Mantener la regla de protección de `main` que exige la aprobación de una persona distinta del autor | Julio Armando Naupari Camarena | 23/10/2026 | 0 PR integrados sin aprobación de otra persona; mantener la regla de protección | Consulta de autor, aprobaciones y merge de los PR del Sprint 3 en GitHub |
 | A3 | Alinear la autoría con Jira: quien hace el trabajo figura como responsable o como `Co-authored-by` en el commit | Antony Munive Ríos | 23/10/2026 | 100 % de los commits del Sprint 3 con autor o coautor igual al responsable Jira de su clave ECL | Script que cruza `git log` con las claves ECL y la exportación de Jira |
 | A4 | Ratificar las BDD antes de implementar | Frank Roy Yupanqui Acevedo | 20/10/2026 | ECL-47 y ECL-51 en estado APROBADO; 0 historias del Sprint 3 iniciadas con BDD en BORRADOR | Cabecera de estado de las BDD y fecha del commit de aprobación anterior a la primera rama de la historia |
 | A5 | Registrar Story Points en Jira para historias y subtareas | Frank Roy Yupanqui Acevedo | 23/10/2026 | 100 % de los elementos del Sprint 3 con Story Points antes de iniciar el sprint | Exportación del sprint en Jira |
