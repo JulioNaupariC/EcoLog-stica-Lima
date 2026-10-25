@@ -36,10 +36,13 @@ def get_password_reset_service(request: Request) -> RestablecimientoService:
     return service
 
 
+# Least privilege (OWASP A01): the list exposes every account e-mail and only
+# the Administrator can act on it, so it requires USUARIOS_ACTUALIZAR. The
+# matrix still grants USUARIOS_CONSULTAR to the Operator, pending team review.
 @router.get("", response_model=UsuarioPage)
 def list_usuarios(
     _identity: Annotated[
-        Identidad, Depends(require_permission(Permiso.USUARIOS_CONSULTAR))
+        Identidad, Depends(require_permission(Permiso.USUARIOS_ACTUALIZAR))
     ],
     service: Annotated[RestablecimientoService, Depends(get_password_reset_service)],
     page: Annotated[int, Query(ge=1)] = 1,
