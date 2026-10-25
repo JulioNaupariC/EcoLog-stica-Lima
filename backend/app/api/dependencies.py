@@ -16,6 +16,7 @@ from app.services.autenticacion import (
 from app.services.autorizacion import AuthorizationDenied, AutorizacionService
 
 COOKIE_NAME = "ecologistica_session"
+PASSWORD_CHANGE_REQUIRED = "Cambio de contraseña requerido"
 
 
 def get_authentication_service(request: Request) -> AutenticacionService:
@@ -27,10 +28,11 @@ def get_authentication_service(request: Request) -> AutenticacionService:
     return service
 
 
-def get_authenticated_session(
+def get_current_session(
     request: Request,
     service: Annotated[AutenticacionService, Depends(get_authentication_service)],
 ) -> AuthenticatedSession:
+    """Valid session even with a pending password change (logout, change only)."""
     token = request.cookies.get(COOKIE_NAME)
     if not token:
         raise HTTPException(status.HTTP_401_UNAUTHORIZED, "No autenticado")
@@ -42,6 +44,15 @@ def get_authenticated_session(
         raise HTTPException(
             status.HTTP_503_SERVICE_UNAVAILABLE, "Servicio no disponible"
         ) from None
+
+
+def get_authenticated_session(
+    authenticated: Annotated[AuthenticatedSession, Depends(get_current_session)],
+) -> AuthenticatedSession:
+    """ECL-77: every other endpoint is closed until the temporary password changes."""
+    if authenticated.debe_cambiar_contrasena:
+        raise HTTPException(status.HTTP_403_FORBIDDEN, PASSWORD_CHANGE_REQUIRED)
+    return authenticated
 
 
 def require_permission(

@@ -23,6 +23,8 @@ class Evento(str, Enum):
     VEHICULO_DESACTIVADO = "VEHICULO_DESACTIVADO"
     CONDUCTOR_REGISTRADO = "CONDUCTOR_REGISTRADO"
     CONDUCTOR_ACTUALIZADO = "CONDUCTOR_ACTUALIZADO"
+    CONTRASENA_RESTABLECIDA = "CONTRASENA_RESTABLECIDA"
+    CONTRASENA_CAMBIADA = "CONTRASENA_CAMBIADA"
 
 
 class ResultadoAcceso(str, Enum):
@@ -126,6 +128,18 @@ class DetalleConductorActualizado(BaseModel):
         return self
 
 
+# ECL-77: only how many sessions were revoked; never a password or its hash.
+class DetalleContrasena(BaseModel):
+    model_config = ConfigDict(
+        frozen=True,
+        extra="forbid",
+        strict=True,
+        hide_input_in_errors=True,
+        revalidate_instances="always",
+    )
+    sesiones_revocadas: int = Field(ge=0)
+
+
 class Registro(BaseModel):
     model_config = ConfigDict(
         frozen=True,
@@ -144,6 +158,7 @@ class Registro(BaseModel):
         | DetalleVehiculoDesactivado
         | DetalleConductorRegistrado
         | DetalleConductorActualizado
+        | DetalleContrasena
     )
 
     @model_validator(mode="after")
@@ -159,6 +174,10 @@ class Registro(BaseModel):
         deactivation = self.evento is Evento.VEHICULO_DESACTIVADO
         driver_created = self.evento is Evento.CONDUCTOR_REGISTRADO
         driver_updated = self.evento is Evento.CONDUCTOR_ACTUALIZADO
+        password = self.evento in (
+            Evento.CONTRASENA_RESTABLECIDA,
+            Evento.CONTRASENA_CAMBIADA,
+        )
         if authorization != isinstance(self.detalle, Detalle):
             raise ValueError("Invalid audit event")
         if access != isinstance(self.detalle, DetalleAcceso):
@@ -170,6 +189,8 @@ class Registro(BaseModel):
         if driver_created != isinstance(self.detalle, DetalleConductorRegistrado):
             raise ValueError("Invalid audit event")
         if driver_updated != isinstance(self.detalle, DetalleConductorActualizado):
+            raise ValueError("Invalid audit event")
+        if password != isinstance(self.detalle, DetalleContrasena):
             raise ValueError("Invalid audit event")
         if isinstance(self.detalle, Detalle):
             permitido = self.evento is Evento.PERMITIDA
@@ -187,6 +208,8 @@ class Registro(BaseModel):
             self.usuario_id is None or self.entidad_id is None
         ):
             raise ValueError("Invalid driver audit event")
+        elif password and (self.usuario_id is None or self.entidad_id is None):
+            raise ValueError("Invalid password audit event")
         return self
 
 
@@ -207,7 +230,12 @@ class AuditoriaRepository:
             entidad = permiso.value.split(".")[0]
         elif registro.evento in (Evento.LOGIN_EXITOSO, Evento.SESION_CERRADA):
             entidad = "sesion"
-        elif registro.evento in (Evento.LOGIN_FALLIDO, Evento.CUENTA_BLOQUEADA):
+        elif registro.evento in (
+            Evento.LOGIN_FALLIDO,
+            Evento.CUENTA_BLOQUEADA,
+            Evento.CONTRASENA_RESTABLECIDA,
+            Evento.CONTRASENA_CAMBIADA,
+        ):
             entidad = "usuario"
         elif registro.evento in (
             Evento.VEHICULO_PARAMETROS_ACTUALIZADOS,

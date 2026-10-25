@@ -1,5 +1,7 @@
 """Password operations. Never log inputs or exception details from the backend."""
 
+import secrets
+
 from argon2 import PasswordHasher, Type, extract_parameters
 from argon2.exceptions import (
     HashingError,
@@ -9,6 +11,12 @@ from argon2.exceptions import (
 )
 
 _hasher = PasswordHasher(time_cost=3, memory_cost=65536, parallelism=4, type=Type.ID)
+
+
+# ECL-77: no look-alike characters (0/O/o, 1/l/I) so it can be dictated safely.
+TEMPORARY_PASSWORD_ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789"
+TEMPORARY_PASSWORD_LENGTH = 16
+MIN_PASSWORD_LENGTH = 12
 
 
 class CredentialError(ValueError):
@@ -52,3 +60,11 @@ def needs_rehash(password_hash: str) -> bool:
         return _hasher.check_needs_rehash(password_hash)
     except (InvalidHashError, VerificationError, ValueError):
         raise CredentialError("Invalid stored credential") from None
+
+
+def generate_temporary_password() -> str:
+    """CSPRNG temporary password; the caller shows it once and stores its hash."""
+    return "".join(
+        secrets.choice(TEMPORARY_PASSWORD_ALPHABET)
+        for _ in range(TEMPORARY_PASSWORD_LENGTH)
+    )

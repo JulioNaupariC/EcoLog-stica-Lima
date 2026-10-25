@@ -4,6 +4,7 @@ from datetime import datetime
 from uuid import UUID
 
 from sqlalchemy import (
+    Boolean,
     CheckConstraint,
     DateTime,
     SmallInteger,
@@ -50,6 +51,13 @@ class Usuario(Base):
         SmallInteger, server_default=text("0")
     )
     bloqueado_hasta: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    # ECL-77: a temporary password forces a change and expires for login.
+    debe_cambiar_contrasena: Mapped[bool] = mapped_column(
+        Boolean, server_default=text("false")
+    )
+    contrasena_temporal_expira_en: Mapped[datetime | None] = mapped_column(
+        DateTime(timezone=True)
+    )
 
     def __repr__(self) -> str:
         return "<Usuario>"
