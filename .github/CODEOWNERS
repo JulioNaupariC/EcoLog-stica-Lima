@@ -1,0 +1,25 @@
+# Revisores por rol — acuerdo de la retrospectiva del Sprint 2 (23/10/2026).
+# GitHub solicita automáticamente la revisión de los dueños del área que toca
+# cada PR. Hay dos dueños por área para que nadie apruebe su propio trabajo:
+# la aprobación debe venir del otro dueño (política de PR, sección 3.4).
+# La última regla que coincide con un archivo es la que se aplica.
+
+# Por defecto: líder del proyecto y analista de requisitos.
+*                                   @JulioNaupariC @FrankRoyYA
+
+# Backend y optimización (API, dominio, base de datos, migraciones).
+/backend/                           @ANTONY-MUNIVE @JulioNaupariC
+
+# Frontend, UX/UI y aseguramiento de calidad.
+/frontend/                          @JoseDelgadillo277 @GiancarloSE
+
+# Documentación de gestión del proyecto.
+/docs/                              @JulioNaupariC @FrankRoyYA
+/docs/02\ Planificación/BDD/        @FrankRoyYA @JulioNaupariC
+/README.md                          @JulioNaupariC @FrankRoyYA
+
+# Plataforma, CI/CD y calidad.
+/.github/                           @JulioNaupariC @JoseDelgadillo277
+/compose.yaml                       @JulioNaupariC @JoseDelgadillo277
+/scripts/                           @JulioNaupariC @JoseDelgadillo277
+/AGENTS.md                          @JulioNaupariC @JoseDelgadillo277
