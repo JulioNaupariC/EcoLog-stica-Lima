@@ -1,7 +1,7 @@
 # Evidencias ECL-49 / ST-023
 
 Formulario y listado de conductores. Trazabilidad: ECL-49 → ECL-9 / US-003.
-Ver [validación técnica](<../../../docs/03 Implementación/Sprint 2/validaciones/VALIDACION_ST023.md>) y [resultados](resultados.json).
+Ver [validación técnica](<../../../docs/03 Implementación/Sprint 02/validaciones/VALIDACION_ST023.md>) y [resultados](resultados.json).
 
 Chrome 154.0.8037.98 con ADMINISTRADOR y Firefox 157.0 con OPERADOR.
 Verificación registrada el 9 de octubre de 2026, 07:20:18 UTC.

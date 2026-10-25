@@ -4,8 +4,8 @@ Mediciones reales del 13/10/2026 (hora de Lima) sobre datos ficticios: 50 vehíc
 200 conductores y 30 días × 1 000 pedidos (30 000), generados con
 [`indicadores_dataset.py`](../../scripts/indicadores_dataset.py) en la base
 `ecologistica_ecl25_test` (PostgreSQL 16.15 + PostGIS 3.6.2, Python 3.12.10).
-Consultar el [informe ST-037](<../../../docs/03 Implementación/Sprint 2/informes/INFORME_ST037.md>)
-y la [validación ST-038](<../../../docs/03 Implementación/Sprint 2/validaciones/VALIDACION_ST038.md>).
+Consultar el [informe ST-037](<../../../docs/03 Implementación/Sprint 02/informes/INFORME_ST037.md>)
+y la [validación ST-038](<../../../docs/03 Implementación/Sprint 02/validaciones/VALIDACION_ST038.md>).
 
 | Archivo | Contenido |
 |---|---|

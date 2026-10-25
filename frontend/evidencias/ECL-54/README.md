@@ -18,7 +18,7 @@ Se comprobó además Conductor en ambos navegadores.
 
 [resultados.json](resultados.json) indica el alcance de las comprobaciones
 aprobadas y P8OrderProposalAvailable false. No expresa que todos los BDD aprobaron.
-Ver [la matriz y registro D-01](<../../../docs/03 Implementación/Sprint 2/validaciones/VALIDACION_ST028.md>).
+Ver [la matriz y registro D-01](<../../../docs/03 Implementación/Sprint 02/validaciones/VALIDACION_ST028.md>).
 
 ## Reproducción
 

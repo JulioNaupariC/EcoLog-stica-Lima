@@ -81,3 +81,7 @@ El prototipo no demuestra persistencia, GPS ni funcionamiento offline.
 - Registrar revisión, observaciones y aprobación del diseño por el equipo.
 - Adjuntar en ECL-55 el enlace de Figma, evidencias y PR documental cuando exista.
 - Mantener el estado de propuesta hasta que se confirme la aceptación.
+
+[↑ Índice del Sprint 2](<../../README.md>)
+
+[← Volver al README principal](<../../../../../README.md>)

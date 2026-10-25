@@ -98,7 +98,7 @@ El healthcheck del frontend verifica su proceso. El de API utiliza
 `/health/ready` y exige una lectura `SELECT 1` en PostgreSQL (ECL-60).
 `/health` sigue disponible como liveness independiente de BD. Las métricas
 protegidas y los sondeos se describen en
-[VALIDACION_ST034.md](<docs/03 Implementación/Sprint 2/validaciones/VALIDACION_ST034.md>). El healthcheck de base usa `pg_isready`; por sí solo no acredita PostGIS ni el
+[VALIDACION_ST034.md](<docs/03 Implementación/Sprint 02/validaciones/VALIDACION_ST034.md>). El healthcheck de base usa `pg_isready`; por sí solo no acredita PostGIS ni el
 esquema. Para ello sirven `app.db.check`, la comparación `alembic current` /
 `alembic heads` y una inspección de las tablas de aplicación.
 Si falla un paso, consultar `docker compose --env-file .env ps` y los logs del
@@ -181,47 +181,69 @@ de nuevo los servicios. Las instrucciones de arranque sin Docker siguen en
 
 ### Documentación técnica del Sprint 2
 
-- [Índice del Sprint 2 y mapa de reubicación](<docs/03 Implementación/Sprint 2/README.md>)
+- [Índice del Sprint 2 y mapa de reubicación](<docs/03 Implementación/Sprint 02/README.md>)
 
 Validaciones:
 
-- [ST-022 / ECL-48 — API de conductores](<docs/03 Implementación/Sprint 2/validaciones/VALIDACION_ST022.md>)
-- [ST-023 / ECL-49 — formulario y listado de conductores](<docs/03 Implementación/Sprint 2/validaciones/VALIDACION_ST023.md>)
-- [ST-024 / ECL-50 — pruebas de conductores](<docs/03 Implementación/Sprint 2/validaciones/VALIDACION_ST024.md>)
-- [ST-026 / ECL-52 — API de preferencias de entrega](<docs/03 Implementación/Sprint 2/validaciones/VALIDACION_ST026.md>)
-- [ST-027 / ECL-53 — interfaz de preferencias](<docs/03 Implementación/Sprint 2/validaciones/VALIDACION_ST027.md>)
-- [ST-028 / ECL-54 — matriz de preferencias y clientes](<docs/03 Implementación/Sprint 2/validaciones/VALIDACION_ST028.md>)
-- [ST-030 / ECL-56 — interfaz móvil del conductor](<docs/03 Implementación/Sprint 2/validaciones/VALIDACION_ST030.md>)
-- [ST-031 / ECL-57 — responsive y accesibilidad](<docs/03 Implementación/Sprint 2/validaciones/VALIDACION_ST031.md>)
-- [ST-032 / ECL-58 — offline y sincronización](<docs/03 Implementación/Sprint 2/validaciones/VALIDACION_ST032.md>)
-- [ST-034 / ECL-60 — métricas de API y base de datos](<docs/03 Implementación/Sprint 2/validaciones/VALIDACION_ST034.md>)
-- [ST-035 / ECL-61 — carga y disponibilidad](<docs/03 Implementación/Sprint 2/validaciones/VALIDACION_ST035.md>)
-- [ST-038 / ECL-64 — optimización de consultas](<docs/03 Implementación/Sprint 2/validaciones/VALIDACION_ST038.md>)
+- [ST-022 / ECL-48 — API de conductores](<docs/03 Implementación/Sprint 02/validaciones/VALIDACION_ST022.md>)
+- [ST-023 / ECL-49 — formulario y listado de conductores](<docs/03 Implementación/Sprint 02/validaciones/VALIDACION_ST023.md>)
+- [ST-024 / ECL-50 — pruebas de conductores](<docs/03 Implementación/Sprint 02/validaciones/VALIDACION_ST024.md>)
+- [ST-026 / ECL-52 — API de preferencias de entrega](<docs/03 Implementación/Sprint 02/validaciones/VALIDACION_ST026.md>)
+- [ST-027 / ECL-53 — interfaz de preferencias](<docs/03 Implementación/Sprint 02/validaciones/VALIDACION_ST027.md>)
+- [ST-028 / ECL-54 — matriz de preferencias y clientes](<docs/03 Implementación/Sprint 02/validaciones/VALIDACION_ST028.md>)
+- [ST-030 / ECL-56 — interfaz móvil del conductor](<docs/03 Implementación/Sprint 02/validaciones/VALIDACION_ST030.md>)
+- [ST-031 / ECL-57 — responsive y accesibilidad](<docs/03 Implementación/Sprint 02/validaciones/VALIDACION_ST031.md>)
+- [ST-032 / ECL-58 — offline y sincronización](<docs/03 Implementación/Sprint 02/validaciones/VALIDACION_ST032.md>)
+- [ST-034 / ECL-60 — métricas de API y base de datos](<docs/03 Implementación/Sprint 02/validaciones/VALIDACION_ST034.md>)
+- [ST-035 / ECL-61 — carga y disponibilidad](<docs/03 Implementación/Sprint 02/validaciones/VALIDACION_ST035.md>)
+- [ST-038 / ECL-64 — optimización de consultas](<docs/03 Implementación/Sprint 02/validaciones/VALIDACION_ST038.md>)
 
 Informes:
 
-- [ST-033 / ECL-59 — Plan de pruebas de capacidad y disponibilidad](<docs/03 Implementación/Sprint 2/informes/plan-pruebas-capacidad.md>)
-- [ST-036 / ECL-62 — Resultados, SLA y operación](<docs/03 Implementación/Sprint 2/informes/INFORME_ST036.md>)
-- [ST-037 / ECL-63 — Medición inicial de payload y consultas críticas](<docs/03 Implementación/Sprint 2/informes/INFORME_ST037.md>)
+- [ST-033 / ECL-59 — Plan de pruebas de capacidad y disponibilidad](<docs/03 Implementación/Sprint 02/informes/plan-pruebas-capacidad.md>)
+- [ST-036 / ECL-62 — Resultados, SLA y operación](<docs/03 Implementación/Sprint 02/informes/INFORME_ST036.md>)
+- [ST-037 / ECL-63 — Medición inicial de payload y consultas críticas](<docs/03 Implementación/Sprint 02/informes/INFORME_ST037.md>)
+
+Diseño:
+
+- [ST-029 / ECL-55 — Diseño móvil del conductor (Giancarlo)](<docs/03 Implementación/Sprint 02/diseno/ST-029/README.md>)
+- [ST-029 — Guía visual](<docs/03 Implementación/Sprint 02/diseno/ST-029/guia-visual.md>)
+- [ST-029 — Evidencias visuales](<docs/03 Implementación/Sprint 02/diseno/ST-029/evidencias/README.md>)
 
 Guías de integración:
 
-- [Guía ST-024](<docs/03 Implementación/Sprint 2/guias/GUIA_JOSE_ST024.md>)
-- [Guía ST-027](<docs/03 Implementación/Sprint 2/guias/GUIA_JOSE_ST027.md>)
-- [Guía ST-031 y ST-032](<docs/03 Implementación/Sprint 2/guias/GUIA_JOSE_ST031_ST032.md>)
-- [Guía ST-035](<docs/03 Implementación/Sprint 2/guias/GUIA_JOSE_ST035.md>)
+- [Guía ST-024](<docs/03 Implementación/Sprint 02/guias/GUIA_JOSE_ST024.md>)
+- [Guía ST-027](<docs/03 Implementación/Sprint 02/guias/GUIA_JOSE_ST027.md>)
+- [Guía ST-031 y ST-032](<docs/03 Implementación/Sprint 02/guias/GUIA_JOSE_ST031_ST032.md>)
+- [Guía ST-035](<docs/03 Implementación/Sprint 02/guias/GUIA_JOSE_ST035.md>)
 
-### Estado del Sprint 2 — corte del 13/10/2026
+### Estado del Sprint 2 — cierre
 
 Periodo planificado: 08/10/2026–23/10/2026. El informe de estado, el registro de
 impedimentos y la revisión están en la versión de contenido 1.3.0, y la
-retrospectiva en la 1.2.0; el historial del Sprint 1 permanece en Git.
+retrospectiva en la 1.3.0; el historial del Sprint 1 permanece en Git y en la
+rama `sprint-1`.
 
 En Jira, los cinco padres y las 19 subtareas figuran Finalizada (27/27 SP).
 Contrastados con sus criterios de aceptación: ECL-11 y ECL-25 cumplen; ECL-9,
 ECL-22 y ECL-23 cumplen parcialmente. La Review del 09/10/2026 se
-evaluó con 14/20 sin demostración; el parche posterior (PR #47–#54) y el guion
-de demostración están en la [Revisión del Sprint](<docs/03 Implementación/03 Revisión del Sprint V_1_0_0.md>).
+evaluó con 14/20 sin demostración; el parche posterior (PR #47–#57) y la
+demostración complementaria están en la [Revisión del Sprint](<docs/03 Implementación/03 Revisión del Sprint V_1_0_0.md>).
+La retrospectiva se realizó en clase el 23/10/2026 con el equipo completo y la
+guía visual de ST-029 (ECL-55) se integró en el cierre. El sprint se cierra en
+Jira tras integrar el PR de cierre.
+
+### Ramas de cierre por sprint
+
+Cada sprint conserva una rama con el estado final de su código y documentación,
+como evidencia de lo entregado. Las ramas de trabajo se eliminan al cerrar cada
+sprint; las del Sprint 3 se conservan hasta su evaluación (30/10/2026).
+
+| Rama | Contenido | Commit de corte |
+|---|---|---|
+| `sprint-1` | Sprint 1 — Base Operativa (PR #1–#22) | `58c3d9c` (02/10/2026) |
+| `sprint-2` | Sprint 2 — Gestión operativa y experiencia del conductor, con el parche posterior a la Review (PR #23–#57) y el cierre | Merge del PR de cierre del Sprint 2 |
+| `main` | Rama de integración; punto de partida del Sprint 3 | — |
 
 ## Fase 04: Contribución
 

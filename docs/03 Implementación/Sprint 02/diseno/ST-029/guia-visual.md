@@ -77,3 +77,7 @@ Enter/espacio, nombres accesibles, foco visible y ausencia de trampas de teclado
 Validar también reflujo y ampliación de texto, contraste de todos los estados,
 lectura con tecnologías de asistencia y navegación en Chrome/Firefox dentro de
 los tickets de implementación y pruebas correspondientes.
+
+[↑ Índice del Sprint 2](<../../README.md>)
+
+[← Volver al README principal](<../../../../../README.md>)

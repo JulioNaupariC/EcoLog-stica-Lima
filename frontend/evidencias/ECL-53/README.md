@@ -5,7 +5,7 @@ Login, GET/PATCH, persistencia, aislamiento entre clientes y denegación de
 Conductor se comprobaron contra la API y PostgreSQL reales del entorno temporal.
 El error 503 fue simulado explícitamente para comprobar la interfaz.
 
-[Reporte técnico](<../../../docs/03 Implementación/Sprint 2/validaciones/VALIDACION_ST027.md>) ·
+[Reporte técnico](<../../../docs/03 Implementación/Sprint 02/validaciones/VALIDACION_ST027.md>) ·
 [Resultados de navegador](resultados.json) · [JUnit frontend](frontend-tests.xml).
 
 El XML conserva los 431 casos aprobados de la ejecución local. Se retiraron

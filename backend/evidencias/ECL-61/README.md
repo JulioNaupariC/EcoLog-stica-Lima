@@ -49,7 +49,7 @@ Las fuentes del orquestador/generador exportadas corresponden a cada ejecución.
 La versión final añade anotaciones y comprobaciones del temporizador; las
 diferencias de medición se documentan sin reescribir los datos anteriores.
 
-Consultar [VALIDACION_ST035.md](<../../../docs/03 Implementación/Sprint 2/validaciones/VALIDACION_ST035.md>) y
+Consultar [VALIDACION_ST035.md](<../../../docs/03 Implementación/Sprint 02/validaciones/VALIDACION_ST035.md>) y
 [INCIDENCIAS.md](INCIDENCIAS.md) antes de interpretar resultados como
 cumplimiento de capacidad. **No se ha medido el SLA mensual.**
 

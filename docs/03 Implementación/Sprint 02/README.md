@@ -38,6 +38,18 @@ Las evidencias ejecutables (JSON, XML, registros y capturas) permanecen en
 | [INFORME_ST036.md](<informes/INFORME_ST036.md>) | ECL-62 / ST-036 | Resultados, SLA y operación |
 | [INFORME_ST037.md](<informes/INFORME_ST037.md>) | ECL-63 / ST-037 | Medición inicial de payload y consultas críticas |
 
+### Diseño
+
+| Documento | Subtarea Jira | Tema |
+|---|---|---|
+| [README de ST-029](<diseno/ST-029/README.md>) | ECL-55 / ST-029 | Diseño móvil del conductor (Giancarlo Marcio Soto Escobar) |
+| [guia-visual.md](<diseno/ST-029/guia-visual.md>) | ECL-55 / ST-029 | Paleta, tipografía, componentes y estados |
+| [Evidencias visuales](<diseno/ST-029/evidencias/README.md>) | ECL-55 / ST-029 | Vistas PNG de los frames de Figma |
+
+La guía se integró desde la rama `docs/ECL-55-diseno-movil-conductor` en el
+cierre del Sprint 2 (25/10/2026), conservando los commits de su autor. La
+implementación del rediseño (PR #53) siguió sus decisiones de diseño móvil.
+
 ### Guías de integración
 
 | Documento | Subtareas |
@@ -52,30 +64,36 @@ escribieron; son un registro histórico de cómo se integró cada subtarea.
 
 ## Mapa de reubicación
 
+El 25/10/2026, en el cierre del Sprint 2, la carpeta `Sprint 2` se renombró a
+`Sprint 02` para alinearla con la carpeta `Sprint 03` que exige la consigna del
+Sprint 3, y la guía ST-029 pasó de `frontend/diseno/ST-029/` a
+`docs/03 Implementación/Sprint 02/diseno/ST-029/`. Las rutas de la tabla ya
+reflejan la ubicación actual.
+
 Los archivos se movieron con `git mv`; `git log --follow <ruta nueva>` recorre
 su historial completo.
 
 | Ruta anterior | Ruta nueva | Commit |
 |---|---|---|
-| `backend/VALIDACION_ST022.md` | `docs/03 Implementación/Sprint 2/validaciones/VALIDACION_ST022.md` | `15c083e` |
-| `frontend/VALIDACION_ST023.md` | `docs/03 Implementación/Sprint 2/validaciones/VALIDACION_ST023.md` | `15c083e` |
-| `backend/VALIDACION_ST024.md` | `docs/03 Implementación/Sprint 2/validaciones/VALIDACION_ST024.md` | `15c083e` |
-| `backend/VALIDACION_ST026.md` | `docs/03 Implementación/Sprint 2/validaciones/VALIDACION_ST026.md` | `15c083e` |
-| `frontend/VALIDACION_ST027.md` | `docs/03 Implementación/Sprint 2/validaciones/VALIDACION_ST027.md` | `15c083e` |
-| `backend/VALIDACION_ST028.md` | `docs/03 Implementación/Sprint 2/validaciones/VALIDACION_ST028.md` | `15c083e` |
-| `frontend/VALIDACION_ST030.md` | `docs/03 Implementación/Sprint 2/validaciones/VALIDACION_ST030.md` | `15c083e` |
-| `frontend/VALIDACION_ST031.md` | `docs/03 Implementación/Sprint 2/validaciones/VALIDACION_ST031.md` | `15c083e` |
-| `frontend/VALIDACION_ST032.md` | `docs/03 Implementación/Sprint 2/validaciones/VALIDACION_ST032.md` | `15c083e` |
-| `backend/VALIDACION_ST034.md` | `docs/03 Implementación/Sprint 2/validaciones/VALIDACION_ST034.md` | `15c083e` |
-| `backend/VALIDACION_ST035.md` | `docs/03 Implementación/Sprint 2/validaciones/VALIDACION_ST035.md` | `15c083e` |
-| `backend/VALIDACION_ST038.md` | `docs/03 Implementación/Sprint 2/validaciones/VALIDACION_ST038.md` | `15c083e` |
-| `backend/INFORME_ST036.md` | `docs/03 Implementación/Sprint 2/informes/INFORME_ST036.md` | `15c083e` |
-| `backend/INFORME_ST037.md` | `docs/03 Implementación/Sprint 2/informes/INFORME_ST037.md` | `15c083e` |
-| `docs/sprint-2/plan-pruebas-capacidad.md` | `docs/03 Implementación/Sprint 2/informes/plan-pruebas-capacidad.md` | `15c083e` |
-| `GUIA_JOSE_ST024.md` | `docs/03 Implementación/Sprint 2/guias/GUIA_JOSE_ST024.md` | `15c083e` |
-| `GUIA_JOSE_ST027.md` | `docs/03 Implementación/Sprint 2/guias/GUIA_JOSE_ST027.md` | `15c083e` |
-| `GUIA_JOSE_ST031_ST032.md` | `docs/03 Implementación/Sprint 2/guias/GUIA_JOSE_ST031_ST032.md` | `15c083e` |
-| `GUIA_JOSE_ST035.md` | `docs/03 Implementación/Sprint 2/guias/GUIA_JOSE_ST035.md` | `15c083e` |
+| `backend/VALIDACION_ST022.md` | `docs/03 Implementación/Sprint 02/validaciones/VALIDACION_ST022.md` | `15c083e` |
+| `frontend/VALIDACION_ST023.md` | `docs/03 Implementación/Sprint 02/validaciones/VALIDACION_ST023.md` | `15c083e` |
+| `backend/VALIDACION_ST024.md` | `docs/03 Implementación/Sprint 02/validaciones/VALIDACION_ST024.md` | `15c083e` |
+| `backend/VALIDACION_ST026.md` | `docs/03 Implementación/Sprint 02/validaciones/VALIDACION_ST026.md` | `15c083e` |
+| `frontend/VALIDACION_ST027.md` | `docs/03 Implementación/Sprint 02/validaciones/VALIDACION_ST027.md` | `15c083e` |
+| `backend/VALIDACION_ST028.md` | `docs/03 Implementación/Sprint 02/validaciones/VALIDACION_ST028.md` | `15c083e` |
+| `frontend/VALIDACION_ST030.md` | `docs/03 Implementación/Sprint 02/validaciones/VALIDACION_ST030.md` | `15c083e` |
+| `frontend/VALIDACION_ST031.md` | `docs/03 Implementación/Sprint 02/validaciones/VALIDACION_ST031.md` | `15c083e` |
+| `frontend/VALIDACION_ST032.md` | `docs/03 Implementación/Sprint 02/validaciones/VALIDACION_ST032.md` | `15c083e` |
+| `backend/VALIDACION_ST034.md` | `docs/03 Implementación/Sprint 02/validaciones/VALIDACION_ST034.md` | `15c083e` |
+| `backend/VALIDACION_ST035.md` | `docs/03 Implementación/Sprint 02/validaciones/VALIDACION_ST035.md` | `15c083e` |
+| `backend/VALIDACION_ST038.md` | `docs/03 Implementación/Sprint 02/validaciones/VALIDACION_ST038.md` | `15c083e` |
+| `backend/INFORME_ST036.md` | `docs/03 Implementación/Sprint 02/informes/INFORME_ST036.md` | `15c083e` |
+| `backend/INFORME_ST037.md` | `docs/03 Implementación/Sprint 02/informes/INFORME_ST037.md` | `15c083e` |
+| `docs/sprint-2/plan-pruebas-capacidad.md` | `docs/03 Implementación/Sprint 02/informes/plan-pruebas-capacidad.md` | `15c083e` |
+| `GUIA_JOSE_ST024.md` | `docs/03 Implementación/Sprint 02/guias/GUIA_JOSE_ST024.md` | `15c083e` |
+| `GUIA_JOSE_ST027.md` | `docs/03 Implementación/Sprint 02/guias/GUIA_JOSE_ST027.md` | `15c083e` |
+| `GUIA_JOSE_ST031_ST032.md` | `docs/03 Implementación/Sprint 02/guias/GUIA_JOSE_ST031_ST032.md` | `15c083e` |
+| `GUIA_JOSE_ST035.md` | `docs/03 Implementación/Sprint 02/guias/GUIA_JOSE_ST035.md` | `15c083e` |
 | `docs/03 Contribucion/01. Politica de pull requests V_1_0_0.md` | `docs/04 Contribución/01. Politica de pull requests V_1_0_0.md` | `e6435b5` |
 
 ### Auditoría de registros de hashes históricos

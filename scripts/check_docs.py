@@ -6,7 +6,7 @@ Reglas comprobadas sobre cada ``.md`` rastreado por Git (excepto
 1. Todo enlace relativo resuelve a un archivo o carpeta rastreado.
 2. Todo ``.md`` distinto de ``README.md`` está enlazado desde ``README.md``.
 3. Todo ``.md`` distinto de ``README.md`` enlaza de vuelta a ``README.md``.
-4. Todo ``.md`` dentro de ``docs/03 Implementación/Sprint 2/`` enlaza al
+4. Todo ``.md`` dentro de ``docs/03 Implementación/Sprint 02/`` enlaza al
    índice del Sprint 2.
 
 Solo usa la librería estándar. Uso: ``python scripts/check_docs.py``.
@@ -25,7 +25,7 @@ from pathlib import Path
 from urllib.parse import unquote
 
 ROOT_README = "README.md"
-SPRINT2_DIR = "docs/03 Implementación/Sprint 2"
+SPRINT2_DIR = "docs/03 Implementación/Sprint 02"
 SPRINT2_INDEX = f"{SPRINT2_DIR}/README.md"
 
 # La plantilla de PR se copia literalmente en la descripción de cada PR de

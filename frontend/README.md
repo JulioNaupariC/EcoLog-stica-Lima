@@ -2,7 +2,7 @@
 
 ## ST-032: itinerario offline y sincronización
 
-Validación y reproducción: [VALIDACION_ST032.md](<../docs/03 Implementación/Sprint 2/validaciones/VALIDACION_ST032.md>).
+Validación y reproducción: [VALIDACION_ST032.md](<../docs/03 Implementación/Sprint 02/validaciones/VALIDACION_ST032.md>).
 `npm run build` genera el shell público y manifiesto versionado; servir `dist/`
 sobre HTTPS o localhost. `npm run dev` no instala el Service Worker.
 Primero iniciar sesión y consultar la ruta online; después la misma pestaña puede
@@ -167,7 +167,7 @@ autorizada con rol `CONDUCTOR`. Revisar escritorio y 360 px, filtros, selección
 teclado y denegación a otros roles. Las pruebas de React simulan autenticación;
 la verificación adicional de navegador usa login real de conductor y login
 simulado de Auditor. Resultados y capturas en
-[VALIDACION_ST030.md](<../docs/03 Implementación/Sprint 2/validaciones/VALIDACION_ST030.md>) y [evidencias ECL-56](evidencias/ECL-56/README.md).
+[VALIDACION_ST030.md](<../docs/03 Implementación/Sprint 02/validaciones/VALIDACION_ST030.md>) y [evidencias ECL-56](evidencias/ECL-56/README.md).
 
 ## Sistema de diseño — ECL-22 / EN-004
 
@@ -224,7 +224,7 @@ El formulario de alta crea la cuenta con email y contraseña inicial; la edició
 gestiona el perfil sin modificar credenciales. Los demás roles no disponen del enlace
 y reciben acceso denegado al abrir la ruta.
 
-Validación y reproducción en [VALIDACION_ST023.md](<../docs/03 Implementación/Sprint 2/validaciones/VALIDACION_ST023.md>).
+Validación y reproducción en [VALIDACION_ST023.md](<../docs/03 Implementación/Sprint 02/validaciones/VALIDACION_ST023.md>).
 Capturas de Chrome y Firefox en [evidencias ECL-49](evidencias/ECL-49/README.md).
 
 ## Preferencias de entrega — ECL-53 / ST-027
@@ -243,8 +243,8 @@ y reciben acceso denegado al abrir la ruta. Un 401 devuelve al login.
 
 Se reutilizan `FormField`, extraído del formulario de pedidos, y los estilos
 existentes de formularios y avisos. La regresión de pedidos permanece en verde.
-Ver [VALIDACION_ST027.md](<../docs/03 Implementación/Sprint 2/validaciones/VALIDACION_ST027.md>),
+Ver [VALIDACION_ST027.md](<../docs/03 Implementación/Sprint 02/validaciones/VALIDACION_ST027.md>),
 [capturas ECL-53](evidencias/ECL-53/README.md) y la
-[guía para José](<../docs/03 Implementación/Sprint 2/guias/GUIA_JOSE_ST027.md>) para resultados, reproducción y PR.
+[guía para José](<../docs/03 Implementación/Sprint 02/guias/GUIA_JOSE_ST027.md>) para resultados, reproducción y PR.
 
 [← Volver al README principal](../README.md)

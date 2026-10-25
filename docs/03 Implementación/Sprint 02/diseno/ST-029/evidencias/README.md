@@ -26,3 +26,7 @@ móvil, no garantiza que el PNG tenga ese ancho:
 
 La comprobación de adaptación a 360 px se realiza sobre los frames de Figma,
 separadamente de estas vistas PNG. Estado: propuesta sin aprobación del equipo.
+
+[↑ Índice del Sprint 2](<../../../README.md>)
+
+[← Volver al README principal](<../../../../../../README.md>)

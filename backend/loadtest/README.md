@@ -2,7 +2,7 @@
 
 Este paquete ejecuta HTTP real contra FastAPI y PostgreSQL/PostGIS locales.
 No modifica servicios, pools, permisos ni reglas de negocio de la aplicación.
-Referencia: [plan ST-033](<../../docs/03 Implementación/Sprint 2/informes/plan-pruebas-capacidad.md>).
+Referencia: [plan ST-033](<../../docs/03 Implementación/Sprint 02/informes/plan-pruebas-capacidad.md>).
 
 ## Requisitos
 
