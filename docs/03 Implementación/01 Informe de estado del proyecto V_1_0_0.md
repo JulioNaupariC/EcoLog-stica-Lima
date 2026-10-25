@@ -10,13 +10,13 @@
 
 **Periodo planificado:** 08/10/2026–23/10/2026, según el tablero compartido.
 
-**Fecha de corte:** 13/10/2026, America/Lima.
+**Fecha de corte:** 25/10/2026, America/Lima (cierre del Sprint 2).
 
-**Versión del contenido:** 1.3.0.
+**Versión del contenido:** 1.3.1.
 
-**Fuente del corte técnico:** `main` en `ea30983` (PR #47–#55 integrados).
+**Fuente del corte técnico:** `main` con los PR #47–#57 integrados y el PR de cierre del Sprint 2.
 
-**Estado Jira:** cinco padres y 19 subtareas en Finalizada (27/27 SP de padres); sprint activo.
+**Estado Jira:** cinco padres y 19 subtareas en Finalizada (27/27 SP de padres); el sprint se cierra en Jira tras integrar el PR de cierre (acuerdo R3 de la retrospectiva del 23/10/2026).
 
 ## Resumen ejecutivo
 
@@ -45,11 +45,11 @@ están acreditados con evidencia reproducible.
 
 | Elemento | SP | Responsable Jira | Cerrado en Jira | Criterios | Evidencia | Acción |
 |---|---:|---|---|---|---|---|
-| ECL-9 / US-003 Conductores y disponibilidad | 5 | Frank Roy Yupanqui Acevedo | Finalizada | **Parcial**: alta y elegibilidad acreditadas; la asignación a rutas que debe impedir una licencia vencida y usar la nueva disponibilidad aún no existe | [ST-022](<Sprint 2/validaciones/VALIDACION_ST022.md>), [ST-024](<Sprint 2/validaciones/VALIDACION_ST024.md>), [PR #50](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/50) | Completar con el planificador de rutas (ECL-12, candidato al Sprint 3, primeros del backlog) |
-| ECL-11 / US-005 Preferencias de entrega | 3 | Frank Roy Yupanqui Acevedo | Finalizada | **Cumple**: preferencia válida asociada y propuesta en el pedido; datos inválidos rechazados | [ST-028 y reprueba D-01](<Sprint 2/validaciones/VALIDACION_ST028.md>), [PR #49](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/49) | Ratificar la BDD ECL-51 (impedimento I-03) |
+| ECL-9 / US-003 Conductores y disponibilidad | 5 | Frank Roy Yupanqui Acevedo | Finalizada | **Parcial**: alta y elegibilidad acreditadas; la asignación a rutas que debe impedir una licencia vencida y usar la nueva disponibilidad aún no existe | [ST-022](<Sprint 02/validaciones/VALIDACION_ST022.md>), [ST-024](<Sprint 02/validaciones/VALIDACION_ST024.md>), [PR #50](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/50) | Completar con el planificador de rutas (ECL-12, candidato al Sprint 3, primeros del backlog) |
+| ECL-11 / US-005 Preferencias de entrega | 3 | Frank Roy Yupanqui Acevedo | Finalizada | **Cumple**: preferencia válida asociada y propuesta en el pedido; datos inválidos rechazados | [ST-028 y reprueba D-01](<Sprint 02/validaciones/VALIDACION_ST028.md>), [PR #49](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/49) | Ratificar la BDD ECL-51 (impedimento I-03) |
 | ECL-22 / EN-004 Experiencia móvil, accesible y offline | 8 | Giancarlo Marcio Soto Escobar | Finalizada | **Parcial**: 360 px sin desplazamiento, WCAG 2.1 AA en axe y offline en Chrome/Firefox acreditados; no hay alertas operativas reales ni prueba con lector de pantalla | [Evidencias ECL-22](../../frontend/evidencias/ECL-22-rediseno/README.md), [reprueba offline](../../frontend/evidencias/ECL-58/retest-20261013/README.md), [PR #53](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/53) | Alertas con ECL-14 y prueba con lector de pantalla (Product Backlog — priorizar en el Sprint Planning 3) |
-| ECL-23 / EN-005 Capacidad, disponibilidad y observabilidad | 8 | Julio Armando Naupari Camarena | Finalizada | **Parcial**: P95 ≤2 s y 0 % de 5xx en tres corridas; carga sostenida de 100 solicitudes no acreditada (19–21 % de los segundos) y SLA mensual no medido | [ST-035](<Sprint 2/validaciones/VALIDACION_ST035.md>), [ST-036](<Sprint 2/informes/INFORME_ST036.md>) | Repetir la corrida de concurrencia y medir un mes operativo |
-| ECL-25 / EN-007 Transferencia de datos y consultas | 3 | Antony Munive Ríos | Finalizada | **Cumple**: el Inicio, único panel existente, responde con indicadores agregados de 347 bytes (antes 35 871 en dos listados), con una prueba de CI de ≤ 250 000 bytes y 5 sentencias SQL fijas; consultas de pedidos y del Inicio con plan e índice (migración 0011). Las consultas de rutas no aplican hasta US-006 (justificación documentada) | [ST-037](<Sprint 2/informes/INFORME_ST037.md>), [ST-038](<Sprint 2/validaciones/VALIDACION_ST038.md>), [evidencias](../../backend/evidencias/ECL-25-inicio/README.md), [PR #57](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/57), [PR #48](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/48) | Revisar las consultas de rutas con ECL-12; la US-009 (ECL-15) amplía el mismo endpoint y mantiene la prueba de 250 KB |
+| ECL-23 / EN-005 Capacidad, disponibilidad y observabilidad | 8 | Julio Armando Naupari Camarena | Finalizada | **Parcial**: P95 ≤2 s y 0 % de 5xx en tres corridas; carga sostenida de 100 solicitudes no acreditada (19–21 % de los segundos) y SLA mensual no medido | [ST-035](<Sprint 02/validaciones/VALIDACION_ST035.md>), [ST-036](<Sprint 02/informes/INFORME_ST036.md>) | Repetir la corrida de concurrencia y medir un mes operativo |
+| ECL-25 / EN-007 Transferencia de datos y consultas | 3 | Antony Munive Ríos | Finalizada | **Cumple**: el Inicio, único panel existente, responde con indicadores agregados de 347 bytes (antes 35 871 en dos listados), con una prueba de CI de ≤ 250 000 bytes y 5 sentencias SQL fijas; consultas de pedidos y del Inicio con plan e índice (migración 0011). Las consultas de rutas no aplican hasta US-006 (justificación documentada) | [ST-037](<Sprint 02/informes/INFORME_ST037.md>), [ST-038](<Sprint 02/validaciones/VALIDACION_ST038.md>), [evidencias](../../backend/evidencias/ECL-25-inicio/README.md), [PR #57](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/57), [PR #48](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/48) | Revisar las consultas de rutas con ECL-12; la US-009 (ECL-15) amplía el mismo endpoint y mantiene la prueba de 250 KB |
 
 **Lectura:** 27/27 SP cerrados en Jira frente a 6/27 SP con todos sus criterios
 acreditados (ECL-11 y ECL-25). Las subtareas ECL-46 a ECL-64 pasaron a Finalizada en unas
@@ -104,7 +104,7 @@ PR #47–#53.
 
 - Tablero Jira del proyecto ECL (estados, fechas y Time in Status comunicados al 12/10/2026).
 - Pruebas y métricas: ejecuciones locales del 13/10/2026 y CI de los PR citados.
-- [Índice de la documentación técnica del Sprint 2](<Sprint 2/README.md>).
+- [Índice de la documentación técnica del Sprint 2](<Sprint 02/README.md>).
 
 ## Historial de versiones
 
@@ -114,6 +114,7 @@ PR #47–#53.
 | 1.1.0 | 09/10/2026 | Sustitución del contenido por el entregable del Sprint 2, con evidencias y pendientes al corte. |
 | 1.2.0 | 13/10/2026 | Estado por criterios frente a Jira, métricas tras el parche post-Review, PR #47–#54 y riesgos del Sprint 3. |
 | 1.3.0 | 13/10/2026 | ECL-25 acreditado con los indicadores agregados del Inicio; riesgo del dashboard actualizado. |
+| 1.3.1 | 25/10/2026 | Corte de cierre: fuente con los PR #47–#57, guía ST-029 (ECL-55) integrada en `Sprint 02/diseno/` y cierre del sprint en Jira según el acuerdo del 23/10/2026. |
 
 El nombre V_1_0_0 del archivo se conserva por exigencia de la consigna.
 

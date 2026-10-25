@@ -24,8 +24,8 @@ Notas de lectura:
 
 ## Guía visual ST-029 (ECL-55)
 
-Se respetaron las decisiones de la guía de Giancarlo, que aún no está en `main`
-(`git show origin/docs/ECL-55-diseno-movil-conductor:frontend/diseno/ST-029/guia-visual.md`):
+Se respetaron las decisiones de la [guía visual de Giancarlo](<../../../docs/03 Implementación/Sprint 02/diseno/ST-029/guia-visual.md>),
+integrada en `main` en el cierre del Sprint 2:
 marco de 360 px con márgenes de 16 px; escala de espaciado 8/12/16/24; verde
 `#166534` para acciones, verde suave para la siguiente parada, texto `#17251C` /
 `#526158`, ámbar `#854D0E`, rojo `#B42318` y foco azul `#1D4ED8` de 3 px; Inter;

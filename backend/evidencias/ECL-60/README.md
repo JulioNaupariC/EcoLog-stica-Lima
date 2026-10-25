@@ -1,7 +1,7 @@
 # Evidencias ECL-60 / ST-034
 
 Trazabilidad: ECL-60 → ECL-23 / EN-005.
-[Validación técnica](<../../../docs/03 Implementación/Sprint 2/validaciones/VALIDACION_ST034.md>).
+[Validación técnica](<../../../docs/03 Implementación/Sprint 02/validaciones/VALIDACION_ST034.md>).
 
 | Archivo | Origen y significado |
 |---|---|

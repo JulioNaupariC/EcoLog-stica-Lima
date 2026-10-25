@@ -23,6 +23,6 @@ que registra la brecha D-01 y se conserva sin cambios.
 [resultados.json](resultados.json) registra `P8OrderProposalAvailable: true`,
 `P8ExplicitReferenceCopy`, `P8WindowsUnchanged` y `P8ClientUnchanged`.
 
-Análisis y matriz: [VALIDACION_ST028.md](<../../../../docs/03 Implementación/Sprint 2/validaciones/VALIDACION_ST028.md>).
+Análisis y matriz: [VALIDACION_ST028.md](<../../../../docs/03 Implementación/Sprint 02/validaciones/VALIDACION_ST028.md>).
 
 [← Volver al README principal](../../../../README.md)

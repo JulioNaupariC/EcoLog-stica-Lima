@@ -1,6 +1,6 @@
 # Evidencia ECL-64 / ST-038
 
-Consultar [VALIDACION_ST038.md](<../../../docs/03 Implementación/Sprint 2/validaciones/VALIDACION_ST038.md>).
+Consultar [VALIDACION_ST038.md](<../../../docs/03 Implementación/Sprint 02/validaciones/VALIDACION_ST038.md>).
 
 comparacion.json contiene SQL real, parámetros sintéticos, versiones,
 resultados funcionales y 80 planes antes/después. La comparación utiliza la

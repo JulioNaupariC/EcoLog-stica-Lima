@@ -1,7 +1,7 @@
 # Evidencias ECL-63 / ST-037
 
 Mediciones reales sobre datos sintéticos del 09/10/2026.
-Consultar [el informe](<../../../docs/03 Implementación/Sprint 2/informes/INFORME_ST037.md>) para resultados y límites.
+Consultar [el informe](<../../../docs/03 Implementación/Sprint 02/informes/INFORME_ST037.md>) para resultados y límites.
 
 Los tres planes JSON contienen SQL, origen y cinco ejecuciones completas.
 resultados.json conserva versiones, índices, distribución y medianas.
