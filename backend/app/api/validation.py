@@ -9,7 +9,8 @@ from fastapi.routing import APIRoute
 
 
 class SanitizedRoute(APIRoute):
-    """FastAPI includes `input` in validation errors; passwords must not appear."""
+    """FastAPI includes `input` in validation errors; passwords and personal data
+    (DNI, phone) must not appear. Shared by drivers, users and password change."""
 
     def get_route_handler(self) -> Callable:
         handler = super().get_route_handler()
