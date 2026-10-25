@@ -22,7 +22,7 @@ RESTRICTED_FIELDS = {
 def test_login_public_schema_exposes_identity_role_and_expiration_metadata():
     fields = set(LoginResponse.model_fields)
 
-    assert fields == {"usuario_id", "rol", "expires_at"}
+    assert fields == {"usuario_id", "rol", "expires_at", "debe_cambiar_contrasena"}
     assert fields.isdisjoint(RESTRICTED_FIELDS)
 
 

@@ -5,7 +5,10 @@ from uuid import uuid4
 import pytest
 from fastapi import HTTPException
 
-from app.api.dependencies import get_authenticated_session, require_permission
+from app.api.dependencies import (
+    get_current_session,
+    require_permission,
+)
 from app.core.rbac import Contexto, Identidad, Permiso, Rol
 from app.repositories.auditoria import AuditStorageError
 from app.services.autenticacion import (
@@ -114,7 +117,7 @@ def test_session_resolution_failures_are_sanitized(failure, expected_status):
     )
 
     with pytest.raises(HTTPException) as error:
-        get_authenticated_session(request, service)
+        get_current_session(request, service)
 
     assert error.value.status_code == expected_status
     assert error.value.detail in {"No autenticado", "Servicio no disponible"}
@@ -126,7 +129,7 @@ def test_absent_cookie_does_not_resolve_a_session():
     request = SimpleNamespace(cookies={}, app=SimpleNamespace(state=SimpleNamespace()))
 
     with pytest.raises(HTTPException) as error:
-        get_authenticated_session(request, service)
+        get_current_session(request, service)
 
     assert error.value.status_code == 401
     assert error.value.detail == "No autenticado"

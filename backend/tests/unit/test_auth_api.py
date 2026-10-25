@@ -5,7 +5,7 @@ from uuid import uuid4
 import pytest
 from fastapi.testclient import TestClient
 
-from app.api.dependencies import get_authenticated_session, get_authentication_service
+from app.api.dependencies import get_authentication_service, get_current_session
 from app.core.config import Settings
 from app.core.rbac import Identidad, Rol
 from app.main import create_app
@@ -40,6 +40,7 @@ def test_login_contract_and_cookie(environment, secure):
     assert response.json() == {
         "usuario_id": str(identity.usuario_id),
         "rol": "OPERADOR",
+        "debe_cambiar_contrasena": False,
     }
     assert "clear-session-token" not in response.text
     cookie = response.headers["set-cookie"]
@@ -124,7 +125,7 @@ def test_logout_revokes_current_session_and_clears_cookie():
         datetime.now(timezone.utc) + timedelta(minutes=60),
     )
     app.dependency_overrides[get_authentication_service] = lambda: service
-    app.dependency_overrides[get_authenticated_session] = lambda: authenticated
+    app.dependency_overrides[get_current_session] = lambda: authenticated
     with TestClient(app) as client:
         login_response = client.post(
             "/login", json={"email": "user@example.test", "password": "secret"}
@@ -161,7 +162,7 @@ def test_logout_audit_failure_returns_sanitized_error_and_clears_cookie(
     )
     service.logout.side_effect = AuthenticationUnavailable("private audit details")
     app.dependency_overrides[get_authentication_service] = lambda: service
-    app.dependency_overrides[get_authenticated_session] = lambda: authenticated
+    app.dependency_overrides[get_current_session] = lambda: authenticated
 
     with TestClient(app) as client:
         login_response = client.post(

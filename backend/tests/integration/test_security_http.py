@@ -110,6 +110,7 @@ def test_us001_scenario_1_valid_access_and_login_audit(security_database):
         assert login_response.json() == {
             "usuario_id": str(identity.usuario_id),
             "rol": "ADMINISTRADOR",
+            "debe_cambiar_contrasena": False,
         }
         cookie = login_response.headers["set-cookie"]
         assert "HttpOnly" in cookie
