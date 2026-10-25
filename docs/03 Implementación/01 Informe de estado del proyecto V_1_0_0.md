@@ -10,13 +10,13 @@
 
 **Periodo planificado:** 08/10/2026–23/10/2026, según el tablero compartido.
 
-**Fecha de corte:** 13/10/2026, America/Lima.
+**Fecha de corte:** 25/10/2026, America/Lima (cierre del Sprint 2).
 
-**Versión del contenido:** 1.3.0.
+**Versión del contenido:** 1.3.1.
 
-**Fuente del corte técnico:** `main` en `ea30983` (PR #47–#55 integrados).
+**Fuente del corte técnico:** `main` con los PR #47–#57 integrados y el PR de cierre del Sprint 2.
 
-**Estado Jira:** cinco padres y 19 subtareas en Finalizada (27/27 SP de padres); sprint activo.
+**Estado Jira:** cinco padres y 19 subtareas en Finalizada (27/27 SP de padres); el sprint se cierra en Jira tras integrar el PR de cierre (acuerdo R3 de la retrospectiva del 23/10/2026).
 
 ## Resumen ejecutivo
 
@@ -114,6 +114,7 @@ PR #47–#53.
 | 1.1.0 | 09/10/2026 | Sustitución del contenido por el entregable del Sprint 2, con evidencias y pendientes al corte. |
 | 1.2.0 | 13/10/2026 | Estado por criterios frente a Jira, métricas tras el parche post-Review, PR #47–#54 y riesgos del Sprint 3. |
 | 1.3.0 | 13/10/2026 | ECL-25 acreditado con los indicadores agregados del Inicio; riesgo del dashboard actualizado. |
+| 1.3.1 | 25/10/2026 | Corte de cierre: fuente con los PR #47–#57, guía ST-029 (ECL-55) integrada en `Sprint 02/diseno/` y cierre del sprint en Jira según el acuerdo del 23/10/2026. |
 
 El nombre V_1_0_0 del archivo se conserva por exigencia de la consigna.
 

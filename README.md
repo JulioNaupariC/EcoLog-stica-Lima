@@ -220,7 +220,7 @@ Guías de integración:
 ### Estado del Sprint 2 — cierre
 
 Periodo planificado: 08/10/2026–23/10/2026. El informe de estado, el registro de
-impedimentos y la revisión están en la versión de contenido 1.3.0, y la
+impedimentos y la revisión están en la versión de contenido 1.3.1, y la
 retrospectiva en la 1.3.0; el historial del Sprint 1 permanece en Git y en la
 rama `sprint-1`.
 

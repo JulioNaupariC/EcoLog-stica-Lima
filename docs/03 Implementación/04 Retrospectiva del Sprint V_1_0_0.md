@@ -10,14 +10,15 @@
 
 **Periodo planificado:** 08/10/2026–23/10/2026, según el tablero compartido.
 
-**Fecha de corte:** 13/10/2026, America/Lima.
+**Fecha de corte:** 25/10/2026, America/Lima (cierre del Sprint 2).
 
-**Versión del contenido:** 1.2.0.
+**Versión del contenido:** 1.3.0.
 
-**Fuente del corte técnico:** `main` en `ea30983` (PR #47–#55 integrados).
+**Fuente del corte técnico:** `main` con los PR #47–#57 integrados y el PR de cierre del Sprint 2.
 
 **Base del análisis:** datos de Jira (estados y Time in Status), historial de Git y
-PR de GitHub, y el feedback de la Review del 09/10/2026. El análisis es sin culpables:
+PR de GitHub, el feedback de la Review del 09/10/2026 y la reunión de retrospectiva
+del equipo en clase el 23/10/2026. El análisis es sin culpables:
 describe hechos del proceso y sus causas, no desempeños individuales.
 
 ## Hallazgos del Sprint 2
@@ -77,6 +78,23 @@ describe hechos del proceso y sus causas, no desempeños individuales.
   ([PR #47](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/47)) y
   `seed_demo.py` ([PR #52](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/52)).
 
+## Reunión de retrospectiva — 23/10/2026
+
+| Campo | Registro |
+|---|---|
+| Fecha y lugar | Viernes 23/10/2026, en clase (fecha de fin planificada del Sprint 2) |
+| Asistentes | Julio Armando Naupari Camarena (líder), Frank Roy Yupanqui Acevedo (analista de requisitos), Giancarlo Marcio Soto Escobar (UX/UI), Antony Munive Ríos (backend y optimización), José Samuel Delgadillo Pantoja (frontend y QA) |
+| Insumos | Hallazgos H1–H7 y plan de acción A1–A6 de esta retrospectiva |
+
+### Acuerdos
+
+| # | Acuerdo | Cómo se aplica |
+|---|---|---|
+| R1 | Las acciones A1–A6 se mantienen y cada una corresponde al rol documentado de su responsable ([Equipo](<../../README.md#equipo>)) | Seguimiento en la retrospectiva del Sprint 3 |
+| R2 | Como no todos tienen la misma disponibilidad, los PR se atienden como una cola: cada PR lo aprueba el integrante del rol correspondiente tras revisar los cambios | Revisores por rol en [`.github/CODEOWNERS`](<../../.github/CODEOWNERS>) y sección 3.4 de la [política de PR](<../04 Contribución/01. Politica de pull requests V_1_0_0.md>) (acción A7) |
+| R3 | El Sprint 2 no se cierra en Jira hasta confirmar que el diseño de Giancarlo (ECL-55 / ST-029) está alineado con lo implementado | La guía se integra en el PR de cierre con la confirmación de Giancarlo; después se cierra el sprint en Jira |
+| R4 | Cada sprint conserva una rama final con su código y documentación como evidencia; las ramas de trabajo se eliminan al cerrar el sprint, y las del Sprint 3 se conservan hasta su evaluación del 30/10/2026 | Ramas `sprint-1` y `sprint-2` (acción A8) |
+
 ## Seguimiento de las acciones del Sprint 1
 
 | Acción del Sprint 1 | Responsable | Fecha comprometida | Resultado | Evidencia |
@@ -93,8 +111,13 @@ por eso el plan siguiente fija una métrica y una forma de comprobación por acc
 
 ## Plan de acción
 
-Las acciones son compromisos del equipo. Se revisarán en la retrospectiva del
-Sprint 3 con la misma tabla de seguimiento.
+Las acciones son compromisos del equipo. A1–A6 fueron confirmadas en la reunión
+del 23/10/2026 (acuerdo R1) y A7–A8 surgieron de ella. Se revisarán en la
+retrospectiva del Sprint 3 con la misma tabla de seguimiento.
+
+Estado de A4 al 25/10/2026: las BDD ECL-47 y ECL-51 siguen en BORRADOR en el
+repositorio, por lo que la acción está vencida y continúa como prioridad al
+inicio del Sprint 3.
 
 | # | Acción | Responsable | Fecha límite | Métrica verificable | Cómo se comprobará |
 |---|---|---|---|---|---|
@@ -104,6 +127,8 @@ Sprint 3 con la misma tabla de seguimiento.
 | A4 | Ratificar las BDD antes de implementar | Frank Roy Yupanqui Acevedo | 20/10/2026 | ECL-47 y ECL-51 en estado APROBADO; 0 historias del Sprint 3 iniciadas con BDD en BORRADOR | Cabecera de estado de las BDD y fecha del commit de aprobación anterior a la primera rama de la historia |
 | A5 | Registrar Story Points en Jira para historias y subtareas | Frank Roy Yupanqui Acevedo | 23/10/2026 | 100 % de los elementos del Sprint 3 con Story Points antes de iniciar el sprint | Exportación del sprint en Jira |
 | A6 | Ensayar la demostración antes de la Review con `seed_demo.py` y el guion con tiempos | Giancarlo Marcio Soto Escobar | Un día hábil antes de la Review del Sprint 3 | 1 ensayo completo cronometrado ≤15 minutos con todas las historias demostradas | Grabación o capturas del ensayo enlazadas en la Revisión del Sprint 3 |
+| A7 | Activar **Require review from Code Owners** en la protección de `main` y atender los PR por rol según CODEOWNERS | Julio Armando Naupari Camarena | Antes del primer PR del Sprint 3 | 100 % de los PR del Sprint 3 aprobados por un dueño del área que modifican, distinto del autor | Revisores y aprobaciones de cada PR del Sprint 3 en GitHub |
+| A8 | Conservar una rama `sprint-N` por sprint cerrado, protegida, y eliminar las ramas de trabajo integradas | Julio Armando Naupari Camarena | Al cierre de cada sprint | 1 rama `sprint-N` por sprint cerrado; 0 ramas de trabajo integradas tras el cierre (salvo las del sprint en evaluación) | Listado de ramas del repositorio en GitHub |
 
 ## Fuentes
 
@@ -119,6 +144,7 @@ Sprint 3 con la misma tabla de seguimiento.
 | 1.0.0 | 01/10/2026 | Entregable del Sprint 1; contenido anterior conservado en el historial Git. |
 | 1.1.0 | 09/10/2026 | Sustitución del contenido por el entregable del Sprint 2, con evidencias y pendientes al corte. |
 | 1.2.0 | 13/10/2026 | Hallazgos verificables, causas raíz por eje, seguimiento de las acciones del Sprint 1 y plan SMART. |
+| 1.3.0 | 25/10/2026 | Reunión de retrospectiva del 23/10/2026 con asistentes y acuerdos R1–R4, estado de A4 y acciones A7–A8 (revisores por rol y ramas de cierre). |
 
 El nombre V_1_0_0 del archivo se conserva por exigencia de la consigna.
 
