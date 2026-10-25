@@ -185,6 +185,32 @@ def test_unhappy_non_admin_cannot_reset(reset_database, email, role):
     assert audit_rows(factory, Evento.CONTRASENA_RESTABLECIDA) == []
 
 
+@pytest.mark.parametrize(
+    "email,role",
+    [
+        ("operador-list@example.test", "OPERADOR"),
+        ("conductor-list@example.test", "CONDUCTOR"),
+        ("analista-list@example.test", "ANALISTA"),
+        ("auditor-list@example.test", "AUDITOR"),
+    ],
+)
+def test_unhappy_user_list_is_administrator_only(reset_database, email, role):
+    factory, url = reset_database
+    actor_id = create_user(factory, email, role)
+    with client_for(url) as client:
+        login(client, email, ORIGINAL)
+        response = client.get("/usuarios")
+    assert response.status_code == 403
+    assert response.json() == {"detail": "Acceso denegado"}
+    assert "@" not in response.text
+    denied = [
+        row.usuario_id
+        for row in audit_rows(factory, Evento.DENEGADA)
+        if row.detalle["permiso"] == "usuarios.actualizar"
+    ]
+    assert denied == [actor_id]
+
+
 def test_edge_expired_temporary_is_generic_401(reset_database):
     factory, url = reset_database
     create_user(factory, ADMIN, "ADMINISTRADOR")

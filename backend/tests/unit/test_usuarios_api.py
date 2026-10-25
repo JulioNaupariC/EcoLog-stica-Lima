@@ -21,7 +21,7 @@ from app.api.dependencies import (
 from app.api.usuarios import get_password_reset_service
 from app.api.vehiculos import get_vehicle_service
 from app.core.config import Settings
-from app.core.rbac import Identidad, Rol
+from app.core.rbac import Identidad, Permiso, Rol
 from app.main import create_app
 from app.repositories.auditoria import Evento
 from app.repositories.usuarios import UserSummary
@@ -90,13 +90,30 @@ def test_list_users_is_paginated_and_never_exposes_credentials():
         assert client.get("/usuarios", params={"page_size": 101}).status_code == 422
 
 
-@pytest.mark.parametrize("role,status", [(Rol.CONDUCTOR, 403), (Rol.ANALISTA, 403)])
-def test_list_users_requires_consult_permission(role, status):
-    app, _, service = build(role)
+@pytest.mark.parametrize(
+    "role", [Rol.OPERADOR, Rol.CONDUCTOR, Rol.ANALISTA, Rol.AUDITOR]
+)
+def test_list_users_is_administrator_only_and_denial_is_audited(role):
+    app, authenticated, service = build(role)
     with run(app) as (client, audit):
-        assert client.get("/usuarios").status_code == status
+        response = client.get("/usuarios")
+        assert response.status_code == 403
+        assert response.json() == {"detail": "Acceso denegado"}
         service.listar.assert_not_called()
-        assert audit.registrar.call_args.args[0].evento is Evento.DENEGADA
+        [registro] = [c.args[0] for c in audit.registrar.mock_calls]
+        assert registro.evento is Evento.DENEGADA
+        assert registro.usuario_id == authenticated.identidad.usuario_id
+        assert registro.detalle.permiso is Permiso.USUARIOS_ACTUALIZAR
+
+
+def test_password_change_required_detail_is_a_stable_frontend_contract():
+    # The frontend matches this exact text to redirect to /cambiar-contrasena.
+    assert PASSWORD_CHANGE_REQUIRED == "Cambio de contraseña requerido"
+    app, _, _ = build(Rol.OPERADOR, must_change=True)
+    with run(app) as (client, _):
+        response = client.get("/usuarios")
+    assert response.status_code == 403
+    assert response.json() == {"detail": "Cambio de contraseña requerido"}
 
 
 def test_list_users_unavailable_is_sanitized():
