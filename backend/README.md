@@ -894,9 +894,9 @@ modelo actual no permite comprobar la jornada de forma confiable:
 - la ventana de un pedido puede cruzar la medianoche de Lima.
 
 Hoy solo se valida que la parada exista y sea del conductor. La comprobación de
-jornada queda pendiente del modelo de rutas, sujeta a la ratificación del
-aplazamiento y a su ticket de seguimiento. **I03 no está cubierto por
-completo.**
+jornada se aplaza a [ECL-82](https://continental-team-il84x39k.atlassian.net/browse/ECL-82)
+(falta el modelo de rutas); el aplazamiento está pendiente de ratificación de
+Julio. **I03 no está cubierto por completo.**
 
 ### Migración 0013
 
