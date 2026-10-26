@@ -18,6 +18,11 @@ include = ["app*"]
 testpaths = ["tests"]
 markers = ["integration: requires an explicitly configured PostgreSQL/PostGIS instance"]
 
+[tool.coverage.run]
+# ECL-65: portable coverage.xml (no absolute runner paths) so the SonarCloud job
+# can map <source>app</source> to backend/app from the repository root.
+relative_files = true
+
 [tool.ruff]
 target-version = "py310"
 line-length = 88
