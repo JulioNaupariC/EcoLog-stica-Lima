@@ -93,6 +93,27 @@ it('cualquier 403 «Cambio de contraseña requerido» del API fuerza el cambio',
   expect(screen.getByRole('heading', { name: 'Cambiar contraseña' })).toBeInTheDocument()
 })
 
+it('el envoltorio de fetch existe solo con sesión y se retira al cerrar sesión', async () => {
+  render(<MemoryRouter initialEntries={['/login']}><Controls /><App /></MemoryRouter>)
+  expect(globalThis.fetch).toBe(fetchMock)
+  screen.getByRole('heading', { name: 'Iniciar sesión' })
+  const user = userEvent.setup()
+  loginMock.mockResolvedValue({ usuario_id, rol: 'OPERADOR' })
+  await user.click(screen.getByLabelText('Correo electrónico'))
+  await user.paste('persona@example.test')
+  await user.click(screen.getByLabelText('Contraseña'))
+  await user.paste('synthetic-password')
+  await user.click(screen.getByRole('button', { name: 'Iniciar sesión' }))
+  await screen.findByRole('heading', { name: 'Inicio' })
+  expect(globalThis.fetch).not.toBe(fetchMock)
+
+  await user.click(screen.getByRole('button', { name: /^Cuenta:/u }))
+  await user.click(screen.getByRole('button', { name: 'Cerrar sesión' }))
+  await screen.findByRole('heading', { name: 'Iniciar sesión' })
+  expect(logoutMock).toHaveBeenCalled()
+  expect(globalThis.fetch).toBe(fetchMock)
+})
+
 it('desde el cambio obligatorio se puede cerrar sesión', async () => {
   const user = await signIn({ usuario_id, rol: 'ANALISTA', debe_cambiar_contrasena: true })
   await user.click(await screen.findByRole('button', { name: 'Cerrar sesión' }))
