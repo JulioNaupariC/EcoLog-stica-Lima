@@ -7,6 +7,10 @@ arriba, en [`docs/03 Implementación/`](<../>).
 
 ## Índice
 
+### Planificación y BDD
+
+- [ECL-72 / ST-039 — Reglas y BDD de incidencias (BORRADOR)](<../../02 Planificación/BDD/ECL-72-ST-039-incidencias.md>)
+
 ### Validaciones
 
 | Documento | Historia Jira | Tema |
