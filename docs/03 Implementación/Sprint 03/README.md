@@ -7,6 +7,10 @@ arriba, en [`docs/03 Implementación/`](<../>).
 
 ## Índice
 
+### Coherencia documental
+
+- [Ítem 7 — Coherencia y versionamiento documental](<07 Coherencia y versionamiento documental V_1_0_0.md>)
+
 ### Planificación y BDD
 
 - [ECL-72 / ST-039 — Reglas y BDD de incidencias (aprobada por Julio, PR #63)](<../../02 Planificación/BDD/ECL-72-ST-039-incidencias.md>)

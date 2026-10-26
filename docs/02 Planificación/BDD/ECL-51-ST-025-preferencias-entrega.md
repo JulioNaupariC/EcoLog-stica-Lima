@@ -29,11 +29,11 @@ línea base ni propone una entidad de preferencias adicional.
 
 ## Fuentes consultadas
 
-- [RF-005 — Requisitos funcionales](../../01%20Inicio/06.%20Requisitos%20funcionales%20V_1_0_0.md)
-- [RN-002 y RN-006 — Reglas de negocio](../../01%20Inicio/09.%20Reglas%20de%20negocio%20V_1_0_0.md)
+- [RF-005 — Requisitos funcionales](../../01%20Inicio/06.%20Requisitos%20funcionales%20V_1_1_0.md)
+- [RN-002 y RN-006 — Reglas de negocio](../../01%20Inicio/09.%20Reglas%20de%20negocio%20V_1_1_0.md)
 - [Perfiles y matriz RBAC](../../01%20Inicio/08.%20Usuarios%20V_1_0_0.md)
 - [Modelo lógico de datos](../../01%20Inicio/11.%20Base%20de%20datos%20V_1_1_0.md)
-- [Requisitos no funcionales](../../01%20Inicio/07.%20Requisitos%20no%20funcionales%20V_1_1_0.md)
+- [Requisitos no funcionales](../../01%20Inicio/07.%20Requisitos%20no%20funcionales%20V_1_2_0.md)
 - [Definition of Done](../01%20Transformando%20a%20%C3%A1gil%20V_1_0_0.md#8-definition-of-done-dod-global)
 - `backend/app/models/cliente.py`, `backend/app/models/pedido.py`,
   `backend/alembic/versions/0006_create_cliente_pedido.py`,

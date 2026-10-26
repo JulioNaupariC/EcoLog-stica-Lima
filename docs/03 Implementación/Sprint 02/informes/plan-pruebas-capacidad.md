@@ -126,7 +126,7 @@ Los fallos de preparación, login o calentamiento se conservan fuera del P95 est
 
 ### 4.2. Consulta del tablero — cobertura pendiente de RNF-008
 
-RNF-008 exige registrar pedidos **y consultar el tablero**, según [requisitos no funcionales](<../../../01 Inicio/07. Requisitos no funcionales V_1_1_0.md>). En el estado revisado de la rama, [la aplicación FastAPI](../../../../backend/app/main.py) registra routers de salud, autenticación, pedidos y vehículos: **no existe un endpoint de consulta del tablero**. GET /vehiculos o GET /health no sustituyen esa función.
+RNF-008 exige registrar pedidos **y consultar el tablero**, según [requisitos no funcionales](<../../../01 Inicio/07. Requisitos no funcionales V_1_2_0.md>). En el estado revisado de la rama, [la aplicación FastAPI](../../../../backend/app/main.py) registra routers de salud, autenticación, pedidos y vehículos: **no existe un endpoint de consulta del tablero**. GET /vehiculos o GET /health no sustituyen esa función.
 
 La dependencia funcional es **ECL-15 / US-009 — Consultar dashboard de operación y sostenibilidad**, identificada en [la planificación](<../../../02 Planificación/02 Artefactos Jira V_1_0_0.md>). ECL-61 deberá integrar la consulta real cuando ECL-15 esté implementado y su contrato/permiso estén disponibles; ECL-60 aportará sus métricas. Antes de ejecutar esa cobertura, versionar ruta real, payload/filtros, rol, respuestas esperadas, proporción/cadencia de consultas y duración del escenario. Estos parámetros están pendientes; no se inventa una ruta ni se atribuye una ejecución.
 
