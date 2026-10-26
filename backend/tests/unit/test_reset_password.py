@@ -166,7 +166,7 @@ def test_reset_replaces_hash_revokes_sessions_and_audits(fakes):
     target = account()
     fakes.users.find_for_login.return_value = target
 
-    assert reset_password(fakes.factory, "a@example.test", NEW, now=NOW) == 2
+    assert reset_password(fakes.factory, "a@example.test", NEW, now=NOW) is None
 
     fakes.users.find_for_login.assert_called_once_with("a@example.test")
     fakes.credentials.replace.assert_called_once_with(target.usuario_id, NEW)
@@ -212,7 +212,7 @@ def test_main_happy_path_reports_without_the_password(demo_env, monkeypatch, cap
     monkeypatch.setattr(
         module,
         "reset_password",
-        lambda f, email, password: calls.append((f, email, password)) or 3,
+        lambda f, email, password: calls.append((f, email, password)),
     )
     code = main(
         ["--email", " admin.demo@ecologistica.example "],
@@ -224,8 +224,13 @@ def test_main_happy_path_reports_without_the_password(demo_env, monkeypatch, cap
     out, err = capsys.readouterr()
     assert code == 0
     assert calls == [(factory, "admin.demo@ecologistica.example", NEW)]
-    assert "sesiones revocadas: 3" in out
-    assert NEW not in out + err
+    # Fixed text: nothing derived from the password, nor the e-mail (CodeQL).
+    assert out.splitlines() == [
+        "reset_password: contraseña actualizada; "
+        "se cerraron las sesiones activas de la cuenta."
+    ]
+    assert err == ""
+    assert "admin.demo" not in out
     dispose.assert_called_once()
 
 
@@ -263,7 +268,9 @@ def test_main_unhappy_refuses_before_prompting_or_connecting(
     ],
 )
 def test_main_edge_cases_never_connect(demo_env, capsys, stdin, prompt, email, message):
-    builder = Mock()
+    # Building the engine does not connect; only a transaction would.
+    factory, dispose = MagicMock(), Mock()
+    builder = Mock(return_value=(factory, dispose))
     code = main(
         ["--email", email],
         demo_env,
@@ -275,7 +282,8 @@ def test_main_edge_cases_never_connect(demo_env, capsys, stdin, prompt, email, m
     assert code == 2
     assert message in err
     assert NEW not in out + err
-    builder.assert_not_called()
+    factory.begin.assert_not_called()
+    assert dispose.call_count == builder.call_count
 
 
 def test_main_unknown_email_disposes_engine_and_hides_password(
@@ -313,3 +321,26 @@ def test_email_is_required(capsys):
     with pytest.raises(SystemExit):
         main([], {})
     assert "--email" in capsys.readouterr().err
+
+
+def test_password_is_read_only_after_every_check(demo_env, monkeypatch):
+    """The prompt runs after every check, right before its only use."""
+    order = []
+    prompt = Mock(side_effect=lambda text: order.append("prompt") or NEW)
+    monkeypatch.setattr(
+        module, "reset_password", lambda f, email, password: order.append("reset")
+    )
+
+    def builder(settings):
+        order.append("factory")
+        return MagicMock(), Mock()
+
+    code = main(
+        ["--email", "a@example.test"],
+        demo_env,
+        stdin=Terminal(tty=True),
+        prompt=prompt,
+        factory_builder=builder,
+    )
+    assert code == 0
+    assert order == ["factory", "prompt", "prompt", "reset"]

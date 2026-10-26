@@ -47,6 +47,14 @@ from scripts._guard import ensure_safe_target
 
 ALLOWED_SUFFIXES = ("_demo", "_local")
 UNCHANGED = "no se modificó nada."
+NO_TERMINAL = (
+    "Se necesita una terminal interactiva para escribir la contraseña "
+    f"(en Docker, use 'run -it'); {UNCHANGED}"
+)
+SUCCESS = (
+    "reset_password: contraseña actualizada; "
+    "se cerraron las sesiones activas de la cuenta."
+)
 
 
 class ResetRefused(RuntimeError):
@@ -67,10 +75,7 @@ def ensure_local_target(database_url: str | None, app_env: str | None) -> None:
 def read_new_password(stdin: TextIO, prompt: Callable[[str], str]) -> str:
     """Ask twice on an interactive terminal; never echo or return a weak value."""
     if not stdin.isatty():
-        raise ResetRefused(
-            "Se necesita una terminal interactiva para escribir la contraseña "
-            f"(en Docker, use 'run -it'); {UNCHANGED}"
-        )
+        raise ResetRefused(NO_TERMINAL)
     try:
         first = prompt("Contraseña nueva (mínimo 12 caracteres): ")
         second = prompt("Repita la contraseña nueva: ")
@@ -92,8 +97,12 @@ def reset_password(
     password: str,
     *,
     now: datetime | None = None,
-) -> int:
-    """Replace the password like the in-app change; return revoked sessions."""
+) -> None:
+    """Replace the password like the in-app change, in one transaction.
+
+    Returns nothing on purpose: no value computed while the password is in
+    scope reaches the console. The revoked count is kept only in the audit.
+    """
     current = now or datetime.now(timezone.utc)
     try:
         with factory.begin() as session:
@@ -116,7 +125,6 @@ def reset_password(
                     detalle=DetalleContrasena(sesiones_revocadas=revoked),
                 )
             )
-            return revoked
     except (
         CredentialStorageError,
         SessionStorageError,
@@ -162,19 +170,19 @@ def main(
         ensure_local_target(database_url, environ.get("APP_ENV", settings.app_env))
         if not email:
             raise ResetRefused(f"Indique el correo de la cuenta; {UNCHANGED}")
-        password = read_new_password(stdin or sys.stdin, prompt)
+        terminal = stdin or sys.stdin
+        if not terminal.isatty():
+            raise ResetRefused(NO_TERMINAL)
         factory, dispose = (factory_builder or _build_factory)(settings)
         try:
-            revoked = reset_password(factory, email, password)
+            # Read right before its only use; nothing derived from it is printed.
+            reset_password(factory, email, read_new_password(terminal, prompt))
         finally:
             dispose()
     except ResetRefused as error:
         print(f"reset_password: {error}", file=sys.stderr)
         return 2
-    print(
-        f"reset_password: contraseña actualizada para {email}; "
-        f"sesiones revocadas: {revoked}."
-    )
+    print(SUCCESS)
     return 0
 
 

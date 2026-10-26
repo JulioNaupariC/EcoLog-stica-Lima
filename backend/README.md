@@ -766,7 +766,9 @@ docker compose --env-file .env run --rm --no-deps backend python -m alembic upgr
 docker compose --env-file .env run --rm --no-deps -it -v "${PWD}/backend/scripts:/app/scripts:ro" backend python -m scripts.reset_password --email administrador.demo@ecologistica.example
 ```
 
-Al terminar muestra el correo y el número de sesiones revocadas. Las pruebas están
+Al terminar imprime un texto fijo («contraseña actualizada; se cerraron las
+sesiones activas de la cuenta»), sin el correo ni ningún valor derivado de la
+contraseña. El número de sesiones revocadas queda solo en la auditoría. Las pruebas están
 en `tests/unit/test_reset_password.py` y
 `tests/integration/test_reset_password_script.py`.
 

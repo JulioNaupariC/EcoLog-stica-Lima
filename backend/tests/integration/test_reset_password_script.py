@@ -79,7 +79,9 @@ def test_golden_login_works_with_new_password_and_not_the_old_one(script_databas
     factory, url = script_database
     create_user(factory)
 
-    assert reset_password(factory, EMAIL, NEW) == 0
+    assert reset_password(factory, EMAIL, NEW) is None
+    [row] = password_audit(factory)
+    assert row.detalle == {"sesiones_revocadas": 0}
 
     with client_for(url) as client:
         assert login(client, OLD).status_code == 401
@@ -104,7 +106,7 @@ def test_happy_sessions_are_revoked_state_cleared_and_audited(script_database):
             ) + timedelta(hours=1)
             account.intentos_fallidos = 2
 
-        assert reset_password(factory, EMAIL, NEW) == 2
+        assert reset_password(factory, EMAIL, NEW) is None
 
         assert first.get("/usuarios").status_code == 401
         assert second.get("/usuarios").status_code == 401
