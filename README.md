@@ -161,7 +161,7 @@ de nuevo los servicios. Las instrucciones de arranque sin Docker siguen en
 
 ### Especificaciones BDD del Sprint 3
 
-- [ECL-72 / ST-039 — Reglas y BDD de incidencias (BORRADOR)](<docs/02 Planificación/BDD/ECL-72-ST-039-incidencias.md>)
+- [ECL-72 / ST-039 — Reglas y BDD de incidencias (aprobada por Julio, PR #63)](<docs/02 Planificación/BDD/ECL-72-ST-039-incidencias.md>)
 
 ### Estado de Jira — fotografía de planificación inicial
 

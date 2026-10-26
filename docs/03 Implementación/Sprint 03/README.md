@@ -9,7 +9,7 @@ arriba, en [`docs/03 Implementación/`](<../>).
 
 ### Planificación y BDD
 
-- [ECL-72 / ST-039 — Reglas y BDD de incidencias (BORRADOR)](<../../02 Planificación/BDD/ECL-72-ST-039-incidencias.md>)
+- [ECL-72 / ST-039 — Reglas y BDD de incidencias (aprobada por Julio, PR #63)](<../../02 Planificación/BDD/ECL-72-ST-039-incidencias.md>)
 
 ### Validaciones
 
