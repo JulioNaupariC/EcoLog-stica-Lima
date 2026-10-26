@@ -8,6 +8,7 @@ from pydantic import BaseModel, ConfigDict, Field, model_validator
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 
+from app.core.incidencias import SeveridadIncidencia, TipoIncidencia
 from app.core.rbac import Motivo, Permiso
 from app.models.auditoria import Auditoria
 
@@ -25,6 +26,7 @@ class Evento(str, Enum):
     CONDUCTOR_ACTUALIZADO = "CONDUCTOR_ACTUALIZADO"
     CONTRASENA_RESTABLECIDA = "CONTRASENA_RESTABLECIDA"
     CONTRASENA_CAMBIADA = "CONTRASENA_CAMBIADA"
+    INCIDENCIA_REGISTRADA = "INCIDENCIA_REGISTRADA"
 
 
 class ResultadoAcceso(str, Enum):
@@ -140,6 +142,21 @@ class DetalleContrasena(BaseModel):
     sesiones_revocadas: int = Field(ge=0)
 
 
+# ECL-73 / RN-015: catalogue values and flags only; no location, note or person.
+class DetalleIncidenciaRegistrada(BaseModel):
+    model_config = ConfigDict(
+        frozen=True,
+        extra="forbid",
+        strict=True,
+        hide_input_in_errors=True,
+        revalidate_instances="always",
+    )
+    tipo: TipoIncidencia
+    severidad: SeveridadIncidencia
+    con_parada: bool
+    con_observacion: bool
+
+
 class Registro(BaseModel):
     model_config = ConfigDict(
         frozen=True,
@@ -159,6 +176,7 @@ class Registro(BaseModel):
         | DetalleConductorRegistrado
         | DetalleConductorActualizado
         | DetalleContrasena
+        | DetalleIncidenciaRegistrada
     )
 
     @model_validator(mode="after")
@@ -178,6 +196,7 @@ class Registro(BaseModel):
             Evento.CONTRASENA_RESTABLECIDA,
             Evento.CONTRASENA_CAMBIADA,
         )
+        incident = self.evento is Evento.INCIDENCIA_REGISTRADA
         if authorization != isinstance(self.detalle, Detalle):
             raise ValueError("Invalid audit event")
         if access != isinstance(self.detalle, DetalleAcceso):
@@ -191,6 +210,8 @@ class Registro(BaseModel):
         if driver_updated != isinstance(self.detalle, DetalleConductorActualizado):
             raise ValueError("Invalid audit event")
         if password != isinstance(self.detalle, DetalleContrasena):
+            raise ValueError("Invalid audit event")
+        if incident != isinstance(self.detalle, DetalleIncidenciaRegistrada):
             raise ValueError("Invalid audit event")
         if isinstance(self.detalle, Detalle):
             permitido = self.evento is Evento.PERMITIDA
@@ -210,6 +231,8 @@ class Registro(BaseModel):
             raise ValueError("Invalid driver audit event")
         elif password and (self.usuario_id is None or self.entidad_id is None):
             raise ValueError("Invalid password audit event")
+        elif incident and (self.usuario_id is None or self.entidad_id is None):
+            raise ValueError("Invalid incident audit event")
         return self
 
 
@@ -247,6 +270,8 @@ class AuditoriaRepository:
             Evento.CONDUCTOR_ACTUALIZADO,
         ):
             entidad = "conductor"
+        elif registro.evento is Evento.INCIDENCIA_REGISTRADA:
+            entidad = "incidencia"
         else:
             entidad = "autorizacion"
         row = Auditoria(

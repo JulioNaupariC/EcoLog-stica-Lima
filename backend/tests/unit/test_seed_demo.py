@@ -106,3 +106,12 @@ def test_ruta_de_borde_los_demas_pedidos_siguen_repartidos():
         order_window(index, today)[0].date() for index in range(ASSIGNED_ORDERS + 1, 21)
     }
     assert days == {today, today + timedelta(days=1)}
+
+
+def test_ecl73_operation_id_de_incidencias_demo_es_uuid4_determinista():
+    from scripts.seed_demo import INCIDENTS, incident_operation_id
+
+    ids = [incident_operation_id(incident.key) for incident in INCIDENTS]
+    assert ids == [incident_operation_id(incident.key) for incident in INCIDENTS]
+    assert len(set(ids)) == len(INCIDENTS)
+    assert {operation.version for operation in ids} == {4}

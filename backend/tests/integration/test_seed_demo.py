@@ -8,7 +8,7 @@ from sqlalchemy import delete, func, select
 from alembic import command
 from app.core.rbac import Rol
 from app.db.session import session_factory
-from app.models import Auditoria, Cliente, Pedido
+from app.models import Auditoria, Cliente, Incidencia, Pedido
 from app.models.conductor import Conductor
 from app.models.driver_stop_assignment import DriverStopAssignment
 from app.models.usuario import Usuario
@@ -33,6 +33,8 @@ def demo_factory(migration_database):
     finally:
         # Audit is append-only in the app; fixture-only cleanup before downgrade.
         with factory.begin() as session:
+            # 0013 refuses to downgrade while incidents or their audit exist.
+            session.execute(delete(Incidencia))
             session.execute(delete(Auditoria))
 
 
@@ -47,6 +49,7 @@ def counts(factory):
                 Conductor,
                 Pedido,
                 DriverStopAssignment,
+                Incidencia,
             )
         }
 
@@ -60,8 +63,10 @@ def test_ruta_dorada_crea_el_conjunto_completo(demo_factory):
         "conductor": 4,
         "pedido": 20,
         "driver_stop_assignment": 5,
+        "incidencia": 3,
     }
     assert summary.existing == {}
+    assert summary.created["incidencias"] == 3
 
 
 def test_ruta_feliz_conductor_demo_ve_su_itinerario_real(demo_factory):
@@ -102,3 +107,32 @@ def test_ruta_infeliz_segunda_ejecucion_no_duplica(demo_factory):
     assert summary.created == {}
     assert summary.existing["pedidos"] == 20
     assert summary.existing["asignaciones"] == 5
+    assert summary.existing["incidencias"] == 3
+
+
+def test_ruta_dorada_incidencias_demo_pendientes_y_auditadas(demo_factory):
+    """ECL-73: la vista de incidencias tiene datos de demo del conductor demo."""
+    seed(demo_factory, PASSWORDS, now=NOW)
+    with demo_factory() as session:
+        rows = list(session.scalars(select(Incidencia)))
+        driver = session.scalar(
+            select(Conductor).where(Conductor.nombre == DRIVERS[0].nombre)
+        )
+        stops = set(
+            session.scalars(
+                select(DriverStopAssignment.stop_id).where(
+                    DriverStopAssignment.owner_id == driver.usuario_id
+                )
+            )
+        )
+        audited = session.scalar(
+            select(func.count())
+            .select_from(Auditoria)
+            .where(Auditoria.accion == "INCIDENCIA_REGISTRADA")
+        )
+    assert {row.estado for row in rows} == {"PENDIENTE_VALIDACION"}
+    assert {row.conductor_id for row in rows} == {driver.conductor_id}
+    assert [row.parada_id for row in rows if row.parada_id] != []
+    assert all(row.parada_id in stops for row in rows if row.parada_id)
+    assert all(row.ocurrida_en < NOW for row in rows)
+    assert audited == 3
