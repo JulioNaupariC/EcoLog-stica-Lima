@@ -36,3 +36,13 @@ Thumbs.db
 playwright-report/
 .mypy_cache/
 pip-wheel-metadata/
+
+# Copias de respaldo y archivos temporales de editores
+*~
+*.swp
+*.swo
+*.bak
+*.orig
+*.rej
+*.tmp
+desktop.ini
