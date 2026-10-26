@@ -76,3 +76,28 @@ def test_known_denied_actor_is_preserved(estado, motivo):
     record = sink.registrar.call_args.args[0]
     assert record.usuario_id == identity.usuario_id
     assert record.detalle.motivo is motivo
+
+
+def test_ecl73_restriccion_de_roles_del_endpoint_sin_cambiar_la_matriz():
+    """I08: an endpoint may admit fewer roles than the matrix; denial is audited."""
+    from unittest.mock import Mock
+    from uuid import uuid4
+
+    from app.core.rbac import MATRIZ_RBAC, Identidad, Motivo, Permiso, Rol
+    from app.repositories.auditoria import Evento
+    from app.services.autorizacion import AuthorizationDenied, AutorizacionService
+
+    assert Permiso.INCIDENCIAS_CREAR in MATRIZ_RBAC[Rol.OPERADOR]
+    audit = Mock()
+    service = AutorizacionService(audit)
+    operator = Identidad(uuid4(), Rol.OPERADOR, "ACTIVO")
+    service.autorizar(operator, Permiso.INCIDENCIAS_CREAR)  # Matrix unchanged.
+    with pytest.raises(AuthorizationDenied):
+        service.autorizar(
+            operator, Permiso.INCIDENCIAS_CREAR, roles=frozenset({Rol.CONDUCTOR})
+        )
+    allowed, denied = [call.args[0] for call in audit.registrar.mock_calls]
+    assert allowed.evento is Evento.PERMITIDA
+    assert denied.evento is Evento.DENEGADA
+    assert denied.detalle.motivo is Motivo.SIN_PERMISO
+    assert denied.usuario_id == operator.usuario_id

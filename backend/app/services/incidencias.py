@@ -53,7 +53,16 @@ class IncidenciaParadaAjena(PermissionError):
 
 
 class IncidenciaInvalida(ValueError):
-    """Future time beyond tolerance or a stop that does not exist (422)."""
+    """Future time beyond tolerance or a stop that does not exist (422).
+
+    Carries the field and a stable code so the client can point at it (I05);
+    never the submitted value.
+    """
+
+    def __init__(self, field: str, code: str) -> None:
+        super().__init__(f"{field}: {code}")
+        self.field = field
+        self.code = code
 
 
 class IncidenciaConflicto(ValueError):
@@ -197,11 +206,11 @@ class IncidenciaService:
     ) -> None:
         # Inclusive tolerance, compared as UTC instants; no maximum age (I05, I14).
         if payload.ocurrida_en > current + OCURRIDA_MAX_FUTURO:
-            raise IncidenciaInvalida("ocurrida_en beyond the future tolerance")
+            raise IncidenciaInvalida("ocurrida_en", "fecha_futura_fuera_de_tolerancia")
         if payload.parada_id is not None:
             owner = repository.stop_owner(payload.parada_id)
             if owner is None:
-                raise IncidenciaInvalida("Stop does not exist")
+                raise IncidenciaInvalida("parada_id", "parada_invalida")
             if owner != usuario_id:
                 raise IncidenciaParadaAjena("Stop belongs to another driver")
 

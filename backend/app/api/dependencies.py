@@ -1,11 +1,11 @@
 """Trusted HTTP identity resolution and reusable RBAC integration."""
 
-from collections.abc import Callable
+from collections.abc import Callable, Collection
 from typing import Annotated
 
 from fastapi import Depends, HTTPException, Request, status
 
-from app.core.rbac import Contexto, Identidad, Permiso
+from app.core.rbac import Contexto, Identidad, Permiso, Rol
 from app.repositories.auditoria import AuditStorageError
 from app.services.autenticacion import (
     AutenticacionService,
@@ -58,7 +58,12 @@ def get_authenticated_session(
 def require_permission(
     permiso: Permiso,
     context_factory: Callable[[Identidad], Contexto] | None = None,
+    *,
+    roles: Collection[Rol] | None = None,
 ) -> Callable[..., Identidad]:
+    """``roles`` narrows this endpoint without changing the global matrix."""
+    extra = {} if roles is None else {"roles": frozenset(roles)}
+
     def dependency(
         request: Request,
         authenticated: Annotated[
@@ -74,12 +79,13 @@ def require_permission(
             )
         try:
             if context_factory is None:
-                service.autorizar(authenticated.identidad, permiso)
+                service.autorizar(authenticated.identidad, permiso, **extra)
             else:
                 service.autorizar(
                     authenticated.identidad,
                     permiso,
                     context_factory(authenticated.identidad),
+                    **extra,
                 )
         except AuthorizationDenied:
             raise HTTPException(status.HTTP_403_FORBIDDEN, "Acceso denegado") from None

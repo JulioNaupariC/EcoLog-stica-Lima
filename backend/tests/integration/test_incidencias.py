@@ -30,7 +30,7 @@ from app.core.incidencias import (
 )
 from app.db.session import session_factory
 from app.main import create_app
-from app.models import Auditoria, Incidencia
+from app.models import Auditoria, Conductor, Incidencia, Usuario
 from app.repositories.auditoria import Evento
 from app.repositories.incidencias import IncidenciaRepository
 from app.repositories.usuarios import UsuarioRepository
@@ -336,8 +336,32 @@ def test_I05_hora_futura_o_sin_zona_422(setup, ocurrida_en):
         login(driver, DRIVER_A)
         response = post(driver, body(ocurrida_en=ocurrida_en))
     assert response.status_code == 422
+    # The field is identified safely; the submitted value is never echoed.
+    [error] = response.json()["detail"]
+    assert error["loc"] == ["body", "ocurrida_en"]
+    assert error["msg"] == "Entrada inválida"
+    assert set(error) == {"loc", "type", "msg"}
     assert ocurrida_en not in response.text
+    assert ocurrida_en[11:19] not in response.text
     assert_nothing_stored(setup["factory"])
+
+
+def test_I05_T0_mas_5min_mas_1s_identifica_ocurrida_en_con_codigo_estable(setup):
+    sent = (T0 + OCURRIDA_MAX_FUTURO + timedelta(seconds=1)).isoformat()
+    with client_for(setup["url"]) as driver:
+        login(driver, DRIVER_A)
+        response = post(driver, body(ocurrida_en=sent))
+    assert response.status_code == 422
+    assert response.json() == {
+        "detail": [
+            {
+                "loc": ["body", "ocurrida_en"],
+                "type": "fecha_futura_fuera_de_tolerancia",
+                "msg": "Entrada inválida",
+            }
+        ]
+    }
+    assert sent not in response.text and "09:21:03" not in response.text
 
 
 def test_I06_observacion_de_501_puntos_de_codigo_422_sin_truncar(setup):
@@ -398,11 +422,56 @@ def test_I07_variaciones_invalidas_422_sin_persistencia_ni_eco(setup, changes):
         login(driver, DRIVER_A)
         response = post(driver, body(**changes))
     assert response.status_code == 422
+    assert "input" not in response.text
+    assert all(
+        error["msg"] == "Entrada inválida" for error in response.json()["detail"]
+    )
     for value in changes.values():
         if isinstance(value, str) and value:
             assert value not in response.text
     assert NOTE not in response.text
     assert_nothing_stored(setup["factory"])
+
+
+def test_I08_operador_con_perfil_de_conductor_vinculado_recibe_403_por_rol(setup):
+    """The model lets a conductor profile point to an Operador account, and the
+    global matrix grants that role incidencias.crear: the endpoint still denies
+    it by role before the service, and the denial is audited."""
+    factory = setup["factory"]
+    with factory.begin() as session:
+        operator_id = session.scalar(
+            select(Usuario.usuario_id).where(
+                Usuario.email == "operador-inc@example.test"
+            )
+        )
+        session.add(
+            Conductor(
+                usuario_id=operator_id,
+                nombre="Operador Con Perfil",
+                dni="70000009",
+                licencia_numero="Q-70000009",
+                licencia_vigente_hasta=date(2030, 12, 31),
+                experiencia_anios=1,
+                telefono="+51999999999",
+                punto_partida="Base ficticia",
+            )
+        )
+    with client_for(setup["url"]) as client:
+        login(client, "operador-inc@example.test")
+        response = post(client, body())
+    assert response.status_code == 403
+    assert response.json() == {"detail": "Acceso denegado"}
+    assert_nothing_stored(factory)
+    with factory() as session:
+        denied = session.scalars(
+            select(Auditoria).where(
+                Auditoria.accion == Evento.DENEGADA.value,
+                Auditoria.usuario_id == operator_id,
+            )
+        ).all()
+    assert [(row.detalle["permiso"], row.detalle["motivo"]) for row in denied] == [
+        ("incidencias.crear", "SIN_PERMISO")
+    ]
 
 
 @pytest.mark.parametrize(
