@@ -26,6 +26,10 @@ Las 5 paradas de conductor.demo usan pedidos de hoy (hora de Lima) con
 ventanas de una hora crecientes por posición (09:00, 10:00…). Las fechas se
 fijan en la primera ejecución: para una demostración en otro día, recrear la
 base ``*_demo`` y volver a sembrar ese mismo día.
+
+ECL-73: conductor.demo reporta 3 incidencias ficticias en Lima, pendientes de
+validación, con ``operation_id`` determinista (``uuid5``); la primera está
+asociada a su parada 1. Se registran con el servicio de incidencias.
 """
 
 from __future__ import annotations
@@ -43,6 +47,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session, sessionmaker
 
 from app.core.config import Settings
+from app.core.incidencias import SeveridadIncidencia, TipoIncidencia
 from app.core.rbac import Rol
 from app.db.session import build_engine, session_factory
 from app.models.cliente import Cliente
@@ -50,12 +55,14 @@ from app.models.conductor import Conductor
 from app.models.pedido import Pedido
 from app.repositories.usuarios import UsuarioRepository
 from app.schemas.conductor import ConductorCreate, ConductorUpdate
+from app.schemas.incidencia import IncidenciaCreate
 from app.schemas.pedido import PedidoCreate
 from app.schemas.preferencias import PreferenciasPatch
 from app.schemas.vehiculo import VehicleCreate
 from app.services.conductores import ConductorService
 from app.services.credenciales import CredentialService
 from app.services.driver_reports import DriverReportService
+from app.services.incidencias import IncidenciaService
 from app.services.pedidos import PedidoService
 from app.services.preferencias import PreferenciasService
 from app.services.vehiculos import VehicleDuplicatePlate, VehiculoService
@@ -66,6 +73,9 @@ DEMO_SUFFIX = "_demo"
 PASSWORD_PREFIX = "SEED_DEMO_PASSWORD_"
 MIN_PASSWORD_LENGTH = 12
 STOP_NAMESPACE = uuid5(NAMESPACE_URL, "https://ecologistica.example/demo/paradas")
+INCIDENT_NAMESPACE = uuid5(
+    NAMESPACE_URL, "https://ecologistica.example/demo/incidencias"
+)
 
 
 class SeedRefused(RuntimeError):
@@ -159,6 +169,53 @@ DRIVERS = (
 
 ORDER_COUNT = 20
 ASSIGNED_ORDERS = 5
+
+
+@dataclass(frozen=True)
+class DemoIncident:
+    key: str
+    tipo: TipoIncidencia
+    severidad: SeveridadIncidencia
+    minutes_ago: int
+    latitud: float
+    longitud: float
+    first_stop: bool
+    observacion: str | None
+
+
+# Fictitious Lima locations; "minutes_ago" is relative to the seeding time.
+INCIDENTS = (
+    DemoIncident(
+        "averia-arequipa",
+        TipoIncidencia.AVERIA,
+        SeveridadIncidencia.ALTA,
+        45,
+        -12.0917,
+        -77.0336,
+        True,
+        "Llanta pinchada en Av. Arequipa",
+    ),
+    DemoIncident(
+        "trafico-javier-prado",
+        TipoIncidencia.TRAFICO,
+        SeveridadIncidencia.MEDIA,
+        90,
+        -12.0897,
+        -77.0124,
+        False,
+        "Congestión por obras en Av. Javier Prado",
+    ),
+    DemoIncident(
+        "clima-costa-verde",
+        TipoIncidencia.CLIMA,
+        SeveridadIncidencia.BAJA,
+        150,
+        -12.1211,
+        -77.0447,
+        False,
+        None,
+    ),
+)
 PRIORITIES = ("EXPRESS", "ESTANDAR", "ECONOMICO", "ESTANDAR")
 PRODUCTS = ("Abarrotes", "Farmacia", "Libros", "Perecible", "Ferretería")
 
@@ -413,6 +470,34 @@ def _ensure_assignments(
         summary.count("asignaciones", created=stop_id not in existing)
 
 
+def _ensure_incidents(
+    factory: sessionmaker[Session],
+    driver_account: UUID,
+    orders: list[UUID],
+    now: datetime,
+    summary: SeedSummary,
+) -> None:
+    service = IncidenciaService(factory)
+    first_stop = uuid5(STOP_NAMESPACE, str(orders[0]))
+    for incident in INCIDENTS:
+        # Same operation_id on every run: the service returns the stored one.
+        _ack, created = service.registrar(
+            driver_account,
+            IncidenciaCreate(
+                operation_id=uuid5(INCIDENT_NAMESPACE, incident.key),
+                tipo=incident.tipo,
+                severidad=incident.severidad,
+                ocurrida_en=now - timedelta(minutes=incident.minutes_ago),
+                latitud=incident.latitud,
+                longitud=incident.longitud,
+                parada_id=first_stop if incident.first_stop else None,
+                observacion=incident.observacion,
+            ),
+            now=now,
+        )
+        summary.count("incidencias", created=created)
+
+
 def seed(
     factory: sessionmaker[Session],
     passwords: Mapping[Rol, str],
@@ -430,6 +515,7 @@ def seed(
     )
     orders = _ensure_orders(factory, clients, now.date(), summary)
     _ensure_assignments(factory, drivers[DRIVERS[0].dni], orders, summary)
+    _ensure_incidents(factory, drivers[DRIVERS[0].dni], orders, now, summary)
     return summary
 
 
@@ -459,6 +545,7 @@ def main(environ: Mapping[str, str] = os.environ) -> int:
         "conductores",
         "pedidos",
         "asignaciones",
+        "incidencias",
     ):
         print(
             f"{kind}: {summary.created.get(kind, 0)} creados, "
