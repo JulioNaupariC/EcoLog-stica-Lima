@@ -789,7 +789,7 @@ el ID del escenario en su nombre (`test_I11_...`) para mapearlas en ECL-76.
 
 | Método y ruta | Acceso | Respuesta |
 |---|---|---|
-| `POST /conductor/incidencias` | `incidencias.crear`, alcance propio (Conductor con perfil vinculado) | 201 con `{incidencia_id, operation_id, estado, registrada_en}`; 200 con la misma respuesta ante un reenvío equivalente; 409 con contenido distinto; 422 con datos inválidos, sin repetir lo enviado; 403 genérico para otros roles, sin perfil vinculado o con una parada ajena; 401 sin sesión |
+| `POST /conductor/incidencias` | `incidencias.crear`, alcance propio, **solo rol Conductor** con perfil vinculado | 201 con `{incidencia_id, operation_id, estado, registrada_en}`; 200 con la misma respuesta ante un reenvío equivalente; 409 con contenido distinto; 422 con datos inválidos, sin repetir lo enviado; 403 genérico para otros roles, sin perfil vinculado o con una parada ajena; 401 sin sesión |
 | `GET /incidencias?estado=PENDIENTE_VALIDACION&page=1&page_size=20` | `incidencias.consultar`, alcance general (Administrador y Operador) | Orden `ocurrida_en` descendente con desempate por `incidencia_id` ascendente. `page` ≥ 1 y `page_size` entre 1 y 100 (20 por defecto); otro estado o paginación inválida → 422. Una página posterior a la última devuelve 200 con `items: []` y el total real. El conductor aparece solo con `conductor_id` y `nombre`. Analista, Auditor y Conductor reciben 403 sin datos |
 
 ```json
@@ -841,6 +841,62 @@ Las fechas de las respuestas se devuelven en hora de Lima (`-05:00`).
 - **Auditoría (RN-015):** `INCIDENCIA_REGISTRADA` va en la misma transacción que
   el alta, con actor = usuario conductor y entidad = incidencia. El detalle solo
   guarda `tipo`, `severidad`, `con_parada` y `con_observacion`.
+
+### Formato del 422 (para el formulario, ECL-74)
+
+Todos los 422 de estos endpoints tienen la misma forma: identifican el campo y
+un código estable, **sin repetir el valor enviado**, sin `input` ni `ctx`.
+
+```json
+{
+  "detail": [
+    {
+      "loc": ["body", "ocurrida_en"],
+      "type": "fecha_futura_fuera_de_tolerancia",
+      "msg": "Entrada inválida"
+    }
+  ]
+}
+```
+
+- **`loc`:** indica el campo, por ejemplo `["body", "latitud"]` o
+  `["query", "page_size"]`. El formulario lo usa para marcar el campo.
+- **`type`:** es el código del error. Los de esquema son los de Pydantic: por
+  ejemplo, `missing`, `timezone_aware` (fecha sin zona), `less_than_equal`,
+  `float_type`, `uuid_version`, `enum` y `extra_forbidden`. Los de la API son:
+  - `fecha_futura_fuera_de_tolerancia`: `ocurrida_en` pasa del reloj del
+    servidor + 5 min (I05);
+  - `parada_invalida`: `parada_id` no existe (I07).
+- **`msg`:** siempre es `"Entrada inválida"`; el texto para el usuario lo pone el
+  cliente según `loc` y `type`.
+- Un estado distinto de `PENDIENTE_VALIDACION` en `GET /incidencias` responde
+  `{"detail": "Estado no admitido en este listado"}`.
+
+### Rol en el registro (I08)
+
+La matriz RBAC global concede `incidencias.crear` también al Operador. El
+endpoint `POST /conductor/incidencias` admite **solo el rol Conductor**, mediante
+`require_permission(..., roles={Rol.CONDUCTOR})`, sin modificar la matriz.
+
+- **Operador:** recibe 403 antes de llegar al servicio, aunque tenga un perfil
+  de conductor vinculado.
+- **Auditoría:** la denegación se registra como `AUTORIZACION_DENEGADA` con
+  motivo `SIN_PERMISO`.
+
+### Jornada de la parada (I03): pendiente
+
+La BDD pide que la parada sea del itinerario **y de la jornada** del reporte. El
+modelo actual no permite comprobar la jornada de forma confiable:
+
+- no existe una entidad de jornada ni de ruta;
+- el itinerario (`driver_stop_assignment`) no tiene fecha;
+- `pedido_id` es opcional;
+- la ventana de un pedido puede cruzar la medianoche de Lima.
+
+Hoy solo se valida que la parada exista y sea del conductor. La comprobación de
+jornada queda pendiente del modelo de rutas, sujeta a la ratificación del
+aplazamiento y a su ticket de seguimiento. **I03 no está cubierto por
+completo.**
 
 ### Migración 0013
 
