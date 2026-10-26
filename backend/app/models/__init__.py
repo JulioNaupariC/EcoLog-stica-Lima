@@ -5,6 +5,7 @@ from app.models.cliente import Cliente
 from app.models.conductor import Conductor
 from app.models.driver_report import DriverReport
 from app.models.driver_stop_assignment import DriverStopAssignment
+from app.models.incidencia import Incidencia
 from app.models.pedido import Pedido
 from app.models.sesion import Sesion
 from app.models.usuario import Usuario
@@ -16,6 +17,7 @@ __all__ = [
     "Conductor",
     "DriverReport",
     "DriverStopAssignment",
+    "Incidencia",
     "Pedido",
     "Sesion",
     "Usuario",
