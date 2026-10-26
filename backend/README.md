@@ -719,4 +719,57 @@ El downgrade se niega si existen auditorías con las acciones nuevas. ECL-73 tam
 crea una 0012: la que se integre segunda debe encadenarse después y conservar las
 acciones de la otra, para que quede una sola cabeza.
 
+## Script de restablecimiento de contraseña (ECL-78)
+
+EN-013. Sirve para recuperar una cuenta cuando se pierde su contraseña en un
+entorno local o de demo, incluida la del Administrador, que no puede
+restablecerse a sí mismo con el botón de US-013.
+
+```powershell
+python -m scripts.reset_password --email administrador.demo@ecologistica.example
+```
+
+La contraseña nueva se pide dos veces con `getpass` y debe tener al menos 12
+caracteres. Nunca se recibe por argumento ni variable de entorno, ni se imprime o
+registra. En una sola transacción, igual que el cambio de la aplicación:
+
+- guarda el hash Argon2id con `CredentialService.replace`;
+- deja `debe_cambiar_contrasena=false` y limpia el vencimiento temporal, los
+  intentos y el bloqueo;
+- revoca todas las sesiones activas de la cuenta;
+- audita `CONTRASENA_CAMBIADA` con `{"sesiones_revocadas": n}`, sin la
+  contraseña ni el hash. El actor registrado es la propia cuenta, porque el
+  script corre fuera de una sesión de la aplicación.
+
+Termina con código 2, **sin modificar nada** y sin mostrar datos de la cuenta, si:
+
+- `APP_ENV=production`;
+- `DATABASE_URL` falta o su base no termina en `_demo` o `_local`;
+- no hay una terminal interactiva;
+- las contraseñas no coinciden, tienen menos de 12 caracteres o se cancela;
+- el correo no existe.
+
+Las primeras tres comprobaciones ocurren antes de pedir la contraseña o conectar.
+La protección de la base está en `scripts/_guard.py` y es la misma del seed, que
+la usa solo con `_demo`.
+
+### Uso con Docker Compose
+
+La imagen del backend no copia `scripts/`: se monta en solo lectura, como el seed.
+`getpass` necesita una terminal, así que se usa `run -it`. Desde la raíz del
+repositorio, con el stack actualizado a `main` (imagen reconstruida y migraciones
+en `head`, porque el script usa la migración `0012_password_reset`):
+
+```powershell
+docker compose --env-file .env build backend
+docker compose --env-file .env run --rm --no-deps backend python -m alembic upgrade head
+docker compose --env-file .env run --rm --no-deps -it -v "${PWD}/backend/scripts:/app/scripts:ro" backend python -m scripts.reset_password --email administrador.demo@ecologistica.example
+```
+
+Al terminar imprime un texto fijo («contraseña actualizada; se cerraron las
+sesiones activas de la cuenta»), sin el correo ni ningún valor derivado de la
+contraseña. El número de sesiones revocadas queda solo en la auditoría. Las pruebas están
+en `tests/unit/test_reset_password.py` y
+`tests/integration/test_reset_password_script.py`.
+
 [← Volver al README principal](../README.md)

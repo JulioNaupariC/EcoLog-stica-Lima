@@ -40,8 +40,6 @@ from uuid import NAMESPACE_URL, UUID, uuid5
 from zoneinfo import ZoneInfo
 
 from sqlalchemy import select
-from sqlalchemy.engine import make_url
-from sqlalchemy.exc import ArgumentError
 from sqlalchemy.orm import Session, sessionmaker
 
 from app.core.config import Settings
@@ -61,6 +59,7 @@ from app.services.driver_reports import DriverReportService
 from app.services.pedidos import PedidoService
 from app.services.preferencias import PreferenciasService
 from app.services.vehiculos import VehicleDuplicatePlate, VehiculoService
+from scripts._guard import ensure_safe_target
 
 LIMA = ZoneInfo("America/Lima")
 DEMO_SUFFIX = "_demo"
@@ -179,18 +178,13 @@ class SeedSummary:
 
 def ensure_demo_target(database_url: str | None, app_env: str | None) -> None:
     """Refuse anything that is not an explicit, non-production demo database."""
-    if (app_env or "").strip().lower() == "production":
-        raise SeedRefused("No se siembran datos ficticios con APP_ENV=production.")
-    if not database_url:
-        raise SeedRefused("Falta DATABASE_URL.")
-    try:
-        name = make_url(database_url).database
-    except (ArgumentError, ValueError):
-        raise SeedRefused("DATABASE_URL no es válida.") from None
-    if not name or not name.endswith(DEMO_SUFFIX):
-        raise SeedRefused(
-            f"La base de datos debe terminar en '{DEMO_SUFFIX}'; no se modificó nada."
-        )
+    ensure_safe_target(
+        database_url,
+        app_env,
+        (DEMO_SUFFIX,),
+        error=SeedRefused,
+        production_message="No se siembran datos ficticios con APP_ENV=production.",
+    )
 
 
 def read_passwords(environ: Mapping[str, str]) -> dict[Rol, str]:
