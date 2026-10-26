@@ -556,11 +556,15 @@
     display: flex;
     justify-content: space-between;
     gap: var(--space-3);
+    min-width: 0;
     padding: var(--space-2) 0;
     text-align: right;
+    /* Long values (e.g. e-mails) wrap instead of widening the page at 360 px. */
+    overflow-wrap: anywhere;
   }
 
   .data-table td::before {
+    flex: none;
     content: attr(data-label);
     color: var(--color-text-muted);
     font-size: var(--font-size-xs);
@@ -1489,4 +1493,120 @@
 .driver-footnote {
   color: var(--color-text-muted);
   font-size: var(--font-size-xs);
+}
+
+/* ---------- ECL-77: diálogo modal, enlace de ayuda y contraseña temporal ---------- */
+.dialog-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-overlay);
+  display: grid;
+  place-items: center;
+  padding: var(--space-4);
+  background: var(--color-overlay);
+}
+
+.dialog {
+  width: min(100%, 30rem);
+  max-height: calc(100dvh - 2 * var(--space-4));
+  overflow-y: auto;
+  padding: var(--space-5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  color: var(--color-text);
+  box-shadow: var(--shadow-lg);
+}
+
+.dialog-title {
+  margin: 0 0 var(--space-3);
+  font-size: var(--font-size-md);
+  line-height: var(--line-height-snug);
+}
+
+.dialog-body {
+  display: grid;
+  gap: var(--space-3);
+  overflow-wrap: anywhere;
+}
+
+.dialog-body p {
+  margin: 0;
+}
+
+.dialog-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--space-3);
+  margin-top: var(--space-5);
+}
+
+@media (max-width: 30rem) {
+  .dialog-actions {
+    flex-direction: column-reverse;
+  }
+
+  .dialog-actions .btn {
+    width: 100%;
+  }
+}
+
+.temporary-password {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border: 1px dashed var(--color-border-strong);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-muted);
+}
+
+.temporary-password-value {
+  flex: 1 1 12rem;
+  font-family: ui-monospace, "Cascadia Mono", Consolas, monospace;
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.08em;
+  overflow-wrap: anywhere;
+  user-select: all;
+}
+
+.forgot-password {
+  display: grid;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+}
+
+.link-button {
+  justify-self: start;
+  min-height: var(--touch-target);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--color-link);
+  font: inherit;
+  font-weight: var(--font-weight-semibold);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+  cursor: pointer;
+}
+
+.link-button:hover {
+  color: var(--color-primary-hover);
+}
+
+.menu-item--neutral {
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+.menu-item--neutral:hover {
+  background: var(--color-surface-muted);
+}
+
+.change-password-page .card {
+  max-width: 32rem;
+  padding: var(--space-5);
 }

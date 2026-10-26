@@ -13,6 +13,11 @@ export function canManageOperations(role: AuthRole | undefined): boolean {
   return role === 'ADMINISTRADOR' || role === 'OPERADOR'
 }
 
+/** ECL-77: user list and password reset require usuarios.actualizar (Administrator only). */
+export function canManageUsers(role: AuthRole | undefined): boolean {
+  return role === 'ADMINISTRADOR'
+}
+
 export function canListVehicles(role: AuthRole | undefined): boolean {
   return canManageOperations(role) || role === 'AUDITOR'
 }
