@@ -142,7 +142,7 @@ de nuevo los servicios. Las instrucciones de arranque sin Docker siguen en
 - [Usuarios V_1_0_0](<docs/01 Inicio/08. Usuarios V_1_0_0.md>)
 - [Reglas de negocio V_1_0_0](<docs/01 Inicio/09. Reglas de negocio V_1_0_0.md>)
 - [Stack tecnológico V_1_0_0](<docs/01 Inicio/10. Stack tecnológico V_1_0_0.md>)
-- [Base de datos V_1_0_0](<docs/01 Inicio/11. Base de datos V_1_0_0.md>)
+- [Base de datos V_1_1_0](<docs/01 Inicio/11. Base de datos V_1_1_0.md>)
 - [Modelo C4 V_1_0_0](<docs/01 Inicio/12. Modelo C4 V_1_0_0.md>)
 - [Restricciones V_1_0_0](<docs/01 Inicio/13. Restricciones V_1_0_0.md>)
 
@@ -161,7 +161,7 @@ de nuevo los servicios. Las instrucciones de arranque sin Docker siguen en
 
 ### Especificaciones BDD del Sprint 3
 
-- [ECL-72 / ST-039 — Reglas y BDD de incidencias (BORRADOR)](<docs/02 Planificación/BDD/ECL-72-ST-039-incidencias.md>)
+- [ECL-72 / ST-039 — Reglas y BDD de incidencias (aprobada por Julio, PR #63)](<docs/02 Planificación/BDD/ECL-72-ST-039-incidencias.md>)
 
 ### Estado de Jira — fotografía de planificación inicial
 
