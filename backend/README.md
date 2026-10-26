@@ -772,4 +772,83 @@ contraseña. El número de sesiones revocadas queda solo en la auditoría. Las p
 en `tests/unit/test_reset_password.py` y
 `tests/integration/test_reset_password_script.py`.
 
+## Incidencias (ECL-73)
+
+ST-040, subtarea de US-012 (ECL-18). El conductor registra incidencias de su
+jornada y el Administrador o el Operador consultan las pendientes de validación.
+Lo consumen ECL-74 (José) y ECL-75 (Giancarlo).
+
+> **Contrato provisional** hasta que se apruebe la BDD de ECL-72. Los tipos, las
+> severidades y los límites están en un solo módulo, `app/core/incidencias.py`,
+> del que toman sus valores el modelo, la migración `0013_incidencias`, los
+> esquemas, el servicio y las pruebas. La antigüedad máxima de 24 h es un valor
+> provisional acordado con el equipo.
+
+### Endpoints
+
+| Método y ruta | Acceso | Respuesta |
+|---|---|---|
+| `POST /conductor/incidencias` | `incidencias.crear`, alcance propio (Conductor) | 201 con `{incidencia_id, operation_id, estado, registrada_en}`; 200 con la misma respuesta al reenviar el mismo `operation_id` con el mismo contenido; 409 si el contenido es distinto; 422 con datos inválidos, sin repetir lo enviado; 403 sin permiso o sin perfil de conductor; 401 sin sesión |
+| `GET /incidencias?estado=PENDIENTE_VALIDACION&page=1&page_size=20` | `incidencias.consultar`, alcance general (Administrador y Operador) | Página ordenada por `ocurrida_en` descendente (`page_size` ≤ 100). El conductor aparece solo con `conductor_id` y `nombre`, sin DNI, teléfono ni licencia. Analista, Auditor y Conductor reciben 403 |
+
+```json
+{
+  "operation_id": "uuid v4 del cliente (cola offline)",
+  "tipo": "TRAFICO | AVERIA | ACCIDENTE | CLIMA | SEGURIDAD | OTRO",
+  "severidad": "BAJA | MEDIA | ALTA",
+  "ocurrida_en": "2026-10-27T09:15:00-05:00",
+  "latitud": -12.0464,
+  "longitud": -77.0428,
+  "parada_id": "uuid opcional de una parada del propio itinerario",
+  "observacion": "opcional, hasta 500 caracteres"
+}
+```
+
+Las fechas de las respuestas se devuelven en hora de Lima (`-05:00`).
+
+### Reglas
+
+- **Conductor:** se resuelve desde la sesión, nunca desde el cuerpo. Un campo
+  extra, como `conductor_id`, devuelve 422.
+- **Validaciones:**
+  - latitud en [-90, 90] y longitud en [-180, 180], finitas;
+  - `ocurrida_en` con zona horaria, no más de 5 min en el futuro ni más de 24 h
+    en el pasado;
+  - `parada_id`, si viene, debe ser una asignación de parada del mismo
+    conductor;
+  - observación de hasta 500 caracteres (en blanco equivale a vacía).
+- **Idempotencia:** se comprueba antes de la ventana de tiempo, así que un
+  reintento tardío de la cola offline recibe su respuesta original. Si dos envíos
+  del mismo `operation_id` llegan a la vez, la restricción única decide y el
+  segundo se compara como un reenvío.
+- **Auditoría (RN-015):** `INCIDENCIA_REGISTRADA` va en la misma transacción que
+  el alta, con actor = usuario conductor y entidad = incidencia. El detalle solo
+  guarda `tipo`, `severidad`, `con_parada` y `con_observacion`: nunca el texto, la
+  ubicación ni datos personales.
+- **Operador:** aunque la matriz le da `incidencias.crear` con alcance general,
+  la ruta es del conductor. Sin perfil de conductor recibe 403.
+
+### Migración 0013
+
+`0013_incidencias` cuelga de `0012_password_reset` y amplía
+`ck_auditoria_accion` con `INCIDENCIA_REGISTRADA`, conservando las acciones de
+0012.
+
+- **Tabla `incidencia`:** guarda `ubicacion` como `geography(Point,4326)`,
+  tiene un índice `(estado, ocurrida_en DESC)` y CHECK de tipo, severidad,
+  estado y observación.
+- **Sin `ruta_id`:** el modelo de rutas aún no existe; ver
+  [Base de datos V_1_1_0](<../docs/01 Inicio/11. Base de datos V_1_1_0.md>).
+- **Downgrade protegido:** se niega mientras existan incidencias o su
+  auditoría.
+- **Cambios de catálogo:** una vez que 0013 esté en `main`, cambiar un catálogo
+  requiere una migración nueva.
+
+### Datos de demostración
+
+`scripts/seed_demo.py` agrega 3 incidencias ficticias de `conductor.demo`,
+pendientes de validación: avería, tráfico y clima en Lima, la primera asociada
+a su parada 1. Usan `operation_id` determinista (`uuid5`), así que volver a
+sembrar no las duplica.
+
 [← Volver al README principal](../README.md)
