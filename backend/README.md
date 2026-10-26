@@ -658,4 +658,65 @@ Ver [VALIDACION_ST028.md](<../docs/03 Implementación/Sprint 02/validaciones/VAL
 y diferencias registradas. La API y gestion de preferencias estan contrastadas;
 P8 presenta una brecha en la propuesta al crear pedidos. El BDD sigue en borrador.
 
+## Restablecimiento de contraseña (ECL-77)
+
+US-013, Sprint 3. Sin servicio de correo no hay autoservicio por email: el
+Administrador genera una contraseña temporal que se muestra una sola vez, y la
+persona debe cambiarla al entrar. Evidencia y comandos en
+[VALIDACION_US013.md](<../docs/03 Implementación/Sprint 03/validaciones/VALIDACION_US013.md>).
+
+### Flujo
+
+1. El Administrador abre la lista de cuentas y restablece la de un usuario.
+2. El servicio genera la temporal, guarda solo su hash Argon2id, marca
+   `debe_cambiar_contrasena=true`, fija el vencimiento en 24 h, limpia
+   `intentos_fallidos` y `bloqueado_hasta`, revoca **todas** las sesiones del
+   usuario y audita `CONTRASENA_RESTABLECIDA`, todo en una transacción.
+3. El usuario inicia sesión con la temporal: `LoginResponse` informa
+   `debe_cambiar_contrasena=true` y cualquier otro endpoint autenticado responde
+   403 `Cambio de contraseña requerido`.
+4. `POST /cambiar-contrasena` guarda la nueva, limpia el indicador y el
+   vencimiento, revoca las **otras** sesiones (conserva la actual) y audita
+   `CONTRASENA_CAMBIADA`. La temporal deja de servir.
+
+### Endpoints
+
+| Método y ruta | Acceso | Respuesta |
+|---|---|---|
+| `GET /usuarios?page=&page_size=` | `USUARIOS_ACTUALIZAR` (Administrador) | Página con `usuario_id`, `email`, `rol`, `estado`, `debe_cambiar_contrasena`; nunca el hash |
+| `POST /usuarios/{usuario_id}/restablecer-contrasena` | `USUARIOS_ACTUALIZAR` (Administrador) | `{contrasena_temporal, expira_en}` con `Cache-Control: no-store`; 404 si no existe; 409 si está inactivo o es la propia cuenta |
+| `POST /cambiar-contrasena` | Cualquier sesión, también con cambio pendiente | 204; 422 si la nueva tiene menos de 12 caracteres o es igual a la actual; 400 si la actual no es válida |
+| `POST /login` | Público | Agrega `debe_cambiar_contrasena: bool` |
+
+`GET /usuarios` exige `USUARIOS_ACTUALIZAR` y no `USUARIOS_CONSULTAR` por mínimo
+privilegio (OWASP A01): la lista expone el correo de todas las cuentas. La matriz
+RBAC no cambia; el `USUARIOS_CONSULTAR` del Operador queda para revisión del equipo.
+
+### Reglas de seguridad
+
+- La temporal tiene 16 caracteres de `secrets` sobre un alfabeto sin ambiguos
+  (sin 0/O/o ni 1/l/I). Solo se persiste su hash y solo se devuelve una vez.
+- Una temporal vencida responde el mismo 401 genérico que unas credenciales
+  inválidas y no suma intentos.
+- Una contraseña actual incorrecta en el cambio cuenta como en el login: tres
+  intentos bloquean 15 minutos y se audita `LOGIN_FALLIDO`/`CUENTA_BLOQUEADA`.
+- La obligación de cambio se aplica en `get_authenticated_session`, una sola vez
+  para todos los endpoints; `get_current_session` solo la usan `/logout` y
+  `/cambiar-contrasena`. El texto del 403 está fijado por prueba porque el
+  frontend depende de él.
+- Los cuerpos usan `SecretStr` y `hide_input_in_errors=True`; `SanitizedRoute`
+  (`app/api/validation.py`, compartida con conductores) evita que un 422 repita
+  la entrada. Las pruebas comprueban que ninguna respuesta, log ni auditoría
+  contiene una contraseña.
+- La auditoría guarda solo `{"sesiones_revocadas": n}`.
+
+### Migración 0012
+
+`0012_password_reset` cuelga de `0011_pedido_prioridad_index`: agrega
+`debe_cambiar_contrasena BOOLEAN NOT NULL DEFAULT false` y
+`contrasena_temporal_expira_en TIMESTAMPTZ NULL`, y amplía `ck_auditoria_accion`.
+El downgrade se niega si existen auditorías con las acciones nuevas. ECL-73 también
+crea una 0012: la que se integre segunda debe encadenarse después y conservar las
+acciones de la otra, para que quede una sola cabeza.
+
 [← Volver al README principal](../README.md)
