@@ -1,15 +1,15 @@
 # ECL-51 / ST-025 — Reglas y BDD de preferencias de entrega
 
-> **Estado: BORRADOR.** Revisión de Frank preparada para ratificación de Julio
-> mediante el PR de ECL-71. No hay fecha de aprobación registrada. Las
-> diferencias y extensiones pendientes no se declaran implementadas.
+> **Estado: APROBADO.** Ratificado por Julio el 26/10/2026 en el PR #64,
+> según su comentario explícito enlazado abajo. La aprobación documental no
+> declara implementadas las diferencias y extensiones pendientes del backlog.
 
 | Metadato | Valor |
 |---|---|
-| Versión | 0.2.0 |
+| Versión | 1.0.0 |
 | Fecha de revisión | 25/10/2026, America/Lima |
 | Autor de la revisión | Frank Roy Yupanqui Acevedo — @FrankRoyYA |
-| Ratificación de Julio | Pendiente; sin fecha ni aprobación atribuida |
+| Ratificación de Julio | 26/10/2026 a las 12:13 (America/Lima) en el [PR #64](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/64#pullrequestreview-5656082598) |
 | Ticket de ratificación | [ECL-71](https://continental-team-il84x39k.atlassian.net/browse/ECL-71) |
 | Base contrastada | `main` en `dc148e7` |
 
@@ -352,10 +352,12 @@ pruebas ejecutadas.
 | Versión | Fecha | Cambio |
 |---|---|---|
 | 0.2.0 | 25/10/2026 | Revisión ECL-71: verificación de P1–P8 y P4a/P4b/P4c contra pruebas y validaciones del Sprint 2; actualización del estado histórico y de la corrección de D-01. Ratificación de Julio pendiente. |
+| 1.0.0 | 26/10/2026 | Ratificación documental de Julio en el PR #64: «Ratifico ECL-47 y ECL-51 según esta verificación». Se conserva la verificación y la trazabilidad a las validaciones del Sprint 2. |
 
-Tras la aprobación real de Julio se registrarán estado APROBADO, versión 1.0.0,
-fecha efectiva y enlace a su revisión. El nuevo commit debe revalidarse y
-revisarse antes de integrar; no se atribuye aprobación previa a la implementación.
+La ratificación se registra por el contenido explícito del comentario de Julio.
+GitHub registra esa revisión como COMMENTED, no como APPROVED; la aprobación
+formal del PR y la revisión del nuevo commit siguen siendo requisitos previos
+al merge. No se atribuye aprobación previa a la implementación ni pruebas nuevas.
 
 [↑ Índice del Sprint 3](<../../03 Implementación/Sprint 03/README.md>)
 

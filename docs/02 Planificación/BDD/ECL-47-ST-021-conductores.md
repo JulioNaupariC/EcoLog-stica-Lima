@@ -1,15 +1,15 @@
 # ECL-47 / ST-021 — Reglas y BDD de conductores
 
-> **Estado: BORRADOR.** Revisión de Frank preparada para ratificación de Julio
-> mediante el PR de ECL-71. No hay fecha de aprobación registrada. Las
-> diferencias y extensiones pendientes no se declaran implementadas.
+> **Estado: APROBADO.** Ratificado por Julio el 26/10/2026 en el PR #64,
+> según su comentario explícito enlazado abajo. La aprobación documental no
+> declara implementadas las diferencias y extensiones pendientes del backlog.
 
 | Metadato | Valor |
 |---|---|
-| Versión | 0.2.0 |
+| Versión | 1.0.0 |
 | Fecha de revisión | 25/10/2026, America/Lima |
 | Autor de la revisión | Frank Roy Yupanqui Acevedo — @FrankRoyYA |
-| Ratificación de Julio | Pendiente; sin fecha ni aprobación atribuida |
+| Ratificación de Julio | 26/10/2026 a las 12:13 (America/Lima) en el [PR #64](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/64#pullrequestreview-5656082598) |
 | Ticket de ratificación | [ECL-71](https://continental-team-il84x39k.atlassian.net/browse/ECL-71) |
 | Base contrastada | `main` en `dc148e7` |
 
@@ -431,10 +431,12 @@ control de cambios; este documento no declara pruebas ejecutadas.
 | Versión | Fecha | Cambio |
 |---|---|---|
 | 0.2.0 | 25/10/2026 | Revisión ECL-71: verificación de todos los escenarios, precisiones del contrato observado y diferencias registradas en ECL-79/ECL-80/ECL-81. Ratificación de Julio pendiente. |
+| 1.0.0 | 26/10/2026 | Ratificación documental de Julio en el PR #64: «Ratifico ECL-47 y ECL-51 según esta verificación». Se conservan las diferencias y seguimientos ECL-79/ECL-80/ECL-81. |
 
-Tras la aprobación real de Julio se registrarán estado APROBADO, versión 1.0.0,
-fecha efectiva y enlace a su revisión en este mismo documento. El nuevo commit
-debe revalidarse y revisarse antes de integrar; no se retrofecha la acción A4.
+La ratificación se registra por el contenido explícito del comentario de Julio.
+GitHub registra esa revisión como COMMENTED, no como APPROVED; la aprobación
+formal del PR y la revisión del nuevo commit siguen siendo requisitos previos
+al merge. No se retrofecha la acción A4 ni se acreditan pruebas nuevas.
 
 [↑ Índice del Sprint 3](<../../03 Implementación/Sprint 03/README.md>)
 
