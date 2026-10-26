@@ -159,6 +159,10 @@ de nuevo los servicios. Las instrucciones de arranque sin Docker siguen en
 - [ECL-47 / ST-021 — Reglas y BDD de conductores](<docs/02 Planificación/BDD/ECL-47-ST-021-conductores.md>)
 - [ECL-51 / ST-025 — Reglas y BDD de preferencias de entrega](<docs/02 Planificación/BDD/ECL-51-ST-025-preferencias-entrega.md>)
 
+### Especificaciones BDD del Sprint 3
+
+- [ECL-72 / ST-039 — Reglas y BDD de incidencias (BORRADOR)](<docs/02 Planificación/BDD/ECL-72-ST-039-incidencias.md>)
+
 ### Estado de Jira — fotografía de planificación inicial
 
 - Proyecto: `ECL` — Company-managed Scrum.
