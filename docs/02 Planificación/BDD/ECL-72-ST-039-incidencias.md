@@ -6,7 +6,7 @@
 
 | Metadato | Valor |
 |---|---|
-| Versión | 0.1.0 |
+| Versión | 0.2.0 |
 | Fecha de elaboración | 25/10/2026, America/Lima |
 | Autor | Frank Roy Yupanqui Acevedo — @FrankRoyYA |
 | Revisor requerido | Julio Armando Naupari Camarena — @JulioNaupariC |
@@ -87,7 +87,7 @@ crea automáticamente un bloqueo de vía, una validación o una reoptimización.
 | `operation_id` | Sí | UUID versión 4 generado por el cliente una vez por reporte y conservado durante todos sus reintentos. |
 | `tipo` | Sí | Uno de los seis valores exactos del catálogo; sin valores libres. |
 | `severidad` | Sí | `BAJA`, `MEDIA` o `ALTA`, en mayúsculas. |
-| `ocurrida_en` | Sí | Fecha y hora ISO 8601 con zona u offset; no posterior al reloj del servidor al recibir el primer envío. Se compara el instante en UTC. Sin tolerancia futura propuesta ni límite de antigüedad adicional para permitir la cola offline. |
+| `ocurrida_en` | Sí | Fecha y hora ISO 8601 con zona u offset; se admite hasta 5 minutos hacia el futuro respecto del reloj del servidor al recibir el primer envío, inclusive, por desfase del reloj del celular. Se compara el instante en UTC. Sin antigüedad máxima para permitir la cola offline. |
 | `latitud` | Sí | Número finito entre -90 y 90, inclusive; no cadena, booleano, NaN o infinito. |
 | `longitud` | Sí | Número finito entre -180 y 180, inclusive; no cadena, booleano, NaN o infinito. |
 | `parada_id` | No | UUID de una parada del itinerario asignado al conductor y jornada del reporte; omitido o `null` significa sin parada. Una referencia mal formada o inexistente recibe 422 genérico; una existente ajena recibe 403 genérico. |
@@ -236,7 +236,7 @@ y jornada; no basta con inventar un UUID sin relación persistida.
 
 ### I05 — Hora futura o sin zona
 
-- **DADO** datos válidos salvo `ocurrida_en` igual a T0 + 1 segundo, o una fecha sin zona (casos separados).
+- **DADO** datos válidos salvo `ocurrida_en` igual a T0 + 5 min + 1 s, o una fecha sin zona (casos separados).
 - **CUANDO** se envía con el reloj del servidor fijo en T0.
 - **ENTONCES** recibe 422 que identifica el campo sin repetir su valor, no persiste y conserva el borrador corregible.
 
@@ -308,7 +308,7 @@ y jornada; no basta con inventar un UUID sin relación persistida.
 
 ### I14 — Límites válidos y selección de catálogos
 
-- **DADO** datos válidos con observación omitida, `null`, vacía o exactamente 500 caracteres; hora T0 o pasada; coordenadas en sus extremos (casos independientes).
+- **DADO** datos válidos con observación omitida, `null`, vacía o exactamente 500 caracteres; hora T0, T0 + 5 min o pasada sin antigüedad máxima; coordenadas en sus extremos (casos independientes).
 - **CUANDO** registra cada caso con una operación nueva.
 - **ENTONCES** recibe 201 y los valores se conservan según las reglas, sin rechazar por los límites permitidos.
 - **Y** se ejecuta una matriz de los seis tipos por las tres severidades sin bloqueos automáticos.
@@ -370,13 +370,13 @@ con la versión que finalmente se apruebe.
 
 | Precisión o diferencia | Motivo / origen | Impacto previsto |
 |---|---|---|
-| Permitir incidencia sin ruta cuando no hay parada | Frank eligió esta alternativa durante la preparación del borrador. El modelo lógico relaciona incidencia con ruta y no define la excepción. | Ratificar nulabilidad de `ruta_id`; reportante obligatorio. Si requiere cambiar la línea base, tramitar control de cambios antes de aprobar; este PR no modifica el modelo aprobado. |
-| Hora no futura, con zona y sin antigüedad máxima adicional | El contrato no fijaba comparación temporal; evita hechos futuros y permite retraso offline. | Reloj controlado en pruebas; errores de campo y borrador corregible. |
+| Permitir incidencia sin ruta cuando no hay parada | Decisión pendiente de ratificación de Julio: permitirla asociada al conductor porque el modelo de rutas aún no existe. El modelo lógico relaciona incidencia con ruta y no define la excepción. | Ratificar nulabilidad de `ruta_id`; reportante obligatorio. Si requiere cambiar la línea base, tramitar control de cambios antes de aprobar; este PR no modifica el modelo aprobado. |
+| Hora con tolerancia futura de 5 minutos, con zona y sin antigüedad máxima | Propuesta pendiente de ratificación de Julio: admitir el desfase del reloj del celular hasta 5 minutos inclusive y permitir retraso offline sin antigüedad máxima. | Reloj controlado en pruebas; T0 + 5 min es válido y T0 + 5 min + 1 s recibe 422; errores de campo y borrador corregible. |
 | Límites geográficos, Unicode y opcionales normalizados | El contrato daba máximo 500 y ejemplos, sin precisar unidades o equivalencias. | Validadores y contadores UI coherentes; no truncar silenciosamente. |
 | Idempotencia por conductor + operación; equivalencia y carrera atómica | El contrato no definía alcance entre cuentas ni representación equivalente. | Unicidad, respuesta 200 estable y pruebas de concurrencia. |
 | Parada propia, campos extra y perfil vinculado | Evitar suplantación y referencias ajenas. | 422/403 según reglas; reportante y ruta derivados por servidor. |
 | Desempate del listado, estado permitido, páginas vacías y límites inferiores | El contrato solo fijaba orden principal y tamaño máximo. | Paginación verificable; mismo esquema de respuesta. |
-| Alcance específico del listado frente a matriz global | La matriz global admite otras modalidades de lectura no incluidas en estos endpoints. | No confundir 403 del listado con revocación general; ratificación explícita en revisión. |
+| Listado de pendientes solo para Administrador y Operador, sin revocar la matriz global | Decisión pendiente de ratificación de Julio: restringir este listado operativo; la matriz global conserva las demás modalidades de lectura no incluidas en estos endpoints. | No confundir 403 del listado con revocación general; ratificación explícita en revisión. |
 | Política de cola, errores, reautenticación y aislamiento local | RNF-006 y RF-012 exigen conservación; el contrato no detallaba fallos. | Mensajes y reintentos de UI; evita duplicados y envío entre cuentas. |
 
 ## Aprobación y entrega a los dependientes
@@ -401,6 +401,7 @@ con la versión que finalmente se apruebe.
 | Versión | Fecha | Cambio |
 |---|---|---|
 | 0.1.0 | 25/10/2026 | Borrador inicial con reglas, contrato candidato, escenarios y plan de trazabilidad para ECL-76. Aprobación de Julio pendiente. |
+| 0.2.0 | 25/10/2026 | Tolerancia de 5 min en ocurrida_en y decisiones pendientes para aprobación de Julio. |
 
 [↑ Índice del Sprint 3](<../../03 Implementación/Sprint 03/README.md>)
 
