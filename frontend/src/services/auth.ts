@@ -19,6 +19,8 @@ export interface LoginResponse {
   usuario_id: string
   rol: AuthRole
   expires_at?: string
+  /** ECL-77: signed in with a temporary password; only the change is allowed. */
+  debe_cambiar_contrasena?: true
 }
 
 export type AuthServiceErrorKind =
@@ -152,7 +154,8 @@ export async function login(payload: LoginRequest): Promise<LoginResponse> {
   }
   return { usuario_id: body.usuario_id, rol: body.rol,
     ...(typeof body.expires_at === 'string' && Number.isFinite(Date.parse(body.expires_at))
-      ? { expires_at: body.expires_at } : {}) }
+      ? { expires_at: body.expires_at } : {}),
+    ...(body.debe_cambiar_contrasena === true ? { debe_cambiar_contrasena: true as const } : {}) }
 }
 
 export async function logout(): Promise<void> {

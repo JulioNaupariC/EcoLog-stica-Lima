@@ -41,18 +41,67 @@ class LoginResult:
     sesion_id: UUID
     identidad: Identidad
     expira_en: datetime
+    debe_cambiar_contrasena: bool = False
 
 
 @dataclass(frozen=True, repr=False)
 class AuthenticatedSession:
     sesion_id: UUID
     identidad: Identidad
+    debe_cambiar_contrasena: bool = False
 
 
 _DUMMY_PASSWORD_HASH = (
     "$argon2id$v=19$m=65536,t=3,p=4$YMvBhc4xzf5ij+Th1Fwjew$"
     "ap73O8DrnvjLYxaLuR0Rqjumr51oJG9PaE/At4Vak2M"
 )
+MAX_FAILED_ATTEMPTS = 3
+LOCKOUT = timedelta(minutes=15)
+
+
+def temporary_password_expired(
+    debe_cambiar_contrasena: bool,
+    expira_en: datetime | None,
+    current: datetime,
+) -> bool:
+    """ECL-77: an expired temporary password is treated as invalid credentials."""
+    return debe_cambiar_contrasena and (expira_en is None or expira_en <= current)
+
+
+def register_failed_attempt(
+    users: UsuarioRepository, usuario_id: UUID, attempts: int, current: datetime
+) -> bool:
+    """Count a wrong password like the login does; return True when it locks."""
+    attempts = min(attempts + 1, MAX_FAILED_ATTEMPTS)
+    blocked = attempts == MAX_FAILED_ATTEMPTS
+    users.set_login_state(
+        usuario_id,
+        intentos_fallidos=attempts,
+        bloqueado_hasta=current + LOCKOUT if blocked else None,
+    )
+    return blocked
+
+
+def audit_failed_credentials(
+    auditoria: AuditoriaService, account_id: UUID | None, blocked: bool
+) -> None:
+    auditoria.registrar(
+        Registro(
+            usuario_id=None,
+            entidad_id=account_id,
+            evento=Evento.LOGIN_FALLIDO,
+            detalle=DetalleAcceso(resultado=ResultadoAcceso.CREDENCIALES_INVALIDAS),
+        )
+    )
+    if blocked:
+        auditoria.registrar(
+            Registro(
+                usuario_id=None,
+                entidad_id=account_id,
+                evento=Evento.CUENTA_BLOQUEADA,
+                detalle=DetalleAcceso(resultado=ResultadoAcceso.LIMITE_INTENTOS),
+            )
+        )
 
 
 class AutenticacionService:
@@ -95,8 +144,14 @@ class AutenticacionService:
                     password_ok = CredentialService(users).verify_and_rehash(
                         account.usuario_id, password
                     )
-                    eligible = account.estado == "ACTIVO" and (
-                        blocked_until is None or blocked_until <= current
+                    eligible = (
+                        account.estado == "ACTIVO"
+                        and (blocked_until is None or blocked_until <= current)
+                        and not temporary_password_expired(
+                            account.debe_cambiar_contrasena,
+                            account.contrasena_temporal_expira_en,
+                            current,
+                        )
                     )
                     if password_ok and eligible:
                         users.set_login_state(
@@ -118,16 +173,11 @@ class AutenticacionService:
                                 account.usuario_id, Rol(account.rol), account.estado
                             ),
                             expires,
+                            account.debe_cambiar_contrasena,
                         )
                     elif eligible:
-                        attempts = min(attempts + 1, 3)
-                        blocked = attempts == 3
-                        users.set_login_state(
-                            account.usuario_id,
-                            intentos_fallidos=attempts,
-                            bloqueado_hasta=(
-                                current + timedelta(minutes=15) if blocked else None
-                            ),
+                        blocked = register_failed_attempt(
+                            users, account.usuario_id, attempts, current
                         )
         except (
             CredentialStorageError,
@@ -139,17 +189,7 @@ class AutenticacionService:
 
         if result is None:
             try:
-                self._audit(
-                    Evento.LOGIN_FALLIDO,
-                    ResultadoAcceso.CREDENCIALES_INVALIDAS,
-                    entidad_id=account_id,
-                )
-                if blocked:
-                    self._audit(
-                        Evento.CUENTA_BLOQUEADA,
-                        ResultadoAcceso.LIMITE_INTENTOS,
-                        entidad_id=account_id,
-                    )
+                audit_failed_credentials(self._auditoria, account_id, blocked)
             except AuditStorageError:
                 raise AuthenticationUnavailable("Authentication unavailable") from None
             raise InvalidCredentials("Invalid credentials")
@@ -193,6 +233,7 @@ class AutenticacionService:
         return AuthenticatedSession(
             found.sesion_id,
             Identidad(found.usuario_id, role, found.estado),
+            found.debe_cambiar_contrasena,
         )
 
     def logout(

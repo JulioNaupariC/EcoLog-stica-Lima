@@ -217,6 +217,12 @@ Guías de integración:
 - [Guía ST-031 y ST-032](<docs/03 Implementación/Sprint 02/guias/GUIA_JOSE_ST031_ST032.md>)
 - [Guía ST-035](<docs/03 Implementación/Sprint 02/guias/GUIA_JOSE_ST035.md>)
 
+### Documentación técnica del Sprint 3
+
+- [Índice del Sprint 3](<docs/03 Implementación/Sprint 03/README.md>)
+- [US-013 / ECL-77 — Restablecer contraseña de un usuario](<docs/03 Implementación/Sprint 03/validaciones/VALIDACION_US013.md>)
+- [US-013 / ECL-77 — Evidencias visuales](<docs/03 Implementación/Sprint 03/validaciones/evidencias/ECL-77/README.md>)
+
 ### Estado del Sprint 2 — cierre
 
 Periodo planificado: 08/10/2026–23/10/2026. El informe de estado, el registro de

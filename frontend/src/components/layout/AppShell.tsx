@@ -3,11 +3,11 @@ import type { ReactNode } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import {
   BarChart3, Building2, ClipboardList, Home, Leaf, Map, Menu, PanelLeftClose, PanelLeftOpen,
-  Route as RouteIcon, Truck, UserRound, X,
+  Route as RouteIcon, Truck, UserRound, Users, X,
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import type { AuthRole } from '../../services/auth'
-import { canListVehicles, canManageOperations } from '../../domain/roles'
+import { canListVehicles, canManageOperations, canManageUsers } from '../../domain/roles'
 import { Badge } from '../ui'
 import { AccountMenu } from './AccountMenu'
 
@@ -24,10 +24,13 @@ function staffNavigation(role: AuthRole): { label: string, items: NavEntry[] }[]
     ...(canListVehicles(role) ? [{ to: '/vehiculos', label: 'Vehículos', icon: Truck }] : []),
     ...(canManageOperations(role) ? [{ to: '/conductores', label: 'Conductores', icon: UserRound }] : []),
   ]
+  const administration: NavEntry[] = canManageUsers(role)
+    ? [{ to: '/usuarios', label: 'Usuarios', icon: Users }] : []
   return [
     { label: 'General', items: [{ to: '/', label: 'Inicio', icon: Home, end: true }] },
     ...(operations.length ? [{ label: 'Operación', items: operations }] : []),
     ...(resources.length ? [{ label: 'Recursos', items: resources }] : []),
+    ...(administration.length ? [{ label: 'Administración', items: administration }] : []),
   ]
 }
 

@@ -1,5 +1,6 @@
 import { useEffect, useId, useRef, useState } from 'react'
-import { ChevronDown, LogOut, Monitor, Moon, Sun } from 'lucide-react'
+import { Link } from 'react-router-dom'
+import { ChevronDown, KeyRound, LogOut, Monitor, Moon, Sun } from 'lucide-react'
 import type { AuthRole } from '../../services/auth'
 import { ROLE_LABEL } from '../../domain/roles'
 import { useTheme } from '../../hooks/useTheme'
@@ -70,6 +71,10 @@ export function AccountMenu({ name, role, loggingOut, onLogout }: {
           </label>)}
         </div>
       </fieldset>
+      <Link to="/cambiar-contrasena" className="menu-item menu-item--neutral" onClick={() => setOpen(false)}>
+        <KeyRound aria-hidden="true" size={18} />
+        Cambiar contraseña
+      </Link>
       <button type="button" className="menu-item" disabled={loggingOut} onClick={onLogout}>
         <LogOut aria-hidden="true" size={18} />
         {loggingOut ? 'Cerrando sesión…' : 'Cerrar sesión'}

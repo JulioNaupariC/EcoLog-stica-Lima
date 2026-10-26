@@ -9,8 +9,8 @@ from pydantic import BaseModel, ConfigDict, Field, SecretStr
 
 from app.api.dependencies import (
     COOKIE_NAME,
-    get_authenticated_session,
     get_authentication_service,
+    get_current_session,
 )
 from app.core.config import Settings
 from app.core.rbac import Rol
@@ -34,6 +34,7 @@ class LoginResponse(BaseModel):
     usuario_id: UUID
     rol: Rol
     expires_at: datetime | None = None
+    debe_cambiar_contrasena: bool = False
 
 
 @router.post("/login", response_model=LoginResponse, response_model_exclude_none=True)
@@ -67,6 +68,7 @@ def login(
         usuario_id=result.identidad.usuario_id,
         rol=Rol(result.identidad.rol),
         expires_at=result.expira_en if result.identidad.rol == Rol.CONDUCTOR else None,
+        debe_cambiar_contrasena=result.debe_cambiar_contrasena,
     )
 
 
@@ -74,7 +76,8 @@ def login(
 def logout(
     request: Request,
     response: Response,
-    authenticated: Annotated[AuthenticatedSession, Depends(get_authenticated_session)],
+    # A pending password change must not prevent leaving the session.
+    authenticated: Annotated[AuthenticatedSession, Depends(get_current_session)],
     service: Annotated[AutenticacionService, Depends(get_authentication_service)],
 ) -> None:
     settings: Settings = request.app.state.settings

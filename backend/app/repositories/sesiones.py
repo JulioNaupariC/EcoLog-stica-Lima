@@ -25,6 +25,7 @@ class SessionIdentity:
     bloqueado_hasta: datetime | None
     expira_en: datetime
     revocada_en: datetime | None
+    debe_cambiar_contrasena: bool = False
 
 
 class SesionRepository:
@@ -60,6 +61,7 @@ class SesionRepository:
                 usuario.bloqueado_hasta,
                 sesion.expira_en,
                 sesion.revocada_en,
+                usuario.debe_cambiar_contrasena,
             )
         except SQLAlchemyError:
             raise SessionStorageError("Session storage unavailable") from None
@@ -71,5 +73,28 @@ class SesionRepository:
                 .where(Sesion.sesion_id == sesion_id, Sesion.revocada_en.is_(None))
                 .values(revocada_en=revoked_at)
             )
+        except SQLAlchemyError:
+            raise SessionStorageError("Session storage unavailable") from None
+
+    def revoke_all_for_user(
+        self,
+        usuario_id: UUID,
+        revoked_at: datetime,
+        *,
+        except_sesion_id: UUID | None = None,
+    ) -> int:
+        """Revoke every active session of a user, optionally keeping one."""
+        statement = update(Sesion).where(
+            Sesion.usuario_id == usuario_id, Sesion.revocada_en.is_(None)
+        )
+        if except_sesion_id is not None:
+            statement = statement.where(Sesion.sesion_id != except_sesion_id)
+        try:
+            result = self._session.execute(
+                statement.values(revocada_en=revoked_at).execution_options(
+                    synchronize_session=False
+                )
+            )
+            return result.rowcount
         except SQLAlchemyError:
             raise SessionStorageError("Session storage unavailable") from None

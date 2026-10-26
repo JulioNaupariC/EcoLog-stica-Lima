@@ -31,12 +31,16 @@ def test_approved_schema_and_safe_representation():
         "creado_en",
         "intentos_fallidos",
         "bloqueado_hasta",
+        "debe_cambiar_contrasena",
+        "contrasena_temporal_expira_en",
     }
     assert all(
         not column.nullable
         for column in table.columns
-        if column.name != "bloqueado_hasta"
+        if column.name not in ("bloqueado_hasta", "contrasena_temporal_expira_en")
     )
+    assert str(table.c.debe_cambiar_contrasena.server_default.arg) == "false"
+    assert table.c.contrasena_temporal_expira_en.type.timezone
     assert str(table.c.usuario_id.server_default.arg) == "gen_random_uuid()"
     assert table.c.email.type.length == 255
     assert table.c.password_hash.type.length == 255

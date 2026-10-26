@@ -9,12 +9,14 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.api.auth import router as auth_router
 from app.api.clientes import router as cliente_router
 from app.api.conductores import router as conductor_router
+from app.api.contrasenas import router as password_router
 from app.api.driver_reports import router as driver_report_router
 from app.api.health import router as health_router
 from app.api.indicadores import router as indicator_router
 from app.api.metrics import router as metrics_router
 from app.api.pedidos import router as order_router
 from app.api.preferencias import router as preferencias_router
+from app.api.usuarios import router as user_router
 from app.api.vehiculos import router as vehicle_router
 from app.core.config import Settings
 from app.db.session import build_audit_engine, build_engine, session_factory
@@ -25,6 +27,7 @@ from app.monitoring.probe import build_probe_engine
 from app.services.auditoria import AuditoriaService
 from app.services.autenticacion import AutenticacionService
 from app.services.autorizacion import AutorizacionService
+from app.services.restablecimiento import RestablecimientoService
 
 
 def create_app(settings: Settings | None = None) -> FastAPI:
@@ -65,6 +68,15 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             app.state.authorization_service = (
                 AutorizacionService(audit_service) if audit_service else None
             )
+            app.state.password_reset_service = (
+                RestablecimientoService(
+                    business_factory,
+                    app.state.authorization_service,
+                    audit_service,
+                )
+                if business_factory and audit_service
+                else None
+            )
             yield
         finally:
             if probe_engine is not None:
@@ -87,6 +99,8 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.include_router(health_router)
     app.include_router(metrics_router)
     app.include_router(auth_router)
+    app.include_router(password_router)
+    app.include_router(user_router)
     app.include_router(driver_report_router)
     app.include_router(order_router)
     app.include_router(vehicle_router)

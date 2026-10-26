@@ -4,12 +4,10 @@ from collections.abc import Callable
 from typing import Annotated, TypeVar
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, HTTPException, Query, Request, Response, status
-from fastapi.exceptions import RequestValidationError
-from fastapi.responses import JSONResponse
-from fastapi.routing import APIRoute
+from fastapi import APIRouter, Depends, HTTPException, Query, Request, status
 
 from app.api.dependencies import require_permission
+from app.api.validation import SanitizedRoute
 from app.core.rbac import Contexto, Identidad, Permiso, Rol
 from app.repositories.auditoria import AuditStorageError
 from app.schemas.conductor import (
@@ -28,31 +26,9 @@ from app.services.conductores import (
     ConductorUnavailable,
 )
 
-
-class DriverRoute(APIRoute):
-    """Prevent FastAPI validation responses from echoing personal input or passwords."""
-
-    def get_route_handler(self) -> Callable:
-        handler = super().get_route_handler()
-
-        async def sanitized(request: Request) -> Response:
-            try:
-                return await handler(request)
-            except RequestValidationError as error:
-                details = [
-                    {
-                        "loc": item["loc"],
-                        "type": item["type"],
-                        "msg": "Entrada inválida",
-                    }
-                    for item in error.errors()
-                ]
-                return JSONResponse(status_code=422, content={"detail": details})
-
-        return sanitized
-
-
-router = APIRouter(prefix="/conductores", tags=["conductores"], route_class=DriverRoute)
+router = APIRouter(
+    prefix="/conductores", tags=["conductores"], route_class=SanitizedRoute
+)
 T = TypeVar("T")
 
 

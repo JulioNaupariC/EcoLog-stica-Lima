@@ -10,13 +10,18 @@ import { OrderCreatePage } from '../pages/OrderCreatePage'
 import { VehiclesPage } from '../pages/VehiclesPage'
 import { DriversPage } from '../pages/DriversPage'
 import { DeliveryPreferencesPage } from '../pages/DeliveryPreferencesPage'
+import { UsersPage } from '../pages/UsersPage'
+import { ChangePasswordPage } from '../pages/ChangePasswordPage'
 import { DriverShell, PublicShell, StaffShell } from '../components/layout/AppShell'
 import { Alert, EmptyState, LinkButton, ToastProvider, useToast } from '../components/ui'
-import { canListVehicles, canManageOperations, ROLE_LABEL } from '../domain/roles'
+import { canListVehicles, canManageOperations, canManageUsers, ROLE_LABEL } from '../domain/roles'
 import { logout, type LoginResponse } from '../services/auth'
 import { clearItinerary } from '../services/offlineStorage'
 import { listPendingReports } from '../services/reportQueue'
 import { forgetDriver, recallDriver, rememberDriver } from '../services/offlineAccess'
+import { installPasswordChangeGuard } from '../services/passwordChangeGuard'
+
+const CHANGE_PASSWORD_PATH = '/cambiar-contrasena'
 
 function AccessDenied() {
   return <EmptyState icon={ShieldAlert} title="Acceso denegado" headingLevel={1} titleId="access-denied-title"
@@ -39,13 +44,37 @@ function AppRoutes() {
   const { notify } = useToast()
   const createOrdersAllowed = identity !== null && canManageOperations(identity.rol)
   const vehiclesAllowed = identity !== null && canListVehicles(identity.rol)
+  const mustChangePassword = identity?.debe_cambiar_contrasena === true
+  const signedIn = identity !== null
 
   function handleLoginSuccess(loggedInIdentity: LoginResponse, email: string) {
-    rememberDriver(loggedInIdentity)
+    // A temporary-password session is not remembered as a usable driver tab.
+    if (!loggedInIdentity.debe_cambiar_contrasena) rememberDriver(loggedInIdentity)
     setIdentity(loggedInIdentity)
     setAccountEmail(email)
     setLogoutMessage('')
+    void navigate(loggedInIdentity.debe_cambiar_contrasena ? CHANGE_PASSWORD_PATH : '/', { replace: true })
+  }
+
+  // ECL-77: any API 403 "Cambio de contraseña requerido" locks the app on the change page.
+  useEffect(() => {
+    if (!signedIn) return undefined
+    return installPasswordChangeGuard(() => {
+      forgetDriver()
+      setIdentity(current => current ? { ...current, debe_cambiar_contrasena: true } : current)
+      void navigate(CHANGE_PASSWORD_PATH, { replace: true })
+    })
+  }, [signedIn, navigate])
+
+  function handlePasswordChanged() {
+    if (identity) {
+      const updated: LoginResponse = { usuario_id: identity.usuario_id, rol: identity.rol,
+        ...(identity.expires_at ? { expires_at: identity.expires_at } : {}) }
+      rememberDriver(updated)
+      setIdentity(updated)
+    }
     void navigate('/', { replace: true })
+    notify('Contraseña actualizada.')
   }
 
   const handleSessionExpired = useCallback(() => {
@@ -118,6 +147,16 @@ function AppRoutes() {
   const banner = logoutMessage
     ? <div className="shell-banner"><Alert tone="danger">{logoutMessage}</Alert></div>
     : null
+  if (mustChangePassword) {
+    return <PublicShell>
+      {banner}
+      <Routes>
+        <Route path={CHANGE_PASSWORD_PATH} element={<ChangePasswordPage required onChanged={handlePasswordChanged}
+          onSessionExpired={handleSessionExpired} onLogout={() => { void handleLogout() }} />} />
+        <Route path="*" element={<Navigate to={CHANGE_PASSWORD_PATH} replace />} />
+      </Routes>
+    </PublicShell>
+  }
   const guarded = (allowed: boolean, element: ReactNode) => allowed ? element : <AccessDenied />
   const shellProps = {
     role: identity.rol,
@@ -137,6 +176,10 @@ function AppRoutes() {
       <DriversPage key={identity.usuario_id} onSessionExpired={handleSessionExpired} />)} />
     <Route path="/clientes/preferencias" element={guarded(createOrdersAllowed,
       <DeliveryPreferencesPage key={identity.usuario_id} onSessionExpired={handleSessionExpired} />)} />
+    <Route path="/usuarios" element={guarded(canManageUsers(identity.rol),
+      <UsersPage key={identity.usuario_id} ownId={identity.usuario_id} onSessionExpired={handleSessionExpired} />)} />
+    <Route path={CHANGE_PASSWORD_PATH} element={<ChangePasswordPage required={false}
+      onChanged={handlePasswordChanged} onSessionExpired={handleSessionExpired} />} />
     <Route path="*" element={<NotFoundPage />} />
   </Routes>
   return identity.rol === 'CONDUCTOR'

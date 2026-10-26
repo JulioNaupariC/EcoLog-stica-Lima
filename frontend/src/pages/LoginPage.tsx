@@ -22,6 +22,7 @@ export function LoginPage({ onLoginSuccess, notice }: LoginPageProps) {
   const [errors, setErrors] = useState<FieldErrors>({})
   const [globalError, setGlobalError] = useState('')
   const [submitting, setSubmitting] = useState(false)
+  const [forgotOpen, setForgotOpen] = useState(false)
   const submittingRef = useRef(false)
   const emailRef = useRef<HTMLInputElement>(null)
   const passwordRef = useRef<HTMLInputElement>(null)
@@ -167,6 +168,19 @@ export function LoginPage({ onLoginSuccess, notice }: LoginPageProps) {
               {submitting ? 'Iniciando sesión…' : 'Iniciar sesión'}
             </Button>
           </form>
+
+          {/* ECL-77: no e-mail field here, so the page cannot be used to enumerate accounts. */}
+          <div className="forgot-password">
+            <button type="button" className="link-button" aria-expanded={forgotOpen}
+              aria-controls="forgot-password-help" onClick={() => setForgotOpen(value => !value)}>
+              ¿Olvidaste tu contraseña?
+            </button>
+            <div id="forgot-password-help" hidden={!forgotOpen}>
+              <Alert tone="info" role="note">
+                Pide al Administrador que restablezca tu contraseña. Por seguridad, no enviamos contraseñas por correo.
+              </Alert>
+            </div>
+          </div>
         </div>
       </section>
     </div>
