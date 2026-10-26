@@ -6,7 +6,12 @@ from fastapi import APIRouter, Depends, HTTPException, Query, Request, Response,
 
 from app.api.dependencies import require_permission
 from app.api.validation import SanitizedRoute
-from app.core.incidencias import PAGE_SIZE_MAX, EstadoIncidencia
+from app.core.incidencias import (
+    ESTADO_LISTADO,
+    PAGE_SIZE_DEFAULT,
+    PAGE_SIZE_MAX,
+    EstadoIncidencia,
+)
 from app.core.rbac import Contexto, Identidad, Permiso
 from app.schemas.incidencia import (
     IncidenciaCreate,
@@ -16,6 +21,7 @@ from app.schemas.incidencia import (
 from app.services.incidencias import (
     IncidenciaConflicto,
     IncidenciaInvalida,
+    IncidenciaParadaAjena,
     IncidenciaService,
     IncidenciaSinConductor,
     IncidenciaUnavailable,
@@ -70,8 +76,8 @@ def register_incident(
 ) -> IncidenciaRegistrada:
     try:
         acknowledgement, created = service.registrar(identity.usuario_id, payload)
-    except IncidenciaSinConductor:
-        # Only an authenticated driver can report from its own itinerary.
+    except (IncidenciaSinConductor, IncidenciaParadaAjena):
+        # Generic: no profile, or a stop of another driver (I08, I10).
         raise HTTPException(status.HTTP_403_FORBIDDEN, "Acceso denegado") from None
     except IncidenciaInvalida:
         raise HTTPException(
@@ -98,10 +104,16 @@ def list_incidents(
         Identidad, Depends(require_permission(Permiso.INCIDENCIAS_CONSULTAR))
     ],
     service: Annotated[IncidenciaService, Depends(get_incident_service)],
-    estado: EstadoIncidencia = EstadoIncidencia.PENDIENTE_VALIDACION,
+    estado: EstadoIncidencia = ESTADO_LISTADO,
     page: Annotated[int, Query(ge=1)] = 1,
-    page_size: Annotated[int, Query(ge=1, le=PAGE_SIZE_MAX)] = 20,
+    page_size: Annotated[int, Query(ge=1, le=PAGE_SIZE_MAX)] = PAGE_SIZE_DEFAULT,
 ) -> IncidenciaPage:
+    if estado is not ESTADO_LISTADO:
+        # I15: this operational list only admits pending incidents.
+        raise HTTPException(
+            status.HTTP_422_UNPROCESSABLE_CONTENT,
+            "Estado no admitido en este listado",
+        )
     try:
         return service.listar(estado, page, page_size)
     except IncidenciaUnavailable:

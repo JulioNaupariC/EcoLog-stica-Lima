@@ -23,14 +23,17 @@ from app.db.base import Base
 class Incidencia(Base):
     __tablename__ = "incidencia"
     __table_args__ = (
-        UniqueConstraint("operation_id", name="uq_incidencia_operation_id"),
+        # I16: the same UUID from another driver is an independent operation.
+        UniqueConstraint(
+            "conductor_id", "operation_id", name="uq_incidencia_conductor_operation"
+        ),
         CheckConstraint(f"tipo IN ({sql_in(TIPOS)})", name="ck_incidencia_tipo"),
         CheckConstraint(
             f"severidad IN ({sql_in(SEVERIDADES)})", name="ck_incidencia_severidad"
         ),
         CheckConstraint(f"estado IN ({sql_in(ESTADOS)})", name="ck_incidencia_estado"),
         CheckConstraint(
-            f"observacion IS NULL OR char_length(observacion) <= {OBSERVACION_MAX}",
+            f"char_length(observacion) <= {OBSERVACION_MAX}",
             name="ck_incidencia_observacion",
         ),
         Index(
@@ -38,7 +41,6 @@ class Incidencia(Base):
             "estado",
             text("ocurrida_en DESC"),
         ),
-        Index("ix_incidencia_conductor", "conductor_id"),
     )
 
     incidencia_id: Mapped[UUID] = mapped_column(
@@ -69,7 +71,10 @@ class Incidencia(Base):
     registrada_en: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=text("CURRENT_TIMESTAMP")
     )
-    observacion: Mapped[str | None] = mapped_column(String(OBSERVACION_MAX))
+    # Omitted or null is stored as "" (I14).
+    observacion: Mapped[str] = mapped_column(
+        String(OBSERVACION_MAX), server_default=text("''")
+    )
     estado: Mapped[str] = mapped_column(
         String(25), server_default=text("'PENDIENTE_VALIDACION'")
     )

@@ -1,8 +1,9 @@
 """Driver incidents and their registration audit (ECL-73 / ST-040).
 
-Catalogues and the observation limit come from app.core.incidencias, the single
-source while the ECL-72 BDD is pending. Once this revision is in ``main``, any
-catalogue change needs a new revision instead of editing this one.
+Catalogues and the observation limit come from app.core.incidencias, aligned
+with the ECL-72 BDD (PR #63). Idempotency is per (conductor, operation_id), and
+an incident without a stop has no route: it is always linked to its driver.
+Once this revision is in ``main``, changes need a new revision.
 """
 
 import sqlalchemy as sa
@@ -52,7 +53,12 @@ def upgrade() -> None:
             server_default=sa.text("CURRENT_TIMESTAMP"),
             nullable=False,
         ),
-        sa.Column("observacion", sa.String(OBSERVACION_MAX), nullable=True),
+        sa.Column(
+            "observacion",
+            sa.String(OBSERVACION_MAX),
+            server_default=sa.text("''"),
+            nullable=False,
+        ),
         sa.Column(
             "estado",
             sa.String(25),
@@ -72,7 +78,9 @@ def upgrade() -> None:
             name="fk_incidencia_parada",
             ondelete="RESTRICT",
         ),
-        sa.UniqueConstraint("operation_id", name="uq_incidencia_operation_id"),
+        sa.UniqueConstraint(
+            "conductor_id", "operation_id", name="uq_incidencia_conductor_operation"
+        ),
         sa.CheckConstraint(f"tipo IN ({sql_in(TIPOS)})", name="ck_incidencia_tipo"),
         sa.CheckConstraint(
             f"severidad IN ({sql_in(SEVERIDADES)})", name="ck_incidencia_severidad"
@@ -81,7 +89,7 @@ def upgrade() -> None:
             f"estado IN ({sql_in(ESTADOS)})", name="ck_incidencia_estado"
         ),
         sa.CheckConstraint(
-            f"observacion IS NULL OR char_length(observacion) <= {OBSERVACION_MAX}",
+            f"char_length(observacion) <= {OBSERVACION_MAX}",
             name="ck_incidencia_observacion",
         ),
     )
@@ -90,7 +98,6 @@ def upgrade() -> None:
         "incidencia",
         ["estado", sa.text("ocurrida_en DESC")],
     )
-    op.create_index("ix_incidencia_conductor", "incidencia", ["conductor_id"])
     op.drop_constraint("ck_auditoria_accion", "auditoria", type_="check")
     op.create_check_constraint(
         "ck_auditoria_accion",
@@ -124,6 +131,5 @@ def downgrade() -> None:
         "auditoria",
         f"accion IN ({_PREVIOUS_ACTIONS})",
     )
-    op.drop_index("ix_incidencia_conductor", table_name="incidencia")
     op.drop_index("ix_incidencia_estado_ocurrida", table_name="incidencia")
     op.drop_table("incidencia")

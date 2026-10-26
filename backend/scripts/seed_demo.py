@@ -28,8 +28,9 @@ fijan en la primera ejecución: para una demostración en otro día, recrear la
 base ``*_demo`` y volver a sembrar ese mismo día.
 
 ECL-73: conductor.demo reporta 3 incidencias ficticias en Lima, pendientes de
-validación, con ``operation_id`` determinista (``uuid5``); la primera está
-asociada a su parada 1. Se registran con el servicio de incidencias.
+validación, con ``operation_id`` determinista (``uuid5`` marcado como versión 4,
+porque la BDD de ECL-72 exige UUID v4); la primera está asociada a su parada 1.
+Se registran con el servicio de incidencias.
 """
 
 from __future__ import annotations
@@ -470,6 +471,11 @@ def _ensure_assignments(
         summary.count("asignaciones", created=stop_id not in existing)
 
 
+def incident_operation_id(key: str) -> UUID:
+    """Deterministic, so reseeding never duplicates; version 4 as the BDD requires."""
+    return UUID(bytes=uuid5(INCIDENT_NAMESPACE, key).bytes, version=4)
+
+
 def _ensure_incidents(
     factory: sessionmaker[Session],
     driver_account: UUID,
@@ -484,7 +490,7 @@ def _ensure_incidents(
         _ack, created = service.registrar(
             driver_account,
             IncidenciaCreate(
-                operation_id=uuid5(INCIDENT_NAMESPACE, incident.key),
+                operation_id=incident_operation_id(incident.key),
                 tipo=incident.tipo,
                 severidad=incident.severidad,
                 ocurrida_en=now - timedelta(minutes=incident.minutes_ago),

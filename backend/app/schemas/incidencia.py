@@ -1,9 +1,17 @@
-"""ECL-73 incident contracts (provisional until the ECL-72 BDD is approved)."""
+"""ECL-73 incident contracts, aligned with the approved ECL-72 BDD (PR #63)."""
 
 from datetime import datetime
+from typing import Annotated
 from uuid import UUID
 
-from pydantic import AwareDatetime, BaseModel, ConfigDict, Field, field_validator
+from pydantic import (
+    UUID4,
+    AwareDatetime,
+    BaseModel,
+    ConfigDict,
+    Field,
+    field_validator,
+)
 
 from app.core.incidencias import (
     OBSERVACION_MAX,
@@ -13,27 +21,30 @@ from app.core.incidencias import (
     TipoIncidencia,
 )
 
+# I07: finite numbers only; integers are accepted, strings and booleans are not.
+Latitud = Annotated[float, Field(strict=True, ge=-90, le=90, allow_inf_nan=False)]
+Longitud = Annotated[float, Field(strict=True, ge=-180, le=180, allow_inf_nan=False)]
+
 
 class IncidenciaCreate(BaseModel):
+    # Extra fields (conductor_id, usuario_id, reportada_por, ruta_id, estado) → 422.
     model_config = ConfigDict(extra="forbid", hide_input_in_errors=True)
 
-    operation_id: UUID
+    operation_id: UUID4
     tipo: TipoIncidencia
     severidad: SeveridadIncidencia
-    # Timezone required; the time window is checked by the service against "now".
+    # Timezone required; the future tolerance is checked against the server clock.
     ocurrida_en: AwareDatetime
-    latitud: float = Field(ge=-90, le=90, allow_inf_nan=False)
-    longitud: float = Field(ge=-180, le=180, allow_inf_nan=False)
+    latitud: Latitud
+    longitud: Longitud
     parada_id: UUID | None = None
-    observacion: str | None = Field(default=None, max_length=OBSERVACION_MAX)
+    # Code points, never stripped or truncated; omitted or null means "" (I06, I14).
+    observacion: str = Field(default="", max_length=OBSERVACION_MAX)
 
-    @field_validator("observacion")
+    @field_validator("observacion", mode="before")
     @classmethod
-    def blank_is_none(cls, value: str | None) -> str | None:
-        if value is None:
-            return None
-        value = value.strip()
-        return value or None
+    def null_is_empty(cls, value: object) -> object:
+        return "" if value is None else value
 
 
 class IncidenciaRegistrada(BaseModel):
@@ -59,7 +70,7 @@ class IncidenciaListItem(BaseModel):
     conductor: ConductorResumen
     latitud: float
     longitud: float
-    observacion: str | None
+    observacion: str
     estado: EstadoIncidencia
 
 

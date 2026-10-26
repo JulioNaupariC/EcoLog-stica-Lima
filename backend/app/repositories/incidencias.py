@@ -35,7 +35,7 @@ class StoredIncidencia:
     ocurrida_en: datetime
     latitud: float
     longitud: float
-    observacion: str | None
+    observacion: str
     estado: str
     registrada_en: datetime
 
@@ -51,7 +51,7 @@ class IncidenciaRow:
     nombre: str
     latitud: float
     longitud: float
-    observacion: str | None
+    observacion: str
     estado: str
 
 
@@ -70,21 +70,21 @@ class IncidenciaRepository:
         except SQLAlchemyError:
             raise IncidenciaStorageError("Incident storage unavailable") from None
 
-    def stop_belongs_to(self, stop_id: UUID, owner_id: UUID) -> bool:
+    def stop_owner(self, stop_id: UUID) -> UUID | None:
+        """Owner (driver account) of an existing stop, or None if it does not exist."""
         try:
-            return (
-                self._session.scalar(
-                    select(DriverStopAssignment.stop_id).where(
-                        DriverStopAssignment.stop_id == stop_id,
-                        DriverStopAssignment.owner_id == owner_id,
-                    )
+            return self._session.scalar(
+                select(DriverStopAssignment.owner_id).where(
+                    DriverStopAssignment.stop_id == stop_id
                 )
-                is not None
             )
         except SQLAlchemyError:
             raise IncidenciaStorageError("Incident storage unavailable") from None
 
-    def find_by_operation(self, operation_id: UUID) -> StoredIncidencia | None:
+    def find_by_operation(
+        self, conductor_id: UUID, operation_id: UUID
+    ) -> StoredIncidencia | None:
+        """Idempotency key: (driver, operation_id); other drivers never match."""
         try:
             row = self._session.execute(
                 select(
@@ -100,7 +100,10 @@ class IncidenciaRepository:
                     Incidencia.observacion,
                     Incidencia.estado,
                     Incidencia.registrada_en,
-                ).where(Incidencia.operation_id == operation_id)
+                ).where(
+                    Incidencia.conductor_id == conductor_id,
+                    Incidencia.operation_id == operation_id,
+                )
             ).one_or_none()
             return None if row is None else StoredIncidencia(*row)
         except SQLAlchemyError:
@@ -121,7 +124,7 @@ class IncidenciaRepository:
             constraint = getattr(
                 getattr(error.orig, "diag", None), "constraint_name", None
             )
-            if constraint == "uq_incidencia_operation_id":
+            if constraint == "uq_incidencia_conductor_operation":
                 raise IncidenciaDuplicateOperation("Duplicate operation") from None
             raise IncidenciaStorageError("Incident storage unavailable") from None
         except SQLAlchemyError:
