@@ -12,6 +12,8 @@ from app.api.conductores import router as conductor_router
 from app.api.contrasenas import router as password_router
 from app.api.driver_reports import router as driver_report_router
 from app.api.health import router as health_router
+from app.api.incidencias import conductor_router as incident_report_router
+from app.api.incidencias import router as incident_router
 from app.api.indicadores import router as indicator_router
 from app.api.metrics import router as metrics_router
 from app.api.pedidos import router as order_router
@@ -108,4 +110,6 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.include_router(preferencias_router)
     app.include_router(cliente_router)
     app.include_router(indicator_router)
+    app.include_router(incident_report_router)
+    app.include_router(incident_router)
     return app

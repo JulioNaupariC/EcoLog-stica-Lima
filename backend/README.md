@@ -772,4 +772,156 @@ contraseña. El número de sesiones revocadas queda solo en la auditoría. Las p
 en `tests/unit/test_reset_password.py` y
 `tests/integration/test_reset_password_script.py`.
 
+## Incidencias (ECL-73)
+
+ST-040, subtarea de US-012 (ECL-18). El conductor registra incidencias de su
+jornada y el Administrador o el Operador consultan las pendientes de validación.
+Lo consumen ECL-74 (José) y ECL-75 (Giancarlo).
+
+Implementa la [BDD de ECL-72](<../docs/02 Planificación/BDD/ECL-72-ST-039-incidencias.md>),
+aprobada por Julio en el PR #63 (escenarios I01–I16; I12, offline 10/10, es de
+la interfaz). Los tipos, las severidades y los límites están en un solo módulo,
+`app/core/incidencias.py`, del que toman sus valores el modelo, la migración
+`0013_incidencias`, los esquemas, el servicio y las pruebas. Las pruebas llevan
+el ID del escenario en su nombre (`test_I11_...`) para mapearlas en ECL-76.
+
+### Endpoints
+
+| Método y ruta | Acceso | Respuesta |
+|---|---|---|
+| `POST /conductor/incidencias` | `incidencias.crear`, alcance propio, **solo rol Conductor** con perfil vinculado | 201 con `{incidencia_id, operation_id, estado, registrada_en}`; 200 con la misma respuesta ante un reenvío equivalente; 409 con contenido distinto; 422 con datos inválidos, sin repetir lo enviado; 403 genérico para otros roles, sin perfil vinculado o con una parada ajena; 401 sin sesión |
+| `GET /incidencias?estado=PENDIENTE_VALIDACION&page=1&page_size=20` | `incidencias.consultar`, alcance general (Administrador y Operador) | Orden `ocurrida_en` descendente con desempate por `incidencia_id` ascendente. `page` ≥ 1 y `page_size` entre 1 y 100 (20 por defecto); otro estado o paginación inválida → 422. Una página posterior a la última devuelve 200 con `items: []` y el total real. El conductor aparece solo con `conductor_id` y `nombre`. Analista, Auditor y Conductor reciben 403 sin datos |
+
+```json
+{
+  "operation_id": "uuid versión 4 del cliente (cola offline)",
+  "tipo": "TRAFICO | AVERIA | ACCIDENTE | CLIMA | SEGURIDAD | OTRO",
+  "severidad": "BAJA | MEDIA | ALTA",
+  "ocurrida_en": "2026-10-27T09:15:00-05:00",
+  "latitud": -12.0464,
+  "longitud": -77.0428,
+  "parada_id": "uuid opcional de una parada del propio itinerario",
+  "observacion": "opcional, de 0 a 500 puntos de código Unicode"
+}
+```
+
+Las fechas de las respuestas se devuelven en hora de Lima (`-05:00`).
+
+### Reglas
+
+- **Validación estricta (I04–I07):**
+  - `operation_id` debe ser un UUID versión 4.
+  - `tipo` y `severidad` admiten solo los valores exactos del catálogo.
+  - Latitud en [-90, 90] y longitud en [-180, 180]: aceptan enteros y rechazan
+    cadenas, booleanos, NaN e infinito.
+  - `ocurrida_en` debe llevar zona horaria. Se admite hasta 5 min en el futuro
+    según el reloj del servidor, inclusive, y no hay antigüedad máxima, para que
+    la cola offline pueda entregar reportes viejos.
+  - `observacion` no se recorta ni se trunca; omitida o `null` se guarda como
+    `""`.
+  - Los campos extra (`conductor_id`, `usuario_id`, `reportada_por`, `ruta_id`,
+    `estado`) devuelven 422.
+- **Orden de comprobación:**
+  1. esquema y permisos;
+  2. perfil vinculado;
+  3. idempotencia;
+  4. solo para una operación nueva, la hora futura y la parada. Una parada
+     inexistente devuelve 422 genérico y una de otro conductor, 403 genérico.
+
+  Así un reenvío nunca invalida un alta ya hecha.
+- **Idempotencia por `(conductor, operation_id)` (I13, I16):**
+  - Hay equivalencia si coinciden el mismo instante en UTC, las mismas
+    coordenadas numéricas (`-12 == -12.0`), los opcionales normalizados y la
+    observación exacta, incluidos espacios y mayúsculas.
+  - El mismo UUID de otro conductor es una operación independiente y nunca
+    devuelve el registro ajeno.
+  - Si dos primeros envíos llegan a la vez, la restricción única decide: el
+    perdedor relee el registro y responde 200 (o 409 si el contenido difiere),
+    nunca 5xx.
+- **Auditoría (RN-015):** `INCIDENCIA_REGISTRADA` va en la misma transacción que
+  el alta, con actor = usuario conductor y entidad = incidencia. El detalle solo
+  guarda `tipo`, `severidad`, `con_parada` y `con_observacion`.
+
+### Formato del 422 (para el formulario, ECL-74)
+
+Todos los 422 de estos endpoints tienen la misma forma: identifican el campo y
+un código estable, **sin repetir el valor enviado**, sin `input` ni `ctx`.
+
+```json
+{
+  "detail": [
+    {
+      "loc": ["body", "ocurrida_en"],
+      "type": "fecha_futura_fuera_de_tolerancia",
+      "msg": "Entrada inválida"
+    }
+  ]
+}
+```
+
+- **`loc`:** indica el campo, por ejemplo `["body", "latitud"]` o
+  `["query", "page_size"]`. El formulario lo usa para marcar el campo.
+- **`type`:** es el código del error. Los de esquema son los de Pydantic: por
+  ejemplo, `missing`, `timezone_aware` (fecha sin zona), `less_than_equal`,
+  `float_type`, `uuid_version`, `enum` y `extra_forbidden`. Los de la API son:
+  - `fecha_futura_fuera_de_tolerancia`: `ocurrida_en` pasa del reloj del
+    servidor + 5 min (I05);
+  - `parada_invalida`: `parada_id` no existe (I07).
+- **`msg`:** siempre es `"Entrada inválida"`; el texto para el usuario lo pone el
+  cliente según `loc` y `type`.
+- Un estado distinto de `PENDIENTE_VALIDACION` en `GET /incidencias` responde
+  `{"detail": "Estado no admitido en este listado"}`.
+
+### Rol en el registro (I08)
+
+La matriz RBAC global concede `incidencias.crear` también al Operador. El
+endpoint `POST /conductor/incidencias` admite **solo el rol Conductor**, mediante
+`require_permission(..., roles={Rol.CONDUCTOR})`, sin modificar la matriz.
+
+- **Operador:** recibe 403 antes de llegar al servicio, aunque tenga un perfil
+  de conductor vinculado.
+- **Auditoría:** la denegación se registra como `AUTORIZACION_DENEGADA` con
+  motivo `SIN_PERMISO`.
+
+### Jornada de la parada (I03): pendiente
+
+La BDD pide que la parada sea del itinerario **y de la jornada** del reporte. El
+modelo actual no permite comprobar la jornada de forma confiable:
+
+- no existe una entidad de jornada ni de ruta;
+- el itinerario (`driver_stop_assignment`) no tiene fecha;
+- `pedido_id` es opcional;
+- la ventana de un pedido puede cruzar la medianoche de Lima.
+
+Hoy solo se valida que la parada exista y sea del conductor. La comprobación de
+jornada se aplaza a [ECL-82](https://continental-team-il84x39k.atlassian.net/browse/ECL-82)
+(falta el modelo de rutas); el aplazamiento está pendiente de ratificación de
+Julio. **I03 no está cubierto por completo.**
+
+### Migración 0013
+
+`0013_incidencias` cuelga de `0012_password_reset` y amplía
+`ck_auditoria_accion` con `INCIDENCIA_REGISTRADA`, conservando las acciones de
+0012.
+
+- **Tabla `incidencia`:**
+  - restricción única `(conductor_id, operation_id)`;
+  - `ubicacion` como `geography(Point,4326)`;
+  - `observacion` NOT NULL con valor por defecto `''`;
+  - índice `(estado, ocurrida_en DESC)`;
+  - CHECK de tipo, severidad, estado y observación.
+- **Vínculo con el conductor y la ruta:** la incidencia se vincula siempre al
+  conductor. Sin parada no tiene ruta (ratificado por Julio). `ruta_id` llegará,
+  nullable, con el modelo de rutas; ver
+  [Base de datos V_1_1_0](<../docs/01 Inicio/11. Base de datos V_1_1_0.md>).
+- **Downgrade protegido:** se niega mientras existan incidencias o su
+  auditoría.
+
+### Datos de demostración
+
+`scripts/seed_demo.py` agrega 3 incidencias ficticias de `conductor.demo`,
+pendientes de validación: avería, tráfico y clima en Lima, la primera asociada
+a su parada 1. Su `operation_id` es determinista: se deriva con `uuid5` y se
+marca como versión 4, así que volver a sembrar no las duplica.
+
 [← Volver al README principal](../README.md)

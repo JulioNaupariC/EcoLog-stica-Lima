@@ -1,9 +1,18 @@
 """Framework-independent authorization; auditing must succeed before return."""
 
+from collections.abc import Collection
 from typing import Protocol
 from uuid import UUID
 
-from app.core.rbac import Contexto, Decision, Identidad, Motivo, Permiso, evaluar
+from app.core.rbac import (
+    Contexto,
+    Decision,
+    Identidad,
+    Motivo,
+    Permiso,
+    Rol,
+    evaluar,
+)
 from app.repositories.auditoria import Detalle, Evento, Registro
 
 
@@ -26,8 +35,13 @@ class AutorizacionService:
         contexto: Contexto | None = None,
         *,
         entidad_id: UUID | None = None,
+        roles: Collection[Rol] | None = None,
     ) -> Decision:
         decision = evaluar(identidad, permiso, contexto)
+        # An endpoint may admit fewer roles than the global matrix grants the
+        # permission to (e.g. ECL-73 I08); the matrix itself is not changed.
+        if decision.permitido and roles is not None and identidad.rol not in roles:
+            decision = Decision(False, Motivo.SIN_PERMISO)
         actor = (
             identidad.usuario_id
             if isinstance(identidad, Identidad)

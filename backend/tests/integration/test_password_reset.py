@@ -325,7 +325,8 @@ def test_no_error_response_or_log_contains_a_password(reset_database, caplog):
 
 def test_0012_upgrade_downgrade_upgrade_and_single_head(migration_database):
     engine, config = migration_database
-    assert ScriptDirectory.from_config(config).get_heads() == ["0012_password_reset"]
+    # A single head; later revisions (0013 ECL-73) chain after this one.
+    assert len(ScriptDirectory.from_config(config).get_heads()) == 1
     command.upgrade(config, "0012_password_reset")
     with engine.connect() as connection:
         columns = {

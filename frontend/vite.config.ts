@@ -9,7 +9,8 @@ export default defineConfig({
     setupFiles: './src/test/setup.ts',
     coverage: {
       provider: 'v8',
-      reporter: [['text', { skipFull: false }], 'html'],
+      // lcov feeds SonarCloud (ECL-65); text and html stay for local review.
+      reporter: [['text', { skipFull: false }], 'html', 'lcov'],
       include: ['src/**/*.ts', 'src/**/*.tsx'],
       exclude: ['src/main.tsx', 'src/env.d.ts', 'src/test/setup.ts'],
       thresholds: {

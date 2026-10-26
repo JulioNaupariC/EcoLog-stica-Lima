@@ -1,16 +1,17 @@
 # ECL-72 / ST-039 — Reglas y BDD de incidencias
 
-> **Estado: BORRADOR.** Propuesta de Frank pendiente de revisión y aprobación
-> de Julio. Especifica comportamiento esperado; no acredita implementación ni
-> ejecución de pruebas. La acción A4 exige aprobarla antes de implementar.
+> **Estado: APROBADO.** Aprobada por Julio el 25/10/2026 23:29 (America/Lima)
+> en el [PR #63](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/63).
+> Especifica comportamiento esperado; no acredita implementación ni ejecución
+> de pruebas.
 
 | Metadato | Valor |
 |---|---|
-| Versión | 0.2.0 |
+| Versión | 1.0.0 |
 | Fecha de elaboración | 25/10/2026, America/Lima |
 | Autor | Frank Roy Yupanqui Acevedo — @FrankRoyYA |
 | Revisor requerido | Julio Armando Naupari Camarena — @JulioNaupariC |
-| Aprobación de Julio | Pendiente; sin fecha de aprobación |
+| Aprobación de Julio | 25/10/2026 23:29 (America/Lima) en el [PR #63](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/63) |
 
 ## Trazabilidad y alcance
 
@@ -34,7 +35,7 @@ infeliz y de borde corresponde a caminos del flujo de usuario y de prueba.
 - [RF-012 y RF-001 — Requisitos funcionales](<../../01 Inicio/06. Requisitos funcionales V_1_0_0.md>).
 - [RN-002, RN-008, RN-010 y RN-015 — Reglas de negocio](<../../01 Inicio/09. Reglas de negocio V_1_0_0.md>).
 - [RNF-006, RNF-003 y RNF-004 — Requisitos no funcionales](<../../01 Inicio/07. Requisitos no funcionales V_1_1_0.md>).
-- [Entidad incidencia — Modelo de datos](<../../01 Inicio/11. Base de datos V_1_0_0.md>).
+- [Entidad incidencia — Modelo de datos](<../../01 Inicio/11. Base de datos V_1_1_0.md>).
 - [Actores y matriz RBAC](<../../01 Inicio/08. Usuarios V_1_0_0.md>).
 - [Definition of Done](<../01 Transformando a ágil V_1_0_0.md#8-definition-of-done-dod-global>).
 - [Retrospectiva del Sprint 2 — acción A4](<../../03 Implementación/04 Retrospectiva del Sprint V_1_0_0.md>).
@@ -370,8 +371,8 @@ con la versión que finalmente se apruebe.
 
 | Precisión o diferencia | Motivo / origen | Impacto previsto |
 |---|---|---|
-| Permitir incidencia sin ruta cuando no hay parada | Decisión pendiente de ratificación de Julio: permitirla asociada al conductor porque el modelo de rutas aún no existe. El modelo lógico relaciona incidencia con ruta y no define la excepción. | Ratificar nulabilidad de `ruta_id`; reportante obligatorio. Si requiere cambiar la línea base, tramitar control de cambios antes de aprobar; este PR no modifica el modelo aprobado. |
-| Hora con tolerancia futura de 5 minutos, con zona y sin antigüedad máxima | Propuesta pendiente de ratificación de Julio: admitir el desfase del reloj del celular hasta 5 minutos inclusive y permitir retraso offline sin antigüedad máxima. | Reloj controlado en pruebas; T0 + 5 min es válido y T0 + 5 min + 1 s recibe 422; errores de campo y borrador corregible. |
+| Permitir incidencia sin ruta cuando no hay parada | Decisión ratificada por Julio en el PR #63: permitirla asociada al conductor porque el modelo de rutas aún no existe. El modelo lógico relaciona incidencia con ruta y no define la excepción. | Ratificar nulabilidad de `ruta_id`; reportante obligatorio. Si requiere cambiar la línea base, tramitar control de cambios antes de aprobar; este PR no modifica el modelo aprobado. |
+| Hora con tolerancia futura de 5 minutos, con zona y sin antigüedad máxima | Propuesta ratificada por Julio en el PR #63: admitir el desfase del reloj del celular hasta 5 minutos inclusive y permitir retraso offline sin antigüedad máxima. | Reloj controlado en pruebas; T0 + 5 min es válido y T0 + 5 min + 1 s recibe 422; errores de campo y borrador corregible. |
 | Límites geográficos, Unicode y opcionales normalizados | El contrato daba máximo 500 y ejemplos, sin precisar unidades o equivalencias. | Validadores y contadores UI coherentes; no truncar silenciosamente. |
 | Idempotencia por conductor + operación; equivalencia y carrera atómica | El contrato no definía alcance entre cuentas ni representación equivalente. | Unicidad, respuesta 200 estable y pruebas de concurrencia. |
 | Parada propia, campos extra y perfil vinculado | Evitar suplantación y referencias ajenas. | 422/403 según reglas; reportante y ruta derivados por servidor. |
@@ -402,6 +403,7 @@ con la versión que finalmente se apruebe.
 |---|---|---|
 | 0.1.0 | 25/10/2026 | Borrador inicial con reglas, contrato candidato, escenarios y plan de trazabilidad para ECL-76. Aprobación de Julio pendiente. |
 | 0.2.0 | 25/10/2026 | Tolerancia de 5 min en ocurrida_en y decisiones pendientes para aprobación de Julio. |
+| 1.0.0 | 25/10/2026 | Aprobación de Julio registrada; [PR #63](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/63). |
 
 [↑ Índice del Sprint 3](<../../03 Implementación/Sprint 03/README.md>)
 
