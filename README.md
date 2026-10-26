@@ -142,7 +142,7 @@ de nuevo los servicios. Las instrucciones de arranque sin Docker siguen en
 - [Usuarios V_1_0_0](<docs/01 Inicio/08. Usuarios V_1_0_0.md>)
 - [Reglas de negocio V_1_0_0](<docs/01 Inicio/09. Reglas de negocio V_1_0_0.md>)
 - [Stack tecnológico V_1_0_0](<docs/01 Inicio/10. Stack tecnológico V_1_0_0.md>)
-- [Base de datos V_1_0_0](<docs/01 Inicio/11. Base de datos V_1_0_0.md>)
+- [Base de datos V_1_1_0](<docs/01 Inicio/11. Base de datos V_1_1_0.md>)
 - [Modelo C4 V_1_0_0](<docs/01 Inicio/12. Modelo C4 V_1_0_0.md>)
 - [Restricciones V_1_0_0](<docs/01 Inicio/13. Restricciones V_1_0_0.md>)
 
