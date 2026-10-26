@@ -10,6 +10,7 @@ arriba, en [`docs/03 Implementación/`](<../>).
 ### Planificación y BDD
 
 - [ECL-72 / ST-039 — Reglas y BDD de incidencias (aprobada por Julio, PR #63)](<../../02 Planificación/BDD/ECL-72-ST-039-incidencias.md>)
+- ECL-71 — Verificación para ratificación: [conductores](<../../02 Planificación/BDD/ECL-47-ST-021-conductores.md>) y [preferencias de entrega](<../../02 Planificación/BDD/ECL-51-ST-025-preferencias-entrega.md>) (aprobadas por Julio, PR #64).
 
 ### Validaciones
 
