@@ -304,8 +304,12 @@ def test_I05_I14_tolerancia_futura_inclusiva_y_sin_antiguedad(
     if valid:
         assert fakes.service.registrar(USER, data)[1] is True
     else:
-        with pytest.raises(IncidenciaInvalida):
+        with pytest.raises(IncidenciaInvalida) as error:
             fakes.service.registrar(USER, data)
+        assert (error.value.field, error.value.code) == (
+            "ocurrida_en",
+            "fecha_futura_fuera_de_tolerancia",
+        )
         fakes.repository.add.assert_not_called()
 
 
@@ -319,8 +323,9 @@ def test_I05_compara_instantes_en_utc():
 
 def test_I07_parada_inexistente_devuelve_422_generico(fakes):
     fakes.repository.stop_owner.return_value = None
-    with pytest.raises(IncidenciaInvalida):
+    with pytest.raises(IncidenciaInvalida) as error:
         fakes.service.registrar(USER, payload(parada_id=str(STOP)))
+    assert (error.value.field, error.value.code) == ("parada_id", "parada_invalida")
     fakes.repository.add.assert_not_called()
 
 

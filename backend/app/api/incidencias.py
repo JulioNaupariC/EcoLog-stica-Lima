@@ -12,7 +12,7 @@ from app.core.incidencias import (
     PAGE_SIZE_MAX,
     EstadoIncidencia,
 )
-from app.core.rbac import Contexto, Identidad, Permiso
+from app.core.rbac import Contexto, Identidad, Permiso, Rol
 from app.schemas.incidencia import (
     IncidenciaCreate,
     IncidenciaPage,
@@ -70,7 +70,13 @@ def register_incident(
     response: Response,
     identity: Annotated[
         Identidad,
-        Depends(require_permission(Permiso.INCIDENCIAS_CREAR, _self_context)),
+        # I08: only the Conductor role, although the global matrix also grants
+        # incidencias.crear to the Operador; denied before reaching the service.
+        Depends(
+            require_permission(
+                Permiso.INCIDENCIAS_CREAR, _self_context, roles={Rol.CONDUCTOR}
+            )
+        ),
     ],
     service: Annotated[IncidenciaService, Depends(get_incident_service)],
 ) -> IncidenciaRegistrada:
@@ -79,10 +85,17 @@ def register_incident(
     except (IncidenciaSinConductor, IncidenciaParadaAjena):
         # Generic: no profile, or a stop of another driver (I08, I10).
         raise HTTPException(status.HTTP_403_FORBIDDEN, "Acceso denegado") from None
-    except IncidenciaInvalida:
+    except IncidenciaInvalida as error:
+        # Same shape as SanitizedRoute 422s: field location and code, no input.
         raise HTTPException(
             status.HTTP_422_UNPROCESSABLE_CONTENT,
-            "Datos de la incidencia inválidos",
+            [
+                {
+                    "loc": ["body", error.field],
+                    "type": error.code,
+                    "msg": "Entrada inválida",
+                }
+            ],
         ) from None
     except IncidenciaConflicto:
         raise HTTPException(

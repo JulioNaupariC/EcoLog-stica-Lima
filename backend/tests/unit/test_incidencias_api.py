@@ -14,7 +14,7 @@ from app.api.dependencies import get_authentication_service, get_current_session
 from app.api.incidencias import get_incident_service
 from app.core.config import Settings
 from app.core.incidencias import PAGE_SIZE_DEFAULT, PAGE_SIZE_MAX, EstadoIncidencia
-from app.core.rbac import Identidad, Permiso, Rol
+from app.core.rbac import Identidad, Motivo, Permiso, Rol
 from app.main import create_app
 from app.repositories.auditoria import Evento
 from app.schemas.incidencia import (
@@ -117,16 +117,29 @@ def test_I08_rol_sin_permiso_de_crear_recibe_403_y_se_audita(role):
     assert decision.evento is Evento.DENEGADA
 
 
+def test_I08_operador_recibe_403_por_rol_sin_llegar_al_servicio():
+    """The global matrix grants incidencias.crear to the Operador; this endpoint
+    admits only the Conductor role, even if the service could register."""
+    with client_for(Rol.OPERADOR) as ctx:
+        ctx.service.registrar.return_value = (ACK, True)
+        response = ctx.client.post("/conductor/incidencias", json=BODY)
+        ctx.service.registrar.assert_not_called()
+    assert response.status_code == 403
+    assert response.json() == {"detail": "Acceso denegado"}
+    [decision] = decisions(ctx.audit)
+    assert decision.evento is Evento.DENEGADA
+    assert decision.usuario_id == ctx.identity.usuario_id
+    assert decision.detalle.permiso is Permiso.INCIDENCIAS_CREAR
+    assert decision.detalle.motivo is Motivo.SIN_PERMISO
+
+
 @pytest.mark.parametrize(
-    "role,failure",
-    [
-        (Rol.OPERADOR, IncidenciaSinConductor("private")),
-        (Rol.CONDUCTOR, IncidenciaSinConductor("private")),
-        (Rol.CONDUCTOR, IncidenciaParadaAjena("private")),
-    ],
-    ids=["I08-operador-sin-perfil", "I10-conductor-sin-perfil", "I10-parada-ajena"],
+    "failure",
+    [IncidenciaSinConductor("private"), IncidenciaParadaAjena("private")],
+    ids=["I10-conductor-sin-perfil", "I10-parada-ajena"],
 )
-def test_I08_I10_403_generico_sin_perfil_o_con_parada_ajena(role, failure):
+def test_I10_403_generico_sin_perfil_o_con_parada_ajena(failure):
+    role = Rol.CONDUCTOR
     with client_for(role) as ctx:
         ctx.service.registrar.side_effect = failure
         response = ctx.client.post(
@@ -144,10 +157,9 @@ def test_I08_I10_403_generico_sin_perfil_o_con_parada_ajena(role, failure):
             409,
             "El identificador de operación ya se usó con otros datos",
         ),
-        (IncidenciaInvalida("private"), 422, "Datos de la incidencia inválidos"),
         (IncidenciaUnavailable("private"), 503, "Servicio no disponible"),
     ],
-    ids=["I11-409", "I05-I07-422", "503"],
+    ids=["I11-409", "503"],
 )
 def test_errores_del_servicio_en_espanol_y_sin_eco(failure, status, detail):
     with client_for(Rol.CONDUCTOR) as ctx:
@@ -156,6 +168,27 @@ def test_errores_del_servicio_en_espanol_y_sin_eco(failure, status, detail):
     assert response.status_code == status
     assert response.json() == {"detail": detail}
     assert "private" not in response.text and NOTE not in response.text
+
+
+@pytest.mark.parametrize(
+    "field,code",
+    [
+        ("ocurrida_en", "fecha_futura_fuera_de_tolerancia"),
+        ("parada_id", "parada_invalida"),
+    ],
+    ids=["I05-T0+5min+1s", "I07-parada-inexistente"],
+)
+def test_I05_I07_422_del_servicio_identifica_el_campo_sin_eco(field, code):
+    sent = {**BODY, "ocurrida_en": "2026-10-27T09:21:03-05:00"}
+    with client_for(Rol.CONDUCTOR) as ctx:
+        ctx.service.registrar.side_effect = IncidenciaInvalida(field, code)
+        response = ctx.client.post("/conductor/incidencias", json=sent)
+    assert response.status_code == 422
+    assert response.json() == {
+        "detail": [{"loc": ["body", field], "type": code, "msg": "Entrada inválida"}]
+    }
+    assert "input" not in response.text
+    assert "09:21:03" not in response.text and NOTE not in response.text
 
 
 @pytest.mark.parametrize(
