@@ -100,6 +100,18 @@ async function signIn(role: AuthRole) {
 }
 
 describe('App', () => {
+  it('ECL-67: el título de la pestaña identifica login, inicio, otra pantalla y acceso denegado', async () => {
+    renderAt('/login')
+    expect(document.title).toBe('Iniciar sesión — EcoLogística Lima')
+    const user = await signIn('OPERADOR')
+    await waitFor(() => expect(document.title).toBe('Inicio — EcoLogística Lima'))
+    await user.click(screen.getByRole('link', { name: 'Incidencias pendientes' }))
+    await screen.findByRole('table')
+    await waitFor(() => expect(document.title).toBe('Incidencias pendientes — EcoLogística Lima'))
+    await user.click(screen.getByRole('button', { name: 'Abrir incidencia' }))
+    await waitFor(() => expect(document.title).toBe('Acceso denegado — EcoLogística Lima'))
+  })
+
   it.each<AuthRole>(['ADMINISTRADOR', 'OPERADOR'])('ECL-75: %s ve el menú y puede abrir pendientes', async role => {
     renderAt('/login')
     const user = await signIn(role)

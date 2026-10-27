@@ -51,8 +51,10 @@ function LoadingIncidents() {
 }
 
 const columns: Column<PendingIncident>[] = [
-  { key: 'hora', header: 'Hora (Lima)', render: item => <time dateTime={item.ocurrida_en}
-    aria-label={`${fullLimaTime.format(new Date(item.ocurrida_en))}, hora de Lima`}>{occurrence(item.ocurrida_en)}</time> },
+  { key: 'hora', header: 'Hora (Lima)', render: item => <time dateTime={item.ocurrida_en}>
+    <span aria-hidden="true">{occurrence(item.ocurrida_en)}</span>
+    <span className="visually-hidden">{fullLimaTime.format(new Date(item.ocurrida_en))}, hora de Lima</span>
+  </time> },
   { key: 'tipo', header: 'Tipo', primary: true, render: item => INCIDENT_TYPES[item.tipo] },
   { key: 'severidad', header: 'Severidad', render: item => {
     const severity = SEVERITIES[item.severidad]
