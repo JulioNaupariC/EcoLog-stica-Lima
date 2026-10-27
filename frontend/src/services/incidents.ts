@@ -12,12 +12,13 @@ export class IncidentServiceError extends Error {
     this.name = 'IncidentServiceError'
   }
 }
-export async function sendIncident(payload: IncidentPayload, signal?: AbortSignal): Promise<IncidentAcknowledgement> {
+export async function sendIncident(payload: IncidentPayload, ownerId: string, signal?: AbortSignal): Promise<IncidentAcknowledgement> {
+  if (!validUuid(ownerId)) throw new Error('Identidad inválida.')
   const timeout = AbortSignal.timeout(15_000)
   const response = await fetch(buildApiUrl('conductor/incidencias'), {
     method: 'POST', credentials: 'include', cache: 'no-store',
     signal: signal ? AbortSignal.any([signal, timeout]) : timeout,
-    headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload),
+    headers: { 'Content-Type': 'application/json', 'X-Expected-Owner-ID': ownerId }, body: JSON.stringify(payload),
   })
   if (response.status !== 200 && response.status !== 201) throw new IncidentServiceError(response.status)
   const body: unknown = await response.json()

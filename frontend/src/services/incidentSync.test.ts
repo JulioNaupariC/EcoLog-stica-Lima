@@ -34,7 +34,9 @@ it('ruta dorada: persiste antes de enviar y acepta 201/200 sin reenviar confirma
   expect((await listIncidents(ownerId))[0].acknowledgement).toEqual(ack)
   await sync()
   expect(fetch).toHaveBeenCalledTimes(1)
-  expect(fetch).toHaveBeenCalledWith('http://localhost:8000/conductor/incidencias', expect.objectContaining({ credentials: 'include' }))
+  expect(fetch).toHaveBeenCalledWith('http://localhost:8000/conductor/incidencias', expect.objectContaining({ credentials: 'include',
+    headers: { 'Content-Type': 'application/json', 'X-Expected-Owner-ID': ownerId },
+  }))
 })
 it('ruta de borde: offline y respuesta perdida reutilizan exactamente operación y contenido', async () => {
   const report = item()
@@ -123,8 +125,12 @@ it('ruta infeliz: corrección de 422 es atómica y conserva operación; conflict
 it('ruta infeliz: respuestas sin acuse válido se rechazan', async () => {
   for (const body of [null, {}, { ...ack, incidencia_id: 'invalid' }, { ...ack, registrada_en: 'bad' }]) {
     vi.mocked(fetch).mockResolvedValueOnce(new Response(JSON.stringify(body), { status: 200 }))
-    await expect(sendIncident(item().payload)).rejects.toThrow()
+    await expect(sendIncident(item().payload, ownerId)).rejects.toThrow()
   }
+})
+it('ruta infeliz: no envía sin propietario esperado válido', async () => {
+  await expect(sendIncident(item().payload, 'invalid-owner')).rejects.toThrow('Identidad inválida')
+  expect(fetch).not.toHaveBeenCalled()
 })
 it('ruta de borde: Web Locks coordina pestañas y cancelación durante verificación evita POST', async () => {
   await enqueueIncident(item())

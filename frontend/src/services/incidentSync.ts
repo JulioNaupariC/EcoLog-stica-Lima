@@ -23,7 +23,7 @@ async function synchronize(ownerId: string, signal: AbortSignal, manual: boolean
         // against the API before each send, as in the Sprint 2 coordinator.
         await getDriverItinerary(ownerId, signal)
         if (signal.aborted) return
-        const acknowledgement = await sendIncident(incident.payload, signal)
+        const acknowledgement = await sendIncident(incident.payload, ownerId, signal)
         await updateIncident({ ...incident, errorStatus: undefined, acknowledgement })
       } catch (error) {
         if (signal.aborted) return

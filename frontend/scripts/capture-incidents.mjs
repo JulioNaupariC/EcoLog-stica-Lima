@@ -24,7 +24,7 @@ let posts = []
 const fixtureApi = createServer(async (request, response) => {
   response.setHeader('Access-Control-Allow-Origin', origin)
   response.setHeader('Access-Control-Allow-Credentials', 'true')
-  response.setHeader('Access-Control-Allow-Headers', 'Content-Type')
+  response.setHeader('Access-Control-Allow-Headers', 'Content-Type, X-Expected-Owner-ID')
   response.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
   response.setHeader('Content-Type', 'application/json')
   response.setHeader('Cache-Control', 'no-store')
@@ -35,6 +35,9 @@ const fixtureApi = createServer(async (request, response) => {
         window_start: '2026-10-26T08:00:00-05:00', window_end: '2026-10-26T10:00:00-05:00',
         latitud: -12.0464, longitud: -77.0428 } }] }))
   } else if (request.url === '/conductor/incidencias' && request.method === 'POST') {
+    if (request.headers['x-expected-owner-id'] !== owner) {
+      response.writeHead(401).end('{"detail":"La sesión cambió"}'); return
+    }
     let raw = ''
     for await (const chunk of request) raw += chunk
     const payload = JSON.parse(raw)
@@ -72,7 +75,9 @@ for (const [name, engine, options] of [
       const screenshot = async state => {
         await page.evaluate(() => scrollTo(0, 0))
         assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, 'No horizontal overflow at 360px')
-        await page.screenshot({ path: resolve(output, `${name}-${colorScheme}-360-${state}.png`), fullPage: true })
+        if (process.env.ECL74_SKIP_SCREENSHOTS !== '1') {
+          await page.screenshot({ path: resolve(output, `${name}-${colorScheme}-360-${state}.png`), fullPage: true })
+        }
       }
       await page.goto(`${origin}/conductor/itinerario`)
       await page.getByRole('heading', { name: 'Parada 1', exact: true }).waitFor()
@@ -112,7 +117,7 @@ for (const [name, engine, options] of [
       assert.deepEqual(errors, [])
       results.push({ browser: name, version: browser.version(), colorScheme, width: 360,
         missingFieldFocus: true, keyboardRadio: true, gpsDeniedStopFallback: true,
-        offlineReload: true, uniqueOperations: operations.size, posts: posts.length, pageErrors: errors })
+        offlineReload: true, expectedOwnerGuard: true, uniqueOperations: operations.size, posts: posts.length, pageErrors: errors })
       await context.close()
     }
   } finally { await browser.close() }

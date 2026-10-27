@@ -1,8 +1,18 @@
 """ECL-73 incident endpoints: driver registration and pending list."""
 
 from typing import Annotated
+from uuid import UUID
 
-from fastapi import APIRouter, Depends, HTTPException, Query, Request, Response, status
+from fastapi import (
+    APIRouter,
+    Depends,
+    Header,
+    HTTPException,
+    Query,
+    Request,
+    Response,
+    status,
+)
 
 from app.api.dependencies import require_permission
 from app.api.validation import SanitizedRoute
@@ -79,7 +89,15 @@ def register_incident(
         ),
     ],
     service: Annotated[IncidenciaService, Depends(get_incident_service)],
+    expected_owner_id: Annotated[
+        UUID | None, Header(alias="X-Expected-Owner-ID")
+    ] = None,
 ) -> IncidenciaRegistrada:
+    # ECL-74: cookies are shared by tabs. Reject an outbox from account A if
+    # account B logged in after the client's itinerary/owner verification.
+    # This header is a consistency guard, never a source of authorization.
+    if expected_owner_id is not None and expected_owner_id != identity.usuario_id:
+        raise HTTPException(status.HTTP_401_UNAUTHORIZED, "La sesión cambió")
     try:
         acknowledgement, created = service.registrar(identity.usuario_id, payload)
     except (IncidenciaSinConductor, IncidenciaParadaAjena):

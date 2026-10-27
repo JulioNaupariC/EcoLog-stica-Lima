@@ -95,7 +95,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         allow_origins=config.cors_allowed_origins,
         allow_credentials=True,
         allow_methods=["GET", "POST", "PATCH"],
-        allow_headers=["Content-Type"],
+        allow_headers=["Content-Type", "X-Expected-Owner-ID"],
     )
     app.add_middleware(MetricsMiddleware, metrics=metrics)
     app.include_router(health_router)

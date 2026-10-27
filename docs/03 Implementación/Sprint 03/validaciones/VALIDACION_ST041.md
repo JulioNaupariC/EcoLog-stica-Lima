@@ -40,6 +40,9 @@ US-012 (ECL-76), ni la comprobación de jornada pendiente en ECL-82.
   por cuenta montado en App, Web Locks cuando está disponible, reconexión y
   sondeo de 15 segundos. Cancela solicitudes al cambiar de sesión. Antes de
   cada POST contrasta `owner_id` con el itinerario autenticado del servidor.
+  Además envía `X-Expected-Owner-ID`: el backend lo compara con la sesión al
+  registrar y devuelve 401 sin alta si otra pestaña cambió la cuenta entre
+  ambos requests. La cabecera no concede permisos ni reemplaza la cookie.
 - Un acuse validado cambia el registro local a confirmado, fuera de la cola
   pendiente; se conserva el recibo para mostrar el ID y «Pendiente de validación».
   El registro no valida la incidencia ni reoptimiza rutas.
@@ -83,6 +86,13 @@ Por este ajuste, además de UX/UI y documentación, se debe solicitar revisión
 de un dueño de `backend/` (@ANTONY-MUNIVE o @JulioNaupariC), además de
 @GiancarloSE para frontend y @FrankRoyYA para documentación, según CODEOWNERS.
 
+José también autorizó el guard de propietario esperado del POST. La cabecera
+es opcional para compatibilidad del API existente; el cliente de incidencias
+siempre la exige y envía. Se añadió a la lista CORS y a OpenAPI, con pruebas
+de coincidencia, cambio de cookie, UUID inválido sin eco y preflight. La
+[reprueba de navegador con el guard](<evidencias/ECL-74/owner-guard/browser-results.json>)
+conserva la evidencia anterior sin sobrescribir capturas versionadas.
+
 ## Verificaciones y evidencias
 
 Las pruebas nuevas usan nombres de ruta dorada, feliz, infeliz y de borde.
@@ -91,6 +101,12 @@ archivos nuevos de producción: **96,44 % líneas**, **93,47 % sentencias**,
 **88,54 % ramas**, **90,21 % funciones**; todos los umbrales agregados superan
 80 %. La suite global y las verificaciones finales se registran en el cuerpo
 del PR, junto con las limitaciones reales de ejecución.
+
+Después de añadir el guard autorizado, la verificación final completa pasó
+**635 pruebas frontend** (97,51 % líneas; 92,56 % ramas) y **867 pruebas
+backend** (92,25 % cobertura). También pasaron ESLint, typecheck, build,
+Ruff y comprobación de enlaces. Los archivos y resultados se entregan en dos
+commits locales de ECL-74; los checks de GitHub siguen pendientes de publicación.
 
 [Capturas y resultados de navegadores](<evidencias/ECL-74/README.md>) incluyen
 foco en faltantes, formulario completo con GPS rechazado, recarga offline y

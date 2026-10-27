@@ -19,6 +19,15 @@ migración ni cambio de permisos. El esquema OpenAPI se genera desde Pydantic.
 Se excluyen datos de contacto/cliente y se responde `Cache-Control: no-store`.
 Swagger/OpenAPI publica los esquemas actualizados.
 
+ECL-74: el cliente de incidencias envía `X-Expected-Owner-ID` en
+`POST /conductor/incidencias`. El servidor compara esa cabecera UUID con la
+identidad de la cookie y responde 401 sin alta si no coincide, para impedir
+que una cola se registre bajo otra cuenta tras un cambio de sesión en otra
+pestaña. La cabecera no autentica ni autoriza; conserva todos los controles
+RBAC. Es opcional para compatibilidad del contrato existente y se publica
+en OpenAPI; el frontend siempre la envía. CORS permite esta cabecera únicamente
+desde los orígenes configurados.
+
 El productor interno llama
 `DriverReportService.provision_assignment(..., pedido_id=uuid_real)`;
 se comprueba la existencia del pedido y se impide cambiar un vínculo existente.

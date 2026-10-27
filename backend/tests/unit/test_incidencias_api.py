@@ -96,6 +96,59 @@ def test_I01_conductor_registra_incidencia_201():
     assert decision.detalle.permiso is Permiso.INCIDENCIAS_CREAR
 
 
+def test_I16_expected_owner_matches_authenticated_cookie():
+    with client_for(Rol.CONDUCTOR) as ctx:
+        ctx.service.registrar.return_value = (ACK, True)
+        response = ctx.client.post(
+            "/conductor/incidencias",
+            json=BODY,
+            headers={"X-Expected-Owner-ID": str(ctx.identity.usuario_id)},
+        )
+        assert response.status_code == 201
+        ctx.service.registrar.assert_called_once()
+
+
+def test_I16_cookie_changed_in_another_tab_never_registers_foreign_outbox():
+    with client_for(Rol.CONDUCTOR) as ctx:
+        response = ctx.client.post(
+            "/conductor/incidencias",
+            json=BODY,
+            headers={"X-Expected-Owner-ID": str(uuid4())},
+        )
+        assert response.status_code == 401
+        assert response.json() == {"detail": "La sesión cambió"}
+        ctx.service.registrar.assert_not_called()
+
+
+def test_I16_invalid_expected_owner_is_sanitized_422():
+    with client_for(Rol.CONDUCTOR) as ctx:
+        response = ctx.client.post(
+            "/conductor/incidencias",
+            json=BODY,
+            headers={"X-Expected-Owner-ID": "invalid-private-owner"},
+        )
+        assert response.status_code == 422
+        assert "invalid-private-owner" not in response.text
+        ctx.service.registrar.assert_not_called()
+
+
+def test_I16_cors_allows_the_owner_consistency_guard():
+    app = create_app(
+        Settings(database_url=None, cors_allowed_origins=["http://127.0.0.1:5173"])
+    )
+    with TestClient(app) as client:
+        response = client.options(
+            "/conductor/incidencias",
+            headers={
+                "Origin": "http://127.0.0.1:5173",
+                "Access-Control-Request-Method": "POST",
+                "Access-Control-Request-Headers": "content-type,x-expected-owner-id",
+            },
+        )
+        assert response.status_code == 200
+        assert "X-Expected-Owner-ID" in response.headers["access-control-allow-headers"]
+
+
 def test_I13_reenvio_equivalente_devuelve_200_con_la_misma_respuesta():
     with client_for(Rol.CONDUCTOR) as ctx:
         ctx.service.registrar.side_effect = [(ACK, True), (ACK, False)]
