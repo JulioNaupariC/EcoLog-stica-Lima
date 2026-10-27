@@ -13,7 +13,7 @@ import {
   getDriverItinerary,
 } from '../services/driverItinerary'
 import { CalendarClock, CheckCircle2, CloudOff, MapPin, MapPinned, Navigation, RefreshCw } from 'lucide-react'
-import { Alert, Button, EmptyState, PageHeader, Skeleton, StatusBadge } from '../components/ui'
+import { Alert, Button, EmptyState, LinkButton, PageHeader, Skeleton, StatusBadge } from '../components/ui'
 import { useReportSynchronization } from '../hooks/useReportSynchronization'
 
 function OperationalAlerts({ alerts }: { alerts: readonly DriverAlert[] }) {
@@ -30,6 +30,7 @@ function OperationalAlerts({ alerts }: { alerts: readonly DriverAlert[] }) {
 function ItineraryLayout({ children, description }: { children: ReactNode, description?: ReactNode }) {
   return <section className="driver-page" aria-labelledby="driver-title">
     <PageHeader titleId="driver-title" title="Mi itinerario" description={description} />
+    <LinkButton to="/conductor/incidencias/nueva" variant="secondary">Reportar incidencia</LinkButton>
     {children}
   </section>
 }

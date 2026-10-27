@@ -11,7 +11,11 @@ confiable las migre; no se rellenan con datos ficticios.
 `POST /login` agrega `expires_at` únicamente para CONDUCTOR, sin token en el cuerpo.
 Es un vencimiento para la interfaz, no una autorización del cliente.
 `GET /conductor/itinerario` devuelve `owner_id` autenticado y `stops`; cada parada
-vinculada puede incluir `delivery: {address, reference, window_start, window_end}`.
+vinculada puede incluir `delivery: {address, reference, window_start, window_end,
+latitud, longitud}`. ECL-74 añade las coordenadas WGS84 opcionales del pedido
+asignado para seleccionar «Parada actual» sin GPS. Si el pedido solo tiene
+referencia, no se inventan coordenadas; el formulario ofrece el GPS. No hay
+migración ni cambio de permisos. El esquema OpenAPI se genera desde Pydantic.
 Se excluyen datos de contacto/cliente y se responde `Cache-Control: no-store`.
 Swagger/OpenAPI publica los esquemas actualizados.
 

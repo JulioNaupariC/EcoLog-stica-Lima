@@ -52,14 +52,14 @@ async function requestJson(url: string, init?: RequestInit): Promise<unknown> {
   }
 }
 
-export async function getDriverItinerary(expectedOwnerId?: string): Promise<StopSummary[]> {
+export async function getDriverItinerary(expectedOwnerId?: string, signal?: AbortSignal): Promise<StopSummary[]> {
   let url: string
   try {
     url = buildApiUrl('conductor/itinerario')
   } catch {
     throw new DriverItineraryServiceError('No se pudo configurar el servicio.', false)
   }
-  const body = await requestJson(url)
+  const body = await requestJson(url, signal ? { signal: AbortSignal.any([signal, AbortSignal.timeout(15_000)]) } : undefined)
   if (!isRecord(body) || !Array.isArray(body.stops)) {
     throw new DriverItineraryServiceError('El servicio devolvió un itinerario inválido.', false)
   }
@@ -90,6 +90,11 @@ export async function getDriverItinerary(expectedOwnerId?: string): Promise<Stop
       position: Number(item.position),
       status: item.status,
       ...(isDeliveryDetails(delivery) ? { delivery } : {}),
+      ...(isRecord(item.delivery) && typeof item.delivery.latitud === 'number' &&
+        Number.isFinite(item.delivery.latitud) && Math.abs(item.delivery.latitud) <= 90 &&
+        typeof item.delivery.longitud === 'number' && Number.isFinite(item.delivery.longitud) &&
+        Math.abs(item.delivery.longitud) <= 180
+        ? { location: { latitud: item.delivery.latitud, longitud: item.delivery.longitud } } : {}),
     }
   })
 }

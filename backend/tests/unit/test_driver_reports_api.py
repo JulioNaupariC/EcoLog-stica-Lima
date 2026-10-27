@@ -15,6 +15,7 @@ from app.core.rbac import Identidad, Permiso, Rol
 from app.main import create_app
 from app.schemas.driver_report import (
     AssignedStopResponse,
+    DeliveryDetails,
     DriverReportAcknowledgement,
 )
 from app.services.autenticacion import AuthenticatedSession
@@ -81,6 +82,37 @@ def test_conductor_reads_only_authenticated_assignment_summary():
             audit.registrar.call_args.args[0].detalle.permiso
             is Permiso.ITINERARIOS_CONSULTAR
         )
+
+
+def test_incident_location_fallback_exposes_only_assigned_order_coordinates():
+    for client, service, _, identity in client_for():
+        service.list_assignments.return_value = [
+            AssignedStopResponse(
+                stop_id=uuid4(),
+                position=1,
+                status="EN_RUTA",
+                delivery=DeliveryDetails(
+                    address="Synthetic address",
+                    window_start="2026-10-26T08:00:00-05:00",
+                    window_end="2026-10-26T10:00:00-05:00",
+                    latitud=-12.0464,
+                    longitud=-77.0428,
+                ),
+            )
+        ]
+        response = client.get("/conductor/itinerario")
+        assert response.status_code == 200
+        delivery = response.json()["stops"][0]["delivery"]
+        assert delivery["latitud"] == -12.0464
+        assert delivery["longitud"] == -77.0428
+        assert set(delivery) == {
+            "address",
+            "window_start",
+            "window_end",
+            "latitud",
+            "longitud",
+        }
+        service.list_assignments.assert_called_once_with(identity.usuario_id)
 
 
 def test_conductor_report_uses_session_identity_and_returns_acknowledgement():

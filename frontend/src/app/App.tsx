@@ -4,6 +4,9 @@ import { Navigate, Route, Routes, useNavigate } from 'react-router-dom'
 import { ShieldAlert } from 'lucide-react'
 import { HomePage } from '../pages/HomePage'
 import { DriverItineraryPage } from '../pages/DriverItineraryPage'
+import { IncidentCreatePage } from '../pages/IncidentCreatePage'
+import { useIncidentSynchronization } from '../hooks/useIncidentSynchronization'
+import { listIncidents } from '../services/incidentStorage'
 import { LoginPage } from '../pages/LoginPage'
 import { NotFoundPage } from '../pages/NotFoundPage'
 import { OrderCreatePage } from '../pages/OrderCreatePage'
@@ -46,6 +49,7 @@ function AppRoutes() {
   const vehiclesAllowed = identity !== null && canListVehicles(identity.rol)
   const mustChangePassword = identity?.debe_cambiar_contrasena === true
   const signedIn = identity !== null
+  useIncidentSynchronization(identity?.rol === 'CONDUCTOR' && !mustChangePassword ? identity.usuario_id : undefined)
 
   function handleLoginSuccess(loggedInIdentity: LoginResponse, email: string) {
     // A temporary-password session is not remembered as a usable driver tab.
@@ -99,7 +103,8 @@ function AppRoutes() {
       if (identity.rol === 'CONDUCTOR') {
         let pendingCount: number | null
         try {
-          pendingCount = (await listPendingReports(identity.usuario_id)).length
+          pendingCount = (await listPendingReports(identity.usuario_id)).length +
+            (await listIncidents(identity.usuario_id)).filter(item => !item.acknowledgement).length
         } catch {
           pendingCount = null
         }
@@ -172,6 +177,8 @@ function AppRoutes() {
     <Route path="/vehiculos" element={guarded(vehiclesAllowed, <VehiclesPage canCreate={createOrdersAllowed} />)} />
     <Route path="/conductor/itinerario" element={guarded(identity.rol === 'CONDUCTOR',
       <DriverItineraryPage key={identity.usuario_id} ownerId={identity.usuario_id} onSessionExpired={handleSessionExpired} />)} />
+    <Route path="/conductor/incidencias/nueva" element={guarded(identity.rol === 'CONDUCTOR',
+      <IncidentCreatePage key={identity.usuario_id} ownerId={identity.usuario_id} />)} />
     <Route path="/conductores" element={guarded(createOrdersAllowed,
       <DriversPage key={identity.usuario_id} onSessionExpired={handleSessionExpired} />)} />
     <Route path="/clientes/preferencias" element={guarded(createOrdersAllowed,

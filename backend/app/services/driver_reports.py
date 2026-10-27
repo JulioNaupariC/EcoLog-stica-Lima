@@ -182,4 +182,6 @@ class DriverReportService:
             reference=pedido.referencia,
             window_start=pedido.ventana_inicio,
             window_end=pedido.ventana_fin,
+            latitud=pedido.latitud,
+            longitud=pedido.longitud,
         )

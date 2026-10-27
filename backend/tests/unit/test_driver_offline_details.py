@@ -17,6 +17,8 @@ def test_delivery_uses_only_assigned_order_operational_fields():
         referencia=None,
         ventana_inicio=now,
         ventana_fin=now + timedelta(hours=1),
+        latitud=-12.0464,
+        longitud=-77.0428,
         cliente_id=uuid4(),
         nombre="Never exported",
         telefono="Never exported",
@@ -27,6 +29,8 @@ def test_delivery_uses_only_assigned_order_operational_fields():
         "reference": None,
         "window_start": now,
         "window_end": now + timedelta(hours=1),
+        "latitud": -12.0464,
+        "longitud": -77.0428,
     }
 
 
@@ -34,6 +38,22 @@ def test_legacy_assignment_does_not_invent_delivery_data():
     session = Mock()
     assert DriverReportService._delivery(session, None) is None
     session.get.assert_not_called()
+
+
+def test_order_with_reference_only_does_not_invent_coordinates():
+    now = datetime.now(timezone.utc)
+    session = Mock()
+    session.get.return_value = SimpleNamespace(
+        direccion="Synthetic address",
+        referencia="Synthetic reference",
+        ventana_inicio=now,
+        ventana_fin=now + timedelta(hours=1),
+        latitud=None,
+        longitud=None,
+    )
+    result = DriverReportService._delivery(session, uuid4())
+    assert result.latitud is None
+    assert result.longitud is None
 
 
 def test_missing_assigned_order_is_not_silently_replaced():
