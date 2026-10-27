@@ -108,7 +108,7 @@ try {
       await page.getByRole('button', { name: 'Cancelar', exact: true }).click()
 
       phase = name + ': real profile edit'
-      await page.getByRole('button', { name: 'Ver y editar ' + label, exact: true }).click()
+      await page.getByRole('button', { name: 'Ver y editar perfil de ' + label, exact: true }).click()
       await page.getByRole('heading', { name: 'Perfil de ' + label, exact: true }).waitFor()
       await snapshot(page, name + '-07-perfil.png')
       await page.getByLabel('Teléfono', { exact: true }).fill('+51987654322')
@@ -125,7 +125,7 @@ try {
       await snapshot(page, name + '-08-edicion-confirmada.png')
 
       phase = name + ': remove availability'
-      await page.getByRole('button', { name: 'Ver y editar ' + label, exact: true }).click()
+      await page.getByRole('button', { name: 'Ver y editar perfil de ' + label, exact: true }).click()
       await page.getByRole('heading', { name: 'Perfil de ' + label, exact: true }).waitFor()
       await page.getByRole('checkbox').check()
       const removed = page.waitForResponse(response => response.url() === api + '/conductores/' + created.conductor_id && response.request().method() === 'PATCH')
@@ -141,7 +141,7 @@ try {
       await page.setViewportSize({ width: 360, height: 800 })
       await page.waitForFunction(() => !document.querySelector('[aria-busy="true"]'))
       await snapshot(page, name + '-09-listado-360.png')
-      await page.getByRole('button', { name: 'Ver y editar ' + label, exact: true }).click()
+      await page.getByRole('button', { name: 'Ver y editar perfil de ' + label, exact: true }).click()
       await page.getByRole('heading', { name: 'Perfil de ' + label, exact: true }).waitFor()
       await snapshot(page, name + '-10-perfil-360.png')
       await page.getByRole('button', { name: 'Cancelar', exact: true }).click()

@@ -49,10 +49,10 @@ export function AccountMenu({ name, role, loggingOut, onLogout }: {
 
   return <div className="account" ref={container}>
     <button ref={trigger} type="button" className="account-trigger" aria-expanded={open} aria-controls={panelId}
-      aria-label={`Cuenta: ${name}, ${roleLabel}`} onClick={() => setOpen(value => !value)}>
-      <span className="account-avatar" aria-hidden="true">{initials(name)}</span>
+      aria-label={`Cuenta: ${initials(name)} ${name}, ${roleLabel}`} onClick={() => setOpen(value => !value)}>
+      <span className="account-avatar" aria-hidden="true">{initials(name)}</span>{' '}
       <span className="account-meta" aria-hidden="true">
-        <span className="account-name">{name}</span>
+        <span className="account-name">{name}</span>{' '}
         <span className="account-role">{roleLabel}</span>
       </span>
       <ChevronDown aria-hidden="true" size={16} />

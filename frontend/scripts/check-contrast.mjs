@@ -1,9 +1,8 @@
 // Verifica contraste WCAG 2.1 AA de las combinaciones de tokens usadas en la UI.
 // Uso: node scripts/check-contrast.mjs   (sale con 1 si alguna combinación no cumple)
 import { readFile } from 'node:fs/promises'
-import { resolve } from 'node:path'
 
-const css = await readFile(resolve('src/styles/tokens.css'), 'utf8')
+const css = await readFile(new URL('../src/styles/tokens.css', import.meta.url), 'utf8')
 
 function block(selectorStart) {
   const start = css.indexOf(selectorStart)
@@ -54,6 +53,8 @@ const PAIRS = [
   ['primary-contrast', 'primary', 4.5, 'Texto de botón primario'],
   ['primary-contrast', 'primary-hover', 4.5, 'Botón primario en hover'],
   ['link', 'surface', 4.5, 'Enlaces y navegación activa'],
+  ['link', 'bg', 4.5, 'Migas de pan y enlaces de página'],
+  ['link', 'surface-muted', 4.5, 'Enlaces en filas resaltadas'],
   ['link', 'brand-50', 4.5, 'Enlace/etiqueta sobre siguiente parada'],
   ['text', 'brand-50', 4.5, 'Texto de la siguiente parada'],
   ['text-muted', 'brand-50', 4.5, 'Metadatos de la siguiente parada'],
@@ -67,18 +68,23 @@ const PAIRS = [
   ['primary-contrast', 'primary', 4.5, 'Número de parada'],
   ['focus', 'surface', 3, 'Contorno de foco (elemento de interfaz)'],
   ['focus', 'bg', 3, 'Contorno de foco sobre el fondo'],
+  ['focus', 'surface-muted', 3, 'Foco sobre tablas y detalles resaltados'],
   ['border-strong', 'surface', 3, 'Borde de campos de formulario'],
+  ['border-strong', 'bg', 3, 'Borde de acciones secundarias sobre la página'],
   ['primary', 'surface', 3, 'Borde destacado de la siguiente parada'],
 ]
 
 let failures = 0
+const results = []
+const json = process.argv.includes('--json')
 for (const [theme, name] of [[light, 'claro'], [dark, 'oscuro']]) {
-  console.log(`\nTema ${name}`)
+  if (!json) console.log(`\nTema ${name}`)
   for (const [fg, bg, min, use] of PAIRS) {
     const value = ratio(resolveColor(theme, fg), resolveColor(theme, bg))
     const ok = value >= min
     if (!ok) failures += 1
-    console.log(`${ok ? 'OK ' : 'FAIL'} ${value.toFixed(2).padStart(5)}:1 (mín. ${min}) --color-${fg} / --color-${bg} · ${use}`)
+    results.push({ theme: name, foreground: fg, background: bg, ratio: value, minimum: min, use, passed: ok })
+    if (!json) console.log(`${ok ? 'OK ' : 'FAIL'} ${value.toFixed(2).padStart(5)}:1 (mín. ${min}) --color-${fg} / --color-${bg} · ${use}`)
   }
 }
 // Panel de marca del login: texto inverso sobre verde profundo (claro) y texto sobre verde oscuro (oscuro).
@@ -87,7 +93,9 @@ const authDark = ratio(resolveColor(dark, 'text'), resolveColor(dark, 'brand-50'
 for (const [value, label] of [[authLight, 'claro'], [authDark, 'oscuro']]) {
   const ok = value >= 4.5
   if (!ok) failures += 1
-  console.log(`${ok ? 'OK ' : 'FAIL'} ${value.toFixed(2).padStart(5)}:1 (mín. 4.5) panel de marca del login, tema ${label}`)
+  results.push({ theme: label, use: 'Panel de marca del login', ratio: value, minimum: 4.5, passed: ok })
+  if (!json) console.log(`${ok ? 'OK ' : 'FAIL'} ${value.toFixed(2).padStart(5)}:1 (mín. 4.5) panel de marca del login, tema ${label}`)
 }
-console.log(failures ? `\n${failures} combinaciones no cumplen AA.` : '\nTodas las combinaciones cumplen WCAG 2.1 AA.')
+if (json) console.log(JSON.stringify({ scope: 'Token contrast pairs only; not a full WCAG conformance claim', results, failures }, null, 2))
+else console.log(failures ? `\n${failures} combinaciones no cumplen AA.` : '\nLas combinaciones revisadas cumplen los mínimos de contraste AA.')
 process.exitCode = failures ? 1 : 0
