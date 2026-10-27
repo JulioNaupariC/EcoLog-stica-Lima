@@ -1,0 +1,386 @@
+{
+  "alcance": "WCAG 2.1 A/AA, muestra de once vistas; no certificación global",
+  "metodo": "cumplen / aplicables * 100; pendientes permanecen en el denominador y no suman al numerador",
+  "resumen": {
+    "1": {
+      "aplicables": 12,
+      "cumplen": 11,
+      "pendientes": 1,
+      "no_cumplen": 0,
+      "porcentaje_confirmado": 91.67
+    },
+    "2": {
+      "aplicables": 13,
+      "cumplen": 11,
+      "pendientes": 1,
+      "no_cumplen": 1,
+      "porcentaje_confirmado": 84.62
+    },
+    "3": {
+      "aplicables": 9,
+      "cumplen": 9,
+      "pendientes": 0,
+      "no_cumplen": 0,
+      "porcentaje_confirmado": 100.0
+    },
+    "4": {
+      "aplicables": 2,
+      "cumplen": 2,
+      "pendientes": 0,
+      "no_cumplen": 0,
+      "porcentaje_confirmado": 100.0
+    }
+  },
+  "criterios": [
+    {
+      "criterio": "1.1.1",
+      "nivel": "A",
+      "principio": "1",
+      "estado": "cumple",
+      "evidencia_observacion": "Iconos decorativos ocultos, controles con nombre; axe y revisión de componentes/lector declarada."
+    },
+    {
+      "criterio": "1.2.1",
+      "nivel": "A",
+      "principio": "1",
+      "estado": "no_aplica",
+      "evidencia_observacion": "Sin audio o vídeo en las vistas evaluadas."
+    },
+    {
+      "criterio": "1.2.2",
+      "nivel": "A",
+      "principio": "1",
+      "estado": "no_aplica",
+      "evidencia_observacion": "Sin audio o vídeo en las vistas evaluadas."
+    },
+    {
+      "criterio": "1.2.3",
+      "nivel": "A",
+      "principio": "1",
+      "estado": "no_aplica",
+      "evidencia_observacion": "Sin audio o vídeo en las vistas evaluadas."
+    },
+    {
+      "criterio": "1.2.4",
+      "nivel": "AA",
+      "principio": "1",
+      "estado": "no_aplica",
+      "evidencia_observacion": "Sin audio o vídeo en las vistas evaluadas."
+    },
+    {
+      "criterio": "1.2.5",
+      "nivel": "AA",
+      "principio": "1",
+      "estado": "no_aplica",
+      "evidencia_observacion": "Sin audio o vídeo en las vistas evaluadas."
+    },
+    {
+      "criterio": "1.3.1",
+      "nivel": "A",
+      "principio": "1",
+      "estado": "cumple",
+      "evidencia_observacion": "Encabezados, listas, tablas/cabeceras, labels y relaciones; h2 de siguiente parada corregido."
+    },
+    {
+      "criterio": "1.3.2",
+      "nivel": "A",
+      "principio": "1",
+      "estado": "cumple",
+      "evidencia_observacion": "Orden del DOM y lectura en las vistas; recorrido declarado correcto por Giancarlo."
+    },
+    {
+      "criterio": "1.3.3",
+      "nivel": "A",
+      "principio": "1",
+      "estado": "cumple",
+      "evidencia_observacion": "Instrucciones por nombre de campo y texto, sin depender solo de posición/color."
+    },
+    {
+      "criterio": "1.3.4",
+      "nivel": "AA",
+      "principio": "1",
+      "estado": "cumple",
+      "evidencia_observacion": "Sin bloqueo por orientación; sondeo horizontal 900x360 en ambos temas, contenido disponible."
+    },
+    {
+      "criterio": "1.3.5",
+      "nivel": "AA",
+      "principio": "1",
+      "estado": "cumple",
+      "evidencia_observacion": "Login y cambio de contraseña usan username/current-password/new-password; datos de terceros diferenciados."
+    },
+    {
+      "criterio": "1.4.1",
+      "nivel": "A",
+      "principio": "1",
+      "estado": "cumple",
+      "evidencia_observacion": "Severidad, errores y estados incluyen texto además de color; revisión de fuente y muestra manual."
+    },
+    {
+      "criterio": "1.4.2",
+      "nivel": "A",
+      "principio": "1",
+      "estado": "no_aplica",
+      "evidencia_observacion": "No hay reproducción de audio."
+    },
+    {
+      "criterio": "1.4.3",
+      "nivel": "AA",
+      "principio": "1",
+      "estado": "cumple",
+      "evidencia_observacion": "58 contrastes de tokens, axe y declaración manual de temas. Gradiente de layout con bandas de superficie/borde/fondo: los textos afectados están sobre --color-bg; ratios de tokens comprobados."
+    },
+    {
+      "criterio": "1.4.4",
+      "nivel": "AA",
+      "principio": "1",
+      "estado": "cumple",
+      "evidencia_observacion": "Zoom real 200 % declarado correcto; sondeo separado de fuente 200 % sin desbordamiento, corregidos encabezado y campos."
+    },
+    {
+      "criterio": "1.4.5",
+      "nivel": "AA",
+      "principio": "1",
+      "estado": "no_aplica",
+      "evidencia_observacion": "No hay imágenes de texto; marca y etiquetas son texto HTML."
+    },
+    {
+      "criterio": "1.4.10",
+      "nivel": "AA",
+      "principio": "1",
+      "estado": "cumple",
+      "evidencia_observacion": "Sin desbordamiento en 66 combinaciones de 1280/360/320 px. La prueba de 320 CSS px complementa 360; no se simuló zoom 400 %."
+    },
+    {
+      "criterio": "1.4.11",
+      "nivel": "AA",
+      "principio": "1",
+      "estado": "cumple",
+      "evidencia_observacion": "Tokens de borde/foco >=3:1 y revisión de componentes, con texto para estados."
+    },
+    {
+      "criterio": "1.4.12",
+      "nivel": "AA",
+      "principio": "1",
+      "estado": "pendiente",
+      "evidencia_observacion": "Sondeo con interlineado 1.5, párrafos 2em, letras .12em y palabras .16em sin desbordamiento. Falta inspección visual completa de recortes/superposición; no se cuenta como satisfecho."
+    },
+    {
+      "criterio": "1.4.13",
+      "nivel": "AA",
+      "principio": "1",
+      "estado": "no_aplica",
+      "evidencia_observacion": "En la muestra no se añade contenido al pasar el puntero o recibir foco; los detalles/menús se abren por activación."
+    },
+    {
+      "criterio": "2.1.1",
+      "nivel": "A",
+      "principio": "2",
+      "estado": "cumple",
+      "evidencia_observacion": "Teclado declarado correcto; regresiones de combobox, formularios, diálogos y menú móvil."
+    },
+    {
+      "criterio": "2.1.2",
+      "nivel": "A",
+      "principio": "2",
+      "estado": "cumple",
+      "evidencia_observacion": "Escape y retorno de foco del menú; controles de diálogo y recorrido humano sin trampas reportadas."
+    },
+    {
+      "criterio": "2.1.4",
+      "nivel": "A",
+      "principio": "2",
+      "estado": "no_aplica",
+      "evidencia_observacion": "No hay atajos de una sola letra implementados por la aplicación."
+    },
+    {
+      "criterio": "2.2.1",
+      "nivel": "A",
+      "principio": "2",
+      "estado": "no_cumple",
+      "evidencia_observacion": "ECL-83: sesión de 60 minutos sin aviso ni extensión. Verificación estática/configuración, sin esperar la expiración ni cambiar seguridad."
+    },
+    {
+      "criterio": "2.2.2",
+      "nivel": "A",
+      "principio": "2",
+      "estado": "no_aplica",
+      "evidencia_observacion": "Sin carruseles o texto desplazado/actualización periódica en la muestra. Esqueletos de carga decorativos; información disponible mediante acciones de consulta."
+    },
+    {
+      "criterio": "2.3.1",
+      "nivel": "A",
+      "principio": "2",
+      "estado": "cumple",
+      "evidencia_observacion": "Sin contenido que destelle en las vistas y componentes inspeccionados."
+    },
+    {
+      "criterio": "2.4.1",
+      "nivel": "A",
+      "principio": "2",
+      "estado": "cumple",
+      "evidencia_observacion": "Enlace Saltar al contenido principal y estructura main/nav en los layouts."
+    },
+    {
+      "criterio": "2.4.2",
+      "nivel": "A",
+      "principio": "2",
+      "estado": "cumple",
+      "evidencia_observacion": "Once títulos específicos en los reportes; pruebas de login, navegación y acceso denegado."
+    },
+    {
+      "criterio": "2.4.3",
+      "nivel": "A",
+      "principio": "2",
+      "estado": "cumple",
+      "evidencia_observacion": "Menú móvil corregido: foco en Cerrar, Tab contenido y retorno; prueba real con 18 pasos y Escape."
+    },
+    {
+      "criterio": "2.4.4",
+      "nivel": "A",
+      "principio": "2",
+      "estado": "cumple",
+      "evidencia_observacion": "Enlaces descriptivos y contexto de tablas; aviso de nueva pestaña para el mapa."
+    },
+    {
+      "criterio": "2.4.5",
+      "nivel": "AA",
+      "principio": "2",
+      "estado": "pendiente",
+      "evidencia_observacion": "Existen menú, migas y accesos rápidos, pero falta verificar por ruta un segundo mecanismo independiente o justificar la excepción de proceso. No se infiere cumplimiento del menú por sí solo."
+    },
+    {
+      "criterio": "2.4.6",
+      "nivel": "AA",
+      "principio": "2",
+      "estado": "cumple",
+      "evidencia_observacion": "Títulos y etiquetas describen controles; corrección de Siguiente parada como encabezado."
+    },
+    {
+      "criterio": "2.4.7",
+      "nivel": "AA",
+      "principio": "2",
+      "estado": "cumple",
+      "evidencia_observacion": "Foco de 3px por token y recorrido manual de teclado declarado correcto."
+    },
+    {
+      "criterio": "2.5.1",
+      "nivel": "A",
+      "principio": "2",
+      "estado": "no_aplica",
+      "evidencia_observacion": "No hay gestos multipunto ni dependientes de una trayectoria."
+    },
+    {
+      "criterio": "2.5.2",
+      "nivel": "A",
+      "principio": "2",
+      "estado": "cumple",
+      "evidencia_observacion": "Acciones mediante click/activación nativa; onMouseDown del combobox solo evita perder foco, sin ejecutar negocio."
+    },
+    {
+      "criterio": "2.5.3",
+      "nivel": "A",
+      "principio": "2",
+      "estado": "cumple",
+      "evidencia_observacion": "Cuenta y Ver y editar perfil corregidos; axe final sin label-content-name-mismatch."
+    },
+    {
+      "criterio": "2.5.4",
+      "nivel": "A",
+      "principio": "2",
+      "estado": "no_aplica",
+      "evidencia_observacion": "No se usan sensores ni movimiento del dispositivo para activar funciones."
+    },
+    {
+      "criterio": "3.1.1",
+      "nivel": "A",
+      "principio": "3",
+      "estado": "cumple",
+      "evidencia_observacion": "lang=es en todos los documentos medidos y revisión de axe."
+    },
+    {
+      "criterio": "3.1.2",
+      "nivel": "AA",
+      "principio": "3",
+      "estado": "no_aplica",
+      "evidencia_observacion": "Sin pasajes en otro idioma en la muestra; nombres propios/identificadores no son pasajes lingüísticos."
+    },
+    {
+      "criterio": "3.2.1",
+      "nivel": "A",
+      "principio": "3",
+      "estado": "cumple",
+      "evidencia_observacion": "No se navega ni envía formularios al enfocar; teclado declarado correcto."
+    },
+    {
+      "criterio": "3.2.2",
+      "nivel": "A",
+      "principio": "3",
+      "estado": "cumple",
+      "evidencia_observacion": "Selección/entrada no envía pedidos automáticamente; acciones explícitas para consultar/guardar."
+    },
+    {
+      "criterio": "3.2.3",
+      "nivel": "AA",
+      "principio": "3",
+      "estado": "cumple",
+      "evidencia_observacion": "Navegación estable dentro de cada rol; cambios por autorización justificados."
+    },
+    {
+      "criterio": "3.2.4",
+      "nivel": "AA",
+      "principio": "3",
+      "estado": "cumple",
+      "evidencia_observacion": "Componentes compartidos y nombres consistentes para actualizar, cancelar, guardar y volver."
+    },
+    {
+      "criterio": "3.3.1",
+      "nivel": "A",
+      "principio": "3",
+      "estado": "cumple",
+      "evidencia_observacion": "Validación con errores textuales, aria-invalid y foco; pruebas de formularios y declaración manual general."
+    },
+    {
+      "criterio": "3.3.2",
+      "nivel": "A",
+      "principio": "3",
+      "estado": "cumple",
+      "evidencia_observacion": "Labels, ayudas y obligatoriedad en formularios; axe y pruebas de React."
+    },
+    {
+      "criterio": "3.3.3",
+      "nivel": "AA",
+      "principio": "3",
+      "estado": "cumple",
+      "evidencia_observacion": "Mensajes indican qué corregir y requisitos de contraseña; errores de autenticación no revelan credenciales."
+    },
+    {
+      "criterio": "3.3.4",
+      "nivel": "AA",
+      "principio": "3",
+      "estado": "cumple",
+      "evidencia_observacion": "Formulario validado antes de guardar; restablecimiento sensible requiere confirmación cancelable. No se ejecutó un restablecimiento real en esta revisión."
+    },
+    {
+      "criterio": "4.1.1",
+      "nivel": "A",
+      "principio": "4",
+      "estado": "no_aplica",
+      "evidencia_observacion": "Obsoleto según la errata incorporada en WCAG 2.1 (2025); fuera del denominador. Se conserva la fila para trazabilidad del catálogo de 50 criterios."
+    },
+    {
+      "criterio": "4.1.2",
+      "nivel": "A",
+      "principio": "4",
+      "estado": "cumple",
+      "evidencia_observacion": "axe final sin errores ARIA; nombres/roles/estados comprobados en componentes y lector declarado. time usa contenido textual accesible."
+    },
+    {
+      "criterio": "4.1.3",
+      "nivel": "AA",
+      "principio": "4",
+      "estado": "cumple",
+      "evidencia_observacion": "role=status/alert y regiones live para carga/error/resultado; pruebas y revisión general del lector declarada por Giancarlo."
+    }
+  ]
+}

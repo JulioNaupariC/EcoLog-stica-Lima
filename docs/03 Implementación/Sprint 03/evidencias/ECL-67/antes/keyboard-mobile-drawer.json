@@ -1,0 +1,92 @@
+[
+  {
+    "tag": "BUTTON",
+    "inDrawer": false,
+    "name": "Abrir menú"
+  },
+  {
+    "tag": "A",
+    "inDrawer": false,
+    "name": "EcoLogística Lima"
+  },
+  {
+    "tag": "BUTTON",
+    "inDrawer": false,
+    "name": "Cuenta: operador.demo@ecologistica.example, Operador"
+  },
+  {
+    "tag": "A",
+    "inDrawer": false,
+    "name": "Registrar pedidoCon propuesta de preferencias del cliente"
+  },
+  {
+    "tag": "A",
+    "inDrawer": false,
+    "name": "Preferencias de entregaHorarios, referencias y accesos"
+  },
+  {
+    "tag": "A",
+    "inDrawer": false,
+    "name": "VehículosFlota y registro de unidades"
+  },
+  {
+    "tag": "A",
+    "inDrawer": false,
+    "name": "ConductoresPerfiles y disponibilidad"
+  },
+  {
+    "tag": "BODY",
+    "inDrawer": false,
+    "name": "Saltar al contenido principalMenúGeneralInicioOperaciónRegistrar pedidoPreferenc"
+  },
+  {
+    "tag": "A",
+    "inDrawer": false,
+    "name": "Saltar al contenido principal"
+  },
+  {
+    "tag": "BUTTON",
+    "inDrawer": true,
+    "name": "Cerrar menú"
+  },
+  {
+    "tag": "A",
+    "inDrawer": true,
+    "name": "Inicio"
+  },
+  {
+    "tag": "A",
+    "inDrawer": true,
+    "name": "Registrar pedido"
+  },
+  {
+    "tag": "A",
+    "inDrawer": true,
+    "name": "Preferencias de entrega"
+  },
+  {
+    "tag": "A",
+    "inDrawer": true,
+    "name": "Incidencias pendientes"
+  },
+  {
+    "tag": "A",
+    "inDrawer": true,
+    "name": "Vehículos"
+  },
+  {
+    "tag": "A",
+    "inDrawer": true,
+    "name": "Conductores"
+  },
+  {
+    "tag": "BUTTON",
+    "inDrawer": false,
+    "name": "Abrir menú"
+  },
+  {
+    "tag": "A",
+    "inDrawer": false,
+    "name": "EcoLogística Lima"
+  }
+]

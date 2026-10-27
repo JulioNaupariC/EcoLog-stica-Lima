@@ -1,0 +1,524 @@
+﻿{
+  "scope": "Token contrast pairs only; not a full WCAG conformance claim",
+  "results": [
+    {
+      "theme": "claro",
+      "foreground": "text",
+      "background": "bg",
+      "ratio": 14.73584976236174,
+      "minimum": 4.5,
+      "use": "Texto principal sobre el fondo",
+      "passed": true
+    },
+    {
+      "theme": "claro",
+      "foreground": "text",
+      "background": "surface",
+      "ratio": 15.935325030862842,
+      "minimum": 4.5,
+      "use": "Texto principal sobre tarjetas",
+      "passed": true
+    },
+    {
+      "theme": "claro",
+      "foreground": "text",
+      "background": "surface-muted",
+      "ratio": 13.858719723238714,
+      "minimum": 4.5,
+      "use": "Texto sobre cabeceras de tabla",
+      "passed": true
+    },
+    {
+      "theme": "claro",
+      "foreground": "text-muted",
+      "background": "bg",
+      "ratio": 6.050452530131107,
+      "minimum": 4.5,
+      "use": "Texto secundario sobre el fondo",
+      "passed": true
+    },
+    {
+      "theme": "claro",
+      "foreground": "text-muted",
+      "background": "surface",
+      "ratio": 6.542949962594685,
+      "minimum": 4.5,
+      "use": "Ayudas y metadatos en tarjetas",
+      "passed": true
+    },
+    {
+      "theme": "claro",
+      "foreground": "text-muted",
+      "background": "surface-muted",
+      "ratio": 5.690308137371273,
+      "minimum": 4.5,
+      "use": "Cabeceras de tabla y campos deshabilitados",
+      "passed": true
+    },
+    {
+      "theme": "claro",
+      "foreground": "primary-contrast",
+      "background": "primary",
+      "ratio": 7.130310076434003,
+      "minimum": 4.5,
+      "use": "Texto de botón primario",
+      "passed": true
+    },
+    {
+      "theme": "claro",
+      "foreground": "primary-contrast",
+      "background": "primary-hover",
+      "ratio": 9.110868528921165,
+      "minimum": 4.5,
+      "use": "Botón primario en hover",
+      "passed": true
+    },
+    {
+      "theme": "claro",
+      "foreground": "link",
+      "background": "surface",
+      "ratio": 7.130310076434003,
+      "minimum": 4.5,
+      "use": "Enlaces y navegación activa",
+      "passed": true
+    },
+    {
+      "theme": "claro",
+      "foreground": "link",
+      "background": "bg",
+      "ratio": 6.593601187417781,
+      "minimum": 4.5,
+      "use": "Migas de pan y enlaces de página",
+      "passed": true
+    },
+    {
+      "theme": "claro",
+      "foreground": "link",
+      "background": "surface-muted",
+      "ratio": 6.201126660278298,
+      "minimum": 4.5,
+      "use": "Enlaces en filas resaltadas",
+      "passed": true
+    },
+    {
+      "theme": "claro",
+      "foreground": "link",
+      "background": "brand-50",
+      "ratio": 6.70221688788351,
+      "minimum": 4.5,
+      "use": "Enlace/etiqueta sobre siguiente parada",
+      "passed": true
+    },
+    {
+      "theme": "claro",
+      "foreground": "text",
+      "background": "brand-50",
+      "ratio": 14.978591869201761,
+      "minimum": 4.5,
+      "use": "Texto de la siguiente parada",
+      "passed": true
+    },
+    {
+      "theme": "claro",
+      "foreground": "text-muted",
+      "background": "brand-50",
+      "ratio": 6.150120999760249,
+      "minimum": 4.5,
+      "use": "Metadatos de la siguiente parada",
+      "passed": true
+    },
+    {
+      "theme": "claro",
+      "foreground": "success-fg",
+      "background": "success-bg",
+      "ratio": 8.075580845645021,
+      "minimum": 4.5,
+      "use": "Badge/alerta de éxito",
+      "passed": true
+    },
+    {
+      "theme": "claro",
+      "foreground": "warning-fg",
+      "background": "warning-bg",
+      "ratio": 6.3672036517195565,
+      "minimum": 4.5,
+      "use": "Badge/alerta de advertencia",
+      "passed": true
+    },
+    {
+      "theme": "claro",
+      "foreground": "danger-fg",
+      "background": "danger-bg",
+      "ratio": 6.04726982551666,
+      "minimum": 4.5,
+      "use": "Badge/alerta de error",
+      "passed": true
+    },
+    {
+      "theme": "claro",
+      "foreground": "danger-fg",
+      "background": "surface",
+      "ratio": 6.57428861557707,
+      "minimum": 4.5,
+      "use": "Mensaje de error bajo un campo",
+      "passed": true
+    },
+    {
+      "theme": "claro",
+      "foreground": "info-fg",
+      "background": "info-bg",
+      "ratio": 7.850030729550698,
+      "minimum": 4.5,
+      "use": "Badge/alerta informativa",
+      "passed": true
+    },
+    {
+      "theme": "claro",
+      "foreground": "neutral-fg",
+      "background": "neutral-bg",
+      "ratio": 7.877441436501983,
+      "minimum": 4.5,
+      "use": "Badge neutral («Inactivo», «Próximamente»)",
+      "passed": true
+    },
+    {
+      "theme": "claro",
+      "foreground": "sustain-fg",
+      "background": "sustain-bg",
+      "ratio": 6.585751511536167,
+      "minimum": 4.5,
+      "use": "Indicador de sostenibilidad",
+      "passed": true
+    },
+    {
+      "theme": "claro",
+      "foreground": "primary-contrast",
+      "background": "primary",
+      "ratio": 7.130310076434003,
+      "minimum": 4.5,
+      "use": "Número de parada",
+      "passed": true
+    },
+    {
+      "theme": "claro",
+      "foreground": "focus",
+      "background": "surface",
+      "ratio": 6.701618401398807,
+      "minimum": 3,
+      "use": "Contorno de foco (elemento de interfaz)",
+      "passed": true
+    },
+    {
+      "theme": "claro",
+      "foreground": "focus",
+      "background": "bg",
+      "ratio": 6.197177763015763,
+      "minimum": 3,
+      "use": "Contorno de foco sobre el fondo",
+      "passed": true
+    },
+    {
+      "theme": "claro",
+      "foreground": "focus",
+      "background": "surface-muted",
+      "ratio": 5.82829976402786,
+      "minimum": 3,
+      "use": "Foco sobre tablas y detalles resaltados",
+      "passed": true
+    },
+    {
+      "theme": "claro",
+      "foreground": "border-strong",
+      "background": "surface",
+      "ratio": 3.980258793351113,
+      "minimum": 3,
+      "use": "Borde de campos de formulario",
+      "passed": true
+    },
+    {
+      "theme": "claro",
+      "foreground": "border-strong",
+      "background": "bg",
+      "ratio": 3.6806588808540543,
+      "minimum": 3,
+      "use": "Borde de acciones secundarias sobre la página",
+      "passed": true
+    },
+    {
+      "theme": "claro",
+      "foreground": "primary",
+      "background": "surface",
+      "ratio": 7.130310076434003,
+      "minimum": 3,
+      "use": "Borde destacado de la siguiente parada",
+      "passed": true
+    },
+    {
+      "theme": "oscuro",
+      "foreground": "text",
+      "background": "bg",
+      "ratio": 15.547405852322909,
+      "minimum": 4.5,
+      "use": "Texto principal sobre el fondo",
+      "passed": true
+    },
+    {
+      "theme": "oscuro",
+      "foreground": "text",
+      "background": "surface",
+      "ratio": 14.29769658975249,
+      "minimum": 4.5,
+      "use": "Texto principal sobre tarjetas",
+      "passed": true
+    },
+    {
+      "theme": "oscuro",
+      "foreground": "text",
+      "background": "surface-muted",
+      "ratio": 13.054804100748479,
+      "minimum": 4.5,
+      "use": "Texto sobre cabeceras de tabla",
+      "passed": true
+    },
+    {
+      "theme": "oscuro",
+      "foreground": "text-muted",
+      "background": "bg",
+      "ratio": 8.472712845418254,
+      "minimum": 4.5,
+      "use": "Texto secundario sobre el fondo",
+      "passed": true
+    },
+    {
+      "theme": "oscuro",
+      "foreground": "text-muted",
+      "background": "surface",
+      "ratio": 7.791671402067976,
+      "minimum": 4.5,
+      "use": "Ayudas y metadatos en tarjetas",
+      "passed": true
+    },
+    {
+      "theme": "oscuro",
+      "foreground": "text-muted",
+      "background": "surface-muted",
+      "ratio": 7.11434482700563,
+      "minimum": 4.5,
+      "use": "Cabeceras de tabla y campos deshabilitados",
+      "passed": true
+    },
+    {
+      "theme": "oscuro",
+      "foreground": "primary-contrast",
+      "background": "primary",
+      "ratio": 8.554138180831067,
+      "minimum": 4.5,
+      "use": "Texto de botón primario",
+      "passed": true
+    },
+    {
+      "theme": "oscuro",
+      "foreground": "primary-contrast",
+      "background": "primary-hover",
+      "ratio": 10.615837047353068,
+      "minimum": 4.5,
+      "use": "Botón primario en hover",
+      "passed": true
+    },
+    {
+      "theme": "oscuro",
+      "foreground": "link",
+      "background": "surface",
+      "ratio": 10.9732776483549,
+      "minimum": 4.5,
+      "use": "Enlaces y navegación activa",
+      "passed": true
+    },
+    {
+      "theme": "oscuro",
+      "foreground": "link",
+      "background": "bg",
+      "ratio": 11.932411634156136,
+      "minimum": 4.5,
+      "use": "Migas de pan y enlaces de página",
+      "passed": true
+    },
+    {
+      "theme": "oscuro",
+      "foreground": "link",
+      "background": "surface-muted",
+      "ratio": 10.01937543877304,
+      "minimum": 4.5,
+      "use": "Enlaces en filas resaltadas",
+      "passed": true
+    },
+    {
+      "theme": "oscuro",
+      "foreground": "link",
+      "background": "brand-50",
+      "ratio": 10.304934660104152,
+      "minimum": 4.5,
+      "use": "Enlace/etiqueta sobre siguiente parada",
+      "passed": true
+    },
+    {
+      "theme": "oscuro",
+      "foreground": "text",
+      "background": "brand-50",
+      "ratio": 13.426875166097883,
+      "minimum": 4.5,
+      "use": "Texto de la siguiente parada",
+      "passed": true
+    },
+    {
+      "theme": "oscuro",
+      "foreground": "text-muted",
+      "background": "brand-50",
+      "ratio": 7.3171086401290495,
+      "minimum": 4.5,
+      "use": "Metadatos de la siguiente parada",
+      "passed": true
+    },
+    {
+      "theme": "oscuro",
+      "foreground": "success-fg",
+      "background": "success-bg",
+      "ratio": 10.200209700389234,
+      "minimum": 4.5,
+      "use": "Badge/alerta de éxito",
+      "passed": true
+    },
+    {
+      "theme": "oscuro",
+      "foreground": "warning-fg",
+      "background": "warning-bg",
+      "ratio": 10.235844256459984,
+      "minimum": 4.5,
+      "use": "Badge/alerta de advertencia",
+      "passed": true
+    },
+    {
+      "theme": "oscuro",
+      "foreground": "danger-fg",
+      "background": "danger-bg",
+      "ratio": 8.533591947162508,
+      "minimum": 4.5,
+      "use": "Badge/alerta de error",
+      "passed": true
+    },
+    {
+      "theme": "oscuro",
+      "foreground": "danger-fg",
+      "background": "surface",
+      "ratio": 8.926817613535858,
+      "minimum": 4.5,
+      "use": "Mensaje de error bajo un campo",
+      "passed": true
+    },
+    {
+      "theme": "oscuro",
+      "foreground": "info-fg",
+      "background": "info-bg",
+      "ratio": 8.781922707565522,
+      "minimum": 4.5,
+      "use": "Badge/alerta informativa",
+      "passed": true
+    },
+    {
+      "theme": "oscuro",
+      "foreground": "neutral-fg",
+      "background": "neutral-bg",
+      "ratio": 9.703284254308208,
+      "minimum": 4.5,
+      "use": "Badge neutral («Inactivo», «Próximamente»)",
+      "passed": true
+    },
+    {
+      "theme": "oscuro",
+      "foreground": "sustain-fg",
+      "background": "sustain-bg",
+      "ratio": 11.524814049554514,
+      "minimum": 4.5,
+      "use": "Indicador de sostenibilidad",
+      "passed": true
+    },
+    {
+      "theme": "oscuro",
+      "foreground": "primary-contrast",
+      "background": "primary",
+      "ratio": 8.554138180831067,
+      "minimum": 4.5,
+      "use": "Número de parada",
+      "passed": true
+    },
+    {
+      "theme": "oscuro",
+      "foreground": "focus",
+      "background": "surface",
+      "ratio": 8.239945304371895,
+      "minimum": 3,
+      "use": "Contorno de foco (elemento de interfaz)",
+      "passed": true
+    },
+    {
+      "theme": "oscuro",
+      "foreground": "focus",
+      "background": "bg",
+      "ratio": 8.960168726746634,
+      "minimum": 3,
+      "use": "Contorno de foco sobre el fondo",
+      "passed": true
+    },
+    {
+      "theme": "oscuro",
+      "foreground": "focus",
+      "background": "surface-muted",
+      "ratio": 7.523650475738593,
+      "minimum": 3,
+      "use": "Foco sobre tablas y detalles resaltados",
+      "passed": true
+    },
+    {
+      "theme": "oscuro",
+      "foreground": "border-strong",
+      "background": "surface",
+      "ratio": 4.699115235361966,
+      "minimum": 3,
+      "use": "Borde de campos de formulario",
+      "passed": true
+    },
+    {
+      "theme": "oscuro",
+      "foreground": "border-strong",
+      "background": "bg",
+      "ratio": 5.109847677378299,
+      "minimum": 3,
+      "use": "Borde de acciones secundarias sobre la página",
+      "passed": true
+    },
+    {
+      "theme": "oscuro",
+      "foreground": "primary",
+      "background": "surface",
+      "ratio": 9.723062777596839,
+      "minimum": 3,
+      "use": "Borde destacado de la siguiente parada",
+      "passed": true
+    },
+    {
+      "theme": "claro",
+      "use": "Panel de marca del login",
+      "ratio": 12.623561634859966,
+      "minimum": 4.5,
+      "passed": true
+    },
+    {
+      "theme": "oscuro",
+      "use": "Panel de marca del login",
+      "ratio": 13.426875166097883,
+      "minimum": 4.5,
+      "passed": true
+    }
+  ],
+  "failures": 0
+}

@@ -32,4 +32,8 @@ arriba, en [`docs/03 Implementación/`](<../>).
 | [Evidencias de ECL-74](<validaciones/evidencias/ECL-74/README.md>) | ECL-74 / ST-041 | Chrome/Firefox, 360 px, claro/oscuro, foco, offline y reconexión |
 | [Evidencias de ECL-75](<validaciones/evidencias/ECL-75/README.md>) | ECL-75 / ST-042 | Chrome, API real, 360/1280 px, claro/oscuro y estados simulados |
 
+### Accesibilidad
+
+- [ECL-67 / EN-011 — Evaluación WCAG](<05 WCAG V_1_0_0.md>) · [Evidencias, matriz y revisión manual](<evidencias/ECL-67/README.md>)
+
 [← Volver al README principal](<../../../README.md>)
