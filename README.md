@@ -231,6 +231,7 @@ Guías de integración:
 - [ECL-74 / ST-041 — Formulario móvil de incidencias y validación](<docs/03 Implementación/Sprint 03/validaciones/VALIDACION_ST041.md>)
 - [ECL-74 — Evidencias de Chrome y Firefox](<docs/03 Implementación/Sprint 03/validaciones/evidencias/ECL-74/README.md>)
 - [ECL-74 — Cuerpo preparado del pull request](<docs/03 Implementación/Sprint 03/validaciones/ECL-74-PR.md>)
+- [ECL-75 / ST-042 — Vista de incidencias pendientes para Operación](<docs/03 Implementación/Sprint 03/validaciones/VALIDACION_ST042.md>) · [Evidencias](<docs/03 Implementación/Sprint 03/validaciones/evidencias/ECL-75/README.md>)
 
 ### Estado del Sprint 2 — cierre
 

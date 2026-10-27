@@ -970,6 +970,72 @@
   font-size: var(--font-size-sm);
 }
 
+/* ECL-75: six columns on desktop, the existing DataTable cards on mobile. */
+.incidents-page .data-table {
+  table-layout: fixed;
+}
+
+.incidents-page .data-table td {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.incident-location,
+.incident-observation {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.incident-location {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.incident-location a {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  min-height: var(--touch-target);
+}
+
+.incident-observation summary {
+  padding-block: var(--space-2);
+  color: var(--color-link);
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.incident-observation details p {
+  margin-top: var(--space-2);
+  white-space: pre-wrap;
+}
+
+.incidents-page .pagination[hidden] {
+  display: none;
+}
+
+@media (min-width: 48rem) {
+  .incidents-page .data-table th:last-child {
+    width: 25%;
+  }
+}
+
+@media (max-width: 47.99rem) {
+  .incidents-page .card-header {
+    flex-wrap: wrap;
+  }
+
+  .incidents-page .pagination {
+    justify-content: center;
+  }
+
+  .incidents-page .pagination > span {
+    order: -1;
+    width: 100%;
+    text-align: center;
+  }
+}
+
 .driver-editor {
   margin-bottom: var(--space-5);
 }

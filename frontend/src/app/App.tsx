@@ -14,6 +14,7 @@ import { VehiclesPage } from '../pages/VehiclesPage'
 import { DriversPage } from '../pages/DriversPage'
 import { DeliveryPreferencesPage } from '../pages/DeliveryPreferencesPage'
 import { UsersPage } from '../pages/UsersPage'
+import { OperationIncidentsPage } from '../pages/OperationIncidentsPage'
 import { ChangePasswordPage } from '../pages/ChangePasswordPage'
 import { DriverShell, PublicShell, StaffShell } from '../components/layout/AppShell'
 import { Alert, EmptyState, LinkButton, ToastProvider, useToast } from '../components/ui'
@@ -174,6 +175,8 @@ function AppRoutes() {
     <Route path="/" element={<HomePage role={identity.rol} ownerId={identity.usuario_id} />} />
     <Route path="/login" element={<Navigate to="/" replace />} />
     <Route path="/pedidos/nuevo" element={guarded(createOrdersAllowed, <OrderCreatePage />)} />
+    <Route path="/operacion/incidencias" element={guarded(createOrdersAllowed,
+      <OperationIncidentsPage key={identity.usuario_id} onSessionExpired={handleSessionExpired} />)} />
     <Route path="/vehiculos" element={guarded(vehiclesAllowed, <VehiclesPage canCreate={createOrdersAllowed} />)} />
     <Route path="/conductor/itinerario" element={guarded(identity.rol === 'CONDUCTOR',
       <DriverItineraryPage key={identity.usuario_id} ownerId={identity.usuario_id} onSessionExpired={handleSessionExpired} />)} />

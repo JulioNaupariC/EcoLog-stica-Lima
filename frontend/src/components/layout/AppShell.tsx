@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import type { ReactNode } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import {
-  BarChart3, Building2, ClipboardList, Home, Leaf, Map, Menu, PanelLeftClose, PanelLeftOpen,
+  AlertTriangle, BarChart3, Building2, ClipboardList, Home, Leaf, Map, Menu, PanelLeftClose, PanelLeftOpen,
   Route as RouteIcon, Truck, UserRound, Users, X,
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
@@ -19,6 +19,7 @@ function staffNavigation(role: AuthRole): { label: string, items: NavEntry[] }[]
   const operations: NavEntry[] = canManageOperations(role) ? [
     { to: '/pedidos/nuevo', label: 'Registrar pedido', icon: ClipboardList },
     { to: '/clientes/preferencias', label: 'Preferencias de entrega', icon: Building2 },
+    { to: '/operacion/incidencias', label: 'Incidencias pendientes', icon: AlertTriangle },
   ] : []
   const resources: NavEntry[] = [
     ...(canListVehicles(role) ? [{ to: '/vehiculos', label: 'Vehículos', icon: Truck }] : []),
