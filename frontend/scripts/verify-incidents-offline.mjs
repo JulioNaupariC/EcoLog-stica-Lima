@@ -3,6 +3,7 @@ import { execFileSync } from 'node:child_process'
 import { mkdir, writeFile } from 'node:fs/promises'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
+import { setTimeout as delay } from 'node:timers/promises'
 
 // ECL-76: real local API and database. No synthetic API or injected session.
 // Use the production build/preview: the Compose Vite dev server has no offline shell.
@@ -46,6 +47,16 @@ async function entries(page) {
       })
     } finally { db.close() }
   })
+}
+
+async function waitForIncident(page, predicate) {
+  const deadline = Date.now() + 30_000
+  do {
+    const report = (await entries(page)).find(predicate)
+    if (report) return report
+    await delay(100)
+  } while (Date.now() < deadline)
+  assert.fail('Timed out waiting for the expected persisted incident state')
 }
 
 async function assertUnique(operator, report) {
@@ -108,37 +119,12 @@ try {
         await page.getByLabel('Observación (opcional)', { exact: true }).fill(marker)
         await page.getByRole('button', { name: 'Enviar incidencia', exact: true }).click()
         await page.getByRole('heading', { name: 'Mis envíos', exact: true }).waitFor()
-        await page.waitForFunction(async marker => {
-          const db = await new Promise((resolve, reject) => {
-            const request = indexedDB.open('ecologistica-incidents-v1', 1)
-            request.onsuccess = () => resolve(request.result); request.onerror = reject
-          })
-          try {
-            const all = await new Promise((resolve, reject) => {
-              const request = db.transaction('incidents').objectStore('incidents').getAll()
-              request.onsuccess = () => resolve(request.result); request.onerror = reject
-            })
-            return all.some(item => item.payload.observacion === marker)
-          } finally { db.close() }
-        }, marker)
-        return (await entries(page)).find(item => item.payload.observacion === marker)
+        return waitForIncident(page, item => item.payload.observacion === marker)
       }
 
       async function confirmed(operationId) {
-        await page.waitForFunction(async operationId => {
-          const db = await new Promise((resolve, reject) => {
-            const request = indexedDB.open('ecologistica-incidents-v1', 1)
-            request.onsuccess = () => resolve(request.result); request.onerror = reject
-          })
-          try {
-            const all = await new Promise((resolve, reject) => {
-              const request = db.transaction('incidents').objectStore('incidents').getAll()
-              request.onsuccess = () => resolve(request.result); request.onerror = reject
-            })
-            return all.some(item => item.payload.operation_id === operationId && item.acknowledgement)
-          } finally { db.close() }
-        }, operationId)
-        const report = (await entries(page)).find(item => item.payload.operation_id === operationId)
+        const report = await waitForIncident(page, item =>
+          item.payload.operation_id === operationId && item.acknowledgement)
         assert.equal(report.acknowledgement.operation_id, operationId)
         await page.getByText(`ID: ${report.acknowledgement.incidencia_id}`, { exact: false }).waitFor()
         return report

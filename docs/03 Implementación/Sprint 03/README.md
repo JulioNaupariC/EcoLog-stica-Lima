@@ -23,7 +23,7 @@ arriba, en [`docs/03 Implementación/`](<../>).
 | [VALIDACION_US013.md](<validaciones/VALIDACION_US013.md>) | ECL-77 / US-013 | Restablecer contraseña de un usuario |
 | [VALIDACION_ST041.md](<validaciones/VALIDACION_ST041.md>) | ECL-74 / ST-041 | Formulario móvil, borrador y cola offline de incidencias |
 | [VALIDACION_ST042.md](<validaciones/VALIDACION_ST042.md>) | ECL-75 / ST-042 | Vista paginada de incidencias pendientes para Operación |
-| [VALIDACION_US012.md](<validaciones/VALIDACION_US012.md>) · [PR preparado](<validaciones/ECL-76-PR.md>) | ECL-76 / ST-043 | Matriz I01–I16 por tipo de ruta; campaña offline real pendiente |
+| [VALIDACION_US012.md](<validaciones/VALIDACION_US012.md>) · [PR preparado](<validaciones/ECL-76-PR.md>) | ECL-76 / ST-043 | Matriz I01–I16; integración y campaña real Chrome/Firefox 10/10 aprobadas; I03 parcial por ECL-82 |
 
 ### Evidencias
 
@@ -32,7 +32,7 @@ arriba, en [`docs/03 Implementación/`](<../>).
 | [Evidencias de ECL-77](<validaciones/evidencias/ECL-77/README.md>) | ECL-77 / US-013 | Capturas a 360 px y 1280 px, tema claro |
 | [Evidencias de ECL-74](<validaciones/evidencias/ECL-74/README.md>) | ECL-74 / ST-041 | Chrome/Firefox, 360 px, claro/oscuro, foco, offline y reconexión |
 | [Evidencias de ECL-75](<validaciones/evidencias/ECL-75/README.md>) | ECL-75 / ST-042 | Chrome, API real, 360/1280 px, claro/oscuro y estados simulados |
-| [Evidencias de ECL-76](<validaciones/evidencias/ECL-76/README.md>) | ECL-76 / ST-043 | JUnit local y bloqueo real de la ejecución E2E |
+| [Cierre de ECL-76](<validaciones/evidencias/ECL-76/cierre-20261027/README.md>) · [Registro inicial](<validaciones/evidencias/ECL-76/README.md>) | ECL-76 / ST-043 | JUnit, PostGIS real, Chrome/Firefox 10/10 y capturas; histórico conservado |
 
 ### Accesibilidad
 

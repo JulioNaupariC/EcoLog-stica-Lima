@@ -233,7 +233,7 @@ Guías de integración:
 - [ECL-74 — Cuerpo preparado del pull request](<docs/03 Implementación/Sprint 03/validaciones/ECL-74-PR.md>)
 - [ECL-75 / ST-042 — Vista de incidencias pendientes para Operación](<docs/03 Implementación/Sprint 03/validaciones/VALIDACION_ST042.md>) · [Evidencias](<docs/03 Implementación/Sprint 03/validaciones/evidencias/ECL-75/README.md>)
 - [ECL-67 / EN-011 — Evaluación WCAG del Sprint 3](<docs/03 Implementación/Sprint 03/05 WCAG V_1_0_0.md>) · [Evidencias finales](<docs/03 Implementación/Sprint 03/evidencias/ECL-67/comprobacion-final-20261027/README.md>) · [Registro inicial](<docs/03 Implementación/Sprint 03/evidencias/ECL-67/README.md>)
-- ECL-76 / ST-043 — [Matriz US-012](<docs/03 Implementación/Sprint 03/validaciones/VALIDACION_US012.md>) · [Evidencias](<docs/03 Implementación/Sprint 03/validaciones/evidencias/ECL-76/README.md>) · [Cuerpo del PR](<docs/03 Implementación/Sprint 03/validaciones/ECL-76-PR.md>)
+- ECL-76 / ST-043 — [Matriz US-012](<docs/03 Implementación/Sprint 03/validaciones/VALIDACION_US012.md>) · [Campaña real y evidencias de cierre](<docs/03 Implementación/Sprint 03/validaciones/evidencias/ECL-76/cierre-20261027/README.md>) · [Registro inicial](<docs/03 Implementación/Sprint 03/validaciones/evidencias/ECL-76/README.md>) · [Cuerpo del PR](<docs/03 Implementación/Sprint 03/validaciones/ECL-76-PR.md>)
 
 ### Estado del Sprint 2 — cierre
 

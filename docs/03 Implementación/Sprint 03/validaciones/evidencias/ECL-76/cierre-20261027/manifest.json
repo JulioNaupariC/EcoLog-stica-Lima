@@ -1,0 +1,41 @@
+{
+  "ticket": "ECL-76",
+  "date": "2026-10-27",
+  "timezone": "America/Lima",
+  "baseCommit": "cac7a034e5966e5d5517c6324e2ec850a5d7fa90",
+  "scriptSha256": "65dfd8ccc1678c9978227c1901633c6453fbbc393d0588c5272a376feaf061cc",
+  "testResults": {
+    "backend-unit.xml": {
+      "tests": 868,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "backend-integration.xml": {
+      "tests": 250,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "frontend-tests.xml": {
+      "tests": 732,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "backendLineCoverage": 92.81,
+  "frontendCoverage": {
+    "lines": 97.71,
+    "branches": 92.95,
+    "statements": 95.56,
+    "functions": 94.96
+  },
+  "e2e": {
+    "chrome": 10,
+    "firefox": 10,
+    "uniqueOperationsIncludingOnline": 22,
+    "passed": true
+  },
+  "remoteCI": "Not run; branch publication remains with the user"
+}
