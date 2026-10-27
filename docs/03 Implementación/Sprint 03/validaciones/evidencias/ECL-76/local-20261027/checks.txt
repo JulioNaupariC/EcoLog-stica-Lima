@@ -1,0 +1,36 @@
+ECL-76 — registro de comandos, 2026-10-27, America/Lima
+Base: 892c36459f0d124631bb2ad73758cc84154c718c + cambios locales del ticket.
+Node v22.18.0; Python 3.14.4; PowerShell / Windows.
+
+git switch main / git pull --ff-only
+Already up to date.
+git switch -c test/ECL-76-pruebas-incidencias
+Switched to a new branch 'test/ECL-76-pruebas-incidencias'
+
+En frontend/: npm.cmd ci --cache ../.npm-cache --no-audit --no-fund
+Primer intento restringido: npm error Exit handler never called! (salida 1).
+Segundo intento con red permitida: added 257 packages in 9s (salida 0).
+
+npm.cmd --prefix frontend run typecheck
+tsc -b --pretty false (salida 0, sin errores).
+
+npm.cmd --prefix frontend run lint
+Primer intento: no-unexpected-multiline en la nueva matriz de incident.test.ts.
+Se extrajo catalogCases y se repitió: eslint . (salida 0, sin errores).
+
+npm.cmd --prefix frontend run build
+tsc -b && vite build && node scripts/build-offline.mjs
+1963 modules transformed. built in 379ms. Salida 0.
+
+node --check frontend/scripts/verify-incidents-offline.mjs
+Salida 0, sin errores de sintaxis.
+
+docker compose ps
+No ejecutable: docker no se reconoce como comando; tampoco está en la ruta
+habitual de instalación de Docker Desktop. No existe .env privado en el clon.
+
+node frontend/scripts/verify-incidents-offline.mjs
+ECL-76: bloqueado o fallido en «configuration» (AssertionError); revisar entorno sin publicar credenciales.
+El proceso Node devuelve 1 y results.json tiene passed=false, browsers=[].
+Faltan contraseñas demo privadas; no se hicieron peticiones al API ni capturas.
+Integración y E2E real siguen pendientes; CI remoto no consultado ni ejecutado.
