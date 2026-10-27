@@ -3,11 +3,13 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 import { createRequire } from 'node:module'
+import { inspectTextSpacing } from './review-text-spacing.mjs'
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '../..')
 const deps = resolve(process.env.ECL67_TOOLS || resolve(root, '.tmp-ecl67/node_modules'))
 const output = resolve(process.env.EVIDENCE_DIR || resolve(root, '.tmp-ecl67/baseline'))
 const axeOnly = process.argv.includes('--axe-only')
+const spacingReview = process.argv.includes('--spacing-review')
 const { chromium } = await import(pathToFileURL(resolve(deps, 'playwright/index.mjs')))
 const requireTool = createRequire(resolve(deps, 'package.json'))
 const { default: puppeteer } = await import(pathToFileURL(requireTool.resolve('puppeteer-core')))
@@ -173,6 +175,34 @@ try {
         await page.screenshot({ path: resolve(output, `${screen.id}-${theme}-text-200.png`), fullPage: true, animations: 'disabled' })
       }
       await page.evaluate(() => { document.documentElement.style.fontSize = '' })
+      if (spacingReview) {
+        const style = await page.addStyleTag({ content: '* { line-height: 1.5 !important; letter-spacing: .12em !important; word-spacing: .16em !important; } p { margin-bottom: 2em !important; }' })
+        for (const width of [1280, 360, 320]) {
+          await page.setViewportSize({ width, height: 900 })
+          await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))))
+          await appearance(theme)
+          await page.evaluate(() => scrollTo(0, 0))
+          const review = await page.evaluate(inspectTextSpacing)
+          review.controls = await page.locator('main a[href], main button:not([disabled]), main input:not([disabled]), main select, main textarea').evaluateAll(async elements => {
+            const controls = []
+            for (const element of elements) {
+              if (!element.getClientRects().length || element.closest('[hidden], [inert]')) continue
+              element.scrollIntoView({ block: 'center', inline: 'nearest', behavior: 'instant' })
+              const rect = element.getBoundingClientRect()
+              const hit = document.elementFromPoint(rect.x + rect.width / 2, rect.y + rect.height / 2)
+              controls.push({ tag: element.tagName, id: element.id,
+                name: element.getAttribute('aria-label') || element.textContent?.trim().slice(0, 80),
+                reachableAtCenter: Boolean(hit && (element === hit || element.contains(hit))) })
+            }
+            scrollTo(0, 0)
+            return controls
+          })
+          await save(`spacing-${screen.id}-${theme}-${width}.json`, review)
+          await page.screenshot({ path: resolve(output, `spacing-${screen.id}-${theme}-${width}.jpg`), fullPage: true, quality: 80, animations: 'disabled' })
+        }
+        await style.evaluate(element => element.remove())
+        await page.setViewportSize({ width: 1280, height: 900 })
+      }
       const spacingStyle = await page.addStyleTag({ content: '* { line-height: 1.5 !important; letter-spacing: .12em !important; word-spacing: .16em !important; } p { margin-bottom: 2em !important; }' })
       const spacing = await page.evaluate(() => ({ viewport: innerWidth, scroll: document.documentElement.scrollWidth }))
       supplementary.push({ screen: screen.id, theme, check: 'text-spacing-overflow-probe-not-complete-visual-review', ...spacing })
@@ -184,6 +214,29 @@ try {
       console.log(`ECL-67 ${screen.id}/${theme}: axe ${desktop.axe.violations.length}, Lighthouse ${desktop.lighthouse?.score ?? 'not-run'}`)
     }
   }
+
+  phase = 'home index navigation by role'
+  const indexes = []
+  const headings = { ...Object.fromEntries(screens.map(screen => [screen.path, screen.title])), '/vehiculos': 'Vehículos' }
+  for (const role of ['ADMINISTRADOR', 'OPERADOR', 'CONDUCTOR', 'ANALISTA', 'AUDITOR']) {
+    await navigate({ role, path: '/', title: 'Inicio' })
+    await page.setViewportSize({ width: 1280, height: 900 })
+    const paths = await page.locator('main a[href]').evaluateAll(links => [...new Set(links.map(link => link.getAttribute('href')))])
+    const visited = []
+    for (const path of paths) {
+      await page.locator(`main a[href="${path}"]`).first().click()
+      await page.waitForURL(url => url.pathname === path)
+      await page.getByRole('heading', { name: headings[path], exact: true }).waitFor()
+      await settle()
+      const heading = await page.locator('main h1').innerText()
+      assert.notEqual(heading, 'Acceso denegado')
+      visited.push({ path, heading })
+      await page.locator('header a.brand').click()
+      await page.getByRole('heading', { name: 'Inicio', exact: true }).waitFor()
+    }
+    indexes.push({ role, visited })
+  }
+  await save('navigation-home-index.json', indexes)
 
   phase = 'mobile drawer keyboard'
   await signIn('OPERADOR')

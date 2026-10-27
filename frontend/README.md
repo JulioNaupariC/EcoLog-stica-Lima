@@ -244,6 +244,13 @@ al 200 %, que no reemplaza el zoom real del navegador. `--axe-only` omite
 Lighthouse; `ECL67_SCREENS` permite seleccionar IDs separados por comas.
 Cada ejecución exige una carpeta nueva para conservar la evidencia anterior.
 
+`--spacing-review` añade capturas y geometría del texto con los valores de
+espaciado de 1.4.12 en 1280/360/320 px. Sus candidatos a recorte/superposición
+requieren inspección visual; los nombres truncados y las capas fijas se registran
+por separado. Se comprueba también que los controles sean alcanzables al
+desplazarse. El recorrido final visita los enlaces de Inicio y vuelve mediante
+la marca para los cinco roles, como alternativa al menú o enlaces contextuales.
+
 Para una comprobación adicional del login mediante la CLI:
 
 ```powershell
