@@ -21,11 +21,13 @@ arriba, en [`docs/03 Implementación/`](<../>).
 | Documento | Historia Jira | Tema |
 |---|---|---|
 | [VALIDACION_US013.md](<validaciones/VALIDACION_US013.md>) | ECL-77 / US-013 | Restablecer contraseña de un usuario |
+| [VALIDACION_ST041.md](<validaciones/VALIDACION_ST041.md>) | ECL-74 / ST-041 | Formulario móvil, borrador y cola offline de incidencias |
 
 ### Evidencias
 
 | Documento | Historia Jira | Contenido |
 |---|---|---|
 | [Evidencias de ECL-77](<validaciones/evidencias/ECL-77/README.md>) | ECL-77 / US-013 | Capturas a 360 px y 1280 px, tema claro |
+| [Evidencias de ECL-74](<validaciones/evidencias/ECL-74/README.md>) | ECL-74 / ST-041 | Chrome/Firefox, 360 px, claro/oscuro, foco, offline y reconexión |
 
 [← Volver al README principal](<../../../README.md>)

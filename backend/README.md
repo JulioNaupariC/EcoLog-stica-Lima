@@ -11,9 +11,22 @@ confiable las migre; no se rellenan con datos ficticios.
 `POST /login` agrega `expires_at` únicamente para CONDUCTOR, sin token en el cuerpo.
 Es un vencimiento para la interfaz, no una autorización del cliente.
 `GET /conductor/itinerario` devuelve `owner_id` autenticado y `stops`; cada parada
-vinculada puede incluir `delivery: {address, reference, window_start, window_end}`.
+vinculada puede incluir `delivery: {address, reference, window_start, window_end,
+latitud, longitud}`. ECL-74 añade las coordenadas WGS84 opcionales del pedido
+asignado para seleccionar «Parada actual» sin GPS. Si el pedido solo tiene
+referencia, no se inventan coordenadas; el formulario ofrece el GPS. No hay
+migración ni cambio de permisos. El esquema OpenAPI se genera desde Pydantic.
 Se excluyen datos de contacto/cliente y se responde `Cache-Control: no-store`.
 Swagger/OpenAPI publica los esquemas actualizados.
+
+ECL-74: el cliente de incidencias envía `X-Expected-Owner-ID` en
+`POST /conductor/incidencias`. El servidor compara esa cabecera UUID con la
+identidad de la cookie y responde 401 sin alta si no coincide, para impedir
+que una cola se registre bajo otra cuenta tras un cambio de sesión en otra
+pestaña. La cabecera no autentica ni autoriza; conserva todos los controles
+RBAC. Es opcional para compatibilidad del contrato existente y se publica
+en OpenAPI; el frontend siempre la envía. CORS permite esta cabecera únicamente
+desde los orígenes configurados.
 
 El productor interno llama
 `DriverReportService.provision_assignment(..., pedido_id=uuid_real)`;

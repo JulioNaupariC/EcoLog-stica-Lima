@@ -14,6 +14,7 @@ vi.mock('../services/auth', async (importOriginal) => {
   const actual = await importOriginal<typeof import('../services/auth')>()
   return { ...actual, login: vi.fn(), logout: vi.fn() }
 })
+vi.mock('../services/incidentStorage', () => ({ listIncidents: vi.fn().mockResolvedValue([]) }))
 
 const loginMock = vi.mocked(login)
 const logoutMock = vi.mocked(logout)
@@ -56,6 +57,7 @@ function RouteControls() {
       <button type="button" onClick={() => { void navigate('/login') }}>Abrir ruta de login</button>
       <button type="button" onClick={() => { void navigate('/vehiculos') }}>Abrir ruta de vehículos</button>
       <button type="button" onClick={() => { void navigate('/conductor/itinerario') }}>Abrir ruta de itinerario</button>
+      <button type="button" onClick={() => { void navigate('/conductor/incidencias/nueva') }}>Abrir incidencia</button>
       <button type="button" onClick={() => { void navigate(-1) }}>Atrás</button>
     </aside>
   )
@@ -89,6 +91,15 @@ async function signIn(role: AuthRole) {
 }
 
 describe('App', () => {
+  it.each<AuthRole>(['ADMINISTRADOR', 'OPERADOR', 'ANALISTA', 'AUDITOR'])(
+    'ECL-74: %s no puede abrir el formulario por URL', async role => {
+      renderAt('/login')
+      const user = await signIn(role)
+      await user.click(screen.getByRole('button', { name: 'Abrir incidencia' }))
+      expect(await screen.findByRole('heading', { name: 'Acceso denegado' })).toBeInTheDocument()
+      expect(screen.queryByRole('button', { name: 'Enviar incidencia' })).not.toBeInTheDocument()
+    },
+  )
   beforeEach(() => {
     loginMock.mockReset()
     logoutMock.mockReset().mockResolvedValue()

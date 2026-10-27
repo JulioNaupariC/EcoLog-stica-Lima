@@ -228,6 +228,9 @@ Guías de integración:
 - [Ítem 7 — Coherencia y versionamiento documental](<docs/03 Implementación/Sprint 03/07 Coherencia y versionamiento documental V_1_0_0.md>)
 - [US-013 / ECL-77 — Restablecer contraseña de un usuario](<docs/03 Implementación/Sprint 03/validaciones/VALIDACION_US013.md>)
 - [US-013 / ECL-77 — Evidencias visuales](<docs/03 Implementación/Sprint 03/validaciones/evidencias/ECL-77/README.md>)
+- [ECL-74 / ST-041 — Formulario móvil de incidencias y validación](<docs/03 Implementación/Sprint 03/validaciones/VALIDACION_ST041.md>)
+- [ECL-74 — Evidencias de Chrome y Firefox](<docs/03 Implementación/Sprint 03/validaciones/evidencias/ECL-74/README.md>)
+- [ECL-74 — Cuerpo preparado del pull request](<docs/03 Implementación/Sprint 03/validaciones/ECL-74-PR.md>)
 
 ### Estado del Sprint 2 — cierre
 

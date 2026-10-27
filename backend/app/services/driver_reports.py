@@ -16,6 +16,7 @@ from app.repositories.driver_reports import (
     DriverStopAlreadyReported,
     DriverStopNotAssigned,
 )
+from app.repositories.pedidos import PedidoRepository, PedidoStorageError
 from app.schemas.driver_report import (
     AssignedStopResponse,
     DeliveryDetails,
@@ -177,9 +178,17 @@ class DriverReportService:
         pedido = session.get(Pedido, pedido_id)
         if pedido is None:
             raise DriverReportStorageError("Assigned order unavailable")
+        latitude, longitude = None, None
+        if pedido.ubicacion is not None:
+            try:
+                latitude, longitude = PedidoRepository(session).coordinates(pedido_id)
+            except PedidoStorageError:
+                raise DriverReportStorageError("Assigned order unavailable") from None
         return DeliveryDetails(
             address=pedido.direccion,
             reference=pedido.referencia,
             window_start=pedido.ventana_inicio,
             window_end=pedido.ventana_fin,
+            latitud=latitude,
+            longitud=longitude,
         )

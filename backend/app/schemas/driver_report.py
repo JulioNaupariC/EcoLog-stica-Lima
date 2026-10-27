@@ -39,6 +39,8 @@ class DeliveryDetails(BaseModel):
     reference: str | None = Field(default=None, max_length=255)
     window_start: datetime
     window_end: datetime
+    latitud: float | None = Field(default=None, ge=-90, le=90, allow_inf_nan=False)
+    longitud: float | None = Field(default=None, ge=-180, le=180, allow_inf_nan=False)
 
 
 class AssignedStopResponse(BaseModel):
