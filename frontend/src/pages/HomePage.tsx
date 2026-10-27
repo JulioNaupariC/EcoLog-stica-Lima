@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react'
 import {
-  BarChart3, Building2, CheckCircle2, ClipboardList, Leaf, Map, Package, Route as RouteIcon, Truck, UploadCloud, UserRound,
+  AlertTriangle, BarChart3, Building2, CheckCircle2, ClipboardList, KeyRound, Leaf, Map, Package, Route as RouteIcon, Truck, UploadCloud, UserRound, Users,
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { Badge, Card, LinkButton, PageHeader, StatCard } from '../components/ui'
-import { canListVehicles, canManageOperations, canViewOperationIndicators, ROLE_LABEL } from '../domain/roles'
+import { canListVehicles, canManageOperations, canManageUsers, canViewOperationIndicators, ROLE_LABEL } from '../domain/roles'
 import type { AuthRole } from '../services/auth'
 import { getOperationIndicators } from '../services/indicators'
 import { loadItinerary } from '../services/offlineStorage'
@@ -83,15 +83,18 @@ function StaffHome({ role }: { role: AuthRole }) {
       </div>
       {ready ? <p className="home-note">Cifras agregadas a las {TIME.format(new Date(ready.generadoEn))}.</p> : null}
     </section> : <p className="page-description">Tu rol no tiene acceso a los indicadores de la operación.</p>}
-    {manage || vehiclesVisible ? <section aria-labelledby="home-shortcuts-title" className="home-section">
+    <section aria-labelledby="home-shortcuts-title" className="home-section">
       <h2 id="home-shortcuts-title" className="section-title">Accesos rápidos</h2>
       <ul className="quick-links">
         {manage ? <QuickLink to="/pedidos/nuevo" icon={ClipboardList} title="Registrar pedido" description="Con propuesta de preferencias del cliente" /> : null}
         {manage ? <QuickLink to="/clientes/preferencias" icon={Building2} title="Preferencias de entrega" description="Horarios, referencias y accesos" /> : null}
         {vehiclesVisible ? <QuickLink to="/vehiculos" icon={Truck} title="Vehículos" description={manage ? 'Flota y registro de unidades' : 'Consulta de la flota'} /> : null}
         {manage ? <QuickLink to="/conductores" icon={UserRound} title="Conductores" description="Perfiles y disponibilidad" /> : null}
+        {manage ? <QuickLink to="/operacion/incidencias" icon={AlertTriangle} title="Incidencias pendientes" description="Revisar reportes de los conductores" /> : null}
+        {canManageUsers(role) ? <QuickLink to="/usuarios" icon={Users} title="Usuarios" description="Administrar el acceso de usuarios" /> : null}
+        <QuickLink to="/cambiar-contrasena" icon={KeyRound} title="Cambiar contraseña" description="Actualizar la contraseña de tu cuenta" />
       </ul>
-    </section> : null}
+    </section>
     <ComingSoon />
   </>
 }
@@ -118,6 +121,13 @@ function DriverHome({ ownerId }: { ownerId: string }) {
       </div>
     </section>
     <LinkButton to="/conductor/itinerario" icon={Map} block>Abrir mi itinerario</LinkButton>
+    <section aria-labelledby="driver-shortcuts-title" className="home-section">
+      <h2 id="driver-shortcuts-title" className="section-title">Accesos rápidos</h2>
+      <ul className="quick-links">
+        <QuickLink to="/conductor/incidencias/nueva" icon={AlertTriangle} title="Reportar incidencia" description="Registrar un problema durante tu recorrido" />
+        <QuickLink to="/cambiar-contrasena" icon={KeyRound} title="Cambiar contraseña" description="Actualizar la contraseña de tu cuenta" />
+      </ul>
+    </section>
     <p className="home-note"><CheckCircle2 aria-hidden="true" size={16} /> Los reportes se guardan en el dispositivo y se envían al recuperar la conexión.</p>
   </>
 }

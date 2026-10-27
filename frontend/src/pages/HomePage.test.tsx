@@ -37,6 +37,20 @@ beforeEach(() => {
 })
 
 describe('HomePage — inicio por rol con datos reales', () => {
+  it.each([
+    ['ADMINISTRADOR', ['/pedidos/nuevo', '/clientes/preferencias', '/vehiculos', '/conductores', '/operacion/incidencias', '/usuarios', '/cambiar-contrasena']],
+    ['OPERADOR', ['/pedidos/nuevo', '/clientes/preferencias', '/vehiculos', '/conductores', '/operacion/incidencias', '/cambiar-contrasena']],
+    ['CONDUCTOR', ['/conductor/itinerario', '/conductor/incidencias/nueva', '/cambiar-contrasena']],
+    ['ANALISTA', ['/cambiar-contrasena']],
+    ['AUDITOR', ['/vehiculos', '/cambiar-contrasena']],
+  ] as const)('ECL-67: Inicio ofrece un índice completo de las pantallas permitidas a %s', async (role, paths) => {
+    vi.mocked(loadItinerary).mockResolvedValue(null)
+    vi.mocked(listPendingReports).mockResolvedValue([])
+    show(role)
+    await screen.findByRole('heading', { name: 'Accesos rápidos' })
+    expect(screen.getAllByRole('link').map(link => link.getAttribute('href')).sort()).toEqual([...paths].sort())
+  })
+
   it('ruta dorada: el operador ve agregados reales con una sola petición y accesos rápidos', async () => {
     show('OPERADOR')
     expect(screen.getByRole('heading', { level: 1, name: 'Inicio' })).toBeInTheDocument()

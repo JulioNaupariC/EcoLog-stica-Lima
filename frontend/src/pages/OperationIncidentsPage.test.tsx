@@ -19,7 +19,11 @@ function renderPage(onSessionExpired = vi.fn()) {
 it('I02: presenta hora de Lima, catálogo, severidad textual con icono y solo el nombre del conductor', async () => {
   renderPage()
   const table = await screen.findByRole('table')
-  expect(within(table).getByText('26/10 09:15')).toHaveAttribute('datetime', incident.ocurrida_en)
+  const time = within(table).getByText('26/10 09:15').closest('time')
+  expect(time).toHaveAttribute('datetime', incident.ocurrida_en)
+  expect(time).not.toHaveAttribute('aria-label')
+  expect(time?.querySelector('.visually-hidden')).toHaveTextContent('2026')
+  expect(time?.querySelector('.visually-hidden')).toHaveTextContent('hora de Lima')
   expect(within(table).getByText('Avería')).toBeInTheDocument()
   expect(within(table).getByText('Alta').querySelector('svg')).toHaveAttribute('aria-hidden', 'true')
   expect(within(table).getByText(incident.conductor.nombre)).toBeInTheDocument()
@@ -43,7 +47,7 @@ it('conserva el orden de ocurrencia entregado por el servicio y muestra las tres
   renderPage()
   const table = await screen.findByRole('table')
   const rows = within(table).getAllByRole('row').slice(1)
-  expect(rows.map(row => row.querySelector('time')?.textContent)).toEqual(['26/10 11:00', '26/10 10:00', '26/10 09:15'])
+  expect(rows.map(row => row.querySelector('time [aria-hidden="true"]')?.textContent)).toEqual(['26/10 11:00', '26/10 10:00', '26/10 09:15'])
   for (const label of ['Alta', 'Media', 'Baja']) expect(within(table).getByText(label).querySelector('svg')).not.toBeNull()
 })
 

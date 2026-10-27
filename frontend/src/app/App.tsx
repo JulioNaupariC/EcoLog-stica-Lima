@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import type { ReactNode } from 'react'
-import { Navigate, Route, Routes, useNavigate } from 'react-router-dom'
+import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 import { ShieldAlert } from 'lucide-react'
 import { HomePage } from '../pages/HomePage'
 import { DriverItineraryPage } from '../pages/DriverItineraryPage'
@@ -45,11 +45,17 @@ function AppRoutes() {
   const [logoutMessage, setLogoutMessage] = useState('')
   const [loggingOut, setLoggingOut] = useState(false)
   const navigate = useNavigate()
+  const location = useLocation()
   const { notify } = useToast()
   const createOrdersAllowed = identity !== null && canManageOperations(identity.rol)
   const vehiclesAllowed = identity !== null && canListVehicles(identity.rol)
   const mustChangePassword = identity?.debe_cambiar_contrasena === true
   const signedIn = identity !== null
+  // WCAG 2.4.2: the tab identifies the screen, including denied and public routes.
+  useEffect(() => {
+    const heading = document.querySelector('main h1')?.textContent?.trim()
+    document.title = heading ? `${heading} — EcoLogística Lima` : 'EcoLogística Lima'
+  }, [location.pathname, identity?.rol, mustChangePassword])
   useIncidentSynchronization(identity?.rol === 'CONDUCTOR' && !mustChangePassword ? identity.usuario_id : undefined)
 
   function handleLoginSuccess(loggedInIdentity: LoginResponse, email: string) {

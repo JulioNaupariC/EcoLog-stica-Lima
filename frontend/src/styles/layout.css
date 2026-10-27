@@ -35,6 +35,7 @@
   font-size: var(--font-size-base);
   text-decoration: none;
   white-space: nowrap;
+  min-width: 0;
 }
 
 .brand-mark {
@@ -274,13 +275,15 @@
 /* ---------- Menú de cuenta ---------- */
 .account {
   position: relative;
+  min-width: 0;
+  max-width: 50%;
 }
 
 .account-trigger {
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
-  max-width: 18rem;
+  max-width: min(18rem, 100%);
   min-height: var(--touch-target);
   padding: var(--space-1) var(--space-2) var(--space-1) var(--space-1);
   border: 1px solid var(--color-border);

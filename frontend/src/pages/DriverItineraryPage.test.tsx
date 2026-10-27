@@ -12,6 +12,15 @@ vi.mock('../services/driverItinerary', async (importOriginal) => {
 afterEach(() => { vi.unstubAllEnvs() })
 
 describe('DriverItineraryPage — producción, sin datos de demostración', () => {
+  it('ECL-67: la siguiente parada tiene h2 y su detalle h3 sin saltarse niveles', async () => {
+    vi.mocked(getDriverItinerary).mockResolvedValueOnce([
+      { stopId: '223e4567-e89b-42d3-a456-426614174000', position: 1, status: 'PENDIENTE' },
+    ])
+    render(<DriverItineraryPage ownerId="123e4567-e89b-12d3-a456-426614174000" />)
+    expect(await screen.findByRole('heading', { name: 'Siguiente parada', level: 2 })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Parada 1', level: 3 })).toBeInTheDocument()
+  })
+
   it('ruta dorada: por defecto no muestra el itinerario ficticio', () => {
     render(<DriverItineraryPage />)
     expect(screen.getByRole('heading', { name: 'Aún no tienes paradas asignadas' })).toBeInTheDocument()

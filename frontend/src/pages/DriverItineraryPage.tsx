@@ -206,7 +206,7 @@ export function DriverItineraryPage({
         {assignedStopsError ? <Alert tone="danger">{assignedStopsError}</Alert> : null}
         {syncMessage ? <p className="field-hint" role="status">{syncMessage}</p> : null}
         {nextStop ? <section className="stop-card stop-card--next" aria-labelledby="next-stop-title">
-          <p className="stop-card-label" id="next-stop-title"><Navigation aria-hidden="true" size={16} /> Siguiente parada</p>
+          <h2 className="stop-card-label" id="next-stop-title"><Navigation aria-hidden="true" size={16} /> Siguiente parada</h2>
           <StopDetails stop={nextStop} />
           {panel(nextStop)}
         </section> : <Alert tone="success" role="status" title="Recorrido completado">
