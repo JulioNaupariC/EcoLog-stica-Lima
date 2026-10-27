@@ -206,6 +206,9 @@ jobs:
       - name: Type-check frontend
         run: npm run typecheck
 
+      - name: Check ECL-76 offline browser script syntax
+        run: node --check scripts/verify-incidents-offline.mjs
+
       - name: Run frontend tests
         run: >-
           npm run test:coverage -- --reporter=default --reporter=junit

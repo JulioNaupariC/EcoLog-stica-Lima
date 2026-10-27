@@ -1,0 +1,13 @@
+ECL-76 — salida del 27/10/2026, America/Lima
+
+python scripts/check_docs.py
+check_docs: OK. Enlaces, índice del README y retornos correctos.
+
+Verificación adicional tras extraer catalogCases para corregir ESLint:
+npm.cmd --prefix frontend run test -- src/domain/incident.test.ts src/pages/IncidentCreatePage.test.tsx --maxWorkers=1 --reporter=dot
+Test Files  2 passed (2)
+Tests  43 passed (43)
+Duration  7.90s
+
+Los JUnit de la suite completa conservan 732 casos aprobados. Esta reprueba
+verifica los dos archivos de pruebas modificados tras la corrección de estilo.

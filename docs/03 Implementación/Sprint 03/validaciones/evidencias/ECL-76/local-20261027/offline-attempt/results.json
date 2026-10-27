@@ -1,0 +1,16 @@
+{
+  "ticket": "ECL-76",
+  "executedAt": "2026-10-27T21:06:01.646Z",
+  "timezone": "America/Lima",
+  "commit": "892c36459f0d124631bb2ad73758cc84154c718c",
+  "workingTreeDirty": true,
+  "api": "http://127.0.0.1:8000",
+  "base": "http://127.0.0.1:5173",
+  "mode": "Real local API / PostgreSQL; only first response loss is injected",
+  "browsers": [],
+  "passed": false,
+  "failure": {
+    "phase": "configuration",
+    "errorType": "AssertionError"
+  }
+}

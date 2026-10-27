@@ -8,6 +8,7 @@ import { listIncidents, loadIncidentDraft, saveIncidentDraft } from '../services
 import { getDriverItinerary } from '../services/driverItinerary'
 import { saveItinerary } from '../services/offlineStorage'
 import { newIncidentDraft } from '../domain/incident'
+import type { IncidentDraft } from '../domain/incident'
 
 vi.mock('../services/driverItinerary', async original => ({
   ...await original<typeof import('../services/driverItinerary')>(), getDriverItinerary: vi.fn(),
@@ -145,4 +146,67 @@ it('ruta infeliz: 422 permite corregir sin cambiar la operación', async () => {
   await screen.findByText(/Incidencia registrada · pendiente de validación/)
   expect((await listIncidents(ownerId))[0].payload.operation_id).toBe(operation)
   expect(await listIncidents(ownerId)).toHaveLength(1)
+})
+
+it.each([
+  ['tipo', { tipo: '' }, 'Selecciona el tipo de incidencia.'],
+  ['severidad', { severidad: '' }, 'Selecciona la severidad.'],
+  ['ubicación', { ubicacion: null }, 'Usa tu ubicación o selecciona una parada con coordenadas.'],
+  ['hora', { ocurrida_en: '' }, 'La hora del dispositivo está adelantada. Revisa su reloj antes de crear otro reporte.'],
+  ['varios', { tipo: '', severidad: '', ubicacion: null }, 'Selecciona el tipo de incidencia.'],
+] satisfies [string, Partial<IncidentDraft>, string][])(
+  'I04 ruta infeliz: falta %s, conserva borrador tras recargar sin encolar ni enviar',
+  async (_field, changes, message) => {
+    const draft: IncidentDraft = { ...newIncidentDraft(), tipo: 'AVERIA', severidad: 'ALTA',
+      ubicacion: { latitud: -12, longitud: -77 }, observacion: 'Borrador sintético I04', ...changes }
+    await saveIncidentDraft(ownerId, draft)
+    const view = await mount(true)
+    fireEvent.click(screen.getByRole('button', { name: 'Enviar incidencia' }))
+    expect(screen.getByText(message)).toBeInTheDocument()
+    await waitFor(async () => expect(await loadIncidentDraft(ownerId)).toEqual(draft))
+    view.unmount()
+    await mount(true)
+    expect(screen.getByLabelText('Observación (opcional)')).toHaveValue(draft.observacion)
+    expect(await loadIncidentDraft(ownerId)).toEqual(draft)
+    expect(await listIncidents(ownerId)).toEqual([])
+    expect(fetch).not.toHaveBeenCalled()
+  },
+)
+
+it.each([
+  ['I05 hora futura', { ocurrida_en: new Date(Date.now() + 3_600_000).toISOString() }, 'ocurrida_en'],
+  ['I06 observación Unicode de 501 caracteres', { observacion: '😀'.repeat(501) }, 'observacion'],
+] satisfies [string, Partial<IncidentDraft>, string][])(
+  '%s ruta infeliz: rechaza envío y conserva el valor íntegro tras recargar',
+  async (_scenario, changes, field) => {
+    const draft: IncidentDraft = { ...newIncidentDraft(), tipo: 'AVERIA', severidad: 'ALTA',
+      ubicacion: { latitud: -12, longitud: -77 }, ...changes }
+    await saveIncidentDraft(ownerId, draft)
+    const view = await mount(true)
+    fireEvent.click(screen.getByRole('button', { name: 'Enviar incidencia' }))
+    expect(document.getElementById(`${field}-error`)).toBeInTheDocument()
+    await waitFor(async () => expect(await loadIncidentDraft(ownerId)).toEqual(draft))
+    view.unmount()
+    await mount(true)
+    expect(await loadIncidentDraft(ownerId)).toEqual(draft)
+    expect(screen.getByLabelText('Observación (opcional)')).toHaveValue(draft.observacion)
+    expect(await listIncidents(ownerId)).toEqual([])
+    expect(fetch).not.toHaveBeenCalled()
+  },
+)
+
+it('I11 ruta infeliz: conflicto visible conserva operación sin corrección ni reintento automático', async () => {
+  vi.mocked(fetch).mockResolvedValue(new Response('{}', { status: 409 }))
+  const view = await mount(true); await fill()
+  fireEvent.click(screen.getByRole('button', { name: 'Enviar incidencia' }))
+  await screen.findByRole('alert')
+  const [original] = await listIncidents(ownerId)
+  expect(original.errorStatus).toBe(409)
+  view.unmount(); await mount(true)
+  expect(await screen.findByRole('alert')).toHaveTextContent('conflicto')
+  act(() => { window.dispatchEvent(new Event('online')) })
+  expect(screen.queryByRole('button', { name: 'Corregir datos conservando el identificador' })).not.toBeInTheDocument()
+  expect(screen.queryByRole('button', { name: 'Reintentar envíos pendientes' })).not.toBeInTheDocument()
+  await waitFor(async () => expect(await listIncidents(ownerId)).toEqual([original]))
+  expect(fetch).toHaveBeenCalledTimes(1)
 })
