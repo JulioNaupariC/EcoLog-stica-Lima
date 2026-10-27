@@ -131,6 +131,27 @@ python scripts/check_docs.py
 
 ## Pendientes externos para integrar
 
+### Corrección del fallo de integración reportado en el PR
+
+José compartió un log de `CI / Backend / Integration` con 3 fallos y 246 pruebas
+aprobadas. Los fallos de asignación y seed demo tenían la misma causa:
+`AttributeError: 'Pedido' object has no attribute 'latitud'`.
+
+La primera implementación confundía los campos del DTO con los del modelo ORM.
+`Pedido` almacena un punto PostGIS en `ubicacion`, no atributos `latitud` ni
+`longitud`. La corrección reutiliza `PedidoRepository.coordinates`, que proyecta
+`ST_Y` como latitud y `ST_X` como longitud. Sin punto, devuelve coordenadas nulas;
+si falla la lectura espacial, conserva el error de almacenamiento saneado.
+
+Las pruebas unitarias ahora usan instancias reales de `Pedido`, en lugar de
+objetos simulados con atributos inexistentes. Se amplió la prueba de integración
+de asignación para comprobar ambos casos: pedido con punto geográfico y pedido
+solo con referencia. La ejecución PostgreSQL/PostGIS sigue pendiente de la
+reprueba del CI; no se declara aprobada a partir de las pruebas unitarias.
+
+La reprueba local de esta corrección pasó **868 pruebas unitarias backend**,
+con **92,27 % de cobertura**, Ruff y enlaces de documentación en verde.
+
 Docker no está disponible en el equipo de ejecución. Sigue pendiente probar
 el flujo con sesión autorizada, FastAPI y PostgreSQL/PostGIS reales siguiendo
 el arranque del README; también la campaña de 10/10 de ECL-76. No se presentan

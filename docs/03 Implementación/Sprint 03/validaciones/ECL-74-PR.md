@@ -26,6 +26,9 @@ pendiente de validación por Operación.
   incidencias pendientes al cerrar sesión.
 - Ajuste mínimo de backend autorizado por José: coordenadas opcionales del
   pedido asignado en el itinerario. No hay migraciones ni cambios de permisos.
+- Corrección del fallo de integración: las coordenadas se proyectan desde
+  `Pedido.ubicacion` mediante el repositorio espacial existente, sin acceder a
+  atributos ORM inexistentes. Pruebas con el modelo real y casos con/sin punto.
 - Pruebas, guía de validación y 16 capturas Chrome/Firefox a 360 px en ambos temas.
 
 ## Validaciones y evidencia
@@ -36,7 +39,7 @@ Resultados locales del 26/10/2026, America/Lima:
 |---|---|---|
 | Tests unitarios frontend | [x] Pasan: 635 pruebas, 48 archivos; cobertura global 97,51 % líneas, 92,56 % ramas | `npm --prefix frontend run test:coverage -- --maxWorkers=2` |
 | Tests del incremento | [x] Pasan: 32 pruebas específicas nuevas; cobertura focalizada inicial (31 pruebas previas al guard) 96,44 % líneas, 88,54 % ramas | Archivos `incident.test.ts`, `incidentSync.test.ts`, `IncidentCreatePage.test.tsx`, `useIncidentSynchronization.test.tsx` |
-| Tests unitarios backend | [x] Pasan: 867; cobertura 92,25 % | `python -m pytest tests/unit --cov=app --cov-fail-under=80`, desde `backend/` |
+| Tests unitarios backend | [x] Pasan: 868; cobertura 92,27 %, tras corregir la lectura PostGIS | `python -m pytest tests/unit --cov=app --cov-fail-under=80`, desde `backend/` |
 | Tests de integración real | [ ] Pendiente: Docker no está disponible en el equipo de ejecución | Requiere sesión de prueba y PostgreSQL/PostGIS; no se sustituye con mocks |
 | Flujo en navegador | [x] Chrome 156.0.8078.48 y Firefox 157.0; claro/oscuro, 360 px, recarga offline y reconexión, una operación/POST | [Resultados](<evidencias/ECL-74/browser-results.json>) y [16 capturas](<evidencias/ECL-74/README.md>) con API HTTP sintética local |
 | Reprueba con propietario esperado | [x] Las cuatro combinaciones vuelven a pasar con la nueva cabecera; pruebas HTTP comprueban rechazo de cookie ajena y preflight | [Resultados nuevos](<evidencias/ECL-74/owner-guard/browser-results.json>) y `test_I16_*` en `test_incidencias_api.py` |

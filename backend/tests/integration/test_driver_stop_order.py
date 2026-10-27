@@ -8,6 +8,7 @@ from sqlalchemy import inspect
 from alembic import command
 from app.db.session import session_factory
 from app.models import Cliente, Pedido
+from app.repositories.pedidos import PedidoRepository
 from app.repositories.usuarios import UsuarioRepository
 from app.services.credenciales import CredentialService
 from app.services.driver_reports import DriverReportService
@@ -15,8 +16,10 @@ from app.services.driver_reports import DriverReportService
 pytestmark = pytest.mark.integration
 
 
+@pytest.mark.parametrize("coordinates", [None, (-12.0464, -77.0428)])
 def test_assignment_links_existing_order_and_exports_operational_details(
     migration_database,
+    coordinates,
 ):
     engine, config = migration_database
     command.upgrade(config, "head")
@@ -41,8 +44,8 @@ def test_assignment_links_existing_order_and_exports_operational_details(
             prioridad="ESTANDAR",
             tipo_producto="GENERAL",
         )
-        session.add(order)
-        session.flush()
+        latitude, longitude = coordinates or (None, None)
+        PedidoRepository(session).add(order, latitude, longitude)
         pedido_id = order.pedido_id
     service = DriverReportService(factory)
     service.provision_assignment(
@@ -52,6 +55,8 @@ def test_assignment_links_existing_order_and_exports_operational_details(
     assert result[0].delivery.address == "Synthetic location"
     assert result[0].delivery.reference == "Synthetic gate"
     assert result[0].delivery.window_start == now
+    assert result[0].delivery.latitud == latitude
+    assert result[0].delivery.longitud == longitude
     assert service.list_assignments(uuid4()) == []
     with engine.connect() as connection:
         inspector = inspect(connection)
