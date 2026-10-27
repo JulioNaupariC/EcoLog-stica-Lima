@@ -1,0 +1,3201 @@
+{
+  "ticket": "ECL-67",
+  "executedAt": "2026-10-27T05:23:42.962Z",
+  "timezone": "America/Lima",
+  "browser": "Chrome/156.0.8078.48",
+  "completed": true,
+  "phase": "mobile drawer keyboard",
+  "axeOnly": true,
+  "results": [
+    {
+      "screen": "login",
+      "route": "/login",
+      "role": null,
+      "theme": "light",
+      "width": 1280,
+      "viewport": 1280,
+      "scroll": 1280,
+      "title": "EcoLogística Lima",
+      "lang": "es",
+      "heading": "Iniciar sesión",
+      "axe": {
+        "violations": [],
+        "passes": 25,
+        "incomplete": 0,
+        "report": "axe-login-light-1280.json"
+      }
+    },
+    {
+      "screen": "login",
+      "route": "/login",
+      "role": null,
+      "theme": "light",
+      "width": 360,
+      "viewport": 360,
+      "scroll": 360,
+      "title": "EcoLogística Lima",
+      "lang": "es",
+      "heading": "Iniciar sesión",
+      "axe": {
+        "violations": [],
+        "passes": 23,
+        "incomplete": 0,
+        "report": "axe-login-light-360.json"
+      }
+    },
+    {
+      "screen": "login",
+      "route": "/login",
+      "role": null,
+      "theme": "light",
+      "width": 320,
+      "viewport": 320,
+      "scroll": 320,
+      "title": "EcoLogística Lima",
+      "lang": "es",
+      "heading": "Iniciar sesión",
+      "axe": {
+        "violations": [],
+        "passes": 23,
+        "incomplete": 0,
+        "report": "axe-login-light-320.json"
+      }
+    },
+    {
+      "screen": "login",
+      "route": "/login",
+      "role": null,
+      "theme": "dark",
+      "width": 1280,
+      "viewport": 1280,
+      "scroll": 1280,
+      "title": "EcoLogística Lima",
+      "lang": "es",
+      "heading": "Iniciar sesión",
+      "axe": {
+        "violations": [],
+        "passes": 26,
+        "incomplete": 0,
+        "report": "axe-login-dark-1280.json"
+      }
+    },
+    {
+      "screen": "login",
+      "route": "/login",
+      "role": null,
+      "theme": "dark",
+      "width": 360,
+      "viewport": 360,
+      "scroll": 360,
+      "title": "EcoLogística Lima",
+      "lang": "es",
+      "heading": "Iniciar sesión",
+      "axe": {
+        "violations": [],
+        "passes": 24,
+        "incomplete": 0,
+        "report": "axe-login-dark-360.json"
+      }
+    },
+    {
+      "screen": "login",
+      "route": "/login",
+      "role": null,
+      "theme": "dark",
+      "width": 320,
+      "viewport": 320,
+      "scroll": 320,
+      "title": "EcoLogística Lima",
+      "lang": "es",
+      "heading": "Iniciar sesión",
+      "axe": {
+        "violations": [],
+        "passes": 24,
+        "incomplete": 0,
+        "report": "axe-login-dark-320.json"
+      }
+    },
+    {
+      "screen": "inicio-operador",
+      "route": "/",
+      "role": "OPERADOR",
+      "theme": "light",
+      "width": 1280,
+      "viewport": 1280,
+      "scroll": 1280,
+      "title": "EcoLogística Lima",
+      "lang": "es",
+      "heading": "Inicio",
+      "axe": {
+        "violations": [
+          {
+            "id": "color-contrast",
+            "impact": "serious",
+            "tags": [
+              "cat.color",
+              "wcag2aa",
+              "wcag143",
+              "TTv5",
+              "TT13.c",
+              "EN-301-549",
+              "EN-9.1.4.3",
+              "ACT",
+              "RGAAv4",
+              "RGAA-3.2.1"
+            ],
+            "targets": [
+              [
+                ".active > .nav-label"
+              ]
+            ]
+          },
+          {
+            "id": "label-content-name-mismatch",
+            "impact": "serious",
+            "tags": [
+              "cat.semantics",
+              "wcag21a",
+              "wcag253",
+              "EN-301-549",
+              "EN-9.2.5.3",
+              "RGAAv4",
+              "RGAA-6.1.5"
+            ],
+            "targets": [
+              [
+                ".account-trigger"
+              ]
+            ]
+          }
+        ],
+        "passes": 24,
+        "incomplete": 1,
+        "report": "axe-inicio-operador-light-1280.json"
+      }
+    },
+    {
+      "screen": "inicio-operador",
+      "route": "/",
+      "role": "OPERADOR",
+      "theme": "light",
+      "width": 360,
+      "viewport": 360,
+      "scroll": 360,
+      "title": "EcoLogística Lima",
+      "lang": "es",
+      "heading": "Inicio",
+      "axe": {
+        "violations": [
+          {
+            "id": "label-content-name-mismatch",
+            "impact": "serious",
+            "tags": [
+              "cat.semantics",
+              "wcag21a",
+              "wcag253",
+              "EN-301-549",
+              "EN-9.2.5.3",
+              "RGAAv4",
+              "RGAA-6.1.5"
+            ],
+            "targets": [
+              [
+                ".account-trigger"
+              ]
+            ]
+          }
+        ],
+        "passes": 24,
+        "incomplete": 0,
+        "report": "axe-inicio-operador-light-360.json"
+      }
+    },
+    {
+      "screen": "inicio-operador",
+      "route": "/",
+      "role": "OPERADOR",
+      "theme": "light",
+      "width": 320,
+      "viewport": 320,
+      "scroll": 331,
+      "title": "EcoLogística Lima",
+      "lang": "es",
+      "heading": "Inicio",
+      "axe": {
+        "violations": [
+          {
+            "id": "label-content-name-mismatch",
+            "impact": "serious",
+            "tags": [
+              "cat.semantics",
+              "wcag21a",
+              "wcag253",
+              "EN-301-549",
+              "EN-9.2.5.3",
+              "RGAAv4",
+              "RGAA-6.1.5"
+            ],
+            "targets": [
+              [
+                ".account-trigger"
+              ]
+            ]
+          }
+        ],
+        "passes": 24,
+        "incomplete": 0,
+        "report": "axe-inicio-operador-light-320.json"
+      }
+    },
+    {
+      "screen": "inicio-operador",
+      "route": "/",
+      "role": "OPERADOR",
+      "theme": "dark",
+      "width": 1280,
+      "viewport": 1280,
+      "scroll": 1280,
+      "title": "EcoLogística Lima",
+      "lang": "es",
+      "heading": "Inicio",
+      "axe": {
+        "violations": [
+          {
+            "id": "label-content-name-mismatch",
+            "impact": "serious",
+            "tags": [
+              "cat.semantics",
+              "wcag21a",
+              "wcag253",
+              "EN-301-549",
+              "EN-9.2.5.3",
+              "RGAAv4",
+              "RGAA-6.1.5"
+            ],
+            "targets": [
+              [
+                ".account-trigger"
+              ]
+            ]
+          }
+        ],
+        "passes": 25,
+        "incomplete": 1,
+        "report": "axe-inicio-operador-dark-1280.json"
+      }
+    },
+    {
+      "screen": "inicio-operador",
+      "route": "/",
+      "role": "OPERADOR",
+      "theme": "dark",
+      "width": 360,
+      "viewport": 360,
+      "scroll": 360,
+      "title": "EcoLogística Lima",
+      "lang": "es",
+      "heading": "Inicio",
+      "axe": {
+        "violations": [
+          {
+            "id": "label-content-name-mismatch",
+            "impact": "serious",
+            "tags": [
+              "cat.semantics",
+              "wcag21a",
+              "wcag253",
+              "EN-301-549",
+              "EN-9.2.5.3",
+              "RGAAv4",
+              "RGAA-6.1.5"
+            ],
+            "targets": [
+              [
+                ".account-trigger"
+              ]
+            ]
+          }
+        ],
+        "passes": 25,
+        "incomplete": 0,
+        "report": "axe-inicio-operador-dark-360.json"
+      }
+    },
+    {
+      "screen": "inicio-operador",
+      "route": "/",
+      "role": "OPERADOR",
+      "theme": "dark",
+      "width": 320,
+      "viewport": 320,
+      "scroll": 331,
+      "title": "EcoLogística Lima",
+      "lang": "es",
+      "heading": "Inicio",
+      "axe": {
+        "violations": [
+          {
+            "id": "label-content-name-mismatch",
+            "impact": "serious",
+            "tags": [
+              "cat.semantics",
+              "wcag21a",
+              "wcag253",
+              "EN-301-549",
+              "EN-9.2.5.3",
+              "RGAAv4",
+              "RGAA-6.1.5"
+            ],
+            "targets": [
+              [
+                ".account-trigger"
+              ]
+            ]
+          }
+        ],
+        "passes": 25,
+        "incomplete": 0,
+        "report": "axe-inicio-operador-dark-320.json"
+      }
+    },
+    {
+      "screen": "conductores",
+      "route": "/conductores",
+      "role": "OPERADOR",
+      "theme": "light",
+      "width": 1280,
+      "viewport": 1280,
+      "scroll": 1280,
+      "title": "EcoLogística Lima",
+      "lang": "es",
+      "heading": "Conductores",
+      "axe": {
+        "violations": [
+          {
+            "id": "label-content-name-mismatch",
+            "impact": "serious",
+            "tags": [
+              "cat.semantics",
+              "wcag21a",
+              "wcag253",
+              "EN-301-549",
+              "EN-9.2.5.3",
+              "RGAAv4",
+              "RGAA-6.1.5"
+            ],
+            "targets": [
+              [
+                ".account-trigger"
+              ],
+              [
+                "li:nth-child(1) > article > .btn--secondary.btn--sm.btn"
+              ],
+              [
+                "li:nth-child(2) > article > .btn--secondary.btn--sm.btn"
+              ],
+              [
+                "li:nth-child(3) > article > .btn--secondary.btn--sm.btn"
+              ],
+              [
+                "li:nth-child(4) > article > .btn--secondary.btn--sm.btn"
+              ]
+            ]
+          }
+        ],
+        "passes": 25,
+        "incomplete": 1,
+        "report": "axe-conductores-light-1280.json"
+      }
+    },
+    {
+      "screen": "conductores",
+      "route": "/conductores",
+      "role": "OPERADOR",
+      "theme": "light",
+      "width": 360,
+      "viewport": 360,
+      "scroll": 360,
+      "title": "EcoLogística Lima",
+      "lang": "es",
+      "heading": "Conductores",
+      "axe": {
+        "violations": [
+          {
+            "id": "label-content-name-mismatch",
+            "impact": "serious",
+            "tags": [
+              "cat.semantics",
+              "wcag21a",
+              "wcag253",
+              "EN-301-549",
+              "EN-9.2.5.3",
+              "RGAAv4",
+              "RGAA-6.1.5"
+            ],
+            "targets": [
+              [
+                ".account-trigger"
+              ],
+              [
+                "li:nth-child(1) > article > .btn--secondary.btn--sm.btn"
+              ],
+              [
+                "li:nth-child(2) > article > .btn--secondary.btn--sm.btn"
+              ],
+              [
+                "li:nth-child(3) > article > .btn--secondary.btn--sm.btn"
+              ],
+              [
+                "li:nth-child(4) > article > .btn--secondary.btn--sm.btn"
+              ]
+            ]
+          }
+        ],
+        "passes": 25,
+        "incomplete": 0,
+        "report": "axe-conductores-light-360.json"
+      }
+    },
+    {
+      "screen": "conductores",
+      "route": "/conductores",
+      "role": "OPERADOR",
+      "theme": "light",
+      "width": 320,
+      "viewport": 320,
+      "scroll": 331,
+      "title": "EcoLogística Lima",
+      "lang": "es",
+      "heading": "Conductores",
+      "axe": {
+        "violations": [
+          {
+            "id": "label-content-name-mismatch",
+            "impact": "serious",
+            "tags": [
+              "cat.semantics",
+              "wcag21a",
+              "wcag253",
+              "EN-301-549",
+              "EN-9.2.5.3",
+              "RGAAv4",
+              "RGAA-6.1.5"
+            ],
+            "targets": [
+              [
+                ".account-trigger"
+              ],
+              [
+                "li:nth-child(1) > article > .btn--secondary.btn--sm.btn"
+              ],
+              [
+                "li:nth-child(2) > article > .btn--secondary.btn--sm.btn"
+              ],
+              [
+                "li:nth-child(3) > article > .btn--secondary.btn--sm.btn"
+              ],
+              [
+                "li:nth-child(4) > article > .btn--secondary.btn--sm.btn"
+              ]
+            ]
+          }
+        ],
+        "passes": 25,
+        "incomplete": 0,
+        "report": "axe-conductores-light-320.json"
+      }
+    },
+    {
+      "screen": "conductores",
+      "route": "/conductores",
+      "role": "OPERADOR",
+      "theme": "dark",
+      "width": 1280,
+      "viewport": 1280,
+      "scroll": 1280,
+      "title": "EcoLogística Lima",
+      "lang": "es",
+      "heading": "Conductores",
+      "axe": {
+        "violations": [
+          {
+            "id": "label-content-name-mismatch",
+            "impact": "serious",
+            "tags": [
+              "cat.semantics",
+              "wcag21a",
+              "wcag253",
+              "EN-301-549",
+              "EN-9.2.5.3",
+              "RGAAv4",
+              "RGAA-6.1.5"
+            ],
+            "targets": [
+              [
+                ".account-trigger"
+              ],
+              [
+                "li:nth-child(1) > article > .btn--secondary.btn--sm.btn"
+              ],
+              [
+                "li:nth-child(2) > article > .btn--secondary.btn--sm.btn"
+              ],
+              [
+                "li:nth-child(3) > article > .btn--secondary.btn--sm.btn"
+              ],
+              [
+                "li:nth-child(4) > article > .btn--secondary.btn--sm.btn"
+              ]
+            ]
+          }
+        ],
+        "passes": 25,
+        "incomplete": 1,
+        "report": "axe-conductores-dark-1280.json"
+      }
+    },
+    {
+      "screen": "conductores",
+      "route": "/conductores",
+      "role": "OPERADOR",
+      "theme": "dark",
+      "width": 360,
+      "viewport": 360,
+      "scroll": 360,
+      "title": "EcoLogística Lima",
+      "lang": "es",
+      "heading": "Conductores",
+      "axe": {
+        "violations": [
+          {
+            "id": "label-content-name-mismatch",
+            "impact": "serious",
+            "tags": [
+              "cat.semantics",
+              "wcag21a",
+              "wcag253",
+              "EN-301-549",
+              "EN-9.2.5.3",
+              "RGAAv4",
+              "RGAA-6.1.5"
+            ],
+            "targets": [
+              [
+                ".account-trigger"
+              ],
+              [
+                "li:nth-child(1) > article > .btn--secondary.btn--sm.btn"
+              ],
+              [
+                "li:nth-child(2) > article > .btn--secondary.btn--sm.btn"
+              ],
+              [
+                "li:nth-child(3) > article > .btn--secondary.btn--sm.btn"
+              ],
+              [
+                "li:nth-child(4) > article > .btn--secondary.btn--sm.btn"
+              ]
+            ]
+          }
+        ],
+        "passes": 25,
+        "incomplete": 0,
+        "report": "axe-conductores-dark-360.json"
+      }
+    },
+    {
+      "screen": "conductores",
+      "route": "/conductores",
+      "role": "OPERADOR",
+      "theme": "dark",
+      "width": 320,
+      "viewport": 320,
+      "scroll": 331,
+      "title": "EcoLogística Lima",
+      "lang": "es",
+      "heading": "Conductores",
+      "axe": {
+        "violations": [
+          {
+            "id": "label-content-name-mismatch",
+            "impact": "serious",
+            "tags": [
+              "cat.semantics",
+              "wcag21a",
+              "wcag253",
+              "EN-301-549",
+              "EN-9.2.5.3",
+              "RGAAv4",
+              "RGAA-6.1.5"
+            ],
+            "targets": [
+              [
+                ".account-trigger"
+              ],
+              [
+                "li:nth-child(1) > article > .btn--secondary.btn--sm.btn"
+              ],
+              [
+                "li:nth-child(2) > article > .btn--secondary.btn--sm.btn"
+              ],
+              [
+                "li:nth-child(3) > article > .btn--secondary.btn--sm.btn"
+              ],
+              [
+                "li:nth-child(4) > article > .btn--secondary.btn--sm.btn"
+              ]
+            ]
+          }
+        ],
+        "passes": 25,
+        "incomplete": 0,
+        "report": "axe-conductores-dark-320.json"
+      }
+    },
+    {
+      "screen": "pedido",
+      "route": "/pedidos/nuevo",
+      "role": "OPERADOR",
+      "theme": "light",
+      "width": 1280,
+      "viewport": 1280,
+      "scroll": 1280,
+      "title": "EcoLogística Lima",
+      "lang": "es",
+      "heading": "Registrar pedido",
+      "axe": {
+        "violations": [
+          {
+            "id": "label-content-name-mismatch",
+            "impact": "serious",
+            "tags": [
+              "cat.semantics",
+              "wcag21a",
+              "wcag253",
+              "EN-301-549",
+              "EN-9.2.5.3",
+              "RGAAv4",
+              "RGAA-6.1.5"
+            ],
+            "targets": [
+              [
+                ".account-trigger"
+              ]
+            ]
+          }
+        ],
+        "passes": 27,
+        "incomplete": 1,
+        "report": "axe-pedido-light-1280.json"
+      }
+    },
+    {
+      "screen": "pedido",
+      "route": "/pedidos/nuevo",
+      "role": "OPERADOR",
+      "theme": "light",
+      "width": 360,
+      "viewport": 360,
+      "scroll": 360,
+      "title": "EcoLogística Lima",
+      "lang": "es",
+      "heading": "Registrar pedido",
+      "axe": {
+        "violations": [
+          {
+            "id": "label-content-name-mismatch",
+            "impact": "serious",
+            "tags": [
+              "cat.semantics",
+              "wcag21a",
+              "wcag253",
+              "EN-301-549",
+              "EN-9.2.5.3",
+              "RGAAv4",
+              "RGAA-6.1.5"
+            ],
+            "targets": [
+              [
+                ".account-trigger"
+              ]
+            ]
+          }
+        ],
+        "passes": 27,
+        "incomplete": 0,
+        "report": "axe-pedido-light-360.json"
+      }
+    },
+    {
+      "screen": "pedido",
+      "route": "/pedidos/nuevo",
+      "role": "OPERADOR",
+      "theme": "light",
+      "width": 320,
+      "viewport": 320,
+      "scroll": 331,
+      "title": "EcoLogística Lima",
+      "lang": "es",
+      "heading": "Registrar pedido",
+      "axe": {
+        "violations": [
+          {
+            "id": "label-content-name-mismatch",
+            "impact": "serious",
+            "tags": [
+              "cat.semantics",
+              "wcag21a",
+              "wcag253",
+              "EN-301-549",
+              "EN-9.2.5.3",
+              "RGAAv4",
+              "RGAA-6.1.5"
+            ],
+            "targets": [
+              [
+                ".account-trigger"
+              ]
+            ]
+          }
+        ],
+        "passes": 27,
+        "incomplete": 0,
+        "report": "axe-pedido-light-320.json"
+      }
+    },
+    {
+      "screen": "pedido",
+      "route": "/pedidos/nuevo",
+      "role": "OPERADOR",
+      "theme": "dark",
+      "width": 1280,
+      "viewport": 1280,
+      "scroll": 1280,
+      "title": "EcoLogística Lima",
+      "lang": "es",
+      "heading": "Registrar pedido",
+      "axe": {
+        "violations": [
+          {
+            "id": "label-content-name-mismatch",
+            "impact": "serious",
+            "tags": [
+              "cat.semantics",
+              "wcag21a",
+              "wcag253",
+              "EN-301-549",
+              "EN-9.2.5.3",
+              "RGAAv4",
+              "RGAA-6.1.5"
+            ],
+            "targets": [
+              [
+                ".account-trigger"
+              ]
+            ]
+          }
+        ],
+        "passes": 27,
+        "incomplete": 1,
+        "report": "axe-pedido-dark-1280.json"
+      }
+    },
+    {
+      "screen": "pedido",
+      "route": "/pedidos/nuevo",
+      "role": "OPERADOR",
+      "theme": "dark",
+      "width": 360,
+      "viewport": 360,
+      "scroll": 360,
+      "title": "EcoLogística Lima",
+      "lang": "es",
+      "heading": "Registrar pedido",
+      "axe": {
+        "violations": [
+          {
+            "id": "label-content-name-mismatch",
+            "impact": "serious",
+            "tags": [
+              "cat.semantics",
+              "wcag21a",
+              "wcag253",
+              "EN-301-549",
+              "EN-9.2.5.3",
+              "RGAAv4",
+              "RGAA-6.1.5"
+            ],
+            "targets": [
+              [
+                ".account-trigger"
+              ]
+            ]
+          }
+        ],
+        "passes": 27,
+        "incomplete": 0,
+        "report": "axe-pedido-dark-360.json"
+      }
+    },
+    {
+      "screen": "pedido",
+      "route": "/pedidos/nuevo",
+      "role": "OPERADOR",
+      "theme": "dark",
+      "width": 320,
+      "viewport": 320,
+      "scroll": 331,
+      "title": "EcoLogística Lima",
+      "lang": "es",
+      "heading": "Registrar pedido",
+      "axe": {
+        "violations": [
+          {
+            "id": "label-content-name-mismatch",
+            "impact": "serious",
+            "tags": [
+              "cat.semantics",
+              "wcag21a",
+              "wcag253",
+              "EN-301-549",
+              "EN-9.2.5.3",
+              "RGAAv4",
+              "RGAA-6.1.5"
+            ],
+            "targets": [
+              [
+                ".account-trigger"
+              ]
+            ]
+          }
+        ],
+        "passes": 27,
+        "incomplete": 0,
+        "report": "axe-pedido-dark-320.json"
+      }
+    },
+    {
+      "screen": "preferencias",
+      "route": "/clientes/preferencias",
+      "role": "OPERADOR",
+      "theme": "light",
+      "width": 1280,
+      "viewport": 1280,
+      "scroll": 1280,
+      "title": "EcoLogística Lima",
+      "lang": "es",
+      "heading": "Preferencias de entrega",
+      "axe": {
+        "violations": [
+          {
+            "id": "label-content-name-mismatch",
+            "impact": "serious",
+            "tags": [
+              "cat.semantics",
+              "wcag21a",
+              "wcag253",
+              "EN-301-549",
+              "EN-9.2.5.3",
+              "RGAAv4",
+              "RGAA-6.1.5"
+            ],
+            "targets": [
+              [
+                ".account-trigger"
+              ]
+            ]
+          }
+        ],
+        "passes": 25,
+        "incomplete": 1,
+        "report": "axe-preferencias-light-1280.json"
+      }
+    },
+    {
+      "screen": "preferencias",
+      "route": "/clientes/preferencias",
+      "role": "OPERADOR",
+      "theme": "light",
+      "width": 360,
+      "viewport": 360,
+      "scroll": 360,
+      "title": "EcoLogística Lima",
+      "lang": "es",
+      "heading": "Preferencias de entrega",
+      "axe": {
+        "violations": [
+          {
+            "id": "label-content-name-mismatch",
+            "impact": "serious",
+            "tags": [
+              "cat.semantics",
+              "wcag21a",
+              "wcag253",
+              "EN-301-549",
+              "EN-9.2.5.3",
+              "RGAAv4",
+              "RGAA-6.1.5"
+            ],
+            "targets": [
+              [
+                ".account-trigger"
+              ]
+            ]
+          }
+        ],
+        "passes": 25,
+        "incomplete": 0,
+        "report": "axe-preferencias-light-360.json"
+      }
+    },
+    {
+      "screen": "preferencias",
+      "route": "/clientes/preferencias",
+      "role": "OPERADOR",
+      "theme": "light",
+      "width": 320,
+      "viewport": 320,
+      "scroll": 331,
+      "title": "EcoLogística Lima",
+      "lang": "es",
+      "heading": "Preferencias de entrega",
+      "axe": {
+        "violations": [
+          {
+            "id": "label-content-name-mismatch",
+            "impact": "serious",
+            "tags": [
+              "cat.semantics",
+              "wcag21a",
+              "wcag253",
+              "EN-301-549",
+              "EN-9.2.5.3",
+              "RGAAv4",
+              "RGAA-6.1.5"
+            ],
+            "targets": [
+              [
+                ".account-trigger"
+              ]
+            ]
+          }
+        ],
+        "passes": 25,
+        "incomplete": 0,
+        "report": "axe-preferencias-light-320.json"
+      }
+    },
+    {
+      "screen": "preferencias",
+      "route": "/clientes/preferencias",
+      "role": "OPERADOR",
+      "theme": "dark",
+      "width": 1280,
+      "viewport": 1280,
+      "scroll": 1280,
+      "title": "EcoLogística Lima",
+      "lang": "es",
+      "heading": "Preferencias de entrega",
+      "axe": {
+        "violations": [
+          {
+            "id": "label-content-name-mismatch",
+            "impact": "serious",
+            "tags": [
+              "cat.semantics",
+              "wcag21a",
+              "wcag253",
+              "EN-301-549",
+              "EN-9.2.5.3",
+              "RGAAv4",
+              "RGAA-6.1.5"
+            ],
+            "targets": [
+              [
+                ".account-trigger"
+              ]
+            ]
+          }
+        ],
+        "passes": 25,
+        "incomplete": 1,
+        "report": "axe-preferencias-dark-1280.json"
+      }
+    },
+    {
+      "screen": "preferencias",
+      "route": "/clientes/preferencias",
+      "role": "OPERADOR",
+      "theme": "dark",
+      "width": 360,
+      "viewport": 360,
+      "scroll": 360,
+      "title": "EcoLogística Lima",
+      "lang": "es",
+      "heading": "Preferencias de entrega",
+      "axe": {
+        "violations": [
+          {
+            "id": "label-content-name-mismatch",
+            "impact": "serious",
+            "tags": [
+              "cat.semantics",
+              "wcag21a",
+              "wcag253",
+              "EN-301-549",
+              "EN-9.2.5.3",
+              "RGAAv4",
+              "RGAA-6.1.5"
+            ],
+            "targets": [
+              [
+                ".account-trigger"
+              ]
+            ]
+          }
+        ],
+        "passes": 25,
+        "incomplete": 0,
+        "report": "axe-preferencias-dark-360.json"
+      }
+    },
+    {
+      "screen": "preferencias",
+      "route": "/clientes/preferencias",
+      "role": "OPERADOR",
+      "theme": "dark",
+      "width": 320,
+      "viewport": 320,
+      "scroll": 331,
+      "title": "EcoLogística Lima",
+      "lang": "es",
+      "heading": "Preferencias de entrega",
+      "axe": {
+        "violations": [
+          {
+            "id": "label-content-name-mismatch",
+            "impact": "serious",
+            "tags": [
+              "cat.semantics",
+              "wcag21a",
+              "wcag253",
+              "EN-301-549",
+              "EN-9.2.5.3",
+              "RGAAv4",
+              "RGAA-6.1.5"
+            ],
+            "targets": [
+              [
+                ".account-trigger"
+              ]
+            ]
+          }
+        ],
+        "passes": 25,
+        "incomplete": 0,
+        "report": "axe-preferencias-dark-320.json"
+      }
+    },
+    {
+      "screen": "incidencias-operacion",
+      "route": "/operacion/incidencias",
+      "role": "OPERADOR",
+      "theme": "light",
+      "width": 1280,
+      "viewport": 1280,
+      "scroll": 1280,
+      "title": "EcoLogística Lima",
+      "lang": "es",
+      "heading": "Incidencias pendientes",
+      "axe": {
+        "violations": [
+          {
+            "id": "label-content-name-mismatch",
+            "impact": "serious",
+            "tags": [
+              "cat.semantics",
+              "wcag21a",
+              "wcag253",
+              "EN-301-549",
+              "EN-9.2.5.3",
+              "RGAAv4",
+              "RGAA-6.1.5"
+            ],
+            "targets": [
+              [
+                ".account-trigger"
+              ]
+            ]
+          }
+        ],
+        "passes": 27,
+        "incomplete": 2,
+        "report": "axe-incidencias-operacion-light-1280.json"
+      }
+    },
+    {
+      "screen": "incidencias-operacion",
+      "route": "/operacion/incidencias",
+      "role": "OPERADOR",
+      "theme": "light",
+      "width": 360,
+      "viewport": 360,
+      "scroll": 360,
+      "title": "EcoLogística Lima",
+      "lang": "es",
+      "heading": "Incidencias pendientes",
+      "axe": {
+        "violations": [
+          {
+            "id": "label-content-name-mismatch",
+            "impact": "serious",
+            "tags": [
+              "cat.semantics",
+              "wcag21a",
+              "wcag253",
+              "EN-301-549",
+              "EN-9.2.5.3",
+              "RGAAv4",
+              "RGAA-6.1.5"
+            ],
+            "targets": [
+              [
+                ".account-trigger"
+              ]
+            ]
+          }
+        ],
+        "passes": 27,
+        "incomplete": 1,
+        "report": "axe-incidencias-operacion-light-360.json"
+      }
+    },
+    {
+      "screen": "incidencias-operacion",
+      "route": "/operacion/incidencias",
+      "role": "OPERADOR",
+      "theme": "light",
+      "width": 320,
+      "viewport": 320,
+      "scroll": 331,
+      "title": "EcoLogística Lima",
+      "lang": "es",
+      "heading": "Incidencias pendientes",
+      "axe": {
+        "violations": [
+          {
+            "id": "label-content-name-mismatch",
+            "impact": "serious",
+            "tags": [
+              "cat.semantics",
+              "wcag21a",
+              "wcag253",
+              "EN-301-549",
+              "EN-9.2.5.3",
+              "RGAAv4",
+              "RGAA-6.1.5"
+            ],
+            "targets": [
+              [
+                ".account-trigger"
+              ]
+            ]
+          }
+        ],
+        "passes": 27,
+        "incomplete": 1,
+        "report": "axe-incidencias-operacion-light-320.json"
+      }
+    },
+    {
+      "screen": "incidencias-operacion",
+      "route": "/operacion/incidencias",
+      "role": "OPERADOR",
+      "theme": "dark",
+      "width": 1280,
+      "viewport": 1280,
+      "scroll": 1280,
+      "title": "EcoLogística Lima",
+      "lang": "es",
+      "heading": "Incidencias pendientes",
+      "axe": {
+        "violations": [
+          {
+            "id": "label-content-name-mismatch",
+            "impact": "serious",
+            "tags": [
+              "cat.semantics",
+              "wcag21a",
+              "wcag253",
+              "EN-301-549",
+              "EN-9.2.5.3",
+              "RGAAv4",
+              "RGAA-6.1.5"
+            ],
+            "targets": [
+              [
+                ".account-trigger"
+              ]
+            ]
+          }
+        ],
+        "passes": 27,
+        "incomplete": 2,
+        "report": "axe-incidencias-operacion-dark-1280.json"
+      }
+    },
+    {
+      "screen": "incidencias-operacion",
+      "route": "/operacion/incidencias",
+      "role": "OPERADOR",
+      "theme": "dark",
+      "width": 360,
+      "viewport": 360,
+      "scroll": 360,
+      "title": "EcoLogística Lima",
+      "lang": "es",
+      "heading": "Incidencias pendientes",
+      "axe": {
+        "violations": [
+          {
+            "id": "label-content-name-mismatch",
+            "impact": "serious",
+            "tags": [
+              "cat.semantics",
+              "wcag21a",
+              "wcag253",
+              "EN-301-549",
+              "EN-9.2.5.3",
+              "RGAAv4",
+              "RGAA-6.1.5"
+            ],
+            "targets": [
+              [
+                ".account-trigger"
+              ]
+            ]
+          }
+        ],
+        "passes": 27,
+        "incomplete": 1,
+        "report": "axe-incidencias-operacion-dark-360.json"
+      }
+    },
+    {
+      "screen": "incidencias-operacion",
+      "route": "/operacion/incidencias",
+      "role": "OPERADOR",
+      "theme": "dark",
+      "width": 320,
+      "viewport": 320,
+      "scroll": 331,
+      "title": "EcoLogística Lima",
+      "lang": "es",
+      "heading": "Incidencias pendientes",
+      "axe": {
+        "violations": [
+          {
+            "id": "label-content-name-mismatch",
+            "impact": "serious",
+            "tags": [
+              "cat.semantics",
+              "wcag21a",
+              "wcag253",
+              "EN-301-549",
+              "EN-9.2.5.3",
+              "RGAAv4",
+              "RGAA-6.1.5"
+            ],
+            "targets": [
+              [
+                ".account-trigger"
+              ]
+            ]
+          }
+        ],
+        "passes": 27,
+        "incomplete": 1,
+        "report": "axe-incidencias-operacion-dark-320.json"
+      }
+    },
+    {
+      "screen": "inicio-conductor",
+      "route": "/",
+      "role": "CONDUCTOR",
+      "theme": "light",
+      "width": 1280,
+      "viewport": 1280,
+      "scroll": 1280,
+      "title": "EcoLogística Lima",
+      "lang": "es",
+      "heading": "Inicio",
+      "axe": {
+        "violations": [
+          {
+            "id": "label-content-name-mismatch",
+            "impact": "serious",
+            "tags": [
+              "cat.semantics",
+              "wcag21a",
+              "wcag253",
+              "EN-301-549",
+              "EN-9.2.5.3",
+              "RGAAv4",
+              "RGAA-6.1.5"
+            ],
+            "targets": [
+              [
+                "button"
+              ]
+            ]
+          }
+        ],
+        "passes": 25,
+        "incomplete": 0,
+        "report": "axe-inicio-conductor-light-1280.json"
+      }
+    },
+    {
+      "screen": "inicio-conductor",
+      "route": "/",
+      "role": "CONDUCTOR",
+      "theme": "light",
+      "width": 360,
+      "viewport": 360,
+      "scroll": 360,
+      "title": "EcoLogística Lima",
+      "lang": "es",
+      "heading": "Inicio",
+      "axe": {
+        "violations": [
+          {
+            "id": "label-content-name-mismatch",
+            "impact": "serious",
+            "tags": [
+              "cat.semantics",
+              "wcag21a",
+              "wcag253",
+              "EN-301-549",
+              "EN-9.2.5.3",
+              "RGAAv4",
+              "RGAA-6.1.5"
+            ],
+            "targets": [
+              [
+                "button"
+              ]
+            ]
+          }
+        ],
+        "passes": 25,
+        "incomplete": 0,
+        "report": "axe-inicio-conductor-light-360.json"
+      }
+    },
+    {
+      "screen": "inicio-conductor",
+      "route": "/",
+      "role": "CONDUCTOR",
+      "theme": "light",
+      "width": 320,
+      "viewport": 320,
+      "scroll": 320,
+      "title": "EcoLogística Lima",
+      "lang": "es",
+      "heading": "Inicio",
+      "axe": {
+        "violations": [
+          {
+            "id": "label-content-name-mismatch",
+            "impact": "serious",
+            "tags": [
+              "cat.semantics",
+              "wcag21a",
+              "wcag253",
+              "EN-301-549",
+              "EN-9.2.5.3",
+              "RGAAv4",
+              "RGAA-6.1.5"
+            ],
+            "targets": [
+              [
+                "button"
+              ]
+            ]
+          }
+        ],
+        "passes": 25,
+        "incomplete": 0,
+        "report": "axe-inicio-conductor-light-320.json"
+      }
+    },
+    {
+      "screen": "inicio-conductor",
+      "route": "/",
+      "role": "CONDUCTOR",
+      "theme": "dark",
+      "width": 1280,
+      "viewport": 1280,
+      "scroll": 1280,
+      "title": "EcoLogística Lima",
+      "lang": "es",
+      "heading": "Inicio",
+      "axe": {
+        "violations": [
+          {
+            "id": "label-content-name-mismatch",
+            "impact": "serious",
+            "tags": [
+              "cat.semantics",
+              "wcag21a",
+              "wcag253",
+              "EN-301-549",
+              "EN-9.2.5.3",
+              "RGAAv4",
+              "RGAA-6.1.5"
+            ],
+            "targets": [
+              [
+                "button"
+              ]
+            ]
+          }
+        ],
+        "passes": 25,
+        "incomplete": 0,
+        "report": "axe-inicio-conductor-dark-1280.json"
+      }
+    },
+    {
+      "screen": "inicio-conductor",
+      "route": "/",
+      "role": "CONDUCTOR",
+      "theme": "dark",
+      "width": 360,
+      "viewport": 360,
+      "scroll": 360,
+      "title": "EcoLogística Lima",
+      "lang": "es",
+      "heading": "Inicio",
+      "axe": {
+        "violations": [
+          {
+            "id": "label-content-name-mismatch",
+            "impact": "serious",
+            "tags": [
+              "cat.semantics",
+              "wcag21a",
+              "wcag253",
+              "EN-301-549",
+              "EN-9.2.5.3",
+              "RGAAv4",
+              "RGAA-6.1.5"
+            ],
+            "targets": [
+              [
+                "button"
+              ]
+            ]
+          }
+        ],
+        "passes": 25,
+        "incomplete": 0,
+        "report": "axe-inicio-conductor-dark-360.json"
+      }
+    },
+    {
+      "screen": "inicio-conductor",
+      "route": "/",
+      "role": "CONDUCTOR",
+      "theme": "dark",
+      "width": 320,
+      "viewport": 320,
+      "scroll": 320,
+      "title": "EcoLogística Lima",
+      "lang": "es",
+      "heading": "Inicio",
+      "axe": {
+        "violations": [
+          {
+            "id": "label-content-name-mismatch",
+            "impact": "serious",
+            "tags": [
+              "cat.semantics",
+              "wcag21a",
+              "wcag253",
+              "EN-301-549",
+              "EN-9.2.5.3",
+              "RGAAv4",
+              "RGAA-6.1.5"
+            ],
+            "targets": [
+              [
+                "button"
+              ]
+            ]
+          }
+        ],
+        "passes": 25,
+        "incomplete": 0,
+        "report": "axe-inicio-conductor-dark-320.json"
+      }
+    },
+    {
+      "screen": "itinerario",
+      "route": "/conductor/itinerario",
+      "role": "CONDUCTOR",
+      "theme": "light",
+      "width": 1280,
+      "viewport": 1280,
+      "scroll": 1280,
+      "title": "EcoLogística Lima",
+      "lang": "es",
+      "heading": "Mi itinerario",
+      "axe": {
+        "violations": [
+          {
+            "id": "label-content-name-mismatch",
+            "impact": "serious",
+            "tags": [
+              "cat.semantics",
+              "wcag21a",
+              "wcag253",
+              "EN-301-549",
+              "EN-9.2.5.3",
+              "RGAAv4",
+              "RGAA-6.1.5"
+            ],
+            "targets": [
+              [
+                ".account-trigger"
+              ]
+            ]
+          }
+        ],
+        "passes": 25,
+        "incomplete": 0,
+        "report": "axe-itinerario-light-1280.json"
+      }
+    },
+    {
+      "screen": "itinerario",
+      "route": "/conductor/itinerario",
+      "role": "CONDUCTOR",
+      "theme": "light",
+      "width": 360,
+      "viewport": 360,
+      "scroll": 360,
+      "title": "EcoLogística Lima",
+      "lang": "es",
+      "heading": "Mi itinerario",
+      "axe": {
+        "violations": [
+          {
+            "id": "label-content-name-mismatch",
+            "impact": "serious",
+            "tags": [
+              "cat.semantics",
+              "wcag21a",
+              "wcag253",
+              "EN-301-549",
+              "EN-9.2.5.3",
+              "RGAAv4",
+              "RGAA-6.1.5"
+            ],
+            "targets": [
+              [
+                ".account-trigger"
+              ]
+            ]
+          }
+        ],
+        "passes": 25,
+        "incomplete": 0,
+        "report": "axe-itinerario-light-360.json"
+      }
+    },
+    {
+      "screen": "itinerario",
+      "route": "/conductor/itinerario",
+      "role": "CONDUCTOR",
+      "theme": "light",
+      "width": 320,
+      "viewport": 320,
+      "scroll": 320,
+      "title": "EcoLogística Lima",
+      "lang": "es",
+      "heading": "Mi itinerario",
+      "axe": {
+        "violations": [
+          {
+            "id": "label-content-name-mismatch",
+            "impact": "serious",
+            "tags": [
+              "cat.semantics",
+              "wcag21a",
+              "wcag253",
+              "EN-301-549",
+              "EN-9.2.5.3",
+              "RGAAv4",
+              "RGAA-6.1.5"
+            ],
+            "targets": [
+              [
+                ".account-trigger"
+              ]
+            ]
+          }
+        ],
+        "passes": 25,
+        "incomplete": 0,
+        "report": "axe-itinerario-light-320.json"
+      }
+    },
+    {
+      "screen": "itinerario",
+      "route": "/conductor/itinerario",
+      "role": "CONDUCTOR",
+      "theme": "dark",
+      "width": 1280,
+      "viewport": 1280,
+      "scroll": 1280,
+      "title": "EcoLogística Lima",
+      "lang": "es",
+      "heading": "Mi itinerario",
+      "axe": {
+        "violations": [
+          {
+            "id": "label-content-name-mismatch",
+            "impact": "serious",
+            "tags": [
+              "cat.semantics",
+              "wcag21a",
+              "wcag253",
+              "EN-301-549",
+              "EN-9.2.5.3",
+              "RGAAv4",
+              "RGAA-6.1.5"
+            ],
+            "targets": [
+              [
+                ".account-trigger"
+              ]
+            ]
+          }
+        ],
+        "passes": 25,
+        "incomplete": 0,
+        "report": "axe-itinerario-dark-1280.json"
+      }
+    },
+    {
+      "screen": "itinerario",
+      "route": "/conductor/itinerario",
+      "role": "CONDUCTOR",
+      "theme": "dark",
+      "width": 360,
+      "viewport": 360,
+      "scroll": 360,
+      "title": "EcoLogística Lima",
+      "lang": "es",
+      "heading": "Mi itinerario",
+      "axe": {
+        "violations": [
+          {
+            "id": "label-content-name-mismatch",
+            "impact": "serious",
+            "tags": [
+              "cat.semantics",
+              "wcag21a",
+              "wcag253",
+              "EN-301-549",
+              "EN-9.2.5.3",
+              "RGAAv4",
+              "RGAA-6.1.5"
+            ],
+            "targets": [
+              [
+                ".account-trigger"
+              ]
+            ]
+          }
+        ],
+        "passes": 25,
+        "incomplete": 0,
+        "report": "axe-itinerario-dark-360.json"
+      }
+    },
+    {
+      "screen": "itinerario",
+      "route": "/conductor/itinerario",
+      "role": "CONDUCTOR",
+      "theme": "dark",
+      "width": 320,
+      "viewport": 320,
+      "scroll": 320,
+      "title": "EcoLogística Lima",
+      "lang": "es",
+      "heading": "Mi itinerario",
+      "axe": {
+        "violations": [
+          {
+            "id": "label-content-name-mismatch",
+            "impact": "serious",
+            "tags": [
+              "cat.semantics",
+              "wcag21a",
+              "wcag253",
+              "EN-301-549",
+              "EN-9.2.5.3",
+              "RGAAv4",
+              "RGAA-6.1.5"
+            ],
+            "targets": [
+              [
+                ".account-trigger"
+              ]
+            ]
+          }
+        ],
+        "passes": 25,
+        "incomplete": 0,
+        "report": "axe-itinerario-dark-320.json"
+      }
+    },
+    {
+      "screen": "incidencias-conductor",
+      "route": "/conductor/incidencias/nueva",
+      "role": "CONDUCTOR",
+      "theme": "light",
+      "width": 1280,
+      "viewport": 1280,
+      "scroll": 1280,
+      "title": "EcoLogística Lima",
+      "lang": "es",
+      "heading": "Reportar incidencia",
+      "axe": {
+        "violations": [
+          {
+            "id": "label-content-name-mismatch",
+            "impact": "serious",
+            "tags": [
+              "cat.semantics",
+              "wcag21a",
+              "wcag253",
+              "EN-301-549",
+              "EN-9.2.5.3",
+              "RGAAv4",
+              "RGAA-6.1.5"
+            ],
+            "targets": [
+              [
+                ".account-trigger"
+              ]
+            ]
+          }
+        ],
+        "passes": 26,
+        "incomplete": 0,
+        "report": "axe-incidencias-conductor-light-1280.json"
+      }
+    },
+    {
+      "screen": "incidencias-conductor",
+      "route": "/conductor/incidencias/nueva",
+      "role": "CONDUCTOR",
+      "theme": "light",
+      "width": 360,
+      "viewport": 360,
+      "scroll": 360,
+      "title": "EcoLogística Lima",
+      "lang": "es",
+      "heading": "Reportar incidencia",
+      "axe": {
+        "violations": [
+          {
+            "id": "label-content-name-mismatch",
+            "impact": "serious",
+            "tags": [
+              "cat.semantics",
+              "wcag21a",
+              "wcag253",
+              "EN-301-549",
+              "EN-9.2.5.3",
+              "RGAAv4",
+              "RGAA-6.1.5"
+            ],
+            "targets": [
+              [
+                ".account-trigger"
+              ]
+            ]
+          }
+        ],
+        "passes": 26,
+        "incomplete": 0,
+        "report": "axe-incidencias-conductor-light-360.json"
+      }
+    },
+    {
+      "screen": "incidencias-conductor",
+      "route": "/conductor/incidencias/nueva",
+      "role": "CONDUCTOR",
+      "theme": "light",
+      "width": 320,
+      "viewport": 320,
+      "scroll": 320,
+      "title": "EcoLogística Lima",
+      "lang": "es",
+      "heading": "Reportar incidencia",
+      "axe": {
+        "violations": [
+          {
+            "id": "label-content-name-mismatch",
+            "impact": "serious",
+            "tags": [
+              "cat.semantics",
+              "wcag21a",
+              "wcag253",
+              "EN-301-549",
+              "EN-9.2.5.3",
+              "RGAAv4",
+              "RGAA-6.1.5"
+            ],
+            "targets": [
+              [
+                ".account-trigger"
+              ]
+            ]
+          }
+        ],
+        "passes": 26,
+        "incomplete": 0,
+        "report": "axe-incidencias-conductor-light-320.json"
+      }
+    },
+    {
+      "screen": "incidencias-conductor",
+      "route": "/conductor/incidencias/nueva",
+      "role": "CONDUCTOR",
+      "theme": "dark",
+      "width": 1280,
+      "viewport": 1280,
+      "scroll": 1280,
+      "title": "EcoLogística Lima",
+      "lang": "es",
+      "heading": "Reportar incidencia",
+      "axe": {
+        "violations": [
+          {
+            "id": "label-content-name-mismatch",
+            "impact": "serious",
+            "tags": [
+              "cat.semantics",
+              "wcag21a",
+              "wcag253",
+              "EN-301-549",
+              "EN-9.2.5.3",
+              "RGAAv4",
+              "RGAA-6.1.5"
+            ],
+            "targets": [
+              [
+                ".account-trigger"
+              ]
+            ]
+          }
+        ],
+        "passes": 26,
+        "incomplete": 0,
+        "report": "axe-incidencias-conductor-dark-1280.json"
+      }
+    },
+    {
+      "screen": "incidencias-conductor",
+      "route": "/conductor/incidencias/nueva",
+      "role": "CONDUCTOR",
+      "theme": "dark",
+      "width": 360,
+      "viewport": 360,
+      "scroll": 360,
+      "title": "EcoLogística Lima",
+      "lang": "es",
+      "heading": "Reportar incidencia",
+      "axe": {
+        "violations": [
+          {
+            "id": "label-content-name-mismatch",
+            "impact": "serious",
+            "tags": [
+              "cat.semantics",
+              "wcag21a",
+              "wcag253",
+              "EN-301-549",
+              "EN-9.2.5.3",
+              "RGAAv4",
+              "RGAA-6.1.5"
+            ],
+            "targets": [
+              [
+                ".account-trigger"
+              ]
+            ]
+          }
+        ],
+        "passes": 26,
+        "incomplete": 0,
+        "report": "axe-incidencias-conductor-dark-360.json"
+      }
+    },
+    {
+      "screen": "incidencias-conductor",
+      "route": "/conductor/incidencias/nueva",
+      "role": "CONDUCTOR",
+      "theme": "dark",
+      "width": 320,
+      "viewport": 320,
+      "scroll": 320,
+      "title": "EcoLogística Lima",
+      "lang": "es",
+      "heading": "Reportar incidencia",
+      "axe": {
+        "violations": [
+          {
+            "id": "label-content-name-mismatch",
+            "impact": "serious",
+            "tags": [
+              "cat.semantics",
+              "wcag21a",
+              "wcag253",
+              "EN-301-549",
+              "EN-9.2.5.3",
+              "RGAAv4",
+              "RGAA-6.1.5"
+            ],
+            "targets": [
+              [
+                ".account-trigger"
+              ]
+            ]
+          }
+        ],
+        "passes": 26,
+        "incomplete": 0,
+        "report": "axe-incidencias-conductor-dark-320.json"
+      }
+    },
+    {
+      "screen": "usuarios",
+      "route": "/usuarios",
+      "role": "ADMINISTRADOR",
+      "theme": "light",
+      "width": 1280,
+      "viewport": 1280,
+      "scroll": 1280,
+      "title": "EcoLogística Lima",
+      "lang": "es",
+      "heading": "Usuarios",
+      "axe": {
+        "violations": [
+          {
+            "id": "label-content-name-mismatch",
+            "impact": "serious",
+            "tags": [
+              "cat.semantics",
+              "wcag21a",
+              "wcag253",
+              "EN-301-549",
+              "EN-9.2.5.3",
+              "RGAAv4",
+              "RGAA-6.1.5"
+            ],
+            "targets": [
+              [
+                ".account-trigger"
+              ]
+            ]
+          }
+        ],
+        "passes": 27,
+        "incomplete": 1,
+        "report": "axe-usuarios-light-1280.json"
+      }
+    },
+    {
+      "screen": "usuarios",
+      "route": "/usuarios",
+      "role": "ADMINISTRADOR",
+      "theme": "light",
+      "width": 360,
+      "viewport": 360,
+      "scroll": 360,
+      "title": "EcoLogística Lima",
+      "lang": "es",
+      "heading": "Usuarios",
+      "axe": {
+        "violations": [
+          {
+            "id": "label-content-name-mismatch",
+            "impact": "serious",
+            "tags": [
+              "cat.semantics",
+              "wcag21a",
+              "wcag253",
+              "EN-301-549",
+              "EN-9.2.5.3",
+              "RGAAv4",
+              "RGAA-6.1.5"
+            ],
+            "targets": [
+              [
+                ".account-trigger"
+              ]
+            ]
+          }
+        ],
+        "passes": 27,
+        "incomplete": 0,
+        "report": "axe-usuarios-light-360.json"
+      }
+    },
+    {
+      "screen": "usuarios",
+      "route": "/usuarios",
+      "role": "ADMINISTRADOR",
+      "theme": "light",
+      "width": 320,
+      "viewport": 320,
+      "scroll": 331,
+      "title": "EcoLogística Lima",
+      "lang": "es",
+      "heading": "Usuarios",
+      "axe": {
+        "violations": [
+          {
+            "id": "label-content-name-mismatch",
+            "impact": "serious",
+            "tags": [
+              "cat.semantics",
+              "wcag21a",
+              "wcag253",
+              "EN-301-549",
+              "EN-9.2.5.3",
+              "RGAAv4",
+              "RGAA-6.1.5"
+            ],
+            "targets": [
+              [
+                ".account-trigger"
+              ]
+            ]
+          }
+        ],
+        "passes": 27,
+        "incomplete": 0,
+        "report": "axe-usuarios-light-320.json"
+      }
+    },
+    {
+      "screen": "usuarios",
+      "route": "/usuarios",
+      "role": "ADMINISTRADOR",
+      "theme": "dark",
+      "width": 1280,
+      "viewport": 1280,
+      "scroll": 1280,
+      "title": "EcoLogística Lima",
+      "lang": "es",
+      "heading": "Usuarios",
+      "axe": {
+        "violations": [
+          {
+            "id": "label-content-name-mismatch",
+            "impact": "serious",
+            "tags": [
+              "cat.semantics",
+              "wcag21a",
+              "wcag253",
+              "EN-301-549",
+              "EN-9.2.5.3",
+              "RGAAv4",
+              "RGAA-6.1.5"
+            ],
+            "targets": [
+              [
+                ".account-trigger"
+              ]
+            ]
+          }
+        ],
+        "passes": 28,
+        "incomplete": 1,
+        "report": "axe-usuarios-dark-1280.json"
+      }
+    },
+    {
+      "screen": "usuarios",
+      "route": "/usuarios",
+      "role": "ADMINISTRADOR",
+      "theme": "dark",
+      "width": 360,
+      "viewport": 360,
+      "scroll": 360,
+      "title": "EcoLogística Lima",
+      "lang": "es",
+      "heading": "Usuarios",
+      "axe": {
+        "violations": [
+          {
+            "id": "label-content-name-mismatch",
+            "impact": "serious",
+            "tags": [
+              "cat.semantics",
+              "wcag21a",
+              "wcag253",
+              "EN-301-549",
+              "EN-9.2.5.3",
+              "RGAAv4",
+              "RGAA-6.1.5"
+            ],
+            "targets": [
+              [
+                ".account-trigger"
+              ]
+            ]
+          }
+        ],
+        "passes": 28,
+        "incomplete": 0,
+        "report": "axe-usuarios-dark-360.json"
+      }
+    },
+    {
+      "screen": "usuarios",
+      "route": "/usuarios",
+      "role": "ADMINISTRADOR",
+      "theme": "dark",
+      "width": 320,
+      "viewport": 320,
+      "scroll": 331,
+      "title": "EcoLogística Lima",
+      "lang": "es",
+      "heading": "Usuarios",
+      "axe": {
+        "violations": [
+          {
+            "id": "label-content-name-mismatch",
+            "impact": "serious",
+            "tags": [
+              "cat.semantics",
+              "wcag21a",
+              "wcag253",
+              "EN-301-549",
+              "EN-9.2.5.3",
+              "RGAAv4",
+              "RGAA-6.1.5"
+            ],
+            "targets": [
+              [
+                ".account-trigger"
+              ]
+            ]
+          }
+        ],
+        "passes": 28,
+        "incomplete": 0,
+        "report": "axe-usuarios-dark-320.json"
+      }
+    },
+    {
+      "screen": "cambio-contrasena",
+      "route": "/cambiar-contrasena",
+      "role": "ADMINISTRADOR",
+      "theme": "light",
+      "width": 1280,
+      "viewport": 1280,
+      "scroll": 1280,
+      "title": "EcoLogística Lima",
+      "lang": "es",
+      "heading": "Cambiar contraseña",
+      "axe": {
+        "violations": [
+          {
+            "id": "label-content-name-mismatch",
+            "impact": "serious",
+            "tags": [
+              "cat.semantics",
+              "wcag21a",
+              "wcag253",
+              "EN-301-549",
+              "EN-9.2.5.3",
+              "RGAAv4",
+              "RGAA-6.1.5"
+            ],
+            "targets": [
+              [
+                ".account-trigger"
+              ]
+            ]
+          }
+        ],
+        "passes": 26,
+        "incomplete": 0,
+        "report": "axe-cambio-contrasena-light-1280.json"
+      }
+    },
+    {
+      "screen": "cambio-contrasena",
+      "route": "/cambiar-contrasena",
+      "role": "ADMINISTRADOR",
+      "theme": "light",
+      "width": 360,
+      "viewport": 360,
+      "scroll": 360,
+      "title": "EcoLogística Lima",
+      "lang": "es",
+      "heading": "Cambiar contraseña",
+      "axe": {
+        "violations": [
+          {
+            "id": "label-content-name-mismatch",
+            "impact": "serious",
+            "tags": [
+              "cat.semantics",
+              "wcag21a",
+              "wcag253",
+              "EN-301-549",
+              "EN-9.2.5.3",
+              "RGAAv4",
+              "RGAA-6.1.5"
+            ],
+            "targets": [
+              [
+                ".account-trigger"
+              ]
+            ]
+          }
+        ],
+        "passes": 24,
+        "incomplete": 0,
+        "report": "axe-cambio-contrasena-light-360.json"
+      }
+    },
+    {
+      "screen": "cambio-contrasena",
+      "route": "/cambiar-contrasena",
+      "role": "ADMINISTRADOR",
+      "theme": "light",
+      "width": 320,
+      "viewport": 320,
+      "scroll": 331,
+      "title": "EcoLogística Lima",
+      "lang": "es",
+      "heading": "Cambiar contraseña",
+      "axe": {
+        "violations": [
+          {
+            "id": "label-content-name-mismatch",
+            "impact": "serious",
+            "tags": [
+              "cat.semantics",
+              "wcag21a",
+              "wcag253",
+              "EN-301-549",
+              "EN-9.2.5.3",
+              "RGAAv4",
+              "RGAA-6.1.5"
+            ],
+            "targets": [
+              [
+                ".account-trigger"
+              ]
+            ]
+          }
+        ],
+        "passes": 24,
+        "incomplete": 0,
+        "report": "axe-cambio-contrasena-light-320.json"
+      }
+    },
+    {
+      "screen": "cambio-contrasena",
+      "route": "/cambiar-contrasena",
+      "role": "ADMINISTRADOR",
+      "theme": "dark",
+      "width": 1280,
+      "viewport": 1280,
+      "scroll": 1280,
+      "title": "EcoLogística Lima",
+      "lang": "es",
+      "heading": "Cambiar contraseña",
+      "axe": {
+        "violations": [
+          {
+            "id": "label-content-name-mismatch",
+            "impact": "serious",
+            "tags": [
+              "cat.semantics",
+              "wcag21a",
+              "wcag253",
+              "EN-301-549",
+              "EN-9.2.5.3",
+              "RGAAv4",
+              "RGAA-6.1.5"
+            ],
+            "targets": [
+              [
+                ".account-trigger"
+              ]
+            ]
+          }
+        ],
+        "passes": 26,
+        "incomplete": 0,
+        "report": "axe-cambio-contrasena-dark-1280.json"
+      }
+    },
+    {
+      "screen": "cambio-contrasena",
+      "route": "/cambiar-contrasena",
+      "role": "ADMINISTRADOR",
+      "theme": "dark",
+      "width": 360,
+      "viewport": 360,
+      "scroll": 360,
+      "title": "EcoLogística Lima",
+      "lang": "es",
+      "heading": "Cambiar contraseña",
+      "axe": {
+        "violations": [
+          {
+            "id": "label-content-name-mismatch",
+            "impact": "serious",
+            "tags": [
+              "cat.semantics",
+              "wcag21a",
+              "wcag253",
+              "EN-301-549",
+              "EN-9.2.5.3",
+              "RGAAv4",
+              "RGAA-6.1.5"
+            ],
+            "targets": [
+              [
+                ".account-trigger"
+              ]
+            ]
+          }
+        ],
+        "passes": 24,
+        "incomplete": 0,
+        "report": "axe-cambio-contrasena-dark-360.json"
+      }
+    },
+    {
+      "screen": "cambio-contrasena",
+      "route": "/cambiar-contrasena",
+      "role": "ADMINISTRADOR",
+      "theme": "dark",
+      "width": 320,
+      "viewport": 320,
+      "scroll": 331,
+      "title": "EcoLogística Lima",
+      "lang": "es",
+      "heading": "Cambiar contraseña",
+      "axe": {
+        "violations": [
+          {
+            "id": "label-content-name-mismatch",
+            "impact": "serious",
+            "tags": [
+              "cat.semantics",
+              "wcag21a",
+              "wcag253",
+              "EN-301-549",
+              "EN-9.2.5.3",
+              "RGAAv4",
+              "RGAA-6.1.5"
+            ],
+            "targets": [
+              [
+                ".account-trigger"
+              ]
+            ]
+          }
+        ],
+        "passes": 24,
+        "incomplete": 0,
+        "report": "axe-cambio-contrasena-dark-320.json"
+      }
+    }
+  ],
+  "supplementary": [
+    {
+      "screen": "login",
+      "theme": "light",
+      "check": "200-percent-root-font-size-not-browser-zoom",
+      "viewport": 1280,
+      "scroll": 1280,
+      "overflowing": []
+    },
+    {
+      "screen": "login",
+      "theme": "dark",
+      "check": "200-percent-root-font-size-not-browser-zoom",
+      "viewport": 1280,
+      "scroll": 1280,
+      "overflowing": []
+    },
+    {
+      "screen": "inicio-operador",
+      "theme": "light",
+      "check": "200-percent-root-font-size-not-browser-zoom",
+      "viewport": 1280,
+      "scroll": 1531,
+      "overflowing": [
+        {
+          "tag": "DIV",
+          "class": "account",
+          "right": 1530.65625
+        },
+        {
+          "tag": "BUTTON",
+          "class": "account-trigger",
+          "right": 1530.65625
+        },
+        {
+          "tag": "SPAN",
+          "class": "account-meta",
+          "right": 1483.515625
+        },
+        {
+          "tag": "SPAN",
+          "class": "account-name",
+          "right": 1483.515625
+        },
+        {
+          "tag": "SPAN",
+          "class": "account-role",
+          "right": 1483.515625
+        },
+        {
+          "tag": "svg",
+          "class": "[object SVGAnimatedString]",
+          "right": 1513.65625
+        },
+        {
+          "tag": "path",
+          "class": "[object SVGAnimatedString]",
+          "right": 1510.12109375
+        }
+      ]
+    },
+    {
+      "screen": "inicio-operador",
+      "theme": "dark",
+      "check": "200-percent-root-font-size-not-browser-zoom",
+      "viewport": 1280,
+      "scroll": 1531,
+      "overflowing": [
+        {
+          "tag": "DIV",
+          "class": "account",
+          "right": 1530.65625
+        },
+        {
+          "tag": "BUTTON",
+          "class": "account-trigger",
+          "right": 1530.65625
+        },
+        {
+          "tag": "SPAN",
+          "class": "account-meta",
+          "right": 1483.515625
+        },
+        {
+          "tag": "SPAN",
+          "class": "account-name",
+          "right": 1483.515625
+        },
+        {
+          "tag": "SPAN",
+          "class": "account-role",
+          "right": 1483.515625
+        },
+        {
+          "tag": "svg",
+          "class": "[object SVGAnimatedString]",
+          "right": 1513.65625
+        },
+        {
+          "tag": "path",
+          "class": "[object SVGAnimatedString]",
+          "right": 1510.12109375
+        }
+      ]
+    },
+    {
+      "screen": "conductores",
+      "theme": "light",
+      "check": "200-percent-root-font-size-not-browser-zoom",
+      "viewport": 1280,
+      "scroll": 1531,
+      "overflowing": [
+        {
+          "tag": "DIV",
+          "class": "account",
+          "right": 1530.65625
+        },
+        {
+          "tag": "BUTTON",
+          "class": "account-trigger",
+          "right": 1530.65625
+        },
+        {
+          "tag": "SPAN",
+          "class": "account-meta",
+          "right": 1483.515625
+        },
+        {
+          "tag": "SPAN",
+          "class": "account-name",
+          "right": 1483.515625
+        },
+        {
+          "tag": "SPAN",
+          "class": "account-role",
+          "right": 1483.515625
+        },
+        {
+          "tag": "svg",
+          "class": "[object SVGAnimatedString]",
+          "right": 1513.65625
+        },
+        {
+          "tag": "path",
+          "class": "[object SVGAnimatedString]",
+          "right": 1510.12109375
+        }
+      ]
+    },
+    {
+      "screen": "conductores",
+      "theme": "dark",
+      "check": "200-percent-root-font-size-not-browser-zoom",
+      "viewport": 1280,
+      "scroll": 1531,
+      "overflowing": [
+        {
+          "tag": "DIV",
+          "class": "account",
+          "right": 1530.65625
+        },
+        {
+          "tag": "BUTTON",
+          "class": "account-trigger",
+          "right": 1530.65625
+        },
+        {
+          "tag": "SPAN",
+          "class": "account-meta",
+          "right": 1483.515625
+        },
+        {
+          "tag": "SPAN",
+          "class": "account-name",
+          "right": 1483.515625
+        },
+        {
+          "tag": "SPAN",
+          "class": "account-role",
+          "right": 1483.515625
+        },
+        {
+          "tag": "svg",
+          "class": "[object SVGAnimatedString]",
+          "right": 1513.65625
+        },
+        {
+          "tag": "path",
+          "class": "[object SVGAnimatedString]",
+          "right": 1510.12109375
+        }
+      ]
+    },
+    {
+      "screen": "pedido",
+      "theme": "light",
+      "check": "200-percent-root-font-size-not-browser-zoom",
+      "viewport": 1280,
+      "scroll": 1531,
+      "overflowing": [
+        {
+          "tag": "DIV",
+          "class": "account",
+          "right": 1530.65625
+        },
+        {
+          "tag": "BUTTON",
+          "class": "account-trigger",
+          "right": 1530.65625
+        },
+        {
+          "tag": "SPAN",
+          "class": "account-meta",
+          "right": 1483.515625
+        },
+        {
+          "tag": "SPAN",
+          "class": "account-name",
+          "right": 1483.515625
+        },
+        {
+          "tag": "SPAN",
+          "class": "account-role",
+          "right": 1483.515625
+        },
+        {
+          "tag": "svg",
+          "class": "[object SVGAnimatedString]",
+          "right": 1513.65625
+        },
+        {
+          "tag": "path",
+          "class": "[object SVGAnimatedString]",
+          "right": 1510.12109375
+        },
+        {
+          "tag": "LABEL",
+          "class": "",
+          "right": 1337
+        },
+        {
+          "tag": "P",
+          "class": "field-hint",
+          "right": 1337
+        },
+        {
+          "tag": "INPUT",
+          "class": "",
+          "right": 1337
+        }
+      ]
+    },
+    {
+      "screen": "pedido",
+      "theme": "dark",
+      "check": "200-percent-root-font-size-not-browser-zoom",
+      "viewport": 1280,
+      "scroll": 1531,
+      "overflowing": [
+        {
+          "tag": "DIV",
+          "class": "account",
+          "right": 1530.65625
+        },
+        {
+          "tag": "BUTTON",
+          "class": "account-trigger",
+          "right": 1530.65625
+        },
+        {
+          "tag": "SPAN",
+          "class": "account-meta",
+          "right": 1483.515625
+        },
+        {
+          "tag": "SPAN",
+          "class": "account-name",
+          "right": 1483.515625
+        },
+        {
+          "tag": "SPAN",
+          "class": "account-role",
+          "right": 1483.515625
+        },
+        {
+          "tag": "svg",
+          "class": "[object SVGAnimatedString]",
+          "right": 1513.65625
+        },
+        {
+          "tag": "path",
+          "class": "[object SVGAnimatedString]",
+          "right": 1510.12109375
+        },
+        {
+          "tag": "LABEL",
+          "class": "",
+          "right": 1337
+        },
+        {
+          "tag": "P",
+          "class": "field-hint",
+          "right": 1337
+        },
+        {
+          "tag": "INPUT",
+          "class": "",
+          "right": 1337
+        }
+      ]
+    },
+    {
+      "screen": "preferencias",
+      "theme": "light",
+      "check": "200-percent-root-font-size-not-browser-zoom",
+      "viewport": 1280,
+      "scroll": 1531,
+      "overflowing": [
+        {
+          "tag": "DIV",
+          "class": "account",
+          "right": 1530.65625
+        },
+        {
+          "tag": "BUTTON",
+          "class": "account-trigger",
+          "right": 1530.65625
+        },
+        {
+          "tag": "SPAN",
+          "class": "account-meta",
+          "right": 1483.515625
+        },
+        {
+          "tag": "SPAN",
+          "class": "account-name",
+          "right": 1483.515625
+        },
+        {
+          "tag": "SPAN",
+          "class": "account-role",
+          "right": 1483.515625
+        },
+        {
+          "tag": "svg",
+          "class": "[object SVGAnimatedString]",
+          "right": 1513.65625
+        },
+        {
+          "tag": "path",
+          "class": "[object SVGAnimatedString]",
+          "right": 1510.12109375
+        }
+      ]
+    },
+    {
+      "screen": "preferencias",
+      "theme": "dark",
+      "check": "200-percent-root-font-size-not-browser-zoom",
+      "viewport": 1280,
+      "scroll": 1531,
+      "overflowing": [
+        {
+          "tag": "DIV",
+          "class": "account",
+          "right": 1530.65625
+        },
+        {
+          "tag": "BUTTON",
+          "class": "account-trigger",
+          "right": 1530.65625
+        },
+        {
+          "tag": "SPAN",
+          "class": "account-meta",
+          "right": 1483.515625
+        },
+        {
+          "tag": "SPAN",
+          "class": "account-name",
+          "right": 1483.515625
+        },
+        {
+          "tag": "SPAN",
+          "class": "account-role",
+          "right": 1483.515625
+        },
+        {
+          "tag": "svg",
+          "class": "[object SVGAnimatedString]",
+          "right": 1513.65625
+        },
+        {
+          "tag": "path",
+          "class": "[object SVGAnimatedString]",
+          "right": 1510.12109375
+        }
+      ]
+    },
+    {
+      "screen": "incidencias-operacion",
+      "theme": "light",
+      "check": "200-percent-root-font-size-not-browser-zoom",
+      "viewport": 1280,
+      "scroll": 1531,
+      "overflowing": [
+        {
+          "tag": "DIV",
+          "class": "account",
+          "right": 1530.65625
+        },
+        {
+          "tag": "BUTTON",
+          "class": "account-trigger",
+          "right": 1530.65625
+        },
+        {
+          "tag": "SPAN",
+          "class": "account-meta",
+          "right": 1483.515625
+        },
+        {
+          "tag": "SPAN",
+          "class": "account-name",
+          "right": 1483.515625
+        },
+        {
+          "tag": "SPAN",
+          "class": "account-role",
+          "right": 1483.515625
+        },
+        {
+          "tag": "svg",
+          "class": "[object SVGAnimatedString]",
+          "right": 1513.65625
+        },
+        {
+          "tag": "path",
+          "class": "[object SVGAnimatedString]",
+          "right": 1510.12109375
+        }
+      ]
+    },
+    {
+      "screen": "incidencias-operacion",
+      "theme": "dark",
+      "check": "200-percent-root-font-size-not-browser-zoom",
+      "viewport": 1280,
+      "scroll": 1531,
+      "overflowing": [
+        {
+          "tag": "DIV",
+          "class": "account",
+          "right": 1530.65625
+        },
+        {
+          "tag": "BUTTON",
+          "class": "account-trigger",
+          "right": 1530.65625
+        },
+        {
+          "tag": "SPAN",
+          "class": "account-meta",
+          "right": 1483.515625
+        },
+        {
+          "tag": "SPAN",
+          "class": "account-name",
+          "right": 1483.515625
+        },
+        {
+          "tag": "SPAN",
+          "class": "account-role",
+          "right": 1483.515625
+        },
+        {
+          "tag": "svg",
+          "class": "[object SVGAnimatedString]",
+          "right": 1513.65625
+        },
+        {
+          "tag": "path",
+          "class": "[object SVGAnimatedString]",
+          "right": 1510.12109375
+        }
+      ]
+    },
+    {
+      "screen": "inicio-conductor",
+      "theme": "light",
+      "check": "200-percent-root-font-size-not-browser-zoom",
+      "viewport": 1280,
+      "scroll": 1280,
+      "overflowing": []
+    },
+    {
+      "screen": "inicio-conductor",
+      "theme": "dark",
+      "check": "200-percent-root-font-size-not-browser-zoom",
+      "viewport": 1280,
+      "scroll": 1280,
+      "overflowing": []
+    },
+    {
+      "screen": "itinerario",
+      "theme": "light",
+      "check": "200-percent-root-font-size-not-browser-zoom",
+      "viewport": 1280,
+      "scroll": 1280,
+      "overflowing": []
+    },
+    {
+      "screen": "itinerario",
+      "theme": "dark",
+      "check": "200-percent-root-font-size-not-browser-zoom",
+      "viewport": 1280,
+      "scroll": 1280,
+      "overflowing": []
+    },
+    {
+      "screen": "incidencias-conductor",
+      "theme": "light",
+      "check": "200-percent-root-font-size-not-browser-zoom",
+      "viewport": 1280,
+      "scroll": 1280,
+      "overflowing": []
+    },
+    {
+      "screen": "incidencias-conductor",
+      "theme": "dark",
+      "check": "200-percent-root-font-size-not-browser-zoom",
+      "viewport": 1280,
+      "scroll": 1280,
+      "overflowing": []
+    },
+    {
+      "screen": "usuarios",
+      "theme": "light",
+      "check": "200-percent-root-font-size-not-browser-zoom",
+      "viewport": 1280,
+      "scroll": 1531,
+      "overflowing": [
+        {
+          "tag": "DIV",
+          "class": "account",
+          "right": 1530.65625
+        },
+        {
+          "tag": "BUTTON",
+          "class": "account-trigger",
+          "right": 1530.65625
+        },
+        {
+          "tag": "SPAN",
+          "class": "account-meta",
+          "right": 1485.03125
+        },
+        {
+          "tag": "SPAN",
+          "class": "account-name",
+          "right": 1485.03125
+        },
+        {
+          "tag": "SPAN",
+          "class": "account-role",
+          "right": 1485.03125
+        },
+        {
+          "tag": "svg",
+          "class": "[object SVGAnimatedString]",
+          "right": 1513.65625
+        },
+        {
+          "tag": "path",
+          "class": "[object SVGAnimatedString]",
+          "right": 1510.5
+        },
+        {
+          "tag": "TABLE",
+          "class": "data-table",
+          "right": 1899.609375
+        },
+        {
+          "tag": "THEAD",
+          "class": "",
+          "right": 1899.609375
+        },
+        {
+          "tag": "TR",
+          "class": "",
+          "right": 1899.609375
+        },
+        {
+          "tag": "TH",
+          "class": "",
+          "right": 1284.578125
+        },
+        {
+          "tag": "TH",
+          "class": "",
+          "right": 1531.625
+        }
+      ]
+    },
+    {
+      "screen": "usuarios",
+      "theme": "dark",
+      "check": "200-percent-root-font-size-not-browser-zoom",
+      "viewport": 1280,
+      "scroll": 1531,
+      "overflowing": [
+        {
+          "tag": "DIV",
+          "class": "account",
+          "right": 1530.65625
+        },
+        {
+          "tag": "BUTTON",
+          "class": "account-trigger",
+          "right": 1530.65625
+        },
+        {
+          "tag": "SPAN",
+          "class": "account-meta",
+          "right": 1485.03125
+        },
+        {
+          "tag": "SPAN",
+          "class": "account-name",
+          "right": 1485.03125
+        },
+        {
+          "tag": "SPAN",
+          "class": "account-role",
+          "right": 1485.03125
+        },
+        {
+          "tag": "svg",
+          "class": "[object SVGAnimatedString]",
+          "right": 1513.65625
+        },
+        {
+          "tag": "path",
+          "class": "[object SVGAnimatedString]",
+          "right": 1510.5
+        },
+        {
+          "tag": "TABLE",
+          "class": "data-table",
+          "right": 1899.609375
+        },
+        {
+          "tag": "THEAD",
+          "class": "",
+          "right": 1899.609375
+        },
+        {
+          "tag": "TR",
+          "class": "",
+          "right": 1899.609375
+        },
+        {
+          "tag": "TH",
+          "class": "",
+          "right": 1284.578125
+        },
+        {
+          "tag": "TH",
+          "class": "",
+          "right": 1531.625
+        }
+      ]
+    },
+    {
+      "screen": "cambio-contrasena",
+      "theme": "light",
+      "check": "200-percent-root-font-size-not-browser-zoom",
+      "viewport": 1280,
+      "scroll": 1531,
+      "overflowing": [
+        {
+          "tag": "DIV",
+          "class": "account",
+          "right": 1530.65625
+        },
+        {
+          "tag": "BUTTON",
+          "class": "account-trigger",
+          "right": 1530.65625
+        },
+        {
+          "tag": "SPAN",
+          "class": "account-meta",
+          "right": 1485.03125
+        },
+        {
+          "tag": "SPAN",
+          "class": "account-name",
+          "right": 1485.03125
+        },
+        {
+          "tag": "SPAN",
+          "class": "account-role",
+          "right": 1485.03125
+        },
+        {
+          "tag": "svg",
+          "class": "[object SVGAnimatedString]",
+          "right": 1513.65625
+        },
+        {
+          "tag": "path",
+          "class": "[object SVGAnimatedString]",
+          "right": 1510.5
+        }
+      ]
+    },
+    {
+      "screen": "cambio-contrasena",
+      "theme": "dark",
+      "check": "200-percent-root-font-size-not-browser-zoom",
+      "viewport": 1280,
+      "scroll": 1531,
+      "overflowing": [
+        {
+          "tag": "DIV",
+          "class": "account",
+          "right": 1530.65625
+        },
+        {
+          "tag": "BUTTON",
+          "class": "account-trigger",
+          "right": 1530.65625
+        },
+        {
+          "tag": "SPAN",
+          "class": "account-meta",
+          "right": 1485.03125
+        },
+        {
+          "tag": "SPAN",
+          "class": "account-name",
+          "right": 1485.03125
+        },
+        {
+          "tag": "SPAN",
+          "class": "account-role",
+          "right": 1485.03125
+        },
+        {
+          "tag": "svg",
+          "class": "[object SVGAnimatedString]",
+          "right": 1513.65625
+        },
+        {
+          "tag": "path",
+          "class": "[object SVGAnimatedString]",
+          "right": 1510.5
+        }
+      ]
+    },
+    {
+      "check": "mobile-drawer-escape",
+      "focusReturned": true
+    }
+  ],
+  "manualScreenReader": "pending user evaluation",
+  "realBrowserZoom200": "pending user evaluation",
+  "note": "Automated scores are not a WCAG conformance percentage."
+}

@@ -1,0 +1,720 @@
+{
+  "fecha": "2026-10-27",
+  "codigo_evaluado": "2e8898b7c1fabac084d027ee2ed4dcc6664c6d2c",
+  "axe_runs": 66,
+  "axe_violations": 0,
+  "lighthouse_snapshots": 22,
+  "lighthouse_score": 1,
+  "spacing": [
+    {
+      "file": "spacing-cambio-contrasena-dark-1280.json",
+      "visibleTextLines": 36,
+      "controlledEllipses": 1,
+      "fixedLayerCandidates": 0,
+      "reachableControls": 4,
+      "unexpectedClipping": 0,
+      "flowTextOverlaps": 0
+    },
+    {
+      "file": "spacing-cambio-contrasena-dark-320.json",
+      "visibleTextLines": 20,
+      "controlledEllipses": 1,
+      "fixedLayerCandidates": 0,
+      "reachableControls": 4,
+      "unexpectedClipping": 0,
+      "flowTextOverlaps": 0
+    },
+    {
+      "file": "spacing-cambio-contrasena-dark-360.json",
+      "visibleTextLines": 17,
+      "controlledEllipses": 1,
+      "fixedLayerCandidates": 0,
+      "reachableControls": 4,
+      "unexpectedClipping": 0,
+      "flowTextOverlaps": 0
+    },
+    {
+      "file": "spacing-cambio-contrasena-light-1280.json",
+      "visibleTextLines": 36,
+      "controlledEllipses": 1,
+      "fixedLayerCandidates": 0,
+      "reachableControls": 4,
+      "unexpectedClipping": 0,
+      "flowTextOverlaps": 0
+    },
+    {
+      "file": "spacing-cambio-contrasena-light-320.json",
+      "visibleTextLines": 20,
+      "controlledEllipses": 1,
+      "fixedLayerCandidates": 0,
+      "reachableControls": 4,
+      "unexpectedClipping": 0,
+      "flowTextOverlaps": 0
+    },
+    {
+      "file": "spacing-cambio-contrasena-light-360.json",
+      "visibleTextLines": 17,
+      "controlledEllipses": 1,
+      "fixedLayerCandidates": 0,
+      "reachableControls": 4,
+      "unexpectedClipping": 0,
+      "flowTextOverlaps": 0
+    },
+    {
+      "file": "spacing-conductores-dark-1280.json",
+      "visibleTextLines": 69,
+      "controlledEllipses": 1,
+      "fixedLayerCandidates": 0,
+      "reachableControls": 7,
+      "unexpectedClipping": 0,
+      "flowTextOverlaps": 0
+    },
+    {
+      "file": "spacing-conductores-dark-320.json",
+      "visibleTextLines": 52,
+      "controlledEllipses": 1,
+      "fixedLayerCandidates": 0,
+      "reachableControls": 7,
+      "unexpectedClipping": 0,
+      "flowTextOverlaps": 0
+    },
+    {
+      "file": "spacing-conductores-dark-360.json",
+      "visibleTextLines": 50,
+      "controlledEllipses": 1,
+      "fixedLayerCandidates": 0,
+      "reachableControls": 7,
+      "unexpectedClipping": 0,
+      "flowTextOverlaps": 0
+    },
+    {
+      "file": "spacing-conductores-light-1280.json",
+      "visibleTextLines": 69,
+      "controlledEllipses": 1,
+      "fixedLayerCandidates": 0,
+      "reachableControls": 7,
+      "unexpectedClipping": 0,
+      "flowTextOverlaps": 0
+    },
+    {
+      "file": "spacing-conductores-light-320.json",
+      "visibleTextLines": 52,
+      "controlledEllipses": 1,
+      "fixedLayerCandidates": 0,
+      "reachableControls": 7,
+      "unexpectedClipping": 0,
+      "flowTextOverlaps": 0
+    },
+    {
+      "file": "spacing-conductores-light-360.json",
+      "visibleTextLines": 50,
+      "controlledEllipses": 1,
+      "fixedLayerCandidates": 0,
+      "reachableControls": 7,
+      "unexpectedClipping": 0,
+      "flowTextOverlaps": 0
+    },
+    {
+      "file": "spacing-incidencias-conductor-dark-1280.json",
+      "visibleTextLines": 30,
+      "controlledEllipses": 1,
+      "fixedLayerCandidates": 0,
+      "reachableControls": 10,
+      "unexpectedClipping": 0,
+      "flowTextOverlaps": 0
+    },
+    {
+      "file": "spacing-incidencias-conductor-dark-320.json",
+      "visibleTextLines": 38,
+      "controlledEllipses": 1,
+      "fixedLayerCandidates": 1,
+      "reachableControls": 10,
+      "unexpectedClipping": 0,
+      "flowTextOverlaps": 0
+    },
+    {
+      "file": "spacing-incidencias-conductor-dark-360.json",
+      "visibleTextLines": 37,
+      "controlledEllipses": 0,
+      "fixedLayerCandidates": 1,
+      "reachableControls": 10,
+      "unexpectedClipping": 0,
+      "flowTextOverlaps": 0
+    },
+    {
+      "file": "spacing-incidencias-conductor-light-1280.json",
+      "visibleTextLines": 30,
+      "controlledEllipses": 1,
+      "fixedLayerCandidates": 0,
+      "reachableControls": 10,
+      "unexpectedClipping": 0,
+      "flowTextOverlaps": 0
+    },
+    {
+      "file": "spacing-incidencias-conductor-light-320.json",
+      "visibleTextLines": 38,
+      "controlledEllipses": 1,
+      "fixedLayerCandidates": 1,
+      "reachableControls": 10,
+      "unexpectedClipping": 0,
+      "flowTextOverlaps": 0
+    },
+    {
+      "file": "spacing-incidencias-conductor-light-360.json",
+      "visibleTextLines": 37,
+      "controlledEllipses": 0,
+      "fixedLayerCandidates": 1,
+      "reachableControls": 10,
+      "unexpectedClipping": 0,
+      "flowTextOverlaps": 0
+    },
+    {
+      "file": "spacing-incidencias-operacion-dark-1280.json",
+      "visibleTextLines": 84,
+      "controlledEllipses": 1,
+      "fixedLayerCandidates": 0,
+      "reachableControls": 5,
+      "unexpectedClipping": 0,
+      "flowTextOverlaps": 0
+    },
+    {
+      "file": "spacing-incidencias-operacion-dark-320.json",
+      "visibleTextLines": 68,
+      "controlledEllipses": 1,
+      "fixedLayerCandidates": 0,
+      "reachableControls": 5,
+      "unexpectedClipping": 0,
+      "flowTextOverlaps": 0
+    },
+    {
+      "file": "spacing-incidencias-operacion-dark-360.json",
+      "visibleTextLines": 57,
+      "controlledEllipses": 1,
+      "fixedLayerCandidates": 0,
+      "reachableControls": 5,
+      "unexpectedClipping": 0,
+      "flowTextOverlaps": 0
+    },
+    {
+      "file": "spacing-incidencias-operacion-light-1280.json",
+      "visibleTextLines": 84,
+      "controlledEllipses": 1,
+      "fixedLayerCandidates": 0,
+      "reachableControls": 5,
+      "unexpectedClipping": 0,
+      "flowTextOverlaps": 0
+    },
+    {
+      "file": "spacing-incidencias-operacion-light-320.json",
+      "visibleTextLines": 68,
+      "controlledEllipses": 1,
+      "fixedLayerCandidates": 0,
+      "reachableControls": 5,
+      "unexpectedClipping": 0,
+      "flowTextOverlaps": 0
+    },
+    {
+      "file": "spacing-incidencias-operacion-light-360.json",
+      "visibleTextLines": 57,
+      "controlledEllipses": 1,
+      "fixedLayerCandidates": 0,
+      "reachableControls": 5,
+      "unexpectedClipping": 0,
+      "flowTextOverlaps": 0
+    },
+    {
+      "file": "spacing-inicio-conductor-dark-1280.json",
+      "visibleTextLines": 32,
+      "controlledEllipses": 1,
+      "fixedLayerCandidates": 0,
+      "reachableControls": 3,
+      "unexpectedClipping": 0,
+      "flowTextOverlaps": 0
+    },
+    {
+      "file": "spacing-inicio-conductor-dark-320.json",
+      "visibleTextLines": 32,
+      "controlledEllipses": 1,
+      "fixedLayerCandidates": 2,
+      "reachableControls": 3,
+      "unexpectedClipping": 0,
+      "flowTextOverlaps": 0
+    },
+    {
+      "file": "spacing-inicio-conductor-dark-360.json",
+      "visibleTextLines": 30,
+      "controlledEllipses": 0,
+      "fixedLayerCandidates": 2,
+      "reachableControls": 3,
+      "unexpectedClipping": 0,
+      "flowTextOverlaps": 0
+    },
+    {
+      "file": "spacing-inicio-conductor-light-1280.json",
+      "visibleTextLines": 32,
+      "controlledEllipses": 1,
+      "fixedLayerCandidates": 0,
+      "reachableControls": 3,
+      "unexpectedClipping": 0,
+      "flowTextOverlaps": 0
+    },
+    {
+      "file": "spacing-inicio-conductor-light-320.json",
+      "visibleTextLines": 32,
+      "controlledEllipses": 1,
+      "fixedLayerCandidates": 2,
+      "reachableControls": 3,
+      "unexpectedClipping": 0,
+      "flowTextOverlaps": 0
+    },
+    {
+      "file": "spacing-inicio-conductor-light-360.json",
+      "visibleTextLines": 30,
+      "controlledEllipses": 0,
+      "fixedLayerCandidates": 2,
+      "reachableControls": 3,
+      "unexpectedClipping": 0,
+      "flowTextOverlaps": 0
+    },
+    {
+      "file": "spacing-inicio-operador-dark-1280.json",
+      "visibleTextLines": 69,
+      "controlledEllipses": 1,
+      "fixedLayerCandidates": 0,
+      "reachableControls": 6,
+      "unexpectedClipping": 0,
+      "flowTextOverlaps": 0
+    },
+    {
+      "file": "spacing-inicio-operador-dark-320.json",
+      "visibleTextLines": 57,
+      "controlledEllipses": 1,
+      "fixedLayerCandidates": 0,
+      "reachableControls": 6,
+      "unexpectedClipping": 0,
+      "flowTextOverlaps": 0
+    },
+    {
+      "file": "spacing-inicio-operador-dark-360.json",
+      "visibleTextLines": 48,
+      "controlledEllipses": 1,
+      "fixedLayerCandidates": 0,
+      "reachableControls": 6,
+      "unexpectedClipping": 0,
+      "flowTextOverlaps": 0
+    },
+    {
+      "file": "spacing-inicio-operador-light-1280.json",
+      "visibleTextLines": 69,
+      "controlledEllipses": 1,
+      "fixedLayerCandidates": 0,
+      "reachableControls": 6,
+      "unexpectedClipping": 0,
+      "flowTextOverlaps": 0
+    },
+    {
+      "file": "spacing-inicio-operador-light-320.json",
+      "visibleTextLines": 57,
+      "controlledEllipses": 1,
+      "fixedLayerCandidates": 0,
+      "reachableControls": 6,
+      "unexpectedClipping": 0,
+      "flowTextOverlaps": 0
+    },
+    {
+      "file": "spacing-inicio-operador-light-360.json",
+      "visibleTextLines": 48,
+      "controlledEllipses": 1,
+      "fixedLayerCandidates": 0,
+      "reachableControls": 6,
+      "unexpectedClipping": 0,
+      "flowTextOverlaps": 0
+    },
+    {
+      "file": "spacing-itinerario-dark-1280.json",
+      "visibleTextLines": 101,
+      "controlledEllipses": 1,
+      "fixedLayerCandidates": 0,
+      "reachableControls": 12,
+      "unexpectedClipping": 0,
+      "flowTextOverlaps": 0
+    },
+    {
+      "file": "spacing-itinerario-dark-320.json",
+      "visibleTextLines": 110,
+      "controlledEllipses": 1,
+      "fixedLayerCandidates": 0,
+      "reachableControls": 12,
+      "unexpectedClipping": 0,
+      "flowTextOverlaps": 0
+    },
+    {
+      "file": "spacing-itinerario-dark-360.json",
+      "visibleTextLines": 97,
+      "controlledEllipses": 0,
+      "fixedLayerCandidates": 1,
+      "reachableControls": 12,
+      "unexpectedClipping": 0,
+      "flowTextOverlaps": 0
+    },
+    {
+      "file": "spacing-itinerario-light-1280.json",
+      "visibleTextLines": 101,
+      "controlledEllipses": 1,
+      "fixedLayerCandidates": 0,
+      "reachableControls": 12,
+      "unexpectedClipping": 0,
+      "flowTextOverlaps": 0
+    },
+    {
+      "file": "spacing-itinerario-light-320.json",
+      "visibleTextLines": 110,
+      "controlledEllipses": 1,
+      "fixedLayerCandidates": 0,
+      "reachableControls": 12,
+      "unexpectedClipping": 0,
+      "flowTextOverlaps": 0
+    },
+    {
+      "file": "spacing-itinerario-light-360.json",
+      "visibleTextLines": 97,
+      "controlledEllipses": 0,
+      "fixedLayerCandidates": 1,
+      "reachableControls": 12,
+      "unexpectedClipping": 0,
+      "flowTextOverlaps": 0
+    },
+    {
+      "file": "spacing-login-dark-1280.json",
+      "visibleTextLines": 18,
+      "controlledEllipses": 0,
+      "fixedLayerCandidates": 0,
+      "reachableControls": 4,
+      "unexpectedClipping": 0,
+      "flowTextOverlaps": 0
+    },
+    {
+      "file": "spacing-login-dark-320.json",
+      "visibleTextLines": 14,
+      "controlledEllipses": 0,
+      "fixedLayerCandidates": 0,
+      "reachableControls": 4,
+      "unexpectedClipping": 0,
+      "flowTextOverlaps": 0
+    },
+    {
+      "file": "spacing-login-dark-360.json",
+      "visibleTextLines": 13,
+      "controlledEllipses": 0,
+      "fixedLayerCandidates": 0,
+      "reachableControls": 4,
+      "unexpectedClipping": 0,
+      "flowTextOverlaps": 0
+    },
+    {
+      "file": "spacing-login-light-1280.json",
+      "visibleTextLines": 18,
+      "controlledEllipses": 0,
+      "fixedLayerCandidates": 0,
+      "reachableControls": 4,
+      "unexpectedClipping": 0,
+      "flowTextOverlaps": 0
+    },
+    {
+      "file": "spacing-login-light-320.json",
+      "visibleTextLines": 14,
+      "controlledEllipses": 0,
+      "fixedLayerCandidates": 0,
+      "reachableControls": 4,
+      "unexpectedClipping": 0,
+      "flowTextOverlaps": 0
+    },
+    {
+      "file": "spacing-login-light-360.json",
+      "visibleTextLines": 13,
+      "controlledEllipses": 0,
+      "fixedLayerCandidates": 0,
+      "reachableControls": 4,
+      "unexpectedClipping": 0,
+      "flowTextOverlaps": 0
+    },
+    {
+      "file": "spacing-pedido-dark-1280.json",
+      "visibleTextLines": 62,
+      "controlledEllipses": 1,
+      "fixedLayerCandidates": 0,
+      "reachableControls": 13,
+      "unexpectedClipping": 0,
+      "flowTextOverlaps": 0
+    },
+    {
+      "file": "spacing-pedido-dark-320.json",
+      "visibleTextLines": 55,
+      "controlledEllipses": 1,
+      "fixedLayerCandidates": 1,
+      "reachableControls": 13,
+      "unexpectedClipping": 0,
+      "flowTextOverlaps": 0
+    },
+    {
+      "file": "spacing-pedido-dark-360.json",
+      "visibleTextLines": 50,
+      "controlledEllipses": 1,
+      "fixedLayerCandidates": 1,
+      "reachableControls": 13,
+      "unexpectedClipping": 0,
+      "flowTextOverlaps": 0
+    },
+    {
+      "file": "spacing-pedido-light-1280.json",
+      "visibleTextLines": 62,
+      "controlledEllipses": 1,
+      "fixedLayerCandidates": 0,
+      "reachableControls": 13,
+      "unexpectedClipping": 0,
+      "flowTextOverlaps": 0
+    },
+    {
+      "file": "spacing-pedido-light-320.json",
+      "visibleTextLines": 55,
+      "controlledEllipses": 1,
+      "fixedLayerCandidates": 1,
+      "reachableControls": 13,
+      "unexpectedClipping": 0,
+      "flowTextOverlaps": 0
+    },
+    {
+      "file": "spacing-pedido-light-360.json",
+      "visibleTextLines": 50,
+      "controlledEllipses": 1,
+      "fixedLayerCandidates": 1,
+      "reachableControls": 13,
+      "unexpectedClipping": 0,
+      "flowTextOverlaps": 0
+    },
+    {
+      "file": "spacing-preferencias-dark-1280.json",
+      "visibleTextLines": 70,
+      "controlledEllipses": 1,
+      "fixedLayerCandidates": 0,
+      "reachableControls": 10,
+      "unexpectedClipping": 0,
+      "flowTextOverlaps": 0
+    },
+    {
+      "file": "spacing-preferencias-dark-320.json",
+      "visibleTextLines": 72,
+      "controlledEllipses": 1,
+      "fixedLayerCandidates": 3,
+      "reachableControls": 10,
+      "unexpectedClipping": 0,
+      "flowTextOverlaps": 0
+    },
+    {
+      "file": "spacing-preferencias-dark-360.json",
+      "visibleTextLines": 65,
+      "controlledEllipses": 1,
+      "fixedLayerCandidates": 1,
+      "reachableControls": 10,
+      "unexpectedClipping": 0,
+      "flowTextOverlaps": 0
+    },
+    {
+      "file": "spacing-preferencias-light-1280.json",
+      "visibleTextLines": 70,
+      "controlledEllipses": 1,
+      "fixedLayerCandidates": 0,
+      "reachableControls": 10,
+      "unexpectedClipping": 0,
+      "flowTextOverlaps": 0
+    },
+    {
+      "file": "spacing-preferencias-light-320.json",
+      "visibleTextLines": 72,
+      "controlledEllipses": 1,
+      "fixedLayerCandidates": 3,
+      "reachableControls": 10,
+      "unexpectedClipping": 0,
+      "flowTextOverlaps": 0
+    },
+    {
+      "file": "spacing-preferencias-light-360.json",
+      "visibleTextLines": 65,
+      "controlledEllipses": 1,
+      "fixedLayerCandidates": 1,
+      "reachableControls": 10,
+      "unexpectedClipping": 0,
+      "flowTextOverlaps": 0
+    },
+    {
+      "file": "spacing-usuarios-dark-1280.json",
+      "visibleTextLines": 86,
+      "controlledEllipses": 1,
+      "fixedLayerCandidates": 0,
+      "reachableControls": 9,
+      "unexpectedClipping": 0,
+      "flowTextOverlaps": 0
+    },
+    {
+      "file": "spacing-usuarios-dark-320.json",
+      "visibleTextLines": 95,
+      "controlledEllipses": 1,
+      "fixedLayerCandidates": 0,
+      "reachableControls": 9,
+      "unexpectedClipping": 0,
+      "flowTextOverlaps": 0
+    },
+    {
+      "file": "spacing-usuarios-dark-360.json",
+      "visibleTextLines": 71,
+      "controlledEllipses": 1,
+      "fixedLayerCandidates": 0,
+      "reachableControls": 9,
+      "unexpectedClipping": 0,
+      "flowTextOverlaps": 0
+    },
+    {
+      "file": "spacing-usuarios-light-1280.json",
+      "visibleTextLines": 86,
+      "controlledEllipses": 1,
+      "fixedLayerCandidates": 0,
+      "reachableControls": 9,
+      "unexpectedClipping": 0,
+      "flowTextOverlaps": 0
+    },
+    {
+      "file": "spacing-usuarios-light-320.json",
+      "visibleTextLines": 95,
+      "controlledEllipses": 1,
+      "fixedLayerCandidates": 0,
+      "reachableControls": 9,
+      "unexpectedClipping": 0,
+      "flowTextOverlaps": 0
+    },
+    {
+      "file": "spacing-usuarios-light-360.json",
+      "visibleTextLines": 71,
+      "controlledEllipses": 1,
+      "fixedLayerCandidates": 0,
+      "reachableControls": 9,
+      "unexpectedClipping": 0,
+      "flowTextOverlaps": 0
+    }
+  ],
+  "navigation": [
+    {
+      "role": "ADMINISTRADOR",
+      "visited": [
+        {
+          "path": "/pedidos/nuevo",
+          "heading": "Registrar pedido"
+        },
+        {
+          "path": "/clientes/preferencias",
+          "heading": "Preferencias de entrega"
+        },
+        {
+          "path": "/vehiculos",
+          "heading": "Vehículos"
+        },
+        {
+          "path": "/conductores",
+          "heading": "Conductores"
+        },
+        {
+          "path": "/operacion/incidencias",
+          "heading": "Incidencias pendientes"
+        },
+        {
+          "path": "/usuarios",
+          "heading": "Usuarios"
+        },
+        {
+          "path": "/cambiar-contrasena",
+          "heading": "Cambiar contraseña"
+        }
+      ]
+    },
+    {
+      "role": "OPERADOR",
+      "visited": [
+        {
+          "path": "/pedidos/nuevo",
+          "heading": "Registrar pedido"
+        },
+        {
+          "path": "/clientes/preferencias",
+          "heading": "Preferencias de entrega"
+        },
+        {
+          "path": "/vehiculos",
+          "heading": "Vehículos"
+        },
+        {
+          "path": "/conductores",
+          "heading": "Conductores"
+        },
+        {
+          "path": "/operacion/incidencias",
+          "heading": "Incidencias pendientes"
+        },
+        {
+          "path": "/cambiar-contrasena",
+          "heading": "Cambiar contraseña"
+        }
+      ]
+    },
+    {
+      "role": "CONDUCTOR",
+      "visited": [
+        {
+          "path": "/conductor/itinerario",
+          "heading": "Mi itinerario"
+        },
+        {
+          "path": "/conductor/incidencias/nueva",
+          "heading": "Reportar incidencia"
+        },
+        {
+          "path": "/cambiar-contrasena",
+          "heading": "Cambiar contraseña"
+        }
+      ]
+    },
+    {
+      "role": "ANALISTA",
+      "visited": [
+        {
+          "path": "/cambiar-contrasena",
+          "heading": "Cambiar contraseña"
+        }
+      ]
+    },
+    {
+      "role": "AUDITOR",
+      "visited": [
+        {
+          "path": "/vehiculos",
+          "heading": "Vehículos"
+        },
+        {
+          "path": "/cambiar-contrasena",
+          "heading": "Cambiar contraseña"
+        }
+      ]
+    }
+  ],
+  "interpretacion": "Las métricas identifican candidatos; se complementan con inspección técnica de capturas. No certifican globalmente WCAG.",
+  "tests": {
+    "files": 50,
+    "passed": 702,
+    "lines": 97.67,
+    "branches": 92.99,
+    "statements": 95.49,
+    "functions": 94.96,
+    "typecheck": "OK",
+    "lint": "OK",
+    "build": "OK"
+  },
+  "manual": "Se conserva la declaración anterior de Giancarlo, sin atribuirle un recorrido posterior a estos cambios."
+}

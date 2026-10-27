@@ -1,0 +1,43 @@
+{
+  "ticket": "ECL-67",
+  "fecha_informe": "2026-10-27",
+  "base_main": "13414dd2e0fb44eeb1419c11437b02dacc85d412",
+  "codigo_evaluado": "5d0ca4d7e831c937ec3e573810bb92f54568bce8",
+  "pr_codigo": "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/71",
+  "herramientas": {
+    "Chrome_automatico": "Chrome/156.0.8078.48",
+    "Node": "22.20.0",
+    "axe-core": "4.14.0",
+    "Lighthouse": "13.5.0",
+    "Playwright": "1.64.1",
+    "Puppeteer-core": "25.16.0"
+  },
+  "api": "Real local, datos sintéticos demo. No se alteraron contraseñas, pedidos ni incidencias.",
+  "automatizacion": {
+    "axe_ejecuciones": 66,
+    "lighthouse_snapshots": 22,
+    "capturas_finales": 44,
+    "ancho_css": [
+      1280,
+      360,
+      320
+    ],
+    "fuente_200": "Sondeo, no zoom de navegador",
+    "lighthouse_cli": "Reporte login real generado; helper detenido tras quedar abierto. No se afirma salida exitosa de la CLI.",
+    "manual_en_summary": "El texto pending user evaluation es del ejecutor automático; el resultado humano está en revision-manual.json."
+  },
+  "validaciones": {
+    "tests": 697,
+    "archivos_test": 50,
+    "lineas_porcentaje": 97.67,
+    "ramas_porcentaje": 92.87,
+    "sentencias_porcentaje": 95.49,
+    "funciones_porcentaje": 94.96,
+    "typecheck": "OK",
+    "lint": "OK",
+    "build": "OK",
+    "check_docs": "OK: enlaces, indice del README y retornos correctos"
+  },
+  "antes": "Selección de la línea base y un reporte intermedio anterior al arreglo del encabezado. No es el estado final.",
+  "limitacion_antes": "Una medición transitoria de color al cambiar de tema se descartó como defecto estable; la ejecución final espera las animaciones."
+}

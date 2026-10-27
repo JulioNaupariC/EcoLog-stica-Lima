@@ -1,0 +1,1968 @@
+{
+  "ticket": "ECL-67",
+  "executedAt": "2026-10-27T19:29:30.406Z",
+  "timezone": "America/Lima",
+  "browser": "Chrome/156.0.8078.48",
+  "completed": true,
+  "phase": "mobile drawer keyboard",
+  "axeOnly": false,
+  "results": [
+    {
+      "screen": "login",
+      "route": "/login",
+      "role": null,
+      "theme": "light",
+      "width": 1280,
+      "viewport": 1280,
+      "scroll": 1280,
+      "title": "Iniciar sesión — EcoLogística Lima",
+      "lang": "es",
+      "heading": "Iniciar sesión",
+      "axe": {
+        "violations": [],
+        "passes": 25,
+        "incomplete": 0,
+        "report": "axe-login-light-1280.json"
+      },
+      "lighthouse": {
+        "mode": "snapshot",
+        "score": 1,
+        "report": "lighthouse-login-light.json"
+      }
+    },
+    {
+      "screen": "login",
+      "route": "/login",
+      "role": null,
+      "theme": "light",
+      "width": 360,
+      "viewport": 360,
+      "scroll": 360,
+      "title": "Iniciar sesión — EcoLogística Lima",
+      "lang": "es",
+      "heading": "Iniciar sesión",
+      "axe": {
+        "violations": [],
+        "passes": 23,
+        "incomplete": 0,
+        "report": "axe-login-light-360.json"
+      }
+    },
+    {
+      "screen": "login",
+      "route": "/login",
+      "role": null,
+      "theme": "light",
+      "width": 320,
+      "viewport": 320,
+      "scroll": 320,
+      "title": "Iniciar sesión — EcoLogística Lima",
+      "lang": "es",
+      "heading": "Iniciar sesión",
+      "axe": {
+        "violations": [],
+        "passes": 23,
+        "incomplete": 0,
+        "report": "axe-login-light-320.json"
+      }
+    },
+    {
+      "screen": "login",
+      "route": "/login",
+      "role": null,
+      "theme": "dark",
+      "width": 1280,
+      "viewport": 1280,
+      "scroll": 1280,
+      "title": "Iniciar sesión — EcoLogística Lima",
+      "lang": "es",
+      "heading": "Iniciar sesión",
+      "axe": {
+        "violations": [],
+        "passes": 26,
+        "incomplete": 0,
+        "report": "axe-login-dark-1280.json"
+      },
+      "lighthouse": {
+        "mode": "snapshot",
+        "score": 1,
+        "report": "lighthouse-login-dark.json"
+      }
+    },
+    {
+      "screen": "login",
+      "route": "/login",
+      "role": null,
+      "theme": "dark",
+      "width": 360,
+      "viewport": 360,
+      "scroll": 360,
+      "title": "Iniciar sesión — EcoLogística Lima",
+      "lang": "es",
+      "heading": "Iniciar sesión",
+      "axe": {
+        "violations": [],
+        "passes": 24,
+        "incomplete": 0,
+        "report": "axe-login-dark-360.json"
+      }
+    },
+    {
+      "screen": "login",
+      "route": "/login",
+      "role": null,
+      "theme": "dark",
+      "width": 320,
+      "viewport": 320,
+      "scroll": 320,
+      "title": "Iniciar sesión — EcoLogística Lima",
+      "lang": "es",
+      "heading": "Iniciar sesión",
+      "axe": {
+        "violations": [],
+        "passes": 24,
+        "incomplete": 0,
+        "report": "axe-login-dark-320.json"
+      }
+    },
+    {
+      "screen": "inicio-operador",
+      "route": "/",
+      "role": "OPERADOR",
+      "theme": "light",
+      "width": 1280,
+      "viewport": 1280,
+      "scroll": 1280,
+      "title": "Inicio — EcoLogística Lima",
+      "lang": "es",
+      "heading": "Inicio",
+      "axe": {
+        "violations": [],
+        "passes": 25,
+        "incomplete": 1,
+        "report": "axe-inicio-operador-light-1280.json"
+      },
+      "lighthouse": {
+        "mode": "snapshot",
+        "score": 1,
+        "report": "lighthouse-inicio-operador-light.json"
+      }
+    },
+    {
+      "screen": "inicio-operador",
+      "route": "/",
+      "role": "OPERADOR",
+      "theme": "light",
+      "width": 360,
+      "viewport": 360,
+      "scroll": 360,
+      "title": "Inicio — EcoLogística Lima",
+      "lang": "es",
+      "heading": "Inicio",
+      "axe": {
+        "violations": [],
+        "passes": 25,
+        "incomplete": 0,
+        "report": "axe-inicio-operador-light-360.json"
+      }
+    },
+    {
+      "screen": "inicio-operador",
+      "route": "/",
+      "role": "OPERADOR",
+      "theme": "light",
+      "width": 320,
+      "viewport": 320,
+      "scroll": 320,
+      "title": "Inicio — EcoLogística Lima",
+      "lang": "es",
+      "heading": "Inicio",
+      "axe": {
+        "violations": [],
+        "passes": 25,
+        "incomplete": 0,
+        "report": "axe-inicio-operador-light-320.json"
+      }
+    },
+    {
+      "screen": "inicio-operador",
+      "route": "/",
+      "role": "OPERADOR",
+      "theme": "dark",
+      "width": 1280,
+      "viewport": 1280,
+      "scroll": 1280,
+      "title": "Inicio — EcoLogística Lima",
+      "lang": "es",
+      "heading": "Inicio",
+      "axe": {
+        "violations": [],
+        "passes": 26,
+        "incomplete": 1,
+        "report": "axe-inicio-operador-dark-1280.json"
+      },
+      "lighthouse": {
+        "mode": "snapshot",
+        "score": 1,
+        "report": "lighthouse-inicio-operador-dark.json"
+      }
+    },
+    {
+      "screen": "inicio-operador",
+      "route": "/",
+      "role": "OPERADOR",
+      "theme": "dark",
+      "width": 360,
+      "viewport": 360,
+      "scroll": 360,
+      "title": "Inicio — EcoLogística Lima",
+      "lang": "es",
+      "heading": "Inicio",
+      "axe": {
+        "violations": [],
+        "passes": 26,
+        "incomplete": 0,
+        "report": "axe-inicio-operador-dark-360.json"
+      }
+    },
+    {
+      "screen": "inicio-operador",
+      "route": "/",
+      "role": "OPERADOR",
+      "theme": "dark",
+      "width": 320,
+      "viewport": 320,
+      "scroll": 320,
+      "title": "Inicio — EcoLogística Lima",
+      "lang": "es",
+      "heading": "Inicio",
+      "axe": {
+        "violations": [],
+        "passes": 26,
+        "incomplete": 0,
+        "report": "axe-inicio-operador-dark-320.json"
+      }
+    },
+    {
+      "screen": "conductores",
+      "route": "/conductores",
+      "role": "OPERADOR",
+      "theme": "light",
+      "width": 1280,
+      "viewport": 1280,
+      "scroll": 1280,
+      "title": "Conductores — EcoLogística Lima",
+      "lang": "es",
+      "heading": "Conductores",
+      "axe": {
+        "violations": [],
+        "passes": 26,
+        "incomplete": 1,
+        "report": "axe-conductores-light-1280.json"
+      },
+      "lighthouse": {
+        "mode": "snapshot",
+        "score": 1,
+        "report": "lighthouse-conductores-light.json"
+      }
+    },
+    {
+      "screen": "conductores",
+      "route": "/conductores",
+      "role": "OPERADOR",
+      "theme": "light",
+      "width": 360,
+      "viewport": 360,
+      "scroll": 360,
+      "title": "Conductores — EcoLogística Lima",
+      "lang": "es",
+      "heading": "Conductores",
+      "axe": {
+        "violations": [],
+        "passes": 26,
+        "incomplete": 0,
+        "report": "axe-conductores-light-360.json"
+      }
+    },
+    {
+      "screen": "conductores",
+      "route": "/conductores",
+      "role": "OPERADOR",
+      "theme": "light",
+      "width": 320,
+      "viewport": 320,
+      "scroll": 320,
+      "title": "Conductores — EcoLogística Lima",
+      "lang": "es",
+      "heading": "Conductores",
+      "axe": {
+        "violations": [],
+        "passes": 26,
+        "incomplete": 0,
+        "report": "axe-conductores-light-320.json"
+      }
+    },
+    {
+      "screen": "conductores",
+      "route": "/conductores",
+      "role": "OPERADOR",
+      "theme": "dark",
+      "width": 1280,
+      "viewport": 1280,
+      "scroll": 1280,
+      "title": "Conductores — EcoLogística Lima",
+      "lang": "es",
+      "heading": "Conductores",
+      "axe": {
+        "violations": [],
+        "passes": 26,
+        "incomplete": 1,
+        "report": "axe-conductores-dark-1280.json"
+      },
+      "lighthouse": {
+        "mode": "snapshot",
+        "score": 1,
+        "report": "lighthouse-conductores-dark.json"
+      }
+    },
+    {
+      "screen": "conductores",
+      "route": "/conductores",
+      "role": "OPERADOR",
+      "theme": "dark",
+      "width": 360,
+      "viewport": 360,
+      "scroll": 360,
+      "title": "Conductores — EcoLogística Lima",
+      "lang": "es",
+      "heading": "Conductores",
+      "axe": {
+        "violations": [],
+        "passes": 26,
+        "incomplete": 0,
+        "report": "axe-conductores-dark-360.json"
+      }
+    },
+    {
+      "screen": "conductores",
+      "route": "/conductores",
+      "role": "OPERADOR",
+      "theme": "dark",
+      "width": 320,
+      "viewport": 320,
+      "scroll": 320,
+      "title": "Conductores — EcoLogística Lima",
+      "lang": "es",
+      "heading": "Conductores",
+      "axe": {
+        "violations": [],
+        "passes": 26,
+        "incomplete": 0,
+        "report": "axe-conductores-dark-320.json"
+      }
+    },
+    {
+      "screen": "pedido",
+      "route": "/pedidos/nuevo",
+      "role": "OPERADOR",
+      "theme": "light",
+      "width": 1280,
+      "viewport": 1280,
+      "scroll": 1280,
+      "title": "Registrar pedido — EcoLogística Lima",
+      "lang": "es",
+      "heading": "Registrar pedido",
+      "axe": {
+        "violations": [],
+        "passes": 28,
+        "incomplete": 1,
+        "report": "axe-pedido-light-1280.json"
+      },
+      "lighthouse": {
+        "mode": "snapshot",
+        "score": 1,
+        "report": "lighthouse-pedido-light.json"
+      }
+    },
+    {
+      "screen": "pedido",
+      "route": "/pedidos/nuevo",
+      "role": "OPERADOR",
+      "theme": "light",
+      "width": 360,
+      "viewport": 360,
+      "scroll": 360,
+      "title": "Registrar pedido — EcoLogística Lima",
+      "lang": "es",
+      "heading": "Registrar pedido",
+      "axe": {
+        "violations": [],
+        "passes": 28,
+        "incomplete": 0,
+        "report": "axe-pedido-light-360.json"
+      }
+    },
+    {
+      "screen": "pedido",
+      "route": "/pedidos/nuevo",
+      "role": "OPERADOR",
+      "theme": "light",
+      "width": 320,
+      "viewport": 320,
+      "scroll": 320,
+      "title": "Registrar pedido — EcoLogística Lima",
+      "lang": "es",
+      "heading": "Registrar pedido",
+      "axe": {
+        "violations": [],
+        "passes": 28,
+        "incomplete": 0,
+        "report": "axe-pedido-light-320.json"
+      }
+    },
+    {
+      "screen": "pedido",
+      "route": "/pedidos/nuevo",
+      "role": "OPERADOR",
+      "theme": "dark",
+      "width": 1280,
+      "viewport": 1280,
+      "scroll": 1280,
+      "title": "Registrar pedido — EcoLogística Lima",
+      "lang": "es",
+      "heading": "Registrar pedido",
+      "axe": {
+        "violations": [],
+        "passes": 28,
+        "incomplete": 1,
+        "report": "axe-pedido-dark-1280.json"
+      },
+      "lighthouse": {
+        "mode": "snapshot",
+        "score": 1,
+        "report": "lighthouse-pedido-dark.json"
+      }
+    },
+    {
+      "screen": "pedido",
+      "route": "/pedidos/nuevo",
+      "role": "OPERADOR",
+      "theme": "dark",
+      "width": 360,
+      "viewport": 360,
+      "scroll": 360,
+      "title": "Registrar pedido — EcoLogística Lima",
+      "lang": "es",
+      "heading": "Registrar pedido",
+      "axe": {
+        "violations": [],
+        "passes": 28,
+        "incomplete": 0,
+        "report": "axe-pedido-dark-360.json"
+      }
+    },
+    {
+      "screen": "pedido",
+      "route": "/pedidos/nuevo",
+      "role": "OPERADOR",
+      "theme": "dark",
+      "width": 320,
+      "viewport": 320,
+      "scroll": 320,
+      "title": "Registrar pedido — EcoLogística Lima",
+      "lang": "es",
+      "heading": "Registrar pedido",
+      "axe": {
+        "violations": [],
+        "passes": 28,
+        "incomplete": 0,
+        "report": "axe-pedido-dark-320.json"
+      }
+    },
+    {
+      "screen": "preferencias",
+      "route": "/clientes/preferencias",
+      "role": "OPERADOR",
+      "theme": "light",
+      "width": 1280,
+      "viewport": 1280,
+      "scroll": 1280,
+      "title": "Preferencias de entrega — EcoLogística Lima",
+      "lang": "es",
+      "heading": "Preferencias de entrega",
+      "axe": {
+        "violations": [],
+        "passes": 26,
+        "incomplete": 1,
+        "report": "axe-preferencias-light-1280.json"
+      },
+      "lighthouse": {
+        "mode": "snapshot",
+        "score": 1,
+        "report": "lighthouse-preferencias-light.json"
+      }
+    },
+    {
+      "screen": "preferencias",
+      "route": "/clientes/preferencias",
+      "role": "OPERADOR",
+      "theme": "light",
+      "width": 360,
+      "viewport": 360,
+      "scroll": 360,
+      "title": "Preferencias de entrega — EcoLogística Lima",
+      "lang": "es",
+      "heading": "Preferencias de entrega",
+      "axe": {
+        "violations": [],
+        "passes": 26,
+        "incomplete": 0,
+        "report": "axe-preferencias-light-360.json"
+      }
+    },
+    {
+      "screen": "preferencias",
+      "route": "/clientes/preferencias",
+      "role": "OPERADOR",
+      "theme": "light",
+      "width": 320,
+      "viewport": 320,
+      "scroll": 320,
+      "title": "Preferencias de entrega — EcoLogística Lima",
+      "lang": "es",
+      "heading": "Preferencias de entrega",
+      "axe": {
+        "violations": [],
+        "passes": 26,
+        "incomplete": 0,
+        "report": "axe-preferencias-light-320.json"
+      }
+    },
+    {
+      "screen": "preferencias",
+      "route": "/clientes/preferencias",
+      "role": "OPERADOR",
+      "theme": "dark",
+      "width": 1280,
+      "viewport": 1280,
+      "scroll": 1280,
+      "title": "Preferencias de entrega — EcoLogística Lima",
+      "lang": "es",
+      "heading": "Preferencias de entrega",
+      "axe": {
+        "violations": [],
+        "passes": 26,
+        "incomplete": 1,
+        "report": "axe-preferencias-dark-1280.json"
+      },
+      "lighthouse": {
+        "mode": "snapshot",
+        "score": 1,
+        "report": "lighthouse-preferencias-dark.json"
+      }
+    },
+    {
+      "screen": "preferencias",
+      "route": "/clientes/preferencias",
+      "role": "OPERADOR",
+      "theme": "dark",
+      "width": 360,
+      "viewport": 360,
+      "scroll": 360,
+      "title": "Preferencias de entrega — EcoLogística Lima",
+      "lang": "es",
+      "heading": "Preferencias de entrega",
+      "axe": {
+        "violations": [],
+        "passes": 26,
+        "incomplete": 0,
+        "report": "axe-preferencias-dark-360.json"
+      }
+    },
+    {
+      "screen": "preferencias",
+      "route": "/clientes/preferencias",
+      "role": "OPERADOR",
+      "theme": "dark",
+      "width": 320,
+      "viewport": 320,
+      "scroll": 320,
+      "title": "Preferencias de entrega — EcoLogística Lima",
+      "lang": "es",
+      "heading": "Preferencias de entrega",
+      "axe": {
+        "violations": [],
+        "passes": 26,
+        "incomplete": 0,
+        "report": "axe-preferencias-dark-320.json"
+      }
+    },
+    {
+      "screen": "incidencias-operacion",
+      "route": "/operacion/incidencias",
+      "role": "OPERADOR",
+      "theme": "light",
+      "width": 1280,
+      "viewport": 1280,
+      "scroll": 1280,
+      "title": "Incidencias pendientes — EcoLogística Lima",
+      "lang": "es",
+      "heading": "Incidencias pendientes",
+      "axe": {
+        "violations": [],
+        "passes": 28,
+        "incomplete": 1,
+        "report": "axe-incidencias-operacion-light-1280.json"
+      },
+      "lighthouse": {
+        "mode": "snapshot",
+        "score": 1,
+        "report": "lighthouse-incidencias-operacion-light.json"
+      }
+    },
+    {
+      "screen": "incidencias-operacion",
+      "route": "/operacion/incidencias",
+      "role": "OPERADOR",
+      "theme": "light",
+      "width": 360,
+      "viewport": 360,
+      "scroll": 360,
+      "title": "Incidencias pendientes — EcoLogística Lima",
+      "lang": "es",
+      "heading": "Incidencias pendientes",
+      "axe": {
+        "violations": [],
+        "passes": 28,
+        "incomplete": 0,
+        "report": "axe-incidencias-operacion-light-360.json"
+      }
+    },
+    {
+      "screen": "incidencias-operacion",
+      "route": "/operacion/incidencias",
+      "role": "OPERADOR",
+      "theme": "light",
+      "width": 320,
+      "viewport": 320,
+      "scroll": 320,
+      "title": "Incidencias pendientes — EcoLogística Lima",
+      "lang": "es",
+      "heading": "Incidencias pendientes",
+      "axe": {
+        "violations": [],
+        "passes": 28,
+        "incomplete": 0,
+        "report": "axe-incidencias-operacion-light-320.json"
+      }
+    },
+    {
+      "screen": "incidencias-operacion",
+      "route": "/operacion/incidencias",
+      "role": "OPERADOR",
+      "theme": "dark",
+      "width": 1280,
+      "viewport": 1280,
+      "scroll": 1280,
+      "title": "Incidencias pendientes — EcoLogística Lima",
+      "lang": "es",
+      "heading": "Incidencias pendientes",
+      "axe": {
+        "violations": [],
+        "passes": 28,
+        "incomplete": 1,
+        "report": "axe-incidencias-operacion-dark-1280.json"
+      },
+      "lighthouse": {
+        "mode": "snapshot",
+        "score": 1,
+        "report": "lighthouse-incidencias-operacion-dark.json"
+      }
+    },
+    {
+      "screen": "incidencias-operacion",
+      "route": "/operacion/incidencias",
+      "role": "OPERADOR",
+      "theme": "dark",
+      "width": 360,
+      "viewport": 360,
+      "scroll": 360,
+      "title": "Incidencias pendientes — EcoLogística Lima",
+      "lang": "es",
+      "heading": "Incidencias pendientes",
+      "axe": {
+        "violations": [],
+        "passes": 28,
+        "incomplete": 0,
+        "report": "axe-incidencias-operacion-dark-360.json"
+      }
+    },
+    {
+      "screen": "incidencias-operacion",
+      "route": "/operacion/incidencias",
+      "role": "OPERADOR",
+      "theme": "dark",
+      "width": 320,
+      "viewport": 320,
+      "scroll": 320,
+      "title": "Incidencias pendientes — EcoLogística Lima",
+      "lang": "es",
+      "heading": "Incidencias pendientes",
+      "axe": {
+        "violations": [],
+        "passes": 28,
+        "incomplete": 0,
+        "report": "axe-incidencias-operacion-dark-320.json"
+      }
+    },
+    {
+      "screen": "inicio-conductor",
+      "route": "/",
+      "role": "CONDUCTOR",
+      "theme": "light",
+      "width": 1280,
+      "viewport": 1280,
+      "scroll": 1280,
+      "title": "Inicio — EcoLogística Lima",
+      "lang": "es",
+      "heading": "Inicio",
+      "axe": {
+        "violations": [],
+        "passes": 26,
+        "incomplete": 0,
+        "report": "axe-inicio-conductor-light-1280.json"
+      },
+      "lighthouse": {
+        "mode": "snapshot",
+        "score": 1,
+        "report": "lighthouse-inicio-conductor-light.json"
+      }
+    },
+    {
+      "screen": "inicio-conductor",
+      "route": "/",
+      "role": "CONDUCTOR",
+      "theme": "light",
+      "width": 360,
+      "viewport": 360,
+      "scroll": 360,
+      "title": "Inicio — EcoLogística Lima",
+      "lang": "es",
+      "heading": "Inicio",
+      "axe": {
+        "violations": [],
+        "passes": 26,
+        "incomplete": 0,
+        "report": "axe-inicio-conductor-light-360.json"
+      }
+    },
+    {
+      "screen": "inicio-conductor",
+      "route": "/",
+      "role": "CONDUCTOR",
+      "theme": "light",
+      "width": 320,
+      "viewport": 320,
+      "scroll": 320,
+      "title": "Inicio — EcoLogística Lima",
+      "lang": "es",
+      "heading": "Inicio",
+      "axe": {
+        "violations": [],
+        "passes": 26,
+        "incomplete": 0,
+        "report": "axe-inicio-conductor-light-320.json"
+      }
+    },
+    {
+      "screen": "inicio-conductor",
+      "route": "/",
+      "role": "CONDUCTOR",
+      "theme": "dark",
+      "width": 1280,
+      "viewport": 1280,
+      "scroll": 1280,
+      "title": "Inicio — EcoLogística Lima",
+      "lang": "es",
+      "heading": "Inicio",
+      "axe": {
+        "violations": [],
+        "passes": 26,
+        "incomplete": 0,
+        "report": "axe-inicio-conductor-dark-1280.json"
+      },
+      "lighthouse": {
+        "mode": "snapshot",
+        "score": 1,
+        "report": "lighthouse-inicio-conductor-dark.json"
+      }
+    },
+    {
+      "screen": "inicio-conductor",
+      "route": "/",
+      "role": "CONDUCTOR",
+      "theme": "dark",
+      "width": 360,
+      "viewport": 360,
+      "scroll": 360,
+      "title": "Inicio — EcoLogística Lima",
+      "lang": "es",
+      "heading": "Inicio",
+      "axe": {
+        "violations": [],
+        "passes": 26,
+        "incomplete": 0,
+        "report": "axe-inicio-conductor-dark-360.json"
+      }
+    },
+    {
+      "screen": "inicio-conductor",
+      "route": "/",
+      "role": "CONDUCTOR",
+      "theme": "dark",
+      "width": 320,
+      "viewport": 320,
+      "scroll": 320,
+      "title": "Inicio — EcoLogística Lima",
+      "lang": "es",
+      "heading": "Inicio",
+      "axe": {
+        "violations": [],
+        "passes": 26,
+        "incomplete": 0,
+        "report": "axe-inicio-conductor-dark-320.json"
+      }
+    },
+    {
+      "screen": "itinerario",
+      "route": "/conductor/itinerario",
+      "role": "CONDUCTOR",
+      "theme": "light",
+      "width": 1280,
+      "viewport": 1280,
+      "scroll": 1280,
+      "title": "Mi itinerario — EcoLogística Lima",
+      "lang": "es",
+      "heading": "Mi itinerario",
+      "axe": {
+        "violations": [],
+        "passes": 26,
+        "incomplete": 0,
+        "report": "axe-itinerario-light-1280.json"
+      },
+      "lighthouse": {
+        "mode": "snapshot",
+        "score": 1,
+        "report": "lighthouse-itinerario-light.json"
+      }
+    },
+    {
+      "screen": "itinerario",
+      "route": "/conductor/itinerario",
+      "role": "CONDUCTOR",
+      "theme": "light",
+      "width": 360,
+      "viewport": 360,
+      "scroll": 360,
+      "title": "Mi itinerario — EcoLogística Lima",
+      "lang": "es",
+      "heading": "Mi itinerario",
+      "axe": {
+        "violations": [],
+        "passes": 26,
+        "incomplete": 0,
+        "report": "axe-itinerario-light-360.json"
+      }
+    },
+    {
+      "screen": "itinerario",
+      "route": "/conductor/itinerario",
+      "role": "CONDUCTOR",
+      "theme": "light",
+      "width": 320,
+      "viewport": 320,
+      "scroll": 320,
+      "title": "Mi itinerario — EcoLogística Lima",
+      "lang": "es",
+      "heading": "Mi itinerario",
+      "axe": {
+        "violations": [],
+        "passes": 26,
+        "incomplete": 0,
+        "report": "axe-itinerario-light-320.json"
+      }
+    },
+    {
+      "screen": "itinerario",
+      "route": "/conductor/itinerario",
+      "role": "CONDUCTOR",
+      "theme": "dark",
+      "width": 1280,
+      "viewport": 1280,
+      "scroll": 1280,
+      "title": "Mi itinerario — EcoLogística Lima",
+      "lang": "es",
+      "heading": "Mi itinerario",
+      "axe": {
+        "violations": [],
+        "passes": 26,
+        "incomplete": 0,
+        "report": "axe-itinerario-dark-1280.json"
+      },
+      "lighthouse": {
+        "mode": "snapshot",
+        "score": 1,
+        "report": "lighthouse-itinerario-dark.json"
+      }
+    },
+    {
+      "screen": "itinerario",
+      "route": "/conductor/itinerario",
+      "role": "CONDUCTOR",
+      "theme": "dark",
+      "width": 360,
+      "viewport": 360,
+      "scroll": 360,
+      "title": "Mi itinerario — EcoLogística Lima",
+      "lang": "es",
+      "heading": "Mi itinerario",
+      "axe": {
+        "violations": [],
+        "passes": 26,
+        "incomplete": 0,
+        "report": "axe-itinerario-dark-360.json"
+      }
+    },
+    {
+      "screen": "itinerario",
+      "route": "/conductor/itinerario",
+      "role": "CONDUCTOR",
+      "theme": "dark",
+      "width": 320,
+      "viewport": 320,
+      "scroll": 320,
+      "title": "Mi itinerario — EcoLogística Lima",
+      "lang": "es",
+      "heading": "Mi itinerario",
+      "axe": {
+        "violations": [],
+        "passes": 26,
+        "incomplete": 0,
+        "report": "axe-itinerario-dark-320.json"
+      }
+    },
+    {
+      "screen": "incidencias-conductor",
+      "route": "/conductor/incidencias/nueva",
+      "role": "CONDUCTOR",
+      "theme": "light",
+      "width": 1280,
+      "viewport": 1280,
+      "scroll": 1280,
+      "title": "Reportar incidencia — EcoLogística Lima",
+      "lang": "es",
+      "heading": "Reportar incidencia",
+      "axe": {
+        "violations": [],
+        "passes": 27,
+        "incomplete": 0,
+        "report": "axe-incidencias-conductor-light-1280.json"
+      },
+      "lighthouse": {
+        "mode": "snapshot",
+        "score": 1,
+        "report": "lighthouse-incidencias-conductor-light.json"
+      }
+    },
+    {
+      "screen": "incidencias-conductor",
+      "route": "/conductor/incidencias/nueva",
+      "role": "CONDUCTOR",
+      "theme": "light",
+      "width": 360,
+      "viewport": 360,
+      "scroll": 360,
+      "title": "Reportar incidencia — EcoLogística Lima",
+      "lang": "es",
+      "heading": "Reportar incidencia",
+      "axe": {
+        "violations": [],
+        "passes": 27,
+        "incomplete": 0,
+        "report": "axe-incidencias-conductor-light-360.json"
+      }
+    },
+    {
+      "screen": "incidencias-conductor",
+      "route": "/conductor/incidencias/nueva",
+      "role": "CONDUCTOR",
+      "theme": "light",
+      "width": 320,
+      "viewport": 320,
+      "scroll": 320,
+      "title": "Reportar incidencia — EcoLogística Lima",
+      "lang": "es",
+      "heading": "Reportar incidencia",
+      "axe": {
+        "violations": [],
+        "passes": 27,
+        "incomplete": 0,
+        "report": "axe-incidencias-conductor-light-320.json"
+      }
+    },
+    {
+      "screen": "incidencias-conductor",
+      "route": "/conductor/incidencias/nueva",
+      "role": "CONDUCTOR",
+      "theme": "dark",
+      "width": 1280,
+      "viewport": 1280,
+      "scroll": 1280,
+      "title": "Reportar incidencia — EcoLogística Lima",
+      "lang": "es",
+      "heading": "Reportar incidencia",
+      "axe": {
+        "violations": [],
+        "passes": 27,
+        "incomplete": 0,
+        "report": "axe-incidencias-conductor-dark-1280.json"
+      },
+      "lighthouse": {
+        "mode": "snapshot",
+        "score": 1,
+        "report": "lighthouse-incidencias-conductor-dark.json"
+      }
+    },
+    {
+      "screen": "incidencias-conductor",
+      "route": "/conductor/incidencias/nueva",
+      "role": "CONDUCTOR",
+      "theme": "dark",
+      "width": 360,
+      "viewport": 360,
+      "scroll": 360,
+      "title": "Reportar incidencia — EcoLogística Lima",
+      "lang": "es",
+      "heading": "Reportar incidencia",
+      "axe": {
+        "violations": [],
+        "passes": 27,
+        "incomplete": 0,
+        "report": "axe-incidencias-conductor-dark-360.json"
+      }
+    },
+    {
+      "screen": "incidencias-conductor",
+      "route": "/conductor/incidencias/nueva",
+      "role": "CONDUCTOR",
+      "theme": "dark",
+      "width": 320,
+      "viewport": 320,
+      "scroll": 320,
+      "title": "Reportar incidencia — EcoLogística Lima",
+      "lang": "es",
+      "heading": "Reportar incidencia",
+      "axe": {
+        "violations": [],
+        "passes": 27,
+        "incomplete": 0,
+        "report": "axe-incidencias-conductor-dark-320.json"
+      }
+    },
+    {
+      "screen": "usuarios",
+      "route": "/usuarios",
+      "role": "ADMINISTRADOR",
+      "theme": "light",
+      "width": 1280,
+      "viewport": 1280,
+      "scroll": 1280,
+      "title": "Usuarios — EcoLogística Lima",
+      "lang": "es",
+      "heading": "Usuarios",
+      "axe": {
+        "violations": [],
+        "passes": 27,
+        "incomplete": 1,
+        "report": "axe-usuarios-light-1280.json"
+      },
+      "lighthouse": {
+        "mode": "snapshot",
+        "score": 1,
+        "report": "lighthouse-usuarios-light.json"
+      }
+    },
+    {
+      "screen": "usuarios",
+      "route": "/usuarios",
+      "role": "ADMINISTRADOR",
+      "theme": "light",
+      "width": 360,
+      "viewport": 360,
+      "scroll": 360,
+      "title": "Usuarios — EcoLogística Lima",
+      "lang": "es",
+      "heading": "Usuarios",
+      "axe": {
+        "violations": [],
+        "passes": 27,
+        "incomplete": 0,
+        "report": "axe-usuarios-light-360.json"
+      }
+    },
+    {
+      "screen": "usuarios",
+      "route": "/usuarios",
+      "role": "ADMINISTRADOR",
+      "theme": "light",
+      "width": 320,
+      "viewport": 320,
+      "scroll": 320,
+      "title": "Usuarios — EcoLogística Lima",
+      "lang": "es",
+      "heading": "Usuarios",
+      "axe": {
+        "violations": [],
+        "passes": 27,
+        "incomplete": 0,
+        "report": "axe-usuarios-light-320.json"
+      }
+    },
+    {
+      "screen": "usuarios",
+      "route": "/usuarios",
+      "role": "ADMINISTRADOR",
+      "theme": "dark",
+      "width": 1280,
+      "viewport": 1280,
+      "scroll": 1280,
+      "title": "Usuarios — EcoLogística Lima",
+      "lang": "es",
+      "heading": "Usuarios",
+      "axe": {
+        "violations": [],
+        "passes": 28,
+        "incomplete": 1,
+        "report": "axe-usuarios-dark-1280.json"
+      },
+      "lighthouse": {
+        "mode": "snapshot",
+        "score": 1,
+        "report": "lighthouse-usuarios-dark.json"
+      }
+    },
+    {
+      "screen": "usuarios",
+      "route": "/usuarios",
+      "role": "ADMINISTRADOR",
+      "theme": "dark",
+      "width": 360,
+      "viewport": 360,
+      "scroll": 360,
+      "title": "Usuarios — EcoLogística Lima",
+      "lang": "es",
+      "heading": "Usuarios",
+      "axe": {
+        "violations": [],
+        "passes": 28,
+        "incomplete": 0,
+        "report": "axe-usuarios-dark-360.json"
+      }
+    },
+    {
+      "screen": "usuarios",
+      "route": "/usuarios",
+      "role": "ADMINISTRADOR",
+      "theme": "dark",
+      "width": 320,
+      "viewport": 320,
+      "scroll": 320,
+      "title": "Usuarios — EcoLogística Lima",
+      "lang": "es",
+      "heading": "Usuarios",
+      "axe": {
+        "violations": [],
+        "passes": 28,
+        "incomplete": 0,
+        "report": "axe-usuarios-dark-320.json"
+      }
+    },
+    {
+      "screen": "cambio-contrasena",
+      "route": "/cambiar-contrasena",
+      "role": "ADMINISTRADOR",
+      "theme": "light",
+      "width": 1280,
+      "viewport": 1280,
+      "scroll": 1280,
+      "title": "Cambiar contraseña — EcoLogística Lima",
+      "lang": "es",
+      "heading": "Cambiar contraseña",
+      "axe": {
+        "violations": [],
+        "passes": 27,
+        "incomplete": 0,
+        "report": "axe-cambio-contrasena-light-1280.json"
+      },
+      "lighthouse": {
+        "mode": "snapshot",
+        "score": 1,
+        "report": "lighthouse-cambio-contrasena-light.json"
+      }
+    },
+    {
+      "screen": "cambio-contrasena",
+      "route": "/cambiar-contrasena",
+      "role": "ADMINISTRADOR",
+      "theme": "light",
+      "width": 360,
+      "viewport": 360,
+      "scroll": 360,
+      "title": "Cambiar contraseña — EcoLogística Lima",
+      "lang": "es",
+      "heading": "Cambiar contraseña",
+      "axe": {
+        "violations": [],
+        "passes": 25,
+        "incomplete": 0,
+        "report": "axe-cambio-contrasena-light-360.json"
+      }
+    },
+    {
+      "screen": "cambio-contrasena",
+      "route": "/cambiar-contrasena",
+      "role": "ADMINISTRADOR",
+      "theme": "light",
+      "width": 320,
+      "viewport": 320,
+      "scroll": 320,
+      "title": "Cambiar contraseña — EcoLogística Lima",
+      "lang": "es",
+      "heading": "Cambiar contraseña",
+      "axe": {
+        "violations": [],
+        "passes": 25,
+        "incomplete": 0,
+        "report": "axe-cambio-contrasena-light-320.json"
+      }
+    },
+    {
+      "screen": "cambio-contrasena",
+      "route": "/cambiar-contrasena",
+      "role": "ADMINISTRADOR",
+      "theme": "dark",
+      "width": 1280,
+      "viewport": 1280,
+      "scroll": 1280,
+      "title": "Cambiar contraseña — EcoLogística Lima",
+      "lang": "es",
+      "heading": "Cambiar contraseña",
+      "axe": {
+        "violations": [],
+        "passes": 27,
+        "incomplete": 0,
+        "report": "axe-cambio-contrasena-dark-1280.json"
+      },
+      "lighthouse": {
+        "mode": "snapshot",
+        "score": 1,
+        "report": "lighthouse-cambio-contrasena-dark.json"
+      }
+    },
+    {
+      "screen": "cambio-contrasena",
+      "route": "/cambiar-contrasena",
+      "role": "ADMINISTRADOR",
+      "theme": "dark",
+      "width": 360,
+      "viewport": 360,
+      "scroll": 360,
+      "title": "Cambiar contraseña — EcoLogística Lima",
+      "lang": "es",
+      "heading": "Cambiar contraseña",
+      "axe": {
+        "violations": [],
+        "passes": 25,
+        "incomplete": 0,
+        "report": "axe-cambio-contrasena-dark-360.json"
+      }
+    },
+    {
+      "screen": "cambio-contrasena",
+      "route": "/cambiar-contrasena",
+      "role": "ADMINISTRADOR",
+      "theme": "dark",
+      "width": 320,
+      "viewport": 320,
+      "scroll": 320,
+      "title": "Cambiar contraseña — EcoLogística Lima",
+      "lang": "es",
+      "heading": "Cambiar contraseña",
+      "axe": {
+        "violations": [],
+        "passes": 25,
+        "incomplete": 0,
+        "report": "axe-cambio-contrasena-dark-320.json"
+      }
+    }
+  ],
+  "supplementary": [
+    {
+      "screen": "login",
+      "theme": "light",
+      "check": "200-percent-root-font-size-not-browser-zoom",
+      "viewport": 1280,
+      "scroll": 1280,
+      "overflowing": []
+    },
+    {
+      "screen": "login",
+      "theme": "light",
+      "check": "text-spacing-overflow-probe-not-complete-visual-review",
+      "viewport": 1280,
+      "scroll": 1280
+    },
+    {
+      "screen": "login",
+      "theme": "light",
+      "check": "landscape-layout-probe",
+      "viewport": 900,
+      "scroll": 900,
+      "heading": "Iniciar sesión",
+      "orientationLock": "landscape-primary"
+    },
+    {
+      "screen": "login",
+      "theme": "dark",
+      "check": "200-percent-root-font-size-not-browser-zoom",
+      "viewport": 1280,
+      "scroll": 1280,
+      "overflowing": []
+    },
+    {
+      "screen": "login",
+      "theme": "dark",
+      "check": "text-spacing-overflow-probe-not-complete-visual-review",
+      "viewport": 1280,
+      "scroll": 1280
+    },
+    {
+      "screen": "login",
+      "theme": "dark",
+      "check": "landscape-layout-probe",
+      "viewport": 900,
+      "scroll": 900,
+      "heading": "Iniciar sesión",
+      "orientationLock": "landscape-primary"
+    },
+    {
+      "screen": "inicio-operador",
+      "theme": "light",
+      "check": "200-percent-root-font-size-not-browser-zoom",
+      "viewport": 1280,
+      "scroll": 1280,
+      "overflowing": []
+    },
+    {
+      "screen": "inicio-operador",
+      "theme": "light",
+      "check": "text-spacing-overflow-probe-not-complete-visual-review",
+      "viewport": 1280,
+      "scroll": 1280
+    },
+    {
+      "screen": "inicio-operador",
+      "theme": "light",
+      "check": "landscape-layout-probe",
+      "viewport": 900,
+      "scroll": 900,
+      "heading": "Inicio",
+      "orientationLock": "landscape-primary"
+    },
+    {
+      "screen": "inicio-operador",
+      "theme": "dark",
+      "check": "200-percent-root-font-size-not-browser-zoom",
+      "viewport": 1280,
+      "scroll": 1280,
+      "overflowing": []
+    },
+    {
+      "screen": "inicio-operador",
+      "theme": "dark",
+      "check": "text-spacing-overflow-probe-not-complete-visual-review",
+      "viewport": 1280,
+      "scroll": 1280
+    },
+    {
+      "screen": "inicio-operador",
+      "theme": "dark",
+      "check": "landscape-layout-probe",
+      "viewport": 900,
+      "scroll": 900,
+      "heading": "Inicio",
+      "orientationLock": "landscape-primary"
+    },
+    {
+      "screen": "conductores",
+      "theme": "light",
+      "check": "200-percent-root-font-size-not-browser-zoom",
+      "viewport": 1280,
+      "scroll": 1280,
+      "overflowing": []
+    },
+    {
+      "screen": "conductores",
+      "theme": "light",
+      "check": "text-spacing-overflow-probe-not-complete-visual-review",
+      "viewport": 1280,
+      "scroll": 1280
+    },
+    {
+      "screen": "conductores",
+      "theme": "light",
+      "check": "landscape-layout-probe",
+      "viewport": 900,
+      "scroll": 900,
+      "heading": "Conductores",
+      "orientationLock": "landscape-primary"
+    },
+    {
+      "screen": "conductores",
+      "theme": "dark",
+      "check": "200-percent-root-font-size-not-browser-zoom",
+      "viewport": 1280,
+      "scroll": 1280,
+      "overflowing": []
+    },
+    {
+      "screen": "conductores",
+      "theme": "dark",
+      "check": "text-spacing-overflow-probe-not-complete-visual-review",
+      "viewport": 1280,
+      "scroll": 1280
+    },
+    {
+      "screen": "conductores",
+      "theme": "dark",
+      "check": "landscape-layout-probe",
+      "viewport": 900,
+      "scroll": 900,
+      "heading": "Conductores",
+      "orientationLock": "landscape-primary"
+    },
+    {
+      "screen": "pedido",
+      "theme": "light",
+      "check": "200-percent-root-font-size-not-browser-zoom",
+      "viewport": 1280,
+      "scroll": 1280,
+      "overflowing": []
+    },
+    {
+      "screen": "pedido",
+      "theme": "light",
+      "check": "text-spacing-overflow-probe-not-complete-visual-review",
+      "viewport": 1280,
+      "scroll": 1280
+    },
+    {
+      "screen": "pedido",
+      "theme": "light",
+      "check": "landscape-layout-probe",
+      "viewport": 900,
+      "scroll": 900,
+      "heading": "Registrar pedido",
+      "orientationLock": "landscape-primary"
+    },
+    {
+      "screen": "pedido",
+      "theme": "dark",
+      "check": "200-percent-root-font-size-not-browser-zoom",
+      "viewport": 1280,
+      "scroll": 1280,
+      "overflowing": []
+    },
+    {
+      "screen": "pedido",
+      "theme": "dark",
+      "check": "text-spacing-overflow-probe-not-complete-visual-review",
+      "viewport": 1280,
+      "scroll": 1280
+    },
+    {
+      "screen": "pedido",
+      "theme": "dark",
+      "check": "landscape-layout-probe",
+      "viewport": 900,
+      "scroll": 900,
+      "heading": "Registrar pedido",
+      "orientationLock": "landscape-primary"
+    },
+    {
+      "screen": "preferencias",
+      "theme": "light",
+      "check": "200-percent-root-font-size-not-browser-zoom",
+      "viewport": 1280,
+      "scroll": 1280,
+      "overflowing": []
+    },
+    {
+      "screen": "preferencias",
+      "theme": "light",
+      "check": "text-spacing-overflow-probe-not-complete-visual-review",
+      "viewport": 1280,
+      "scroll": 1280
+    },
+    {
+      "screen": "preferencias",
+      "theme": "light",
+      "check": "landscape-layout-probe",
+      "viewport": 900,
+      "scroll": 900,
+      "heading": "Preferencias de entrega",
+      "orientationLock": "landscape-primary"
+    },
+    {
+      "screen": "preferencias",
+      "theme": "dark",
+      "check": "200-percent-root-font-size-not-browser-zoom",
+      "viewport": 1280,
+      "scroll": 1280,
+      "overflowing": []
+    },
+    {
+      "screen": "preferencias",
+      "theme": "dark",
+      "check": "text-spacing-overflow-probe-not-complete-visual-review",
+      "viewport": 1280,
+      "scroll": 1280
+    },
+    {
+      "screen": "preferencias",
+      "theme": "dark",
+      "check": "landscape-layout-probe",
+      "viewport": 900,
+      "scroll": 900,
+      "heading": "Preferencias de entrega",
+      "orientationLock": "landscape-primary"
+    },
+    {
+      "screen": "incidencias-operacion",
+      "theme": "light",
+      "check": "200-percent-root-font-size-not-browser-zoom",
+      "viewport": 1280,
+      "scroll": 1280,
+      "overflowing": []
+    },
+    {
+      "screen": "incidencias-operacion",
+      "theme": "light",
+      "check": "text-spacing-overflow-probe-not-complete-visual-review",
+      "viewport": 1280,
+      "scroll": 1280
+    },
+    {
+      "screen": "incidencias-operacion",
+      "theme": "light",
+      "check": "landscape-layout-probe",
+      "viewport": 900,
+      "scroll": 900,
+      "heading": "Incidencias pendientes",
+      "orientationLock": "landscape-primary"
+    },
+    {
+      "screen": "incidencias-operacion",
+      "theme": "dark",
+      "check": "200-percent-root-font-size-not-browser-zoom",
+      "viewport": 1280,
+      "scroll": 1280,
+      "overflowing": []
+    },
+    {
+      "screen": "incidencias-operacion",
+      "theme": "dark",
+      "check": "text-spacing-overflow-probe-not-complete-visual-review",
+      "viewport": 1280,
+      "scroll": 1280
+    },
+    {
+      "screen": "incidencias-operacion",
+      "theme": "dark",
+      "check": "landscape-layout-probe",
+      "viewport": 900,
+      "scroll": 900,
+      "heading": "Incidencias pendientes",
+      "orientationLock": "landscape-primary"
+    },
+    {
+      "screen": "inicio-conductor",
+      "theme": "light",
+      "check": "200-percent-root-font-size-not-browser-zoom",
+      "viewport": 1280,
+      "scroll": 1280,
+      "overflowing": []
+    },
+    {
+      "screen": "inicio-conductor",
+      "theme": "light",
+      "check": "text-spacing-overflow-probe-not-complete-visual-review",
+      "viewport": 1280,
+      "scroll": 1280
+    },
+    {
+      "screen": "inicio-conductor",
+      "theme": "light",
+      "check": "landscape-layout-probe",
+      "viewport": 900,
+      "scroll": 900,
+      "heading": "Inicio",
+      "orientationLock": "landscape-primary"
+    },
+    {
+      "screen": "inicio-conductor",
+      "theme": "dark",
+      "check": "200-percent-root-font-size-not-browser-zoom",
+      "viewport": 1280,
+      "scroll": 1280,
+      "overflowing": []
+    },
+    {
+      "screen": "inicio-conductor",
+      "theme": "dark",
+      "check": "text-spacing-overflow-probe-not-complete-visual-review",
+      "viewport": 1280,
+      "scroll": 1280
+    },
+    {
+      "screen": "inicio-conductor",
+      "theme": "dark",
+      "check": "landscape-layout-probe",
+      "viewport": 900,
+      "scroll": 900,
+      "heading": "Inicio",
+      "orientationLock": "landscape-primary"
+    },
+    {
+      "screen": "itinerario",
+      "theme": "light",
+      "check": "200-percent-root-font-size-not-browser-zoom",
+      "viewport": 1280,
+      "scroll": 1280,
+      "overflowing": []
+    },
+    {
+      "screen": "itinerario",
+      "theme": "light",
+      "check": "text-spacing-overflow-probe-not-complete-visual-review",
+      "viewport": 1280,
+      "scroll": 1280
+    },
+    {
+      "screen": "itinerario",
+      "theme": "light",
+      "check": "landscape-layout-probe",
+      "viewport": 900,
+      "scroll": 900,
+      "heading": "Mi itinerario",
+      "orientationLock": "landscape-primary"
+    },
+    {
+      "screen": "itinerario",
+      "theme": "dark",
+      "check": "200-percent-root-font-size-not-browser-zoom",
+      "viewport": 1280,
+      "scroll": 1280,
+      "overflowing": []
+    },
+    {
+      "screen": "itinerario",
+      "theme": "dark",
+      "check": "text-spacing-overflow-probe-not-complete-visual-review",
+      "viewport": 1280,
+      "scroll": 1280
+    },
+    {
+      "screen": "itinerario",
+      "theme": "dark",
+      "check": "landscape-layout-probe",
+      "viewport": 900,
+      "scroll": 900,
+      "heading": "Mi itinerario",
+      "orientationLock": "landscape-primary"
+    },
+    {
+      "screen": "incidencias-conductor",
+      "theme": "light",
+      "check": "200-percent-root-font-size-not-browser-zoom",
+      "viewport": 1280,
+      "scroll": 1280,
+      "overflowing": []
+    },
+    {
+      "screen": "incidencias-conductor",
+      "theme": "light",
+      "check": "text-spacing-overflow-probe-not-complete-visual-review",
+      "viewport": 1280,
+      "scroll": 1280
+    },
+    {
+      "screen": "incidencias-conductor",
+      "theme": "light",
+      "check": "landscape-layout-probe",
+      "viewport": 900,
+      "scroll": 900,
+      "heading": "Reportar incidencia",
+      "orientationLock": "landscape-primary"
+    },
+    {
+      "screen": "incidencias-conductor",
+      "theme": "dark",
+      "check": "200-percent-root-font-size-not-browser-zoom",
+      "viewport": 1280,
+      "scroll": 1280,
+      "overflowing": []
+    },
+    {
+      "screen": "incidencias-conductor",
+      "theme": "dark",
+      "check": "text-spacing-overflow-probe-not-complete-visual-review",
+      "viewport": 1280,
+      "scroll": 1280
+    },
+    {
+      "screen": "incidencias-conductor",
+      "theme": "dark",
+      "check": "landscape-layout-probe",
+      "viewport": 900,
+      "scroll": 900,
+      "heading": "Reportar incidencia",
+      "orientationLock": "landscape-primary"
+    },
+    {
+      "screen": "usuarios",
+      "theme": "light",
+      "check": "200-percent-root-font-size-not-browser-zoom",
+      "viewport": 1280,
+      "scroll": 1280,
+      "overflowing": [
+        {
+          "tag": "TABLE",
+          "class": "data-table",
+          "right": 1899.609375
+        },
+        {
+          "tag": "THEAD",
+          "class": "",
+          "right": 1899.609375
+        },
+        {
+          "tag": "TR",
+          "class": "",
+          "right": 1899.609375
+        },
+        {
+          "tag": "TH",
+          "class": "",
+          "right": 1284.578125
+        },
+        {
+          "tag": "TH",
+          "class": "",
+          "right": 1531.625
+        },
+        {
+          "tag": "TH",
+          "class": "",
+          "right": 1703.890625
+        },
+        {
+          "tag": "TH",
+          "class": "is-end",
+          "right": 1899.609375
+        },
+        {
+          "tag": "TBODY",
+          "class": "",
+          "right": 1899.609375
+        },
+        {
+          "tag": "TR",
+          "class": "",
+          "right": 1899.609375
+        },
+        {
+          "tag": "TD",
+          "class": "is-primary",
+          "right": 1284.578125
+        },
+        {
+          "tag": "TD",
+          "class": "",
+          "right": 1531.625
+        },
+        {
+          "tag": "TD",
+          "class": "",
+          "right": 1703.890625
+        }
+      ]
+    },
+    {
+      "screen": "usuarios",
+      "theme": "light",
+      "check": "text-spacing-overflow-probe-not-complete-visual-review",
+      "viewport": 1280,
+      "scroll": 1280
+    },
+    {
+      "screen": "usuarios",
+      "theme": "light",
+      "check": "landscape-layout-probe",
+      "viewport": 900,
+      "scroll": 900,
+      "heading": "Usuarios",
+      "orientationLock": "landscape-primary"
+    },
+    {
+      "screen": "usuarios",
+      "theme": "dark",
+      "check": "200-percent-root-font-size-not-browser-zoom",
+      "viewport": 1280,
+      "scroll": 1280,
+      "overflowing": [
+        {
+          "tag": "TABLE",
+          "class": "data-table",
+          "right": 1899.609375
+        },
+        {
+          "tag": "THEAD",
+          "class": "",
+          "right": 1899.609375
+        },
+        {
+          "tag": "TR",
+          "class": "",
+          "right": 1899.609375
+        },
+        {
+          "tag": "TH",
+          "class": "",
+          "right": 1284.578125
+        },
+        {
+          "tag": "TH",
+          "class": "",
+          "right": 1531.625
+        },
+        {
+          "tag": "TH",
+          "class": "",
+          "right": 1703.890625
+        },
+        {
+          "tag": "TH",
+          "class": "is-end",
+          "right": 1899.609375
+        },
+        {
+          "tag": "TBODY",
+          "class": "",
+          "right": 1899.609375
+        },
+        {
+          "tag": "TR",
+          "class": "",
+          "right": 1899.609375
+        },
+        {
+          "tag": "TD",
+          "class": "is-primary",
+          "right": 1284.578125
+        },
+        {
+          "tag": "TD",
+          "class": "",
+          "right": 1531.625
+        },
+        {
+          "tag": "TD",
+          "class": "",
+          "right": 1703.890625
+        }
+      ]
+    },
+    {
+      "screen": "usuarios",
+      "theme": "dark",
+      "check": "text-spacing-overflow-probe-not-complete-visual-review",
+      "viewport": 1280,
+      "scroll": 1280
+    },
+    {
+      "screen": "usuarios",
+      "theme": "dark",
+      "check": "landscape-layout-probe",
+      "viewport": 900,
+      "scroll": 900,
+      "heading": "Usuarios",
+      "orientationLock": "landscape-primary"
+    },
+    {
+      "screen": "cambio-contrasena",
+      "theme": "light",
+      "check": "200-percent-root-font-size-not-browser-zoom",
+      "viewport": 1280,
+      "scroll": 1280,
+      "overflowing": []
+    },
+    {
+      "screen": "cambio-contrasena",
+      "theme": "light",
+      "check": "text-spacing-overflow-probe-not-complete-visual-review",
+      "viewport": 1280,
+      "scroll": 1280
+    },
+    {
+      "screen": "cambio-contrasena",
+      "theme": "light",
+      "check": "landscape-layout-probe",
+      "viewport": 900,
+      "scroll": 900,
+      "heading": "Cambiar contraseña",
+      "orientationLock": "landscape-primary"
+    },
+    {
+      "screen": "cambio-contrasena",
+      "theme": "dark",
+      "check": "200-percent-root-font-size-not-browser-zoom",
+      "viewport": 1280,
+      "scroll": 1280,
+      "overflowing": []
+    },
+    {
+      "screen": "cambio-contrasena",
+      "theme": "dark",
+      "check": "text-spacing-overflow-probe-not-complete-visual-review",
+      "viewport": 1280,
+      "scroll": 1280
+    },
+    {
+      "screen": "cambio-contrasena",
+      "theme": "dark",
+      "check": "landscape-layout-probe",
+      "viewport": 900,
+      "scroll": 900,
+      "heading": "Cambiar contraseña",
+      "orientationLock": "landscape-primary"
+    },
+    {
+      "check": "mobile-drawer-escape",
+      "focusReturned": true
+    }
+  ],
+  "manualScreenReader": "pending user evaluation",
+  "realBrowserZoom200": "pending user evaluation",
+  "note": "Automated scores are not a WCAG conformance percentage."
+}
