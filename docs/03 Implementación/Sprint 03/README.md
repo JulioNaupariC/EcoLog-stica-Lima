@@ -34,6 +34,6 @@ arriba, en [`docs/03 Implementación/`](<../>).
 
 ### Accesibilidad
 
-- [ECL-67 / EN-011 — Evaluación WCAG](<05 WCAG V_1_0_0.md>) · [Evidencias, matriz y revisión manual](<evidencias/ECL-67/README.md>)
+- [ECL-67 / EN-011 — Evaluación WCAG](<05 WCAG V_1_0_0.md>) · [Evidencias y matriz finales](<evidencias/ECL-67/comprobacion-final-20261027/README.md>) · [Revisión manual y registro inicial](<evidencias/ECL-67/README.md>)
 
 [← Volver al README principal](<../../../README.md>)

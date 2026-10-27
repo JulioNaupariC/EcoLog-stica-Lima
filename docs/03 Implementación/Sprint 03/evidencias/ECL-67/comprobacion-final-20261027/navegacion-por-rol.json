@@ -1,0 +1,103 @@
+[
+  {
+    "role": "ADMINISTRADOR",
+    "visited": [
+      {
+        "path": "/pedidos/nuevo",
+        "heading": "Registrar pedido"
+      },
+      {
+        "path": "/clientes/preferencias",
+        "heading": "Preferencias de entrega"
+      },
+      {
+        "path": "/vehiculos",
+        "heading": "Vehículos"
+      },
+      {
+        "path": "/conductores",
+        "heading": "Conductores"
+      },
+      {
+        "path": "/operacion/incidencias",
+        "heading": "Incidencias pendientes"
+      },
+      {
+        "path": "/usuarios",
+        "heading": "Usuarios"
+      },
+      {
+        "path": "/cambiar-contrasena",
+        "heading": "Cambiar contraseña"
+      }
+    ]
+  },
+  {
+    "role": "OPERADOR",
+    "visited": [
+      {
+        "path": "/pedidos/nuevo",
+        "heading": "Registrar pedido"
+      },
+      {
+        "path": "/clientes/preferencias",
+        "heading": "Preferencias de entrega"
+      },
+      {
+        "path": "/vehiculos",
+        "heading": "Vehículos"
+      },
+      {
+        "path": "/conductores",
+        "heading": "Conductores"
+      },
+      {
+        "path": "/operacion/incidencias",
+        "heading": "Incidencias pendientes"
+      },
+      {
+        "path": "/cambiar-contrasena",
+        "heading": "Cambiar contraseña"
+      }
+    ]
+  },
+  {
+    "role": "CONDUCTOR",
+    "visited": [
+      {
+        "path": "/conductor/itinerario",
+        "heading": "Mi itinerario"
+      },
+      {
+        "path": "/conductor/incidencias/nueva",
+        "heading": "Reportar incidencia"
+      },
+      {
+        "path": "/cambiar-contrasena",
+        "heading": "Cambiar contraseña"
+      }
+    ]
+  },
+  {
+    "role": "ANALISTA",
+    "visited": [
+      {
+        "path": "/cambiar-contrasena",
+        "heading": "Cambiar contraseña"
+      }
+    ]
+  },
+  {
+    "role": "AUDITOR",
+    "visited": [
+      {
+        "path": "/vehiculos",
+        "heading": "Vehículos"
+      },
+      {
+        "path": "/cambiar-contrasena",
+        "heading": "Cambiar contraseña"
+      }
+    ]
+  }
+]
