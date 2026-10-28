@@ -4,6 +4,15 @@
 
 Repositorio de documentación y desarrollo del proyecto académico EcoLogística Lima. La solución propone una plataforma web para gestión operativa, optimización VRPTW/Green VRP, seguimiento geográfico, analítica y reportes de sostenibilidad.
 
+## Estructura del repositorio
+
+El proyecto está organizado en cuatro carpetas principales:
+
+- `backend/`: API FastAPI, lógica de negocio y migraciones.
+- `frontend/`: aplicación web React y TypeScript.
+- `docs/`: documentación, planificación y evidencias.
+- `scripts/`: herramientas de verificación y automatización.
+
 ## Equipo
 
 | Integrante | Rol |
@@ -223,6 +232,17 @@ Guías de integración:
 - [Guía ST-035](<docs/03 Implementación/Sprint 02/guias/GUIA_JOSE_ST035.md>)
 
 ### Documentación técnica del Sprint 3
+
+<!-- ECL-69 01 Revisión -->
+
+<!-- ECL-70 02 Retrospectiva -->
+
+<!-- ECL-65 03 Calidad -->
+
+<!-- ECL-66 04 OWASP -->
+
+<!-- ECL-68 Guía laboratorio -->
+
 
 - [Índice del Sprint 3](<docs/03 Implementación/Sprint 03/README.md>)
 - [Ítem 7 — Coherencia y versionamiento documental](<docs/03 Implementación/Sprint 03/07 Coherencia y versionamiento documental V_1_0_0.md>)
