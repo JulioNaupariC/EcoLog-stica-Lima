@@ -134,3 +134,33 @@ def test_absent_cookie_does_not_resolve_a_session():
     assert error.value.status_code == 401
     assert error.value.detail == "No autenticado"
     service.resolve.assert_not_called()
+
+
+def test_permission_dependency_passes_endpoint_roles_to_authorization():
+    authorization = Mock()
+    request = SimpleNamespace(
+        app=SimpleNamespace(state=SimpleNamespace(authorization_service=authorization))
+    )
+    authenticated = AuthenticatedSession(
+        uuid4(), Identidad(uuid4(), Rol.CONDUCTOR, "ACTIVO")
+    )
+    context = Contexto(propietario_id=authenticated.identidad.usuario_id)
+    dependency = require_permission(
+        Permiso.INCIDENCIAS_CREAR, lambda identity: context, roles={Rol.CONDUCTOR}
+    )
+    assert dependency(request, authenticated) == authenticated.identidad
+    authorization.autorizar.assert_called_once_with(
+        authenticated.identidad,
+        Permiso.INCIDENCIAS_CREAR,
+        context,
+        roles=frozenset({Rol.CONDUCTOR}),
+    )
+    authorization.reset_mock()
+    require_permission(Permiso.PEDIDOS_CREAR, roles={Rol.OPERADOR})(
+        request, authenticated
+    )
+    authorization.autorizar.assert_called_once_with(
+        authenticated.identidad,
+        Permiso.PEDIDOS_CREAR,
+        roles=frozenset({Rol.OPERADOR}),
+    )

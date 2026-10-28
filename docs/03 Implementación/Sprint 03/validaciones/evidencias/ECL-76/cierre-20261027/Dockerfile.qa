@@ -1,0 +1,4 @@
+FROM ecologistica-lima-ecl29-backend:latest
+USER root
+COPY requirements-dev.lock /tmp/requirements-dev.lock
+RUN python -m pip install --no-cache-dir -q -r /tmp/requirements-dev.lock && python -m pip check

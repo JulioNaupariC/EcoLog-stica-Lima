@@ -4,6 +4,8 @@ on:
   workflow_dispatch:
   push:
     branches:
+      # ECL-65: the SonarCloud analysis must also run on main.
+      - main
       - feat/ECL-50-st024-pruebas-conductores
   pull_request:
     branches:
@@ -204,6 +206,9 @@ jobs:
       - name: Type-check frontend
         run: npm run typecheck
 
+      - name: Check ECL-76 offline browser script syntax
+        run: node --check scripts/verify-incidents-offline.mjs
+
       - name: Run frontend tests
         run: >-
           npm run test:coverage -- --reporter=default --reporter=junit
@@ -222,3 +227,93 @@ jobs:
 
       - name: Build frontend
         run: npm run build
+
+  sonarcloud:
+    name: Quality / SonarCloud
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    # Real coverage comes from these jobs' artifacts (pytest and Vitest).
+    needs:
+      - backend-quality
+      - frontend
+    # Fork PRs never receive SONAR_TOKEN: skip the job instead of failing.
+    if: >-
+      github.event_name != 'pull_request' ||
+      github.event.pull_request.head.repo.full_name == github.repository
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+        with:
+          # Full history for blame, new-code detection and PR decoration.
+          fetch-depth: 0
+
+      - name: Check SonarCloud token availability
+        id: token
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        # Only reports whether the secret exists; its value is never printed.
+        run: |
+          if [ -n "$SONAR_TOKEN" ]; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "present=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::SONAR_TOKEN no disponible; se omite el análisis de SonarCloud."
+          fi
+
+      - name: Download backend coverage
+        if: steps.token.outputs.present == 'true'
+        uses: actions/download-artifact@v4
+        with:
+          name: backend-unit-results-${{ github.run_id }}
+          path: coverage-reports/backend
+
+      - name: Download frontend coverage
+        if: steps.token.outputs.present == 'true'
+        uses: actions/download-artifact@v4
+        with:
+          name: frontend-test-results-${{ github.run_id }}
+          path: coverage-reports/frontend
+
+      - name: Normalize and verify coverage paths
+        if: steps.token.outputs.present == 'true'
+        # Reports are relative to backend/ and frontend/; Sonar reads from the
+        # repository root. Fail if any covered file does not exist in the repo.
+        run: |
+          python3 - <<'PY'
+          import os
+          import re
+          import sys
+
+          xml_path = "coverage-reports/backend/coverage.xml"
+          lcov_path = "coverage-reports/frontend/coverage/lcov.info"
+          for path in (xml_path, lcov_path):
+              if not os.path.isfile(path):
+                  sys.exit(f"Missing coverage report: {path}")
+
+          xml = open(xml_path, encoding="utf-8").read()
+          xml = xml.replace("<source>app</source>", "<source>backend/app</source>")
+          sources = re.findall(r"<source>([^<]*)</source>", xml)
+          if sources != ["backend/app"]:
+              sys.exit(f"Unexpected coverage.xml sources: {sources}")
+          files = re.findall(r'filename="([^"]+)"', xml)
+          missing = [f for f in files if not os.path.isfile(f"backend/app/{f}")]
+          rate = re.search(r'<coverage[^>]* line-rate="([0-9.]+)"', xml).group(1)
+          open(xml_path, "w", encoding="utf-8").write(xml)
+          print(f"backend: {len(files)} files, line-rate {float(rate):.2%}")
+
+          lcov = open(lcov_path, encoding="utf-8").read().replace("\\", "/")
+          lcov = re.sub(r"^SF:src/", "SF:frontend/src/", lcov, flags=re.M)
+          covered = re.findall(r"^SF:(.+)$", lcov, flags=re.M)
+          missing += [f for f in covered if not os.path.isfile(f)]
+          open(lcov_path, "w", encoding="utf-8").write(lcov)
+          print(f"frontend: {len(covered)} files in lcov.info")
+
+          if not files or not covered or missing:
+              sys.exit(f"Unresolvable coverage paths: {missing[:10]}")
+          PY
+
+      - name: SonarCloud scan
+        if: steps.token.outputs.present == 'true'
+        uses: SonarSource/sonarqube-scan-action@v8
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

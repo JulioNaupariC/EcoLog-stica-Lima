@@ -1,0 +1,92 @@
+[
+  {
+    "tag": "BUTTON",
+    "inDrawer": true,
+    "name": "Cerrar menú"
+  },
+  {
+    "tag": "A",
+    "inDrawer": true,
+    "name": "Inicio"
+  },
+  {
+    "tag": "A",
+    "inDrawer": true,
+    "name": "Registrar pedido"
+  },
+  {
+    "tag": "A",
+    "inDrawer": true,
+    "name": "Preferencias de entrega"
+  },
+  {
+    "tag": "A",
+    "inDrawer": true,
+    "name": "Incidencias pendientes"
+  },
+  {
+    "tag": "A",
+    "inDrawer": true,
+    "name": "Vehículos"
+  },
+  {
+    "tag": "A",
+    "inDrawer": true,
+    "name": "Conductores"
+  },
+  {
+    "tag": "BUTTON",
+    "inDrawer": true,
+    "name": "Cerrar menú"
+  },
+  {
+    "tag": "A",
+    "inDrawer": true,
+    "name": "Inicio"
+  },
+  {
+    "tag": "A",
+    "inDrawer": true,
+    "name": "Registrar pedido"
+  },
+  {
+    "tag": "A",
+    "inDrawer": true,
+    "name": "Preferencias de entrega"
+  },
+  {
+    "tag": "A",
+    "inDrawer": true,
+    "name": "Incidencias pendientes"
+  },
+  {
+    "tag": "A",
+    "inDrawer": true,
+    "name": "Vehículos"
+  },
+  {
+    "tag": "A",
+    "inDrawer": true,
+    "name": "Conductores"
+  },
+  {
+    "tag": "BUTTON",
+    "inDrawer": true,
+    "name": "Cerrar menú"
+  },
+  {
+    "tag": "A",
+    "inDrawer": true,
+    "name": "Inicio"
+  },
+  {
+    "tag": "A",
+    "inDrawer": true,
+    "name": "Registrar pedido"
+  },
+  {
+    "tag": "A",
+    "inDrawer": true,
+    "name": "Preferencias de entrega"
+  }
+]

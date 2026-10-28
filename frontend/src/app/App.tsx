@@ -1,9 +1,12 @@
 import { useCallback, useEffect, useState } from 'react'
 import type { ReactNode } from 'react'
-import { Navigate, Route, Routes, useNavigate } from 'react-router-dom'
+import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 import { ShieldAlert } from 'lucide-react'
 import { HomePage } from '../pages/HomePage'
 import { DriverItineraryPage } from '../pages/DriverItineraryPage'
+import { IncidentCreatePage } from '../pages/IncidentCreatePage'
+import { useIncidentSynchronization } from '../hooks/useIncidentSynchronization'
+import { listIncidents } from '../services/incidentStorage'
 import { LoginPage } from '../pages/LoginPage'
 import { NotFoundPage } from '../pages/NotFoundPage'
 import { OrderCreatePage } from '../pages/OrderCreatePage'
@@ -11,6 +14,7 @@ import { VehiclesPage } from '../pages/VehiclesPage'
 import { DriversPage } from '../pages/DriversPage'
 import { DeliveryPreferencesPage } from '../pages/DeliveryPreferencesPage'
 import { UsersPage } from '../pages/UsersPage'
+import { OperationIncidentsPage } from '../pages/OperationIncidentsPage'
 import { ChangePasswordPage } from '../pages/ChangePasswordPage'
 import { DriverShell, PublicShell, StaffShell } from '../components/layout/AppShell'
 import { Alert, EmptyState, LinkButton, ToastProvider, useToast } from '../components/ui'
@@ -41,11 +45,18 @@ function AppRoutes() {
   const [logoutMessage, setLogoutMessage] = useState('')
   const [loggingOut, setLoggingOut] = useState(false)
   const navigate = useNavigate()
+  const location = useLocation()
   const { notify } = useToast()
   const createOrdersAllowed = identity !== null && canManageOperations(identity.rol)
   const vehiclesAllowed = identity !== null && canListVehicles(identity.rol)
   const mustChangePassword = identity?.debe_cambiar_contrasena === true
   const signedIn = identity !== null
+  // WCAG 2.4.2: the tab identifies the screen, including denied and public routes.
+  useEffect(() => {
+    const heading = document.querySelector('main h1')?.textContent?.trim()
+    document.title = heading ? `${heading} — EcoLogística Lima` : 'EcoLogística Lima'
+  }, [location.pathname, identity?.rol, mustChangePassword])
+  useIncidentSynchronization(identity?.rol === 'CONDUCTOR' && !mustChangePassword ? identity.usuario_id : undefined)
 
   function handleLoginSuccess(loggedInIdentity: LoginResponse, email: string) {
     // A temporary-password session is not remembered as a usable driver tab.
@@ -99,7 +110,8 @@ function AppRoutes() {
       if (identity.rol === 'CONDUCTOR') {
         let pendingCount: number | null
         try {
-          pendingCount = (await listPendingReports(identity.usuario_id)).length
+          pendingCount = (await listPendingReports(identity.usuario_id)).length +
+            (await listIncidents(identity.usuario_id)).filter(item => !item.acknowledgement).length
         } catch {
           pendingCount = null
         }
@@ -169,9 +181,13 @@ function AppRoutes() {
     <Route path="/" element={<HomePage role={identity.rol} ownerId={identity.usuario_id} />} />
     <Route path="/login" element={<Navigate to="/" replace />} />
     <Route path="/pedidos/nuevo" element={guarded(createOrdersAllowed, <OrderCreatePage />)} />
+    <Route path="/operacion/incidencias" element={guarded(createOrdersAllowed,
+      <OperationIncidentsPage key={identity.usuario_id} onSessionExpired={handleSessionExpired} />)} />
     <Route path="/vehiculos" element={guarded(vehiclesAllowed, <VehiclesPage canCreate={createOrdersAllowed} />)} />
     <Route path="/conductor/itinerario" element={guarded(identity.rol === 'CONDUCTOR',
       <DriverItineraryPage key={identity.usuario_id} ownerId={identity.usuario_id} onSessionExpired={handleSessionExpired} />)} />
+    <Route path="/conductor/incidencias/nueva" element={guarded(identity.rol === 'CONDUCTOR',
+      <IncidentCreatePage key={identity.usuario_id} ownerId={identity.usuario_id} />)} />
     <Route path="/conductores" element={guarded(createOrdersAllowed,
       <DriversPage key={identity.usuario_id} onSessionExpired={handleSessionExpired} />)} />
     <Route path="/clientes/preferencias" element={guarded(createOrdersAllowed,

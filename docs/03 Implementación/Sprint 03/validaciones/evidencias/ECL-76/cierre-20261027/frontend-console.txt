@@ -1,0 +1,1854 @@
+docker :  Container ecologistica-lima-ecl29-frontend-run-b7d4e993482d Creating
+En línea: 2 Carácter: 209
++ ... ffline.mjs; docker compose --env-file .env run --rm --no-deps --volum ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ( Container ecol...3482d Creating :String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+ Container ecologistica-lima-ecl29-frontend-run-b7d4e993482d Created
+
+> ecologistica-lima-frontend@0.1.0 typecheck
+> tsc -b --pretty false
+
+
+> ecologistica-lima-frontend@0.1.0 lint
+> eslint .
+
+
+> ecologistica-lima-frontend@0.1.0 test:coverage
+> vitest run --coverage --maxWorkers=1 --reporter=default --reporter=junit --outputFile.junit=/evidence/frontend-tests.xml
+
+
+ RUN  v5.0.1 /app
+      Coverage enabled with v8
+
+ ✓ src/app/App.test.tsx (39 tests) 14935ms
+   ✓ App (39)
+     ✓ ECL-67: el título de la pestaña identifica login, inicio, otra pantalla y acceso denegado 887ms
+     ✓ ECL-75: ADMINISTRADOR ve el menú y puede abrir pendientes 605ms
+     ✓ ECL-75: OPERADOR ve el menú y puede abrir pendientes 436ms
+     ✓ ECL-75: ANALISTA no ve el menú ni accede por URL 323ms
+     ✓ ECL-75: AUDITOR no ve el menú ni accede por URL 413ms
+     ✓ ECL-75: CONDUCTOR no ve el menú ni accede por URL 382ms
+     ✓ ECL-74: ADMINISTRADOR no puede abrir el formulario por URL 353ms
+     ✓ ECL-74: OPERADOR no puede abrir el formulario por URL 325ms
+     ✓ ECL-74: ANALISTA no puede abrir el formulario por URL 403ms
+     ✓ ECL-74: AUDITOR no puede abrir el formulario por URL 370ms
+     ✓ con sesión muestra la página 404 y permite volver al inicio 493ms
+     ✓ permite al conductor abrir su itinerario desde la navegación y por ruta directa 568ms
+     ✓ oculta itinerario y deniega su ruta directa a ADMINISTRADOR 477ms
+     ✓ oculta itinerario y deniega su ruta directa a OPERADOR 441ms
+     ✓ oculta itinerario y deniega su ruta directa a ANALISTA 325ms
+     ✓ oculta itinerario y deniega su ruta directa a AUDITOR 349ms
+     ✓ al entrar correctamente vuelve a / y reemplaza la entrada de /login 306ms
+     ✓ permite a ADMINISTRADOR ver y abrir el formulario de pedidos 546ms
+     ✓ permite a OPERADOR ver y abrir el formulario de pedidos 682ms
+     ✓ oculta pedidos y deniega el acceso directo a CONDUCTOR 405ms
+     ✓ oculta pedidos y deniega el acceso directo a ANALISTA 399ms
+     ✓ oculta pedidos y deniega el acceso directo a AUDITOR 392ms
+     ✓ redirige /login a / cuando ya existe identidad en memoria 345ms
+     ✓ no recupera identidad al volver a montar App en /pedidos/nuevo 559ms
+     ✓ no recupera identidad al volver a montar App en /vehiculos 433ms
+     ✓ permite a ADMINISTRADOR listar y crear conservando /vehiculos 679ms
+     ✓ permite a OPERADOR listar y crear conservando /vehiculos 815ms
+     ✓ Auditor ve enlace y listado, sin montar el formulario 405ms
+     ✓ oculta vehículos y deniega acceso directo a CONDUCTOR sin solicitudes 339ms
+     ✓ oculta vehículos y deniega acceso directo a ANALISTA sin solicitudes 357ms
+     ✓ confirma antes de cerrar sesión con reportes offline pendientes y los conserva 314ms
+     ✓ cierra sesión tras advertir que la cola pendiente se conservará localmente 366ms
+ ✓ src/pages/VehiclesPage.test.tsx (59 tests) 8703ms
+stderr | src/pages/OrderCreatePage.test.tsx > OrderCreatePage > valida dirección
+vacía
+An update to ClientPreferencesProposal inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/OrderCreatePage.test.tsx > OrderCreatePage > exige referencia o
+coordenadas completas
+An update to ClientPreferencesProposal inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/OrderCreatePage.test.tsx > OrderCreatePage > rechaza una sola
+coordenada
+An update to ClientPreferencesProposal inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/OrderCreatePage.test.tsx > OrderCreatePage > rechaza Latitud
+fuera de rango
+An update to ClientPreferencesProposal inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/OrderCreatePage.test.tsx > OrderCreatePage > rechaza Longitud
+fuera de rango
+An update to ClientPreferencesProposal inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/OrderCreatePage.test.tsx > OrderCreatePage > valida decimales de
+Peso (kg) con valor 0
+An update to ClientPreferencesProposal inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/OrderCreatePage.test.tsx > OrderCreatePage > valida decimales de
+Peso (kg) con valor 1.001
+An update to ClientPreferencesProposal inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/OrderCreatePage.test.tsx > OrderCreatePage > valida decimales de
+Volumen (m³) con valor -1
+An update to ClientPreferencesProposal inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/OrderCreatePage.test.tsx > OrderCreatePage > valida decimales de
+Volumen (m³) con valor 1.0001
+An update to ClientPreferencesProposal inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/OrderCreatePage.test.tsx > OrderCreatePage > valida tipo_producto
+An update to ClientPreferencesProposal inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/OrderCreatePage.test.tsx > OrderCreatePage > valida tipo_producto
+An update to ClientPreferencesProposal inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/OrderCreatePage.test.tsx > OrderCreatePage > rechaza una ventana
+final igual o anterior al inicio
+An update to ClientPreferencesProposal inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/OrderCreatePage.test.tsx > OrderCreatePage > envía prioridad,
+strings decimales y fechas ISO timezone-aware
+An update to ClientPreferencesProposal inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/OrderCreatePage.test.tsx > OrderCreatePage > envía null para
+referencia y coordenadas vacías cuando la otra ubicación existe
+An update to ClientPreferencesProposal inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/OrderCreatePage.test.tsx > OrderCreatePage > deshabilita el
+botón durante loading e impide doble submit
+An update to ClientPreferencesProposal inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/OrderCreatePage.test.tsx > OrderCreatePage > muestra pedido_id y
+estado después del éxito
+An update to ClientPreferencesProposal inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/OrderCreatePage.test.tsx > OrderCreatePage > muestra el error de
+servicio unauthorized y conserva el formulario
+An update to ClientPreferencesProposal inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/OrderCreatePage.test.tsx > OrderCreatePage > muestra el error de
+servicio forbidden y conserva el formulario
+An update to ClientPreferencesProposal inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/OrderCreatePage.test.tsx > OrderCreatePage > muestra el error de
+servicio client-not-found y conserva el formulario
+An update to ClientPreferencesProposal inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/OrderCreatePage.test.tsx > OrderCreatePage > muestra el error de
+servicio unavailable y conserva el formulario
+An update to ClientPreferencesProposal inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/OrderCreatePage.test.tsx > OrderCreatePage > muestra el error de
+servicio network y conserva el formulario
+An update to ClientPreferencesProposal inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/OrderCreatePage.test.tsx > OrderCreatePage > mapea el 422 a
+campo y conserva errores de modelo en el resumen
+An update to ClientPreferencesProposal inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/OrderCreatePage.test.tsx > OrderCreatePage > presenta un error
+seguro ante un rechazo no tipado
+An update to ClientPreferencesProposal inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/OrderCreatePage.test.tsx > OrderCreatePage — P8 / D-01: propuesta de
+preferencias del cliente > ruta dorada: propone las preferencias y copia la referencia solo con la acción
+explícita
+An update to ClientPreferencesProposal inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/OrderCreatePage.test.tsx > OrderCreatePage — P8 / D-01: propuesta de
+preferencias del cliente > ruta feliz: sin la acción, no copia horario, restricción ni referencia al
+pedido (RN-006)
+An update to ClientPreferencesProposal inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/OrderCreatePage.test.tsx > OrderCreatePage — P8 / D-01: propuesta de
+preferencias del cliente > ruta infeliz: si las preferencias fallan (forbidden) el pedido sigue
+registrable
+An update to ClientPreferencesProposal inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/OrderCreatePage.test.tsx > OrderCreatePage — P8 / D-01: propuesta de
+preferencias del cliente > ruta infeliz: si las preferencias fallan (unavailable) el pedido sigue
+registrable
+An update to ClientPreferencesProposal inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/OrderCreatePage.test.tsx > OrderCreatePage — P8 / D-01: propuesta de
+preferencias del cliente > ruta infeliz: si las preferencias fallan (not_found) el pedido sigue
+registrable
+An update to ClientPreferencesProposal inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/OrderCreatePage.test.tsx > OrderCreatePage — P8 / D-01: propuesta de
+preferencias del cliente > ruta infeliz: un cliente inexistente en el registro muestra el error del
+servicio
+An update to ClientPreferencesProposal inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/OrderCreatePage.test.tsx > OrderCreatePage — P8 / D-01: propuesta de
+preferencias del cliente > ruta de borde: cliente sin preferencias y cambio de cliente recargan el panel
+An update to ClientPreferencesProposal inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/OrderCreatePage.test.tsx > OrderCreatePage — P8 / D-01: propuesta de
+preferencias del cliente > ruta de borde: cliente sin preferencias y cambio de cliente recargan el panel
+An update to ClientPreferencesProposal inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/OrderCreatePage.test.tsx > OrderCreatePage — P8 / D-01: propuesta de
+preferencias del cliente > ruta de borde: la acción se deshabilita si la referencia del pedido ya coincide
+An update to ClientPreferencesProposal inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/pages/OrderCreatePage.test.tsx (35 tests) 18781ms
+   ✓ OrderCreatePage (27)
+     ✓ renderiza todos los controles con etiquetas accesibles 375ms
+     ✓ valida dirección vacía 499ms
+     ✓ exige referencia o coordenadas completas 462ms
+     ✓ rechaza una sola coordenada 567ms
+     ✓ rechaza Latitud fuera de rango 558ms
+     ✓ rechaza Longitud fuera de rango 494ms
+     ✓ valida decimales de Peso (kg) con valor 0 572ms
+     ✓ valida decimales de Peso (kg) con valor 1.001 514ms
+     ✓ valida decimales de Volumen (m³) con valor -1 490ms
+     ✓ valida decimales de Volumen (m³) con valor 1.0001 505ms
+     ✓ valida tipo_producto 521ms
+     ✓ valida tipo_producto 519ms
+     ✓ rechaza una ventana final igual o anterior al inicio 511ms
+     ✓ envía prioridad, strings decimales y fechas ISO timezone-aware 475ms
+     ✓ envía null para referencia y coordenadas vacías cuando la otra ubicación existe 589ms
+     ✓ deshabilita el botón durante loading e impide doble submit 614ms
+     ✓ muestra pedido_id y estado después del éxito 529ms
+     ✓ muestra el error de servicio unauthorized y conserva el formulario 536ms
+     ✓ muestra el error de servicio forbidden y conserva el formulario 511ms
+     ✓ muestra el error de servicio client-not-found y conserva el formulario 636ms
+     ✓ muestra el error de servicio unavailable y conserva el formulario 574ms
+     ✓ muestra el error de servicio network y conserva el formulario 672ms
+     ✓ mapea el 422 a campo y conserva errores de modelo en el resumen 511ms
+     ✓ limpia el error del campo cuando el usuario lo corrige 513ms
+     ✓ presenta un error seguro ante un rechazo no tipado 638ms
+   ✓ OrderCreatePage — P8 / D-01: propuesta de preferencias del cliente (8)
+     ✓ ruta dorada: propone las preferencias y copia la referencia solo con la acción explícita 593ms
+     ✓ ruta feliz: sin la acción, no copia horario, restricción ni referencia al pedido (RN-006) 590ms
+     ✓ ruta infeliz: si las preferencias fallan (forbidden) el pedido sigue registrable 598ms
+     ✓ ruta infeliz: si las preferencias fallan (unavailable) el pedido sigue registrable 509ms
+     ✓ ruta infeliz: si las preferencias fallan (not_found) el pedido sigue registrable 613ms
+     ✓ ruta infeliz: un cliente inexistente en el registro muestra el error del servicio 623ms
+     ✓ ruta de borde: cliente sin preferencias y cambio de cliente recargan el panel 914ms
+     ✓ ruta de borde: la acción se deshabilita si la referencia del pedido ya coincide 543ms
+ ✓ src/pages/DriversPage.test.tsx (14 tests) 4156ms
+   ✓ muestra carga, vacío y no presenta datos ficticios 332ms
+   ✓ lista sin DNI ni teléfono, carga perfil con foco y permite cancelar 393ms
+   ✓ valida antes de enviar y registra contra el servicio una sola vez 480ms
+   ✓ edita sólo datos modificados, preserva fechas y retira disponibilidad 632ms
+   ✓ informa perfil inexistente y bloquea error de permiso al guardar 399ms
+   ✓ maneja errores inesperados sin mostrar detalles privados 350ms
+   ✓ representa un perfil inactivo sin franja y páginas sin registros 424ms
+stderr | src/pages/IncidentCreatePage.test.tsx > ruta infeliz: 403 conserva el reporte y ofrece
+reintento explícito
+An update to IncidentCreatePage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+An update to IncidentCreatePage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/IncidentCreatePage.test.tsx > ruta infeliz: 403 conserva el reporte y ofrece
+reintento explícito
+An update to IncidentCreatePage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/IncidentCreatePage.test.tsx > I04 ruta infeliz: falta tipo, conserva borrador
+tras recargar sin encolar ni enviar
+An update to IncidentCreatePage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/IncidentCreatePage.test.tsx > I04 ruta infeliz: falta severidad, conserva
+borrador tras recargar sin encolar ni enviar
+An update to IncidentCreatePage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/IncidentCreatePage.test.tsx > I04 ruta infeliz: falta ubicación, conserva
+borrador tras recargar sin encolar ni enviar
+An update to IncidentCreatePage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/IncidentCreatePage.test.tsx > I04 ruta infeliz: falta ubicación, conserva
+borrador tras recargar sin encolar ni enviar
+An update to IncidentCreatePage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/IncidentCreatePage.test.tsx > I04 ruta infeliz: falta ubicación, conserva
+borrador tras recargar sin encolar ni enviar
+An update to IncidentCreatePage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/IncidentCreatePage.test.tsx > I04 ruta infeliz: falta hora, conserva borrador
+tras recargar sin encolar ni enviar
+An update to IncidentCreatePage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/IncidentCreatePage.test.tsx > I04 ruta infeliz: falta hora, conserva borrador
+tras recargar sin encolar ni enviar
+An update to IncidentCreatePage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/IncidentCreatePage.test.tsx > I04 ruta infeliz: falta hora, conserva borrador
+tras recargar sin encolar ni enviar
+An update to IncidentCreatePage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/IncidentCreatePage.test.tsx > I04 ruta infeliz: falta varios, conserva
+borrador tras recargar sin encolar ni enviar
+An update to IncidentCreatePage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/IncidentCreatePage.test.tsx > I05 hora futura ruta infeliz: rechaza envío y
+conserva el valor íntegro tras recargar
+An update to IncidentCreatePage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/IncidentCreatePage.test.tsx > I06 observación Unicode de 501 caracteres ruta
+infeliz: rechaza envío y conserva el valor íntegro tras recargar
+An update to IncidentCreatePage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/pages/IncidentCreatePage.test.tsx (18 tests) 3810ms
+   ✓ ruta dorada: envío válido muestra acuse e ID del servidor 638ms
+   ✓ ruta infeliz: 403 conserva el reporte y ofrece reintento explícito 403ms
+   ✓ ruta de borde: offline, recarga y reconexión confirman una sola operación 533ms
+   ✓ ruta infeliz: 422 permite corregir sin cambiar la operación 397ms
+stderr | src/pages/DeliveryPreferencesPage.test.tsx > ruta dorada: busca por nombre, selecciona
+y consulta las preferencias del cliente
+An update to DeliveryPreferencesPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+An update to DeliveryPreferencesPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/DeliveryPreferencesPage.test.tsx > representa preferencias vacías y permite
+inicializarlas
+An update to DeliveryPreferencesPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+An update to DeliveryPreferencesPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/DeliveryPreferencesPage.test.tsx > rechaza sin cambios, blancos y exceso de
+longitud; asocia errores a campos
+An update to DeliveryPreferencesPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+An update to DeliveryPreferencesPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/DeliveryPreferencesPage.test.tsx > envía solo cambios una vez y actualiza la
+base local después del ACK
+An update to DeliveryPreferencesPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+An update to DeliveryPreferencesPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/DeliveryPreferencesPage.test.tsx > limpia explícitamente con null sin alterar
+las demás preferencias
+An update to DeliveryPreferencesPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+An update to DeliveryPreferencesPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/DeliveryPreferencesPage.test.tsx > retira una confirmación anterior al editar
+y no la muestra ante un nuevo fallo
+An update to DeliveryPreferencesPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+An update to DeliveryPreferencesPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/DeliveryPreferencesPage.test.tsx > cancela cambios y puede consultar de nuevo
+el cliente guardado
+An update to DeliveryPreferencesPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+An update to DeliveryPreferencesPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/DeliveryPreferencesPage.test.tsx > cancela cambios y puede consultar de nuevo
+el cliente guardado
+An update to DeliveryPreferencesPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+An update to DeliveryPreferencesPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/DeliveryPreferencesPage.test.tsx > conserva cambios al fallar guardado:
+network
+An update to DeliveryPreferencesPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+An update to DeliveryPreferencesPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/DeliveryPreferencesPage.test.tsx > conserva cambios al fallar guardado:
+validation
+An update to DeliveryPreferencesPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+An update to DeliveryPreferencesPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/DeliveryPreferencesPage.test.tsx > conserva cambios al fallar guardado:
+unavailable
+An update to DeliveryPreferencesPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+An update to DeliveryPreferencesPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/DeliveryPreferencesPage.test.tsx > conserva cambios al fallar guardado:
+unexpected
+An update to DeliveryPreferencesPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+An update to DeliveryPreferencesPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/DeliveryPreferencesPage.test.tsx > muestra error de consulta y permite
+reintentar: not_found
+An update to DeliveryPreferencesPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+An update to DeliveryPreferencesPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+An update to DeliveryPreferencesPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+An update to DeliveryPreferencesPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+An update to DeliveryPreferencesPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/DeliveryPreferencesPage.test.tsx > muestra error de consulta y permite
+reintentar: not_found
+An update to DeliveryPreferencesPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+An update to DeliveryPreferencesPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/DeliveryPreferencesPage.test.tsx > muestra error de consulta y permite
+reintentar: network
+An update to DeliveryPreferencesPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+An update to DeliveryPreferencesPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/DeliveryPreferencesPage.test.tsx > muestra error de consulta y permite
+reintentar: network
+An update to DeliveryPreferencesPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+An update to DeliveryPreferencesPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/DeliveryPreferencesPage.test.tsx > muestra error de consulta y permite
+reintentar: unavailable
+An update to DeliveryPreferencesPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+An update to DeliveryPreferencesPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/DeliveryPreferencesPage.test.tsx > muestra error de consulta y permite
+reintentar: unavailable
+An update to DeliveryPreferencesPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+An update to DeliveryPreferencesPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/DeliveryPreferencesPage.test.tsx > muestra error de consulta y permite
+reintentar: unexpected
+An update to DeliveryPreferencesPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+An update to DeliveryPreferencesPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/DeliveryPreferencesPage.test.tsx > muestra error de consulta y permite
+reintentar: unexpected
+An update to DeliveryPreferencesPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+An update to DeliveryPreferencesPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/DeliveryPreferencesPage.test.tsx > maneja acceso denegado al consultar:
+unauthorized
+An update to DeliveryPreferencesPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+An update to DeliveryPreferencesPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+An update to DeliveryPreferencesPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+An update to DeliveryPreferencesPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+An update to DeliveryPreferencesPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+An update to DeliveryPreferencesPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/DeliveryPreferencesPage.test.tsx > maneja acceso denegado al consultar:
+forbidden
+An update to DeliveryPreferencesPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+An update to DeliveryPreferencesPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+An update to DeliveryPreferencesPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+An update to DeliveryPreferencesPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+An update to DeliveryPreferencesPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+An update to DeliveryPreferencesPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/DeliveryPreferencesPage.test.tsx > bloquea escritura al perder acceso o
+cliente: unauthorized
+An update to DeliveryPreferencesPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+An update to DeliveryPreferencesPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/DeliveryPreferencesPage.test.tsx > bloquea escritura al perder acceso o
+cliente: forbidden
+An update to DeliveryPreferencesPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+An update to DeliveryPreferencesPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/DeliveryPreferencesPage.test.tsx > bloquea escritura al perder acceso o
+cliente: not_found
+An update to DeliveryPreferencesPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+An update to DeliveryPreferencesPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/DeliveryPreferencesPage.test.tsx > no muestra excepciones privadas en carga
+ni guardado
+An update to DeliveryPreferencesPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+An update to DeliveryPreferencesPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/DeliveryPreferencesPage.test.tsx > no muestra excepciones privadas en carga
+ni guardado
+An update to DeliveryPreferencesPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+An update to DeliveryPreferencesPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/DeliveryPreferencesPage.test.tsx > ignora respuestas y errores tardíos
+después de salir: save
+An update to DeliveryPreferencesPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+An update to DeliveryPreferencesPage inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/pages/DeliveryPreferencesPage.test.tsx (25 tests) 10442ms
+   ✓ ruta infeliz: exige seleccionar un cliente de la lista sin hacer solicitudes 641ms
+   ✓ ruta dorada: busca por nombre, selecciona y consulta las preferencias del cliente 375ms
+   ✓ anuncia carga, impide doble consulta y recupera valores con foco 406ms
+   ✓ representa preferencias vacías y permite inicializarlas 521ms
+   ✓ rechaza sin cambios, blancos y exceso de longitud; asocia errores a campos 480ms
+   ✓ envía solo cambios una vez y actualiza la base local después del ACK 541ms
+   ✓ limpia explícitamente con null sin alterar las demás preferencias 438ms
+   ✓ retira una confirmación anterior al editar y no la muestra ante un nuevo fallo 431ms
+   ✓ cancela cambios y puede consultar de nuevo el cliente guardado 556ms
+   ✓ conserva cambios al fallar guardado: network 410ms
+   ✓ conserva cambios al fallar guardado: validation 396ms
+   ✓ conserva cambios al fallar guardado: unavailable 443ms
+   ✓ conserva cambios al fallar guardado: unexpected 473ms
+   ✓ muestra error de consulta y permite reintentar: not_found 348ms
+   ✓ muestra error de consulta y permite reintentar: network 344ms
+   ✓ muestra error de consulta y permite reintentar: unavailable 340ms
+   ✓ muestra error de consulta y permite reintentar: unexpected 369ms
+   ✓ maneja acceso denegado al consultar: unauthorized 341ms
+   ✓ maneja acceso denegado al consultar: forbidden 342ms
+   ✓ bloquea escritura al perder acceso o cliente: unauthorized 389ms
+   ✓ bloquea escritura al perder acceso o cliente: forbidden 369ms
+   ✓ bloquea escritura al perder acceso o cliente: not_found 405ms
+   ✓ no muestra excepciones privadas en carga ni guardado 382ms
+   ✓ ignora respuestas y errores tardíos después de salir: load 315ms
+   ✓ ignora respuestas y errores tardíos después de salir: save 382ms
+ ✓ src/pages/DriverItineraryPage.test.tsx (20 tests) 1466ms
+ ✓ src/pages/OperationIncidentsPage.test.tsx (11 tests) 1052ms
+ ✓ src/services/reportQueue.test.ts (9 tests) 18ms
+ ✓ src/services/vehicles.test.ts (68 tests) 35ms
+ ✓ src/pages/LoginPage.test.tsx (14 tests) 1163ms
+ ✓ src/services/incidentSync.test.ts (15 tests) 28ms
+ ✓ src/pages/UsersPage.test.tsx (9 tests) 2232ms
+   ✓ restablece → confirma → ve y copia → Listo borra la temporal y devuelve el foco 360ms
+   ✓ si falla, informa sin culpar y deja reintentar 317ms
+   ✓ muestra conflictos con salida y avisa si no se puede copiar 379ms
+ ✓ src/app/App.passwordReset.test.tsx (9 tests) 3251ms
+   ✓ login con temporal redirige al cambio obligatorio y bloquea las demás rutas 723ms
+   ✓ el envoltorio de fetch existe solo con sesión y se retira al cerrar sesión 329ms
+   ✓ OPERADOR no ve ni puede abrir /usuarios 423ms
+   ✓ el Administrador ve Usuarios en el menú y el cambio voluntario en su cuenta 600ms
+ ✓ src/pages/HomePage.test.tsx (11 tests) 838ms
+ ✓ src/services/auth.test.ts (29 tests) 16ms
+ ✓ src/components/ui/ui.test.tsx (8 tests) 379ms
+ ✓ src/components/layout/AppShell.test.tsx (7 tests) 978ms
+   ✓ StaffShell (6)
+     ✓ ECL-67: al abrir el menú móvil enfoca Cerrar, contiene Tab y deja inerte el contenido 313ms
+ ✓ src/components/ClientCombobox.test.tsx (7 tests) 683ms
+   ✓ ClientCombobox (7)
+     ✓ ruta dorada: teclado completo — escribir, flechas, Enter selecciona sin enviar el formulario 321ms
+ ✓ src/app/App.reportRecovery.test.tsx (1 test) 1326ms
+   ✓ recupera el snapshot al navegar por Inicio y Mi itinerario dentro de App 1323ms
+ ✓ src/services/driverItinerary.test.ts (9 tests) 12ms
+ ✓ src/pages/ChangePasswordPage.test.tsx (8 tests) 1953ms
+   ✓ valida la coincidencia y que la nueva sea distinta de la actual 473ms
+   ✓ guarda y avisa al terminar; no envía si hay errores 369ms
+   ✓ errores de red con salida y sesión vencida al login 334ms
+ ✓ src/hooks/useReportSynchronization.test.tsx (7 tests) 38ms
+stderr | src/pages/DriverItineraryPage.reportSync.test.tsx > parada pendiente, reporte y ACK:
+finaliza pantalla y snapshot sin permitir otro reporte
+An update to OfflineReportPanel inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+An update to OfflineReportPanel inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/DriverItineraryPage.reportSync.test.tsx > parada pendiente, reporte y ACK:
+finaliza pantalla y snapshot sin permitir otro reporte
+An update to OfflineReportPanel inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+An update to OfflineReportPanel inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+
+stderr | src/pages/DriverItineraryPage.reportSync.test.tsx > parada pendiente, reporte y ACK:
+finaliza pantalla y snapshot sin permitir otro reporte
+An update to OfflineReportPanel inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+An update to OfflineReportPanel inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at
+https://react.dev/link/wrap-tests-with-act
+
+ ✓ src/pages/DriverItineraryPage.reportSync.test.tsx (2 tests) 577ms
+   ✓ parada pendiente, reporte y ACK: finaliza pantalla y snapshot sin permitir otro reporte 357ms
+ ✓ src/services/incidentList.test.ts (42 tests) 24ms
+ ✓ src/services/drivers.test.ts (29 tests) 22ms
+ ✓ src/services/orders.test.ts (15 tests) 15ms
+ ✓ src/services/users.test.ts (20 tests) 15ms
+ ✓ src/services/deliveryPreferences.test.ts (21 tests) 13ms
+ ✓ src/services/indicators.test.ts (16 tests) 14ms
+ ✓ src/components/OfflineReportPanel.test.tsx (4 tests) 454ms
+ ✓ src/domain/driverForm.test.ts (25 tests) 9ms
+ ✓ src/services/offlineStorage.test.ts (4 tests) 12ms
+ ✓ src/app/App.preferences.test.tsx (7 tests) 2307ms
+   ✓ permite gestionar preferencias a ADMINISTRADOR 475ms
+   ✓ permite gestionar preferencias a OPERADOR 351ms
+   ✓ elimina identidad ante 401 y vuelve al login 686ms
+ ✓ src/services/passwordChangeGuard.test.ts (5 tests) 10ms
+ ✓ src/pages/DriverItineraryPage.offline.test.tsx (3 tests) 273ms
+ ✓ src/app/App.drivers.test.tsx (7 tests) 2296ms
+   ✓ habilita navegación y gestión para ADMINISTRADOR 599ms
+   ✓ habilita navegación y gestión para OPERADOR 479ms
+   ✓ 401 de API limpia identidad y vuelve al login 399ms
+ ✓ src/services/clients.test.ts (9 tests) 11ms
+ ✓ src/hooks/useIncidentSynchronization.test.tsx (4 tests) 227ms
+ ✓ src/services/reportSync.test.ts (5 tests) 6ms
+ ✓ src/services/api.test.ts (18 tests) 7ms
+ ✓ src/domain/incident.test.ts (25 tests) 8ms
+ ✓ src/services/offlineAccess.test.ts (14 tests) 8ms
+ ✓ src/components/ClientPreferencesProposal.test.tsx (3 tests) 153ms
+ ✓ src/domain/deliveryPreferencesForm.test.ts (10 tests) 5ms
+ ✓ src/hooks/useOnlineStatus.test.tsx (2 tests) 27ms
+ ✓ src/services/offlineShell.test.ts (3 tests) 5ms
+ ✓ src/types/driverReport.test.ts (3 tests) 5ms
+ ✓ src/pages/LoginPage.forgotPassword.test.tsx (1 test) 216ms
+ ✓ src/domain/driverItinerary.test.ts (3 tests) 5ms
+
+ Test Files  50 passed (50)
+      Tests  732 passed (732)
+   Start at  21:33:01
+   Duration  113.15s (tests 77%, environment 15%, setup 4%, import 3%, worker 1%, transform 1%)
+
+    Isolate  50 workers spawned · ~378ms startup each (spawn + environment, per file)
+             at least ~18.51s faster with isolate: false — reuses workers across files instead of one per file
+
+JUNIT report written to /evidence/frontend-tests.xml
+ % Coverage report from v8
+-------------------|---------|----------|---------|---------|-------------------
+File               | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s
+-------------------|---------|----------|---------|---------|-------------------
+All files          |   95.56 |    92.95 |   94.96 |   97.71 |
+ app               |   92.13 |    78.57 |   94.11 |   92.68 |
+  App.tsx          |   92.13 |    78.57 |   94.11 |   92.68 | ...19-121,138-142
+ components        |   95.42 |    92.02 |   93.75 |   97.73 |
+  ...tCombobox.tsx |   97.36 |    86.95 |     100 |     100 | ...39,146-159,165
+  ...sProposal.tsx |   94.44 |       92 |     100 |     100 | 38,78
+  ...ionStatus.tsx |     100 |      100 |     100 |     100 |
+  ...encesForm.tsx |     100 |    95.34 |     100 |     100 | 67,88
+  DriverForm.tsx   |   90.27 |    96.05 |   81.81 |   92.98 | 51-53,107
+  FormField.tsx    |     100 |      100 |     100 |     100 |
+  ...portPanel.tsx |   92.85 |    91.22 |   93.33 |   95.74 | 62,98
+ components/layout |   95.09 |    95.12 |   91.42 |    97.5 |
+  AccountMenu.tsx  |     100 |    83.33 |     100 |     100 | 17,40
+  AppShell.tsx     |   93.24 |    97.14 |   86.95 |   96.55 | 133,165
+ components/ui     |   97.97 |    90.24 |     100 |     100 |
+  Alert.tsx        |     100 |     90.9 |     100 |     100 | 25
+  Badge.tsx        |     100 |      100 |     100 |     100 |
+  Button.tsx       |     100 |      100 |     100 |     100 |
+  Card.tsx         |     100 |    80.95 |     100 |     100 | 17,20-22
+  DataTable.tsx    |     100 |      100 |     100 |     100 |
+  Dialog.tsx       |   94.44 |    85.71 |     100 |     100 | 27-30,36
+  EmptyState.tsx   |     100 |     90.9 |     100 |     100 | 16
+  Form.tsx         |     100 |      100 |     100 |     100 |
+  PageHeader.tsx   |     100 |       90 |     100 |     100 | 25,34
+  Skeleton.tsx     |     100 |      100 |     100 |     100 |
+  StatCard.tsx     |     100 |      100 |     100 |     100 |
+  Toast.tsx        |     100 |    66.66 |     100 |     100 | 42
+  cx.ts            |     100 |      100 |     100 |     100 |
+  index.ts         |       0 |        0 |       0 |       0 |
+  toastContext.ts  |     100 |      100 |     100 |     100 |
+ data              |     100 |      100 |     100 |     100 |
+  ...rItinerary.ts |     100 |      100 |     100 |     100 |
+ domain            |     100 |    99.21 |     100 |     100 |
+  ...rencesForm.ts |     100 |      100 |     100 |     100 |
+  driverForm.ts    |     100 |      100 |     100 |     100 |
+  ...rItinerary.ts |     100 |       50 |     100 |     100 | 45
+  incident.ts      |     100 |      100 |     100 |     100 |
+  passwordForm.ts  |     100 |      100 |     100 |     100 |
+  roles.ts         |     100 |      100 |     100 |     100 |
+ hooks             |    94.3 |    81.48 |   93.75 |   97.89 |
+  ...ronization.ts |     100 |      100 |    87.5 |     100 |
+  ...lineStatus.ts |     100 |       50 |     100 |     100 | 7
+  ...ronization.ts |    92.3 |    76.47 |     100 |     100 | 24,31-34,39-52,68
+  useTheme.ts      |   89.47 |     87.5 |      80 |   88.23 | 12,24
+ pages             |   95.02 |    90.27 |   95.23 |   97.09 |
+  ...swordPage.tsx |   98.11 |    97.82 |     100 |     100 | 48
+  ...encesPage.tsx |     100 |    95.83 |     100 |     100 | 62,92
+  ...eraryPage.tsx |   90.75 |     82.3 |   93.75 |   93.87 | 101,106-110,190
+  DriversPage.tsx  |   97.59 |    90.21 |     100 |     100 | 40-52,66-68,72,95
+  HomePage.tsx     |   97.22 |    97.14 |     100 |     100 | 20,69
+  ...reatePage.tsx |   89.18 |    79.41 |    87.5 |   92.85 | ...82,138,163,179
+  LoginPage.tsx    |     100 |      100 |     100 |     100 |
+  NotFoundPage.tsx |     100 |      100 |     100 |     100 |
+  ...dentsPage.tsx |   98.63 |     92.3 |     100 |     100 | 94,98,112,152
+  ...reatePage.tsx |   91.11 |    88.42 |   88.88 |   93.38 | ...94,222-224,229
+  UsersPage.tsx    |   91.02 |     86.3 |      92 |   96.82 | 142,152
+  VehiclesPage.tsx |     100 |    99.09 |     100 |     100 | 231
+ services          |   95.86 |     97.1 |   94.36 |   98.38 |
+  api.ts           |     100 |      100 |     100 |     100 |
+  auth.ts          |   98.14 |    93.75 |     100 |   98.11 | 166
+  clients.ts       |   97.43 |      100 |     100 |     100 |
+  ...references.ts |     100 |      100 |     100 |     100 |
+  ...rItinerary.ts |   89.74 |    94.44 |     100 |   89.74 | 51,60,64,108
+  drivers.ts       |     100 |      100 |     100 |     100 |
+  incidentList.ts  |     100 |      100 |     100 |     100 |
+  ...entStorage.ts |   96.29 |      100 |    92.3 |     100 |
+  incidentSync.ts  |   97.14 |    96.96 |     100 |     100 | 29
+  incidents.ts     |     100 |      100 |     100 |     100 |
+  indicators.ts    |     100 |      100 |     100 |     100 |
+  offlineAccess.ts |     100 |      100 |     100 |     100 |
+  offlineShell.ts  |     100 |      100 |     100 |     100 |
+  ...ineStorage.ts |   88.77 |    91.46 |   85.71 |   96.15 | 129-131
+  orders.ts        |     100 |    97.22 |     100 |     100 | 109
+  ...hangeGuard.ts |     100 |      100 |     100 |     100 |
+  reportQueue.ts   |   87.69 |    81.57 |   85.71 |      96 | 38,71,158-159
+  reportSync.ts    |   96.42 |       90 |     100 |     100 | 24
+  users.ts         |     100 |      100 |     100 |     100 |
+  vehicles.ts      |     100 |      100 |     100 |     100 |
+ test              |     100 |      100 |     100 |     100 |
+  ...ntFixtures.ts |     100 |      100 |     100 |     100 |
+ types             |     100 |      100 |     100 |     100 |
+  driverReport.ts  |     100 |      100 |     100 |     100 |
+-------------------|---------|----------|---------|---------|-------------------
+
+> ecologistica-lima-frontend@0.1.0 build
+> tsc -b && vite build && node scripts/build-offline.mjs
+
+vite v8.3.0 building client environment for production...
+transforming...
+✓ 1963 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                                           0.51 kB │ gzip:   0.32 kB
+dist/assets/inter-latin-wght-normal-Dx4kXJAl.woff2       48.25 kB
+dist/assets/inter-latin-ext-wght-normal-DO1Apj_S.woff2   85.06 kB
+dist/assets/index-IpPBMCzL.css                           45.26 kB │ gzip:   8.20 kB
+dist/assets/index-UaH73ljM.js                           437.54 kB │ gzip: 131.31 kB
+
+✓ built in 385ms

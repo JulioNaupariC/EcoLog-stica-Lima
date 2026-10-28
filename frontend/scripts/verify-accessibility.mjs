@@ -3,6 +3,12 @@ import { mkdir, writeFile } from 'node:fs/promises'
 import { resolve } from 'node:path'
 import { pathToFileURL } from 'node:url'
 
+// Keep the historical ST-031 runner available; Sprint 3 audits real authenticated pages.
+if (process.argv.includes('--sprint3')) {
+  await import('./verify-accessibility-sprint3.mjs')
+  process.exit(process.exitCode || 0)
+}
+
 // Browser dependencies are isolated from the application's package.json.
 const { chromium, firefox } = await import(pathToFileURL(resolve(process.env.PLAYWRIGHT_MODULE)))
 const axePath = resolve(process.env.AXE_SCRIPT)

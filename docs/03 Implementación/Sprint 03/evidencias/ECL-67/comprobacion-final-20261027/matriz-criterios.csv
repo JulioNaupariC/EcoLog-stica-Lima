@@ -1,0 +1,51 @@
+﻿criterio,nivel,principio,estado,evidencia_observacion
+1.1.1,A,1,cumple,"Iconos decorativos ocultos, controles con nombre; axe y revisión de componentes/lector declarada."
+1.2.1,A,1,no_aplica,Sin audio o vídeo en las vistas evaluadas.
+1.2.2,A,1,no_aplica,Sin audio o vídeo en las vistas evaluadas.
+1.2.3,A,1,no_aplica,Sin audio o vídeo en las vistas evaluadas.
+1.2.4,AA,1,no_aplica,Sin audio o vídeo en las vistas evaluadas.
+1.2.5,AA,1,no_aplica,Sin audio o vídeo en las vistas evaluadas.
+1.3.1,A,1,cumple,"Encabezados, listas, tablas/cabeceras, labels y relaciones; h2 de siguiente parada corregido."
+1.3.2,A,1,cumple,Orden del DOM y lectura en las vistas; recorrido declarado correcto por Giancarlo.
+1.3.3,A,1,cumple,"Instrucciones por nombre de campo y texto, sin depender solo de posición/color."
+1.3.4,AA,1,cumple,"Sin bloqueo por orientación; sondeo horizontal 900x360 en ambos temas, contenido disponible."
+1.3.5,AA,1,cumple,Login y cambio de contraseña usan username/current-password/new-password; datos de terceros diferenciados.
+1.4.1,A,1,cumple,"Severidad, errores y estados incluyen texto además de color; revisión de fuente y muestra manual."
+1.4.2,A,1,no_aplica,No hay reproducción de audio.
+1.4.3,AA,1,cumple,"58 contrastes de tokens, axe y declaración manual de temas. Gradiente de layout con bandas de superficie/borde/fondo: los textos afectados están sobre --color-bg; ratios de tokens comprobados."
+1.4.4,AA,1,cumple,"Zoom real 200 % declarado correcto; sondeo separado de fuente 200 % sin desbordamiento, corregidos encabezado y campos."
+1.4.5,AA,1,no_aplica,No hay imágenes de texto; marca y etiquetas son texto HTML.
+1.4.10,AA,1,cumple,Sin desbordamiento en 66 combinaciones de 1280/360/320 px. La prueba de 320 CSS px complementa 360; no se simuló zoom 400 %.
+1.4.11,AA,1,cumple,"Tokens de borde/foco >=3:1 y revisión de componentes, con texto para estados."
+1.4.12,AA,1,cumple,"66 mediciones con espaciado ampliado y controles alcanzables; inspección técnica de las once vistas a 320 px y muestra de escritorio. Sin pérdida de contenido/función detectada en la muestra. Elipsis de marca/cuenta, cabecera semántica móvil y barras fijas clasificadas separadamente."
+1.4.13,AA,1,no_aplica,En la muestra no se añade contenido al pasar el puntero o recibir foco; los detalles/menús se abren por activación.
+2.1.1,A,2,cumple,"Teclado declarado correcto; regresiones de combobox, formularios, diálogos y menú móvil."
+2.1.2,A,2,cumple,Escape y retorno de foco del menú; controles de diálogo y recorrido humano sin trampas reportadas.
+2.1.4,A,2,no_aplica,No hay atajos de una sola letra implementados por la aplicación.
+2.2.1,A,2,no_cumple,"ECL-83: sesión de 60 minutos sin aviso ni extensión. Verificación estática/configuración, sin esperar la expiración ni cambiar seguridad."
+2.2.2,A,2,no_aplica,Sin carruseles o texto desplazado/actualización periódica en la muestra. Esqueletos de carga decorativos; información disponible mediante acciones de consulta.
+2.3.1,A,2,cumple,Sin contenido que destelle en las vistas y componentes inspeccionados.
+2.4.1,A,2,cumple,Enlace Saltar al contenido principal y estructura main/nav en los layouts.
+2.4.2,A,2,cumple,"Once títulos específicos en los reportes; pruebas de login, navegación y acceso denegado."
+2.4.3,A,2,cumple,"Menú móvil corregido: foco en Cerrar, Tab contenido y retorno; prueba real con 18 pasos y Escape."
+2.4.4,A,2,cumple,Enlaces descriptivos y contexto de tablas; aviso de nueva pestaña para el mapa.
+2.4.5,AA,2,cumple,"Inicio completa el índice por rol, combinado con menú y enlaces contextuales/cuenta. Se visitaron 19 enlaces y su retorno a Inicio entre los cinco roles. Login y cambio obligatorio son pasos de autenticación; no se exponen destinos de otros roles."
+2.4.6,AA,2,cumple,Títulos y etiquetas describen controles; corrección de Siguiente parada como encabezado.
+2.4.7,AA,2,cumple,Foco de 3px por token y recorrido manual de teclado declarado correcto.
+2.5.1,A,2,no_aplica,No hay gestos multipunto ni dependientes de una trayectoria.
+2.5.2,A,2,cumple,"Acciones mediante click/activación nativa; onMouseDown del combobox solo evita perder foco, sin ejecutar negocio."
+2.5.3,A,2,cumple,Cuenta y Ver y editar perfil corregidos; axe final sin label-content-name-mismatch.
+2.5.4,A,2,no_aplica,No se usan sensores ni movimiento del dispositivo para activar funciones.
+3.1.1,A,3,cumple,lang=es en todos los documentos medidos y revisión de axe.
+3.1.2,AA,3,no_aplica,Sin pasajes en otro idioma en la muestra; nombres propios/identificadores no son pasajes lingüísticos.
+3.2.1,A,3,cumple,No se navega ni envía formularios al enfocar; teclado declarado correcto.
+3.2.2,A,3,cumple,Selección/entrada no envía pedidos automáticamente; acciones explícitas para consultar/guardar.
+3.2.3,AA,3,cumple,Navegación estable dentro de cada rol; cambios por autorización justificados.
+3.2.4,AA,3,cumple,"Componentes compartidos y nombres consistentes para actualizar, cancelar, guardar y volver."
+3.3.1,A,3,cumple,"Validación con errores textuales, aria-invalid y foco; pruebas de formularios y declaración manual general."
+3.3.2,A,3,cumple,"Labels, ayudas y obligatoriedad en formularios; axe y pruebas de React."
+3.3.3,AA,3,cumple,Mensajes indican qué corregir y requisitos de contraseña; errores de autenticación no revelan credenciales.
+3.3.4,AA,3,cumple,Formulario validado antes de guardar; restablecimiento sensible requiere confirmación cancelable. No se ejecutó un restablecimiento real en esta revisión.
+4.1.1,A,4,no_aplica,Obsoleto según la errata incorporada en WCAG 2.1 (2025); fuera del denominador. Se conserva la fila para trazabilidad del catálogo de 50 criterios.
+4.1.2,A,4,cumple,axe final sin errores ARIA; nombres/roles/estados comprobados en componentes y lector declarado. time usa contenido textual accesible.
+4.1.3,AA,4,cumple,role=status/alert y regiones live para carga/error/resultado; pruebas y revisión general del lector declarada por Giancarlo.

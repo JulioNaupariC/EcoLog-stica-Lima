@@ -1,0 +1,23 @@
+{
+  "ticket": "ECL-76",
+  "executedAt": "2026-10-27T21:30:02.476Z",
+  "timezone": "America/Lima",
+  "commit": "cac7a034e5966e5d5517c6324e2ec850a5d7fa90",
+  "workingTreeDirty": true,
+  "api": "http://127.0.0.1:8000",
+  "base": "http://127.0.0.1:5173",
+  "mode": "Real local API / PostgreSQL; only first response loss is injected",
+  "browsers": [
+    {
+      "browser": "chrome",
+      "engine": "chromium",
+      "version": "156.0.8078.48",
+      "rounds": []
+    }
+  ],
+  "passed": false,
+  "failure": {
+    "phase": "chrome: ruta dorada online",
+    "errorType": "TypeError"
+  }
+}

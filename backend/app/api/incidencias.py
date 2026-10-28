@@ -1,8 +1,18 @@
 """ECL-73 incident endpoints: driver registration and pending list."""
 
 from typing import Annotated
+from uuid import UUID
 
-from fastapi import APIRouter, Depends, HTTPException, Query, Request, Response, status
+from fastapi import (
+    APIRouter,
+    Depends,
+    Header,
+    HTTPException,
+    Query,
+    Request,
+    Response,
+    status,
+)
 
 from app.api.dependencies import require_permission
 from app.api.validation import SanitizedRoute
@@ -12,7 +22,7 @@ from app.core.incidencias import (
     PAGE_SIZE_MAX,
     EstadoIncidencia,
 )
-from app.core.rbac import Contexto, Identidad, Permiso
+from app.core.rbac import Contexto, Identidad, Permiso, Rol
 from app.schemas.incidencia import (
     IncidenciaCreate,
     IncidenciaPage,
@@ -70,19 +80,40 @@ def register_incident(
     response: Response,
     identity: Annotated[
         Identidad,
-        Depends(require_permission(Permiso.INCIDENCIAS_CREAR, _self_context)),
+        # I08: only the Conductor role, although the global matrix also grants
+        # incidencias.crear to the Operador; denied before reaching the service.
+        Depends(
+            require_permission(
+                Permiso.INCIDENCIAS_CREAR, _self_context, roles={Rol.CONDUCTOR}
+            )
+        ),
     ],
     service: Annotated[IncidenciaService, Depends(get_incident_service)],
+    expected_owner_id: Annotated[
+        UUID | None, Header(alias="X-Expected-Owner-ID")
+    ] = None,
 ) -> IncidenciaRegistrada:
+    # ECL-74: cookies are shared by tabs. Reject an outbox from account A if
+    # account B logged in after the client's itinerary/owner verification.
+    # This header is a consistency guard, never a source of authorization.
+    if expected_owner_id is not None and expected_owner_id != identity.usuario_id:
+        raise HTTPException(status.HTTP_401_UNAUTHORIZED, "La sesión cambió")
     try:
         acknowledgement, created = service.registrar(identity.usuario_id, payload)
     except (IncidenciaSinConductor, IncidenciaParadaAjena):
         # Generic: no profile, or a stop of another driver (I08, I10).
         raise HTTPException(status.HTTP_403_FORBIDDEN, "Acceso denegado") from None
-    except IncidenciaInvalida:
+    except IncidenciaInvalida as error:
+        # Same shape as SanitizedRoute 422s: field location and code, no input.
         raise HTTPException(
             status.HTTP_422_UNPROCESSABLE_CONTENT,
-            "Datos de la incidencia inválidos",
+            [
+                {
+                    "loc": ["body", error.field],
+                    "type": error.code,
+                    "msg": "Entrada inválida",
+                }
+            ],
         ) from None
     except IncidenciaConflicto:
         raise HTTPException(

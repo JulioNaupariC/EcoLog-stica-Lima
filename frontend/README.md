@@ -215,6 +215,56 @@ La cobertura excluye únicamente `src/main.tsx` (bootstrap del DOM),
 de pruebas). Los módulos de aplicación, páginas y configuración del API sí se
 miden y deben alcanzar al menos 80% en líneas, sentencias, funciones y ramas.
 
+## Evaluación de accesibilidad — ECL-67 / EN-011
+
+Con Docker y los datos de demostración ya disponibles en `127.0.0.1`, ejecutar
+desde la raíz del repositorio en PowerShell:
+
+```powershell
+# Herramientas temporales: no modifican package.json ni el lockfile del producto.
+npm install --prefix .tmp-ecl67 --no-save --package-lock=false --no-audit --no-fund playwright@1.64.1 axe-core@4.14.0 lighthouse@13.5.0 puppeteer-core@25.16.0
+$env:EVIDENCE_DIR = "$PWD/.tmp-ecl67/evaluacion-$(Get-Date -Format yyyyMMdd-HHmmss)"
+node frontend/scripts/verify-accessibility.mjs --sprint3
+node frontend/scripts/check-contrast.mjs --json
+Remove-Item env:EVIDENCE_DIR
+```
+
+Requiere Chrome instalado en su ruta habitual de Windows y Node >=22.19 para
+Lighthouse 13 (la aplicación conserva sus requisitos y dependencias). Se puede
+usar `ECL67_TOOLS` para indicar otra carpeta `node_modules` de las herramientas.
+El script obtiene las contraseñas demo de `.env` local, sin imprimirlas; los
+campos de contraseña deben estar vacíos antes de generar reportes o capturas.
+
+La opción `--sprint3` evalúa once vistas con API real, ambos temas y anchos de
+1280, 360 y 320 px. Guarda axe JSON, Lighthouse JSON/HTML y capturas. Lighthouse
+usa `snapshot` sobre la sesión autenticada: una navegación completa perdería
+la identidad de operación mantenida en memoria y mediría el login por error.
+Se registra también el foco del menú móvil y una prueba de tamaño de fuente
+al 200 %, que no reemplaza el zoom real del navegador. `--axe-only` omite
+Lighthouse; `ECL67_SCREENS` permite seleccionar IDs separados por comas.
+Cada ejecución exige una carpeta nueva para conservar la evidencia anterior.
+
+`--spacing-review` añade capturas y geometría del texto con los valores de
+espaciado de 1.4.12 en 1280/360/320 px. Sus candidatos a recorte/superposición
+requieren inspección visual; los nombres truncados y las capas fijas se registran
+por separado. Se comprueba también que los controles sean alcanzables al
+desplazarse. El recorrido final visita los enlaces de Inicio y vuelve mediante
+la marca para los cinco roles, como alternativa al menú o enlaces contextuales.
+
+Para una comprobación adicional del login mediante la CLI:
+
+```powershell
+$env:CHROME_PATH = 'C:\Program Files\Google\Chrome\Application\chrome.exe'
+npx --prefix .tmp-ecl67 --no-install lighthouse http://127.0.0.1:5173/login --only-categories=accessibility --preset=desktop --chrome-flags='--headless=new' --output=json --output=html --output-path=.tmp-ecl67/login-cli --quiet
+Remove-Item env:CHROME_PATH
+```
+
+Los reportes conservan las comprobaciones que requieren revisión humana.
+Un puntaje de Lighthouse o cero violaciones de axe no equivalen a un porcentaje
+de conformidad WCAG. La evaluación incluye por separado teclado, lector de
+pantalla, zoom real y una matriz de criterios A/AA aplicables.
+Sin `--sprint3`, el script anterior conserva su recorrido histórico ST-031.
+
 ## Gestión de conductores — ECL-49 / ST-023
 
 La ruta `/conductores` permite a ADMINISTRADOR y OPERADOR registrar, listar,

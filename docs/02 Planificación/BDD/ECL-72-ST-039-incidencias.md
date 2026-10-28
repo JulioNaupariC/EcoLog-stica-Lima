@@ -32,9 +32,9 @@ infeliz y de borde corresponde a caminos del flujo de usuario y de prueba.
 
 ## Fuentes consultadas
 
-- [RF-012 y RF-001 — Requisitos funcionales](<../../01 Inicio/06. Requisitos funcionales V_1_0_0.md>).
-- [RN-002, RN-008, RN-010 y RN-015 — Reglas de negocio](<../../01 Inicio/09. Reglas de negocio V_1_0_0.md>).
-- [RNF-006, RNF-003 y RNF-004 — Requisitos no funcionales](<../../01 Inicio/07. Requisitos no funcionales V_1_1_0.md>).
+- [RF-012 y RF-001 — Requisitos funcionales](<../../01 Inicio/06. Requisitos funcionales V_1_1_0.md>).
+- [RN-002, RN-008, RN-010 y RN-015 — Reglas de negocio](<../../01 Inicio/09. Reglas de negocio V_1_1_0.md>).
+- [RNF-006, RNF-003 y RNF-004 — Requisitos no funcionales](<../../01 Inicio/07. Requisitos no funcionales V_1_2_0.md>).
 - [Entidad incidencia — Modelo de datos](<../../01 Inicio/11. Base de datos V_1_1_0.md>).
 - [Actores y matriz RBAC](<../../01 Inicio/08. Usuarios V_1_0_0.md>).
 - [Definition of Done](<../01 Transformando a ágil V_1_0_0.md#8-definition-of-done-dod-global>).

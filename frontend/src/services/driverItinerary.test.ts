@@ -25,6 +25,16 @@ function jsonResponse(body: unknown, status = 200): Response {
 }
 
 describe('servicio de itinerario y reportes del conductor', () => {
+  it('ECL-74: proyecta coordenadas del pedido para la alternativa sin GPS', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(jsonResponse({ owner_id: ownerId,
+      stops: [{ stop_id: stopId, position: 1, status: 'PENDIENTE', delivery: {
+        address: 'Dirección sintética', reference: null,
+        window_start: '2026-10-26T08:00:00-05:00', window_end: '2026-10-26T09:00:00-05:00',
+        latitud: -12.04, longitud: -77.03,
+      } }],
+    })))
+    expect((await getDriverItinerary(ownerId))[0].location).toEqual({ latitud: -12.04, longitud: -77.03 })
+  })
   beforeEach(() => {
     vi.stubEnv('VITE_API_BASE_URL', 'https://api.example.test/v1')
   })

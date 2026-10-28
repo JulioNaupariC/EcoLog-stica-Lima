@@ -1,0 +1,21 @@
+ECL-76 — extracto de las ejecuciones del 2026-10-27, America/Lima
+Entorno: Windows; Python 3.14.4; dependencias disponibles en el equipo.
+Directorio de trabajo: backend/
+
+python -m ruff check .
+All checks passed!
+
+python -m ruff format --check .
+212 files already formatted
+
+python -m pytest tests/unit -q --cov=app --cov-fail-under=80
+TOTAL                                   2769    214    92%
+Required test coverage of 80% reached. Total coverage: 92.27%
+868 passed, 2 warnings in 43.27s
+
+python -m pytest tests/unit/test_incidencias_api.py tests/unit/test_incidencias_service.py -q --junitxml='../docs/03 Implementación/Sprint 03/validaciones/evidencias/ECL-76/local-20261027/backend-incidencias.xml'
+139 passed, 2 warnings in 5.07s
+
+Avisos: StarletteDeprecationWarning por httpx/TestClient y DeprecationWarning
+de anyio.abc.BlockingPortal. Este extracto omite las rutas privadas de instalación.
+No se ejecutó integración contra PostgreSQL/PostGIS en este entorno.

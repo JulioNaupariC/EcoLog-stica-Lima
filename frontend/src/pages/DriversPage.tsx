@@ -135,7 +135,7 @@ export function DriversPage({ onSessionExpired }: { onSessionExpired: () => void
                   <dd>{availability(driver.disponible_desde, driver.disponible_hasta)}</dd></div>
               </dl>
               <Button variant="secondary" size="sm" icon={Pencil} disabled={blocked || opening !== null}
-                aria-label={'Ver y editar ' + driver.nombre} onClick={() => { void open(driver.conductor_id) }}>Ver y editar perfil</Button>
+                aria-label={'Ver y editar perfil de ' + driver.nombre} onClick={() => { void open(driver.conductor_id) }}>Ver y editar perfil</Button>
             </article>
           </li>)}
         </ul>

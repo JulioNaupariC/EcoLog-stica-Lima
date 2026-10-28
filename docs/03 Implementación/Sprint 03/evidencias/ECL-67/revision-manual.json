@@ -1,0 +1,36 @@
+{
+  "fecha_declaracion": "2026-10-27",
+  "evaluador": "Giancarlo Soto",
+  "fuente": "Declaración del usuario en la conversación de implementación, no observación directa de la IA.",
+  "navegador": "Chrome",
+  "lector": "Narrador",
+  "versiones": "No informadas por el evaluador",
+  "alcance_confirmado": "Todas las pantallas de la guía, incluidas Usuarios y Cambiar contraseña con Administrador.",
+  "pantallas": [
+    "cambio-contrasena",
+    "conductores",
+    "incidencias-conductor",
+    "incidencias-operacion",
+    "inicio-conductor",
+    "inicio-operador",
+    "itinerario",
+    "login",
+    "pedido",
+    "preferencias",
+    "usuarios"
+  ],
+  "resultado_declarado": {
+    "lector": "Correcto",
+    "acciones_con_teclado": "Correcto",
+    "tema_claro": "Correcto",
+    "tema_oscuro": "Correcto",
+    "zoom_real_200_por_ciento": "Correcto",
+    "ancho_360_px": "Correcto"
+  },
+  "incidencias_reportadas": [],
+  "limitaciones": [
+    "No se aportaron transcripciones de anuncios, versiones, grabaciones ni capturas manuales.",
+    "No se atribuye al usuario una comprobación del vencimiento de sesión ni del espaciado personalizado.",
+    "La declaración se recibió durante la iteración local; las correcciones finales de ARIA se revalidaron automáticamente."
+  ]
+}

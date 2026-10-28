@@ -1,0 +1,67 @@
+﻿pantalla,ruta,tema,ancho,axe_violaciones,lighthouse,reporte_axe,captura
+login,/login,light,1280,0,1,axe-login-light-1280.json,capturas/login-light-1280.png
+login,/login,light,360,0,no ejecutado a este ancho,axe-login-light-360.json,capturas/login-light-360.png
+login,/login,light,320,0,no ejecutado a este ancho,axe-login-light-320.json,Sin captura a 320; dimensiones en resumen
+login,/login,dark,1280,0,1,axe-login-dark-1280.json,capturas/login-dark-1280.png
+login,/login,dark,360,0,no ejecutado a este ancho,axe-login-dark-360.json,capturas/login-dark-360.png
+login,/login,dark,320,0,no ejecutado a este ancho,axe-login-dark-320.json,Sin captura a 320; dimensiones en resumen
+inicio-operador,/,light,1280,0,1,axe-inicio-operador-light-1280.json,capturas/inicio-operador-light-1280.png
+inicio-operador,/,light,360,0,no ejecutado a este ancho,axe-inicio-operador-light-360.json,capturas/inicio-operador-light-360.png
+inicio-operador,/,light,320,0,no ejecutado a este ancho,axe-inicio-operador-light-320.json,Sin captura a 320; dimensiones en resumen
+inicio-operador,/,dark,1280,0,1,axe-inicio-operador-dark-1280.json,capturas/inicio-operador-dark-1280.png
+inicio-operador,/,dark,360,0,no ejecutado a este ancho,axe-inicio-operador-dark-360.json,capturas/inicio-operador-dark-360.png
+inicio-operador,/,dark,320,0,no ejecutado a este ancho,axe-inicio-operador-dark-320.json,Sin captura a 320; dimensiones en resumen
+conductores,/conductores,light,1280,0,1,axe-conductores-light-1280.json,capturas/conductores-light-1280.png
+conductores,/conductores,light,360,0,no ejecutado a este ancho,axe-conductores-light-360.json,capturas/conductores-light-360.png
+conductores,/conductores,light,320,0,no ejecutado a este ancho,axe-conductores-light-320.json,Sin captura a 320; dimensiones en resumen
+conductores,/conductores,dark,1280,0,1,axe-conductores-dark-1280.json,capturas/conductores-dark-1280.png
+conductores,/conductores,dark,360,0,no ejecutado a este ancho,axe-conductores-dark-360.json,capturas/conductores-dark-360.png
+conductores,/conductores,dark,320,0,no ejecutado a este ancho,axe-conductores-dark-320.json,Sin captura a 320; dimensiones en resumen
+pedido,/pedidos/nuevo,light,1280,0,1,axe-pedido-light-1280.json,capturas/pedido-light-1280.png
+pedido,/pedidos/nuevo,light,360,0,no ejecutado a este ancho,axe-pedido-light-360.json,capturas/pedido-light-360.png
+pedido,/pedidos/nuevo,light,320,0,no ejecutado a este ancho,axe-pedido-light-320.json,Sin captura a 320; dimensiones en resumen
+pedido,/pedidos/nuevo,dark,1280,0,1,axe-pedido-dark-1280.json,capturas/pedido-dark-1280.png
+pedido,/pedidos/nuevo,dark,360,0,no ejecutado a este ancho,axe-pedido-dark-360.json,capturas/pedido-dark-360.png
+pedido,/pedidos/nuevo,dark,320,0,no ejecutado a este ancho,axe-pedido-dark-320.json,Sin captura a 320; dimensiones en resumen
+preferencias,/clientes/preferencias,light,1280,0,1,axe-preferencias-light-1280.json,capturas/preferencias-light-1280.png
+preferencias,/clientes/preferencias,light,360,0,no ejecutado a este ancho,axe-preferencias-light-360.json,capturas/preferencias-light-360.png
+preferencias,/clientes/preferencias,light,320,0,no ejecutado a este ancho,axe-preferencias-light-320.json,Sin captura a 320; dimensiones en resumen
+preferencias,/clientes/preferencias,dark,1280,0,1,axe-preferencias-dark-1280.json,capturas/preferencias-dark-1280.png
+preferencias,/clientes/preferencias,dark,360,0,no ejecutado a este ancho,axe-preferencias-dark-360.json,capturas/preferencias-dark-360.png
+preferencias,/clientes/preferencias,dark,320,0,no ejecutado a este ancho,axe-preferencias-dark-320.json,Sin captura a 320; dimensiones en resumen
+incidencias-operacion,/operacion/incidencias,light,1280,0,1,axe-incidencias-operacion-light-1280.json,capturas/incidencias-operacion-light-1280.png
+incidencias-operacion,/operacion/incidencias,light,360,0,no ejecutado a este ancho,axe-incidencias-operacion-light-360.json,capturas/incidencias-operacion-light-360.png
+incidencias-operacion,/operacion/incidencias,light,320,0,no ejecutado a este ancho,axe-incidencias-operacion-light-320.json,Sin captura a 320; dimensiones en resumen
+incidencias-operacion,/operacion/incidencias,dark,1280,0,1,axe-incidencias-operacion-dark-1280.json,capturas/incidencias-operacion-dark-1280.png
+incidencias-operacion,/operacion/incidencias,dark,360,0,no ejecutado a este ancho,axe-incidencias-operacion-dark-360.json,capturas/incidencias-operacion-dark-360.png
+incidencias-operacion,/operacion/incidencias,dark,320,0,no ejecutado a este ancho,axe-incidencias-operacion-dark-320.json,Sin captura a 320; dimensiones en resumen
+inicio-conductor,/,light,1280,0,1,axe-inicio-conductor-light-1280.json,capturas/inicio-conductor-light-1280.png
+inicio-conductor,/,light,360,0,no ejecutado a este ancho,axe-inicio-conductor-light-360.json,capturas/inicio-conductor-light-360.png
+inicio-conductor,/,light,320,0,no ejecutado a este ancho,axe-inicio-conductor-light-320.json,Sin captura a 320; dimensiones en resumen
+inicio-conductor,/,dark,1280,0,1,axe-inicio-conductor-dark-1280.json,capturas/inicio-conductor-dark-1280.png
+inicio-conductor,/,dark,360,0,no ejecutado a este ancho,axe-inicio-conductor-dark-360.json,capturas/inicio-conductor-dark-360.png
+inicio-conductor,/,dark,320,0,no ejecutado a este ancho,axe-inicio-conductor-dark-320.json,Sin captura a 320; dimensiones en resumen
+itinerario,/conductor/itinerario,light,1280,0,1,axe-itinerario-light-1280.json,capturas/itinerario-light-1280.png
+itinerario,/conductor/itinerario,light,360,0,no ejecutado a este ancho,axe-itinerario-light-360.json,capturas/itinerario-light-360.png
+itinerario,/conductor/itinerario,light,320,0,no ejecutado a este ancho,axe-itinerario-light-320.json,Sin captura a 320; dimensiones en resumen
+itinerario,/conductor/itinerario,dark,1280,0,1,axe-itinerario-dark-1280.json,capturas/itinerario-dark-1280.png
+itinerario,/conductor/itinerario,dark,360,0,no ejecutado a este ancho,axe-itinerario-dark-360.json,capturas/itinerario-dark-360.png
+itinerario,/conductor/itinerario,dark,320,0,no ejecutado a este ancho,axe-itinerario-dark-320.json,Sin captura a 320; dimensiones en resumen
+incidencias-conductor,/conductor/incidencias/nueva,light,1280,0,1,axe-incidencias-conductor-light-1280.json,capturas/incidencias-conductor-light-1280.png
+incidencias-conductor,/conductor/incidencias/nueva,light,360,0,no ejecutado a este ancho,axe-incidencias-conductor-light-360.json,capturas/incidencias-conductor-light-360.png
+incidencias-conductor,/conductor/incidencias/nueva,light,320,0,no ejecutado a este ancho,axe-incidencias-conductor-light-320.json,Sin captura a 320; dimensiones en resumen
+incidencias-conductor,/conductor/incidencias/nueva,dark,1280,0,1,axe-incidencias-conductor-dark-1280.json,capturas/incidencias-conductor-dark-1280.png
+incidencias-conductor,/conductor/incidencias/nueva,dark,360,0,no ejecutado a este ancho,axe-incidencias-conductor-dark-360.json,capturas/incidencias-conductor-dark-360.png
+incidencias-conductor,/conductor/incidencias/nueva,dark,320,0,no ejecutado a este ancho,axe-incidencias-conductor-dark-320.json,Sin captura a 320; dimensiones en resumen
+usuarios,/usuarios,light,1280,0,1,axe-usuarios-light-1280.json,capturas/usuarios-light-1280.png
+usuarios,/usuarios,light,360,0,no ejecutado a este ancho,axe-usuarios-light-360.json,capturas/usuarios-light-360.png
+usuarios,/usuarios,light,320,0,no ejecutado a este ancho,axe-usuarios-light-320.json,Sin captura a 320; dimensiones en resumen
+usuarios,/usuarios,dark,1280,0,1,axe-usuarios-dark-1280.json,capturas/usuarios-dark-1280.png
+usuarios,/usuarios,dark,360,0,no ejecutado a este ancho,axe-usuarios-dark-360.json,capturas/usuarios-dark-360.png
+usuarios,/usuarios,dark,320,0,no ejecutado a este ancho,axe-usuarios-dark-320.json,Sin captura a 320; dimensiones en resumen
+cambio-contrasena,/cambiar-contrasena,light,1280,0,1,axe-cambio-contrasena-light-1280.json,capturas/cambio-contrasena-light-1280.png
+cambio-contrasena,/cambiar-contrasena,light,360,0,no ejecutado a este ancho,axe-cambio-contrasena-light-360.json,capturas/cambio-contrasena-light-360.png
+cambio-contrasena,/cambiar-contrasena,light,320,0,no ejecutado a este ancho,axe-cambio-contrasena-light-320.json,Sin captura a 320; dimensiones en resumen
+cambio-contrasena,/cambiar-contrasena,dark,1280,0,1,axe-cambio-contrasena-dark-1280.json,capturas/cambio-contrasena-dark-1280.png
+cambio-contrasena,/cambiar-contrasena,dark,360,0,no ejecutado a este ancho,axe-cambio-contrasena-dark-360.json,capturas/cambio-contrasena-dark-360.png
+cambio-contrasena,/cambiar-contrasena,dark,320,0,no ejecutado a este ancho,axe-cambio-contrasena-dark-320.json,Sin captura a 320; dimensiones en resumen

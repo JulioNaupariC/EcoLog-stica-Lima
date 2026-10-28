@@ -42,7 +42,7 @@ self.addEventListener('fetch', event => {
   const request = event.request, url = new URL(request.url)
   if (request.method !== 'GET' || url.origin !== self.location.origin) return
   const base = new URL(self.registration.scope).pathname
-  const navigation = request.mode === 'navigate' && ['', 'login', 'conductor/itinerario'].includes(url.pathname.slice(base.length).replace(/\/$/u, ''))
+  const navigation = request.mode === 'navigate' && ['', 'login', 'conductor/itinerario', 'conductor/incidencias/nueva'].includes(url.pathname.slice(base.length).replace(/\/$/u, ''))
   // Only known built asset paths and approved SPA navigations can hit the cache.
   if (!navigation && !url.pathname.startsWith(base + 'assets/')) return
   event.respondWith((async () => {

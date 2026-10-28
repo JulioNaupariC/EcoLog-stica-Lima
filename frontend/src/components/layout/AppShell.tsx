@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import type { ReactNode } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import {
-  BarChart3, Building2, ClipboardList, Home, Leaf, Map, Menu, PanelLeftClose, PanelLeftOpen,
+  AlertTriangle, BarChart3, Building2, ClipboardList, Home, Leaf, Map, Menu, PanelLeftClose, PanelLeftOpen,
   Route as RouteIcon, Truck, UserRound, Users, X,
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
@@ -19,6 +19,7 @@ function staffNavigation(role: AuthRole): { label: string, items: NavEntry[] }[]
   const operations: NavEntry[] = canManageOperations(role) ? [
     { to: '/pedidos/nuevo', label: 'Registrar pedido', icon: ClipboardList },
     { to: '/clientes/preferencias', label: 'Preferencias de entrega', icon: Building2 },
+    { to: '/operacion/incidencias', label: 'Incidencias pendientes', icon: AlertTriangle },
   ] : []
   const resources: NavEntry[] = [
     ...(canListVehicles(role) ? [{ to: '/vehiculos', label: 'Vehículos', icon: Truck }] : []),
@@ -90,14 +91,25 @@ export function StaffShell({ role, accountName, loggingOut, onLogout, banner, ch
   }
 
   useEffect(() => {
-    if (!open) return undefined
-    sidebar.current?.querySelector<HTMLElement>('a, button')?.focus()
+    if (!open || desktop) return undefined
+    // The desktop collapse button is hidden on mobile; focus the visible close control.
+    sidebar.current?.querySelector<HTMLButtonElement>('.sidebar-close')?.focus()
     function onKey(event: KeyboardEvent) {
-      if (event.key === 'Escape') { setOpen(false); menuButton.current?.focus() }
+      if (event.key === 'Escape') { setOpen(false); return }
+      if (event.key !== 'Tab' || !sidebar.current) return
+      const items = [...sidebar.current.querySelectorAll<HTMLElement>('a[href], button:not(.sidebar-collapse):not([disabled])')]
+      const first = items[0]
+      const last = items[items.length - 1]
+      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus() }
+      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus() }
     }
     document.addEventListener('keydown', onKey)
-    return () => document.removeEventListener('keydown', onKey)
-  }, [open])
+    const opener = menuButton.current
+    return () => {
+      document.removeEventListener('keydown', onKey)
+      opener?.focus()
+    }
+  }, [open, desktop])
 
   function toggleCollapsed() {
     setCollapsed(value => {
@@ -110,6 +122,7 @@ export function StaffShell({ role, accountName, loggingOut, onLogout, banner, ch
   return <div className="app app--staff" data-sidebar={desktop && collapsed ? 'collapsed' : 'expanded'}>
     <a className="skip-link" href="#contenido-principal">Saltar al contenido principal</a>
     <aside ref={sidebar} id="menu-lateral" className="sidebar" data-open={open} inert={hidden}
+      role={open && !desktop ? 'dialog' : undefined} aria-modal={open && !desktop ? true : undefined}
       aria-label="Menú lateral">
       <div className="sidebar-head">
         <span className="sidebar-title">Menú</span>
@@ -117,7 +130,7 @@ export function StaffShell({ role, accountName, loggingOut, onLogout, banner, ch
           aria-label={collapsed ? 'Expandir menú lateral' : 'Contraer menú lateral'} aria-expanded={!collapsed}>
           {collapsed ? <PanelLeftOpen aria-hidden="true" size={20} /> : <PanelLeftClose aria-hidden="true" size={20} />}
         </button>
-        <button type="button" className="icon-button sidebar-close" onClick={() => { setOpen(false); menuButton.current?.focus() }}
+        <button type="button" className="icon-button sidebar-close" onClick={() => setOpen(false)}
           aria-label="Cerrar menú">
           <X aria-hidden="true" size={20} />
         </button>
@@ -150,7 +163,7 @@ export function StaffShell({ role, accountName, loggingOut, onLogout, banner, ch
     </aside>
     {open && !desktop ? <button type="button" className="sidebar-backdrop" tabIndex={-1} aria-label="Cerrar menú"
       onClick={() => setOpen(false)} /> : null}
-    <div className="app-body">
+    <div className="app-body" inert={open && !desktop}>
       <header className="topbar">
         <button ref={menuButton} type="button" className="icon-button topbar-menu-button" aria-label="Abrir menú"
           aria-expanded={open} aria-controls="menu-lateral" onClick={() => setOpen(true)}>

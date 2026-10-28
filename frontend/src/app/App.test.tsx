@@ -9,11 +9,20 @@ import { listPendingReports } from '../services/reportQueue'
 import { clearItinerary } from '../services/offlineStorage'
 import { App } from './App'
 import { ROLE_LABEL } from '../domain/roles'
+import { listPendingIncidents } from '../services/incidentList'
+import { pendingIncidentPage } from '../test/incidentFixtures'
+
+vi.mock('../services/incidentList', async original => {
+  const actual = await original<typeof import('../services/incidentList')>()
+  return { ...actual, listPendingIncidents: vi.fn() }
+})
+const listIncidentsMock = vi.mocked(listPendingIncidents)
 
 vi.mock('../services/auth', async (importOriginal) => {
   const actual = await importOriginal<typeof import('../services/auth')>()
   return { ...actual, login: vi.fn(), logout: vi.fn() }
 })
+vi.mock('../services/incidentStorage', () => ({ listIncidents: vi.fn().mockResolvedValue([]) }))
 
 const loginMock = vi.mocked(login)
 const logoutMock = vi.mocked(logout)
@@ -56,6 +65,8 @@ function RouteControls() {
       <button type="button" onClick={() => { void navigate('/login') }}>Abrir ruta de login</button>
       <button type="button" onClick={() => { void navigate('/vehiculos') }}>Abrir ruta de vehículos</button>
       <button type="button" onClick={() => { void navigate('/conductor/itinerario') }}>Abrir ruta de itinerario</button>
+      <button type="button" onClick={() => { void navigate('/conductor/incidencias/nueva') }}>Abrir incidencia</button>
+      <button type="button" onClick={() => { void navigate('/operacion/incidencias') }}>Abrir incidencias de Operación</button>
       <button type="button" onClick={() => { void navigate(-1) }}>Atrás</button>
     </aside>
   )
@@ -89,7 +100,54 @@ async function signIn(role: AuthRole) {
 }
 
 describe('App', () => {
+  it('ECL-67: el título de la pestaña identifica login, inicio, otra pantalla y acceso denegado', async () => {
+    renderAt('/login')
+    expect(document.title).toBe('Iniciar sesión — EcoLogística Lima')
+    const user = await signIn('OPERADOR')
+    await waitFor(() => expect(document.title).toBe('Inicio — EcoLogística Lima'))
+    await user.click(screen.getByRole('link', { name: 'Incidencias pendientes' }))
+    await screen.findByRole('table')
+    await waitFor(() => expect(document.title).toBe('Incidencias pendientes — EcoLogística Lima'))
+    await user.click(screen.getByRole('button', { name: 'Abrir incidencia' }))
+    await waitFor(() => expect(document.title).toBe('Acceso denegado — EcoLogística Lima'))
+  })
+
+  it.each<AuthRole>(['ADMINISTRADOR', 'OPERADOR'])('ECL-75: %s ve el menú y puede abrir pendientes', async role => {
+    renderAt('/login')
+    const user = await signIn(role)
+    const link = screen.getByRole('link', { name: 'Incidencias pendientes' })
+    expect(link).toHaveAttribute('href', '/operacion/incidencias')
+    await user.click(link)
+    expect(await screen.findByRole('table')).toBeInTheDocument()
+    expect(listIncidentsMock).toHaveBeenCalledOnce()
+  })
+
+  it.each<AuthRole>(['ANALISTA', 'AUDITOR', 'CONDUCTOR'])('ECL-75: %s no ve el menú ni accede por URL', async role => {
+    renderAt('/login')
+    const user = await signIn(role)
+    expect(screen.queryByRole('link', { name: 'Incidencias pendientes' })).not.toBeInTheDocument()
+    await user.click(screen.getByRole('button', { name: 'Abrir incidencias de Operación' }))
+    expect(await screen.findByRole('heading', { name: 'Acceso denegado' })).toBeInTheDocument()
+    expect(listIncidentsMock).not.toHaveBeenCalled()
+  })
+
+  it('ECL-75: sin identidad solicita login y no consulta incidencias', () => {
+    renderAt('/operacion/incidencias')
+    expect(screen.getByRole('heading', { name: 'Iniciar sesión' })).toBeInTheDocument()
+    expect(listIncidentsMock).not.toHaveBeenCalled()
+  })
+
+  it.each<AuthRole>(['ADMINISTRADOR', 'OPERADOR', 'ANALISTA', 'AUDITOR'])(
+    'ECL-74: %s no puede abrir el formulario por URL', async role => {
+      renderAt('/login')
+      const user = await signIn(role)
+      await user.click(screen.getByRole('button', { name: 'Abrir incidencia' }))
+      expect(await screen.findByRole('heading', { name: 'Acceso denegado' })).toBeInTheDocument()
+      expect(screen.queryByRole('button', { name: 'Enviar incidencia' })).not.toBeInTheDocument()
+    },
+  )
   beforeEach(() => {
+    listIncidentsMock.mockReset().mockResolvedValue(pendingIncidentPage)
     loginMock.mockReset()
     logoutMock.mockReset().mockResolvedValue()
     pendingReportsMock.mockReset().mockResolvedValue([])

@@ -16,9 +16,9 @@ asignado.
 Antes de modificar código, revisar como mínimo:
 
 - `README.md`
-- `docs/01 Inicio/06. Requisitos funcionales V_1_0_0.md`
-- `docs/01 Inicio/07. Requisitos no funcionales V_1_1_0.md`
-- `docs/01 Inicio/09. Reglas de negocio V_1_0_0.md`
+- `docs/01 Inicio/06. Requisitos funcionales V_1_1_0.md`
+- `docs/01 Inicio/07. Requisitos no funcionales V_1_2_0.md`
+- `docs/01 Inicio/09. Reglas de negocio V_1_1_0.md`
 - `docs/01 Inicio/10. Stack tecnológico V_1_0_0.md`
 - `docs/01 Inicio/11. Base de datos V_1_1_0.md`
 - `docs/01 Inicio/12. Modelo C4 V_1_0_0.md`

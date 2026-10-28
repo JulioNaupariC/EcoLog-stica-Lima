@@ -1,8 +1,17 @@
 # ECL-47 / ST-021 — Reglas y BDD de conductores
 
-> **Estado: BORRADOR.** Pendiente de acuerdo del equipo y aprobación. Estos
-> escenarios especifican comportamiento deseado; no acreditan implementación
-> ni ejecución de pruebas.
+> **Estado: APROBADO.** Ratificado por Julio el 26/10/2026 en el PR #64,
+> según su comentario explícito enlazado abajo. La aprobación documental no
+> declara implementadas las diferencias y extensiones pendientes del backlog.
+
+| Metadato | Valor |
+|---|---|
+| Versión | 1.0.0 |
+| Fecha de revisión | 25/10/2026, America/Lima |
+| Autor de la revisión | Frank Roy Yupanqui Acevedo — @FrankRoyYA |
+| Ratificación de Julio | 26/10/2026 a las 12:13 (America/Lima) en el [PR #64](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/64#pullrequestreview-5656082598) |
+| Ticket de ratificación | [ECL-71](https://continental-team-il84x39k.atlassian.net/browse/ECL-71) |
+| Base contrastada | `main` en `dc148e7` |
 
 ## Trazabilidad y alcance
 
@@ -11,8 +20,8 @@
 | Subtarea | ECL-47 / ST-021 — Definir reglas de negocio y casos BDD de conductores |
 | Historia padre | ECL-9 / US-003 — Gestionar conductores y disponibilidad |
 | Requisitos | RF-003; RN-005 |
-| Sprint | Sprint 2, según el contenido de Jira proporcionado por el analista |
-| Evidencia Jira | Descripción, criterios de aceptación y padre compartidos por el analista; Jira no está conectado en esta sesión |
+| Sprint | BDD del Sprint 2; ratificación en el Sprint 3 mediante ECL-71 |
+| Evidencia Jira | ECL-71 y seguimientos ECL-79/ECL-80/ECL-81 consultados o creados durante esta revisión |
 | Trabajo excluido | Implementación de modelo/API/interfaz y validación posterior; este documento no declara ninguna terminada |
 
 Este archivo es un artefacto BDD separado para ST-021. No modifica los requisitos
@@ -20,11 +29,11 @@ ni las reglas de línea base.
 
 ## Fuentes consultadas
 
-- [RF-003 — Requisitos funcionales](../../01%20Inicio/06.%20Requisitos%20funcionales%20V_1_0_0.md)
-- [RN-002 y RN-005 — Reglas de negocio](../../01%20Inicio/09.%20Reglas%20de%20negocio%20V_1_0_0.md)
+- [RF-003 — Requisitos funcionales](../../01%20Inicio/06.%20Requisitos%20funcionales%20V_1_1_0.md)
+- [RN-002 y RN-005 — Reglas de negocio](../../01%20Inicio/09.%20Reglas%20de%20negocio%20V_1_1_0.md)
 - [Perfiles y matriz RBAC](../../01%20Inicio/08.%20Usuarios%20V_1_0_0.md)
 - [Modelo lógico de datos](../../01%20Inicio/11.%20Base%20de%20datos%20V_1_1_0.md)
-- [Requisitos no funcionales, incluidos RNF-003/RNF-004](../../01%20Inicio/07.%20Requisitos%20no%20funcionales%20V_1_1_0.md)
+- [Requisitos no funcionales, incluidos RNF-003/RNF-004](../../01%20Inicio/07.%20Requisitos%20no%20funcionales%20V_1_2_0.md)
 - [Definition of Done](../01%20Transformando%20a%20%C3%A1gil%20V_1_0_0.md#8-definition-of-done-dod-global)
 - `backend/app/core/rbac.py`, `backend/app/api/dependencies.py` y
   `backend/app/services/autenticacion.py`, `backend/app/models/usuario.py` y
@@ -32,19 +41,20 @@ ni las reglas de línea base.
   `origin/main` `099838bdec64c16c4ecaee04644f2f69ec2c46dc`.
 
 La subtarea Jira, según el contenido aportado, pide escenarios de registro,
-actualización de disponibilidad, DNI duplicado y licencia vencida. No se
-dispone de acceso a Jira para validar otros campos, comentarios o acuerdos.
+actualización de disponibilidad, DNI duplicado y licencia vencida. En ECL-71
+se consultó Jira y se registraron los seguimientos ECL-79/ECL-80/ECL-81; no se
+atribuyen acuerdos que no estén registrados.
 
-## Estado actual observado en la base
+## Estado observado y actualización ECL-71
 
-El modelo lógico documental incluye `usuario_id`, DNI, licencia,
-`experiencia_anios`, teléfono, `disponible_desde/hasta` y punto de partida.
-No determina cardinalidad o nulabilidad del vínculo ni define las validaciones
-de esos campos. En el código de `origin/main` revisado para este borrador no se
-encontraron modelo ORM, migración, repositorio, endpoint ni formulario de
-conductores. RBAC sí contiene permisos estáticos y alcances que servirían de
-contrato a módulos futuros; no implementa por sí mismo esos recursos ni sus
-proyecciones.
+El borrador inicial inspeccionó `099838b`, anterior al CRUD del Sprint 2. En
+`main` `dc148e7` sí existen modelo, migración, repositorio, servicio, API y
+formulario. La verificación de esta versión utiliza esos archivos y las
+pruebas enlazadas abajo, junto con ST-022/ST-023/ST-024.
+
+`habilitado_asignacion` es elegibilidad básica al consultar, no factibilidad de
+una ruta futura. D3 y F1/F2 siguen sin implementación del motor. D8 es una
+extensión condicional fuera del CRUD; se registra sin declararla disponible.
 
 ## Reglas confirmadas
 
@@ -69,46 +79,44 @@ abajo para que Antony y Julio revisen esta interpretación.
 
 ## Contrato candidato para revisión — no aprobado
 
-Los valores y operaciones siguientes permiten revisar escenarios concretos. Son
-una propuesta para ECL-46/ECL-48, no un contrato aprobado ni una afirmación de
-que el código exista.
+Los valores y operaciones siguientes se presentan para ratificación. La
+verificación ECL-71 identifica cuáles están implementados y cuáles siguen
+pendientes; esta revisión no equivale a un contrato aprobado por Julio.
 
 ### Modelo y campos propuestos
 
 | Campo | Alternativa propuesta para acordar |
 |---|---|
 | Cuenta | Acuerdo de Frank, pendiente de revisión de Antony/Julio: todo conductor tiene exactamente una cuenta `USUARIO` con rol `CONDUCTOR`; `conductor.usuario_id` es obligatorio y único. La cuenta del Administrador/Operador que registra es distinta de la nueva cuenta CONDUCTOR (`actor.usuario_id != conductor.usuario_id`). Un usuario no se vincula a más de un conductor. Alta de la cuenta objetivo y del conductor es atómica; el actor autorizado no se convierte ni se vincula como conductor. |
-| Credenciales | **Pendiente, bloquea el contrato final de alta:** acordar cómo se establece la credencial de la cuenta nueva (p. ej., contraseña inicial o flujo de invitación/activación). El modelo exige `password_hash` y el servicio interno de credenciales recibe contraseña y rol; no se encontró un endpoint de alta de usuarios. No aceptar ni exponer hashes directamente. |
+| Credenciales | Implementado en ST-022 para ratificación: `email` obligatorio, formato básico y máximo 255 caracteres; `password` de solo escritura, de 1 a 1024 caracteres, sin recorte. El servidor genera hash Argon2id. Cuenta CONDUCTOR y perfil se crean en una transacción, separados del actor. No aceptar hash ni `usuario_id` del cliente. |
 | `nombre` | Obligatorio; recortar espacios exteriores; entre 1 y 160 caracteres. |
 | `dni` | Obligatorio; exactamente 8 dígitos ASCII; unicidad global tras eliminar espacios exteriores; conservar como texto para no perder ceros iniciales. No devolverlo salvo a roles explícitamente autorizados. |
-| `licencia_numero` | Obligatorio; texto de 1 a 20 caracteres; recortar espacios exteriores y normalizar letras a mayúsculas; aceptar letras ASCII, dígitos y guion. Confirmar el patrón con el responsable de dominio antes de imponerlo. |
+| `licencia_numero` | Implementado: obligatorio, 1–20 caracteres tras recorte y normalización a mayúsculas. El patrón ASCII alfanumérico/guion del borrador no está implementado ni aprobado; ECL-81 debe ratificarlo o descartarlo, sin darlo por cubierto. |
 | `licencia_vigente_hasta` | Obligatorio; fecha calendario ISO `YYYY-MM-DD`, sin hora. La licencia es válida hasta el final de esa fecha en `America/Lima`. |
-| `experiencia_anios` | Obligatorio; entero no negativo. No proponer máximo de negocio hasta que se confirme; el tipo de almacenamiento debe soportar el valor permitido. |
-| `contacto` | Obligatorio; teléfono normalizado a E.164, 8–15 dígitos después de `+`; aceptar prefijo internacional y no inferir un prefijo cuando falte. |
+| `experiencia_anios` | Entero no negativo, sin booleanos ni fracciones; máximo técnico 2147483647 de Integer de PostgreSQL, no máximo de negocio. |
+| `telefono` | Nombre HTTP implementado del contacto: E.164 obligatorio, 8–15 dígitos tras `+`, primer dígito entre 1 y 9; no se infiere país. El borrador denominaba este campo `contacto`. |
 | `punto_partida` | Obligatorio; texto de 1–255 caracteres tras recortar espacios exteriores. Este borrador no presupone geocodificación ni coordenadas. |
 | Disponibilidad | Propuesta: se exige un intervalo completo al registrar y para que el conductor sea asignable. En una actualización se puede limpiar enviando ambos extremos como `null`; el perfil permanece, pero queda sin disponibilidad y no asignable hasta guardar un nuevo intervalo. Los dos extremos deben ser ambos no nulos o ambos nulos; no se admite un intervalo parcial. Un único intervalo `[desde, hasta)`; ambos timestamps con offset/zona explícitos, normalizados a UTC al persistir y mostrados en `America/Lima`; `hasta` debe ser posterior a `desde`. Sin recurrencia en el primer contrato. |
 
-Estos límites de campos son propuestas concretas y no derivan de constraints
-actuales del modelo de conductor, que no está implementado en la base revisada.
-La longitud de `nombre` y `punto_partida`, los formatos de DNI/licencia/teléfono
-y la representación temporal requieren aprobación antes de codificarse.
+Los límites anteriores se contrastaron con el esquema implementado en ST-022.
+La revisión no aprueba retroactivamente A4 ni modifica RF-003/RN-005. ECL-81
+conserva las diferencias normativas pendientes sobre licencia.
 
 ### Operaciones y respuestas candidatas para ECL-48
 
 | Operación propuesta | Acceso propuesto | Resultado HTTP y cuerpo candidato |
 |---|---|---|
-| `POST /conductores` | Propuesta: Administrador u Operador autenticado, distinto de la nueva cuenta CONDUCTOR. La API crea una cuenta CONDUCTOR distinta y la vincula atómicamente; no acepta que el actor autenticado se convierta en el conductor ni acepta un `usuario_id` arbitrario. La forma de provisionar su credencial queda pendiente. | `201`; cuerpo de respuesta candidato: `conductor_id`, `usuario_id`, `nombre`, disponibilidad y `habilitado_asignacion`. No incluye DNI, licencia ni contacto en la respuesta de creación. |
-| `GET /conductores/{conductor_id}` | Acuerdo de Frank para revisión: Administrador/Operador; Conductor solo si el ID corresponde a su vínculo. | `200`; el contrato enumera campos por rol. Conductor propio recibe solo campos aprobados para su uso; consulta ajena responde `403` genérico, sin cuerpo del conductor. |
-| `GET /conductores` paginado | Propuesta para ECL-48, solicitada para habilitar ST-023: Administrador/Operador. Sin acceso de listado para Conductor, Analista o Auditor en este contrato mínimo. | Candidato: `page` desde 1 y `page_size` de 1 a 100; orden estable por `conductor_id` ascendente; respuesta de página con `conductor_id`, `nombre`, disponibilidad y `habilitado_asignacion`. No incluir DNI, número de licencia ni contacto. Estos parámetros, campos y límites son propuestas, no contrato existente. |
+| `POST /conductores` | Administrador/Operador; alta atómica con email y contraseña inicial de una cuenta CONDUCTOR nueva e independiente. No admite `usuario_id` arbitrario. | `201`; `conductor_id`, `usuario_id`, `nombre`, disponibilidad, `estado` y `habilitado_asignacion`; sin DNI, licencia ni teléfono. |
+| `GET /conductores/{conductor_id}` | Administrador/Operador: perfil de mantenimiento; Conductor: solo su vínculo real. | `200`; Administrador/Operador reciben ConductorResponse con los campos del perfil; Conductor propio recibe ConductorSummary con IDs, nombre, disponibilidad, estado y elegibilidad, sin DNI, licencia, teléfono ni punto de partida. Consulta ajena: `403` genérico. |
+| `GET /conductores` paginado | Administrador/Operador. Conductor, Analista y Auditor no acceden a este listado individual. | `200`; `page` desde 1, `page_size` 1–100 (default 20), orden por `conductor_id` ascendente; items con ID, nombre, disponibilidad, estado y elegibilidad, sin DNI, licencia ni teléfono; metadatos page/page_size/total. |
 | `PATCH /conductores/{conductor_id}` | Acuerdo de Frank para revisión: Administrador/Operador. Conductor no actualiza su perfil en esta propuesta. | `200`; recurso actualizado con la misma proyección autorizada. Omitidos conservan valor; entrada inválida devuelve `422` y no modifica el recurso. |
 | Desactivación/baja | No incluido en la propuesta de operaciones de ECL-48 aquí descrita. | Requiere alcance y contrato separados. No inferir `DELETE` de la matriz global. |
 | Consulta de Auditor | No incluir detalle individual en la API mínima. Si se requiere, proponer una extensión de resumen agregado sin IDs, DNI, contacto ni texto libre. | Extensión pendiente; no es respuesta implementada ni operación comprometida. Enmascarar parcialmente identificadores no basta para anonimizar. |
 
-Las rutas, status, cuerpos, campos y parámetros anteriores son propuestas para
-revisión de Antony y Julio, no un contrato implementado o aprobado. El acuerdo
-de alcance de Frank incorpora un listado paginado como dependencia de trabajo
-de ST-023, sujeto a contrastar con Jira. No se fijan mensajes que puedan
-revelar datos personales.
+Las operaciones del CRUD anteriores están implementadas y documentadas en
+ST-022, sujetas a ratificación de Julio en ECL-71. El listado habilita ST-023;
+las extensiones indicadas como pendientes no quedan incluidas por esa razón.
+Los errores no deben revelar datos personales.
 
 ## Escenarios BDD — borrador
 
@@ -128,6 +136,9 @@ pendientes de aprobación.
   `6`, contacto `+51987654321`, punto de partida `Av. Los Jardines 123, SJL`,
   disponibilidad desde `2026-10-09T07:00:00-05:00` hasta
   `2026-10-09T16:00:00-05:00`.
+- **Y** el reloj de prueba está fijo en `2026-10-09T08:00:00-05:00`; el
+  email de destino y una contraseña inicial sintética se envían con los datos.
+  El campo de contacto se envía como `telefono`.
 - **Cuando** envía `POST /conductores`.
 - **Entonces** la API responde `201`, crea el conductor y lo vincula una sola
   vez a `conductor.rosa@example.test`, no al usuario
@@ -136,12 +147,9 @@ pendientes de aprobación.
   `habilitado_asignacion: true`.
 - **Y** el cuerpo no incluye DNI, licencia ni contacto.
 
-El resultado esperado depende de aprobar los campos/formatos candidatos y la
-semántica de cuenta/licencia. La distinción entre actor y cuenta objetivo
-también es parte de la propuesta de vínculo y debe confirmarse. Los IDs de
-respuesta son valores generados, no literales del fixture. La solicitud
-ejecutable y el alta atómica también dependen de acordar el aprovisionamiento
-seguro de credenciales; no se prescribe una contraseña en este escenario.
+Los IDs de respuesta son generados. El alta con contraseña inicial está
+documentada en ST-022 y contrastada con las pruebas de alta/login; no se
+prescribe una credencial real ni se requiere un flujo nuevo de invitación.
 
 ### D2 — DNI duplicado
 
@@ -150,7 +158,7 @@ seguro de credenciales; no se prescribe una contraseña en este escenario.
   `Rosa Quispe Soto`, asociando una cuenta CONDUCTOR distinta y enviando el mismo
   DNI `45678912`.
 - **Cuando** envía `POST /conductores`.
-- **Entonces** la API responde `409` con un error genérico de DNI duplicado, no
+- **Entonces** la API responde `409` con el error genérico `Identificador ya registrado`, no
   incluye el valor del DNI en el cuerpo, no crea conductor ni vínculo parcial
   y el registro previo permanece idéntico.
 
@@ -188,10 +196,9 @@ vigencia, no solo la fecha en que se crea el registro.
 - **Y** no se devuelve el número de licencia ni se rechaza el guardado solo por
   su vencimiento.
 
-El resultado de negocio refleja el acuerdo de Frank pendiente de revisión de
-Antony/Julio. `POST`, `201`, el campo de respuesta y las validaciones son
-propuestas de contrato; RF-003 conserva su texto vigente hasta un cambio
-aprobado.
+El guardado está implementado y probado. La contradicción entre el texto de
+RF-003 y US-003 sigue pendiente de decisión en ECL-81; RF-003 conserva su texto
+vigente hasta un control de cambios aprobado.
 
 ### D4 — Actualización de disponibilidad
 
@@ -263,9 +270,8 @@ la API no concede acceso. La prueba de seguridad debe verificar autorización
 real del backend, no solo la ausencia de botones.
 
 **Alcance propuesto para confirmar:** POST, GET por ID, GET paginado y PATCH.
-El listado paginado se propone para cubrir la dependencia de ST-023 indicada
-por Frank; confirmar contra Jira. No se incluye desactivación. Al momento de
-inspección no existen endpoints de conductores en la base consultada.
+El listado paginado está implementado y consumido por ST-023. No incluye
+desactivación. Las pruebas de API acreditan autorización y proyecciones.
 
 ### D7 — Conductor intenta consultar un conductor ajeno
 
@@ -275,8 +281,9 @@ inspección no existen endpoints de conductores en la base consultada.
   al backend.
 - **Entonces** la API responde `403` con `{"detail":"Acceso denegado"}`, sin
   incluir ID, DNI, contacto ni otro campo de `C-200`.
-- **Y** la interfaz muestra el mismo mensaje genérico sin renderizar una
-  respuesta protegida.
+- **Y** la pantalla de mantenimiento deniega el acceso al rol Conductor sin
+  renderizar datos protegidos; el control de propiedad se prueba directamente
+  en backend, sin presuponer una pantalla de consulta de terceros.
 
 `403` y el texto del ejemplo son propuestas para revisión; la denegación de
 backend no puede sustituirse por ocultar el control visual.
@@ -306,10 +313,9 @@ Este resumen no es endpoint existente ni se agrega automáticamente a ECL-48.
   `habilitado_asignacion`, pero no DNI, número de licencia ni contacto.
 - **Y** una cuenta Conductor no autorizada al listado recibe `403` sin datos.
 
-La forma de paginación, los nombres/valores de parámetros, el orden estable y la
-proyección son propuestas API que ECL-48 debe confirmar. El listado se incluye
-en este borrador para habilitar ST-023 según la relación comunicada por Frank;
-la dependencia Jira no se pudo consultar directamente.
+La API implementa page desde 1, page_size 1–100, default 20 y orden por
+conductor_id ascendente. C-100/C-200/C-300 son alias de fixtures que deben
+resolverse a UUID válidos; no son identificadores literales admitidos por HTTP.
 
 ## Escenarios RN-005 de ST-021; implementación futura fuera del CRUD
 
@@ -352,14 +358,65 @@ siguen fuera del CRUD.
 | Decisión | Propuesta para revisar | Fuente / justificación | Impacto | Confirman |
 |---|---|---|---|---|
 | Vínculo Conductor–Usuario | Acuerdo de Frank para revisión: uno-a-uno obligatorio; la cuenta CONDUCTOR es distinta del Administrador/Operador que registra; crear cuenta y perfil atómicamente. | El modelo lógico nombra `usuario_id` pero no cardinalidad ni actor creador; separación explícita de actor y usuario sujeto. | FK unique/not null, transacción de alta y asociación autenticada; la creación de cuenta sigue siendo propuesta API. | Frank acuerda; Antony/Julio revisan antes de cerrar. |
-| Provisión de credenciales | Pendiente: acordar contraseña inicial o invitación/activación antes de fijar el cuerpo de alta. No aceptar hashes suministrados por el cliente. | `Usuario.password_hash` es obligatorio; `CredentialService.create` recibe email/contraseña/rol y hashea internamente; el README indica que no se crean usuarios automáticamente. | Bloquea el esquema de entrada y la transacción completa de `POST /conductores`; no cambiar la cuenta autenticada por la cuenta del conductor. | Frank, Antony y Julio; Antony define factibilidad y seguridad. |
-| Campos obligatorios, formatos y límites | Nombre 1–160; DNI obligatorio de 8 dígitos único; licencia obligatoria 1–20 alfanumérico/guion; experiencia entero ≥0; contacto obligatorio E.164; punto de partida texto 1–255. | RF-003 solo enumera campos; formatos y límites no están aprobados en los requisitos. | Esquema, validadores y errores 409/422; fixtures D1/D2/D5. | Julio y Frank por dominio; Antony por factibilidad. |
+| Provisión de credenciales | Contrato observado: email y contraseña inicial de solo escritura; no invitación. | ST-022, schemas, servicio y prueba HTTP de alta/login. | Decisión de implementación documentada, presentada para ratificación; D1. | Frank revisó; Julio pendiente. |
+| Campos obligatorios, formatos y límites | Usar `telefono`, límites de schema y máximo técnico de experiencia; el patrón ASCII de licencia sigue pendiente en ECL-81. | Schema y ST-022 frente a propuestas iniciales. | D1/D5a/D5b; no se modifica la línea base. | Frank revisó; Julio pendiente. |
 | Disponibilidad | Propuesta: intervalo completo al alta y para asignar; omitir ambos extremos en PATCH conserva; ambos `null` limpia el intervalo y mantiene el perfil no asignable; un solo extremo es inválido. | El modelo lógico sugiere `disponible_desde/hasta`; no define nulabilidad o actualización. | Constraints, validación de alta/PATCH y elegibilidad; D1/D4/D5b. | Frank propone; Antony/Julio revisan. |
-| Licencia vencida al guardar | Acuerdo de Frank para revisión: guardar perfil vencido y marcarlo no asignable; vigencia durante el día de vencimiento en Lima, asignación desde el siguiente día local impedida. | US-003 impide habilitar asignación; BDD de RF-003 parece rechazar guardado. La línea base requiere aclaración, no se cambia aquí. | Validación de alta, campo de respuesta y motor futuro; D3/D3a. | Frank acuerda; Antony/Julio revisan y aclaran RF-003. |
+| Licencia vencida al guardar | Se permite perfil vencido con elegibilidad básica falsa. La contradicción con RF-003 se mantiene explícita en ECL-81. | ST-022/ST-024 y US-003 frente a RF-003. | D3a acredita guardado; D3 requiere motor (ECL-79). | Julio/Frank deben resolver por control de cambios. |
 | Permisos | Acuerdo de Frank para revisión: Administrador/Operador POST/GET listado/GET por ID/PATCH; Conductor solo GET propio; otros roles sin listado ni detalle individual. | Referencia a la matriz RBAC global, acotada a las operaciones candidatas de ECL-48. | Autorización, proyecciones, pruebas; D6/D7. | Frank acuerda; Antony/Julio revisan. |
-| Listado y dependencia ST-023 | Propuesta para ECL-48: GET paginado, para habilitar ST-023; no listado para Conductor/Analista/Auditor; campos no sensibles en el resumen. | Relación de dependencia indicada por Frank; Jira no está conectado y la relación debe comprobarse allí. | Ruta/contrato de paginación y proyección; D6 y trabajo dependiente ST-023. | Frank propone; Antony/Julio validan Jira y API. |
-| Proyección de Auditor | Si se necesita lectura, extensión separada de resumen agregado sin IDs, DNI, contacto ni texto libre; no usar masking parcial como anonimización. | RNF-004 y matriz de lectura anonimizada; riesgo de reidentificación. | Fuera del ECL-48 mínimo; D8 sujeto a aprobación y revisión de privacidad. | Julio y Frank; Antony por factibilidad. |
-| RN-005 | Evaluar límite total y conducción continua por ruta; los umbrales exactos siguen siendo los de RN-005. | Límites expresos de RN-005. | Contrato y pruebas del motor futuro; no agrega lógica al CRUD. | Antony por motor; Julio/Frank por interpretación. |
+| Listado y dependencia ST-023 | GET paginado implementado para Administrador/Operador; resúmenes sin DNI, licencia ni teléfono. | ST-022/ST-023 y pruebas de API/UI. | D6/D9; default 20, page_size 1–100, orden por UUID. | Frank revisó; Julio pendiente. |
+| Proyección de Auditor | Extensión condicional, no implementada ni comprometida por el CRUD; definición/validación pendiente en ECL-80. | D8 y RNF-004; las pruebas actuales solo acreditan 403. | Mantener Sin prueba, no ampliar permisos desde ECL-71. | Julio/Frank deciden alcance. |
+| RN-005 | Conducción y descansos por ruta, no duración de disponibilidad. | RN-005 y falta de motor. | F1/F2 y D3 sin prueba completa: ECL-79, relacionado con ECL-12. | Antony por motor; Julio/Frank por interpretación. |
+
+## Verificación contra lo implementado
+
+Revisión estática de Frank al 25/10/2026 sobre `main` `dc148e7`. **Cubierto**
+significa que se inspeccionaron código y pruebas que afirman los observables,
+con validaciones históricas enlazadas; no significa que se ejecutaran hoy.
+**Diferencia** identifica una precisión corregida o una decisión pendiente.
+**Sin prueba** identifica comportamiento no acreditado por una prueba completa.
+No se reejecutaron suites backend/frontend ni se modificaron sus evidencias.
+
+Referencias: [API](../../../backend/tests/unit/test_conductor_api.py),
+[schemas](../../../backend/tests/unit/test_conductor_schemas.py),
+[servicio](../../../backend/tests/unit/test_conductor_service.py),
+[HTTP real](../../../backend/tests/integration/test_conductor_http_e2e.py),
+[integración ST-024](../../../backend/tests/integration/test_conductor_st024.py),
+[bordes ST-024](../../../backend/tests/unit/test_conductor_st024_unit.py),
+[UI](../../../frontend/src/pages/DriversPage.test.tsx),
+[dominio UI](../../../frontend/src/domain/driverForm.test.ts),
+[ST-022](<../../03 Implementación/Sprint 02/validaciones/VALIDACION_ST022.md>),
+[ST-023](<../../03 Implementación/Sprint 02/validaciones/VALIDACION_ST023.md>) y
+[ST-024](<../../03 Implementación/Sprint 02/validaciones/VALIDACION_ST024.md>).
+
+| Escenario | Prueba o evidencia que lo cubre | Resultado |
+|---|---|---|
+| D1 — alta válida | HTTP real `test_real_http_authentication_atomicity_and_driver_privacy`; servicio `test_registration_uses_hash_adapter_and_distinct_new_account`; schemas `test_normalization_and_secret_representation`; ST-022/ST-023. | Cubierto. Se concreta contraseña inicial, `telefono` y reloj fijo; no acredita patrón de licencia pendiente de ECL-81. |
+| D2 — DNI duplicado | HTTP real; integración ST-024 `test_negative_requests_preserve_committed_data` verifica rollback de cuenta/perfil; API `test_sanitized_service_errors`. | Cubierto. Se corrige el texto esperado a conflicto genérico de identificador, sin exigir que revele cuál está duplicado. |
+| D3 — licencia para ruta futura, incluido borde | Servicio `test_nonassignable_profiles` y `test_license_is_valid_through_its_final_local_day` solo prueban elegibilidad al consultar. No hay asignación de rutas. | Sin prueba completa. [ECL-79](https://continental-team-il84x39k.atlassian.net/browse/ECL-79), relacionado con ECL-12; no sustituir por prueba del CRUD. |
+| D3a — guardar licencia vencida | HTTP real y schemas `test_clear_availability_and_expired_license_are_valid_profile_data`; ST-022/ST-024. | Diferencia normativa: guardado cubierto, pero contradicción RF-003/US-003 pendiente en [ECL-81](https://continental-team-il84x39k.atlassian.net/browse/ECL-81). |
+| D4 — cambiar, omitir, retirar e invalidar disponibilidad | Integración ST-024 `test_availability_and_profile_survive_application_restart`, `test_negative_requests_preserve_committed_data`; servicio `test_read_page_and_update_validate_resulting_profile`; schemas `test_invalid_patch`; UI «edita sólo datos modificados, preserva fechas y retira disponibilidad»; dominio UI. | Cubierto para CRUD y representación Lima/UTC. El uso en una planificación futura sigue en ECL-79. |
+| D5a — alta inválida | Schemas `test_invalid_registration`, API `test_validation_never_echoes_password_or_personal_data`, integración ST-024 `test_negative_requests_preserve_committed_data`. | Cubierto: 422 y ausencia de cuenta/perfil parcial. |
+| D5b — PATCH inválido | Servicio `test_read_page_and_update_validate_resulting_profile`; integración ST-024 `test_negative_requests_preserve_committed_data`. | Cubierto: 422 y valores previos conservados. |
+| D6 — permisos y controles visuales | API `test_authorized_contracts`, `test_forbidden_roles_do_not_reach_persistence`; HTTP real; integración ST-024 `test_real_forbidden_writes_preserve_data_and_audit_denial`; UI y ST-023. | Cubierto en las operaciones del CRUD; navegación no sustituye autorización. |
+| D7 — Conductor consulta ajeno | API `test_driver_own_projection_and_foreign_denial_are_audited`, HTTP real y ST-022; ST-023 acredita denegación de la pantalla de mantenimiento a Conductor. | Cubierto en backend (403 sin datos). No presupone una pantalla de consulta de terceros para Conductor. |
+| D8 — resumen anonimizado de Auditor, condicional | API `test_detail_denies_unsupported_projections` solo verifica denegación; no existe resumen agregado de conductores para Auditor. | Sin prueba de la extensión. [ECL-80](https://continental-team-il84x39k.atlassian.net/browse/ECL-80) debe definirla o registrar su descarte; no es defecto del CRUD mínimo. |
+| D9 — listado paginado | HTTP real; servicio `test_repository_orders_paginates_and_locks`; API `test_invalid_pagination`; UI «pagina y actualiza desde el backend»; ST-022/ST-023. | Cubierto para orden, paginación, proyección y 403; los tres IDs del ejemplo son alias, no un dataset ejecutado hoy. |
+| F1 — conducción total 8 h / 8 h 1 min | Bordes ST-024 `test_future_nine_hour_availability_is_not_driving_time` confirma que disponibilidad no es conducción; no prueba un motor. | Sin prueba. ECL-79: implementar y verificar límite por ruta, sin modificar RN-005. |
+| F2 — 4 h continuas y descanso de 1 h | No se encontró motor ni pruebas de conducción continua/descansos en la base contrastada. | Sin prueba. ECL-79: verificar los límites y el descanso exacto. |
+
+### Diferencias de contrato para ratificar
+
+`contacto` se precisa como `telefono`, se documentan credenciales de solo
+escritura, máximo técnico de experiencia y error de conflicto genérico según
+ST-022. No son nuevas funciones. El patrón ASCII de licencia se mantiene como
+decisión pendiente en ECL-81: no se elimina una propuesta por el mero hecho
+de que falte en el código. Tampoco se cambia el criterio de asignación de D3
+para hacerlo pasar con `habilitado_asignacion`.
+
+Las tareas ECL-79 (5 SP), ECL-80 (2 SP) y ECL-81 (1 SP) se crearon en Jira con
+estimaciones autorizadas expresamente por Frank; no se les impuso un sprint
+ni una fecha. La ratificación acepta o rechaza la especificación y sus
+pendientes; no acredita implementación de las extensiones.
 
 ## Condición para convertir el borrador en criterios ejecutables
 
@@ -368,5 +425,19 @@ una propuesta para revisión, no un acuerdo. Tras la decisión de Julio, Antony 
 Frank, conservar, ajustar o retirar cada regla candidata y alinear los BDD con
 el contrato aprobado. Cualquier cambio a RF-003/RN-005 debe tramitarse mediante
 control de cambios; este documento no declara pruebas ejecutadas.
+
+## Historial de versiones
+
+| Versión | Fecha | Cambio |
+|---|---|---|
+| 0.2.0 | 25/10/2026 | Revisión ECL-71: verificación de todos los escenarios, precisiones del contrato observado y diferencias registradas en ECL-79/ECL-80/ECL-81. Ratificación de Julio pendiente. |
+| 1.0.0 | 26/10/2026 | Ratificación documental de Julio en el PR #64: «Ratifico ECL-47 y ECL-51 según esta verificación». Se conservan las diferencias y seguimientos ECL-79/ECL-80/ECL-81. |
+
+La ratificación se registra por el contenido explícito del comentario de Julio.
+GitHub registra esa revisión como COMMENTED, no como APPROVED; la aprobación
+formal del PR y la revisión del nuevo commit siguen siendo requisitos previos
+al merge. No se retrofecha la acción A4 ni se acreditan pruebas nuevas.
+
+[↑ Índice del Sprint 3](<../../03 Implementación/Sprint 03/README.md>)
 
 [← Volver al README principal](../../../README.md)

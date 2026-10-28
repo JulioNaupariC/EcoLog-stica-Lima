@@ -9,6 +9,7 @@ export type StopSummary = {
   position: number
   status: 'PENDIENTE' | 'EN_RUTA' | 'ENTREGADO' | 'NO_ENTREGADO'
   delivery?: DeliveryDetails
+  location?: { latitud: number; longitud: number }
 }
 
 export type DeliveryDetails = {
@@ -16,6 +17,13 @@ export type DeliveryDetails = {
   reference?: string
   windowStart: string
   windowEnd: string
+}
+
+function isStopLocation(value: unknown): boolean {
+  if (typeof value !== 'object' || value === null) return false
+  const location = value as Record<string, unknown>
+  return typeof location.latitud === 'number' && Number.isFinite(location.latitud) && Math.abs(location.latitud) <= 90 &&
+    typeof location.longitud === 'number' && Number.isFinite(location.longitud) && Math.abs(location.longitud) <= 180
 }
 
 export function isDeliveryDetails(value: unknown): value is DeliveryDetails {
@@ -97,6 +105,7 @@ export function isItinerarySnapshot(value: unknown): value is ItinerarySnapshot 
       stopIds.has(stopId) ||
       positions.has(position)
       || (item.delivery !== undefined && !isDeliveryDetails(item.delivery))
+      || (item.location !== undefined && !isStopLocation(item.location))
     ) {
       return false
     }

@@ -1,0 +1,18 @@
+ECL-76 — comprobaciones finales del 27/10/2026, America/Lima
+
+node --check frontend/scripts/verify-incidents-offline.mjs
+Salida 0, sin errores de sintaxis.
+
+python scripts/check_docs.py
+check_docs: OK. Enlaces, índice del README y retornos correctos.
+
+git diff --cached --check
+Salida 0, sin errores de espacios o formato del diff.
+
+Comprobación local de procedencia y credenciales:
+Source hash verified; private credentials absent from staged files; historical evidence preserved.
+Persistence: 22 unique operations
+
+La revisión verifica que la copia del script en esta evidencia coincide con el
+script ejecutado y con el SHA-256 del manifiesto. No sustituye la auditoría
+técnica independiente, la revisión de alertas de seguridad ni el CI remoto.

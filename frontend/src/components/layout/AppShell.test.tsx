@@ -28,6 +28,26 @@ afterEach(() => {
 })
 
 describe('StaffShell', () => {
+  it('ECL-67: al abrir el menú móvil enfoca Cerrar, contiene Tab y deja inerte el contenido', async () => {
+    mockViewport(false)
+    const user = userEvent.setup()
+    staff()
+    const opener = screen.getByRole('button', { name: 'Abrir menú' })
+    await user.click(opener)
+    const drawer = screen.getByRole('dialog', { name: 'Menú lateral' })
+    const close = within(drawer).getByRole('button', { name: 'Cerrar menú' })
+    const last = within(drawer).getByRole('link', { name: 'Conductores' })
+    expect(close).toHaveFocus()
+    expect(screen.getByText('Contenido').closest('.app-body')).toHaveAttribute('inert')
+    await user.tab({ shift: true })
+    expect(last).toHaveFocus()
+    await user.tab()
+    expect(close).toHaveFocus()
+    await user.keyboard('{Escape}')
+    expect(screen.getByText('Contenido').closest('.app-body')).not.toHaveAttribute('inert')
+    expect(opener).toHaveFocus()
+  })
+
   it('ruta dorada: sidebar por rol, página actual y «Próximamente» sin enlaces', () => {
     staff('OPERADOR')
     const nav = screen.getByRole('navigation', { name: 'Navegación principal' })
@@ -42,7 +62,7 @@ describe('StaffShell', () => {
   it('ruta feliz: el menú de cuenta muestra rol legible, cambia el tema y cierra sesión', async () => {
     const user = userEvent.setup()
     const onLogout = staff('ADMINISTRADOR')
-    const account = screen.getByRole('button', { name: 'Cuenta: operador@example.test, Administrador' })
+    const account = screen.getByRole('button', { name: 'Cuenta: O operador@example.test, Administrador' })
     await user.click(account)
     expect(account).toHaveAttribute('aria-expanded', 'true')
     expect(screen.getByText('Rol: Administrador')).toBeInTheDocument()

@@ -6,12 +6,12 @@ Repositorio de documentación y desarrollo del proyecto académico EcoLogística
 
 ## Estructura del repositorio
 
-El proyecto esta organizado en cuatro carpetas principales:
+El proyecto está organizado en cuatro carpetas principales:
 
-- `backend/`: API FastAPI, logica de negocio y migraciones.
-- `frontend/`: aplicacion web React y TypeScript.
-- `docs/`: documentacion, planificacion y evidencias.
-- `scripts/`: herramientas de verificacion y automatizacion.
+- `backend/`: API FastAPI, lógica de negocio y migraciones.
+- `frontend/`: aplicación web React y TypeScript.
+- `docs/`: documentación, planificación y evidencias.
+- `scripts/`: herramientas de verificación y automatización.
 
 ## Equipo
 
@@ -146,10 +146,10 @@ de nuevo los servicios. Las instrucciones de arranque sin Docker siguen en
 - [Declaración de la visión V_1_0_0](<docs/01 Inicio/03. Declaración de la visión V_1_0_0.md>)
 - [Registro de supuestos y restricciones V_1_0_0](<docs/01 Inicio/04. Registro de supuestos y restricciones V_1_0_0.md>)
 - [Registro de interesados V_1_0_0](<docs/01 Inicio/05. Registro de interesados V_1_0_0.md>)
-- [Requisitos funcionales V_1_0_0](<docs/01 Inicio/06. Requisitos funcionales V_1_0_0.md>)
-- [Requisitos no funcionales V_1_1_0](<docs/01 Inicio/07. Requisitos no funcionales V_1_1_0.md>)
+- [Requisitos funcionales V_1_1_0](<docs/01 Inicio/06. Requisitos funcionales V_1_1_0.md>)
+- [Requisitos no funcionales V_1_2_0](<docs/01 Inicio/07. Requisitos no funcionales V_1_2_0.md>)
 - [Usuarios V_1_0_0](<docs/01 Inicio/08. Usuarios V_1_0_0.md>)
-- [Reglas de negocio V_1_0_0](<docs/01 Inicio/09. Reglas de negocio V_1_0_0.md>)
+- [Reglas de negocio V_1_1_0](<docs/01 Inicio/09. Reglas de negocio V_1_1_0.md>)
 - [Stack tecnológico V_1_0_0](<docs/01 Inicio/10. Stack tecnológico V_1_0_0.md>)
 - [Base de datos V_1_1_0](<docs/01 Inicio/11. Base de datos V_1_1_0.md>)
 - [Modelo C4 V_1_0_0](<docs/01 Inicio/12. Modelo C4 V_1_0_0.md>)
@@ -167,6 +167,7 @@ de nuevo los servicios. Las instrucciones de arranque sin Docker siguen en
 
 - [ECL-47 / ST-021 — Reglas y BDD de conductores](<docs/02 Planificación/BDD/ECL-47-ST-021-conductores.md>)
 - [ECL-51 / ST-025 — Reglas y BDD de preferencias de entrega](<docs/02 Planificación/BDD/ECL-51-ST-025-preferencias-entrega.md>)
+- ECL-71 — Verificación para ratificación: [conductores](<docs/02 Planificación/BDD/ECL-47-ST-021-conductores.md>) y [preferencias de entrega](<docs/02 Planificación/BDD/ECL-51-ST-025-preferencias-entrega.md>) (aprobadas por Julio, PR #64).
 
 ### Especificaciones BDD del Sprint 3
 
@@ -232,7 +233,7 @@ Guías de integración:
 
 ### Documentación técnica del Sprint 3
 
-<!-- ECL-69 01 Revision -->
+<!-- ECL-69 01 Revisión -->
 
 <!-- ECL-70 02 Retrospectiva -->
 
@@ -240,22 +241,19 @@ Guías de integración:
 
 <!-- ECL-66 04 OWASP -->
 
-<!-- ECL-67 05 WCAG -->
-
-<!-- ECL-72 BDD incidencias -->
-
-<!-- ECL-68 Guia laboratorio -->
-
-<!-- ECL-74 Evidencias -->
-
-<!-- ECL-75 Evidencias -->
-
-<!-- ECL-76 Matriz US-012 -->
+<!-- ECL-68 Guía laboratorio -->
 
 
 - [Índice del Sprint 3](<docs/03 Implementación/Sprint 03/README.md>)
+- [Ítem 7 — Coherencia y versionamiento documental](<docs/03 Implementación/Sprint 03/07 Coherencia y versionamiento documental V_1_0_0.md>)
 - [US-013 / ECL-77 — Restablecer contraseña de un usuario](<docs/03 Implementación/Sprint 03/validaciones/VALIDACION_US013.md>)
 - [US-013 / ECL-77 — Evidencias visuales](<docs/03 Implementación/Sprint 03/validaciones/evidencias/ECL-77/README.md>)
+- [ECL-74 / ST-041 — Formulario móvil de incidencias y validación](<docs/03 Implementación/Sprint 03/validaciones/VALIDACION_ST041.md>)
+- [ECL-74 — Evidencias de Chrome y Firefox](<docs/03 Implementación/Sprint 03/validaciones/evidencias/ECL-74/README.md>)
+- [ECL-74 — Cuerpo preparado del pull request](<docs/03 Implementación/Sprint 03/validaciones/ECL-74-PR.md>)
+- [ECL-75 / ST-042 — Vista de incidencias pendientes para Operación](<docs/03 Implementación/Sprint 03/validaciones/VALIDACION_ST042.md>) · [Evidencias](<docs/03 Implementación/Sprint 03/validaciones/evidencias/ECL-75/README.md>)
+- [ECL-67 / EN-011 — Evaluación WCAG del Sprint 3](<docs/03 Implementación/Sprint 03/05 WCAG V_1_0_0.md>) · [Evidencias finales](<docs/03 Implementación/Sprint 03/evidencias/ECL-67/comprobacion-final-20261027/README.md>) · [Registro inicial](<docs/03 Implementación/Sprint 03/evidencias/ECL-67/README.md>)
+- ECL-76 / ST-043 — [Matriz US-012](<docs/03 Implementación/Sprint 03/validaciones/VALIDACION_US012.md>) · [Campaña real y evidencias de cierre](<docs/03 Implementación/Sprint 03/validaciones/evidencias/ECL-76/cierre-20261027/README.md>) · [Registro inicial](<docs/03 Implementación/Sprint 03/validaciones/evidencias/ECL-76/README.md>) · [Cuerpo del PR](<docs/03 Implementación/Sprint 03/validaciones/ECL-76-PR.md>)
 
 ### Estado del Sprint 2 — cierre
 

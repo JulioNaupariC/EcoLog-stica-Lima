@@ -1,0 +1,135 @@
+{
+  "ticket": "ECL-75",
+  "executedAt": "2026-10-27T04:59:08.016Z",
+  "timezone": "America/Lima",
+  "browser": "156.0.8078.48",
+  "automatedAccessibilityScope": "ECL-75 page only; not a full WCAG audit",
+  "checks": [
+    {
+      "check": "real-api-list",
+      "status": 200,
+      "visible": 3,
+      "total": 3
+    },
+    {
+      "capture": "chrome-360-light.png",
+      "source": "real API, local demo",
+      "viewport": 360,
+      "scroll": 360
+    },
+    {
+      "check": "automated-accessibility-page-only",
+      "width": 360,
+      "appearance": "light",
+      "violations": [],
+      "passes": 20
+    },
+    {
+      "capture": "chrome-360-dark.png",
+      "source": "real API, local demo",
+      "viewport": 360,
+      "scroll": 360
+    },
+    {
+      "check": "automated-accessibility-page-only",
+      "width": 360,
+      "appearance": "dark",
+      "violations": [],
+      "passes": 20
+    },
+    {
+      "capture": "chrome-1280-light.png",
+      "source": "real API, local demo",
+      "viewport": 1280,
+      "scroll": 1280
+    },
+    {
+      "check": "automated-accessibility-page-only",
+      "width": 1280,
+      "appearance": "light",
+      "violations": [],
+      "passes": 20
+    },
+    {
+      "capture": "chrome-1280-dark.png",
+      "source": "real API, local demo",
+      "viewport": 1280,
+      "scroll": 1280
+    },
+    {
+      "check": "automated-accessibility-page-only",
+      "width": 1280,
+      "appearance": "dark",
+      "violations": [],
+      "passes": 20
+    },
+    {
+      "check": "keyboard-refresh-table-map",
+      "passed": true
+    },
+    {
+      "capture": "chrome-empty-1280.png",
+      "source": "simulated GET response",
+      "viewport": 1280,
+      "scroll": 1280
+    },
+    {
+      "capture": "chrome-error-1280.png",
+      "source": "simulated HTTP 503",
+      "viewport": 1280,
+      "scroll": 1280
+    },
+    {
+      "check": "error-retry",
+      "passed": true,
+      "source": "simulated GET responses"
+    },
+    {
+      "capture": "chrome-forbidden-1280.png",
+      "source": "simulated HTTP 403",
+      "viewport": 1280,
+      "scroll": 1280
+    },
+    {
+      "capture": "chrome-loading-1280.png",
+      "source": "simulated delayed GET response",
+      "viewport": 1280,
+      "scroll": 1280
+    },
+    {
+      "check": "pagination-next-keyboard-previous",
+      "passed": true,
+      "source": "21 simulated incidents"
+    },
+    {
+      "capture": "chrome-observation-keyboard-360.png",
+      "source": "simulated long observation, keyboard focus",
+      "viewport": 360,
+      "scroll": 360
+    },
+    {
+      "check": "real-role-access",
+      "role": "ADMINISTRADOR",
+      "status": 200,
+      "menuAndRoute": "passed"
+    },
+    {
+      "check": "real-role-access",
+      "role": "ANALISTA",
+      "status": 403,
+      "menuAndRoute": "passed"
+    },
+    {
+      "check": "real-role-access",
+      "role": "AUDITOR",
+      "status": 403,
+      "menuAndRoute": "passed"
+    },
+    {
+      "check": "real-role-access",
+      "role": "CONDUCTOR",
+      "status": 403,
+      "menuAndRoute": "passed"
+    }
+  ]
+}
