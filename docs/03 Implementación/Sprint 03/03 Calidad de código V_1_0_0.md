@@ -42,7 +42,12 @@ del periodo de código nuevo del último análisis, y se corrigen en el [PR #78]
 
 Cobertura por componente en las ejecuciones locales del 29/10/2026 sobre el mismo código:
 backend **92,81 %** (868 pruebas, pytest) y frontend **97,67 %** de líneas (732 pruebas, Vitest).
-El 94,5 % de SonarCloud combina ambas.
+El 94,5 % de SonarCloud combina ambas. En el **código nuevo**, que es lo que evalúa el Quality
+Gate, SonarCloud mide **94,8 %** de cobertura: 459 líneas por cubrir con 13 sin cubrir (97,2 %
+de líneas) y 371 condiciones con 30 sin cubrir
+([captura de Measures → Coverage](<evidencias/ECL-65/sonarcloud-measures-coverage-main.png>)).
+El [Overview de `main`](<evidencias/ECL-65/sonarcloud-overview-main.png>) muestra el Quality Gate
+«Passed — All conditions passed» y las calificaciones de la tabla anterior.
 
 ## 2. Métricas Principales
 
@@ -87,7 +92,8 @@ Exclusiones del análisis, justificadas en `sonar-project.properties`:
      **Aceptado con justificación, sin cambio:** `MetricsMiddleware` va por fuera a propósito
      para contar también las solicitudes preflight CORS (ECL-60, prueba
      `test_cors_preflight_and_unsupported_method_are_counted`) y no genera respuestas propias.
-     Se marca como *Accepted* en SonarCloud con este motivo.
+     Julio Naupari lo registró como *Accepted* en SonarCloud con este motivo el 29/10/2026;
+     los issues abiertos de `main` bajaron de 8 a 7.
   5. **`tabIndex` en un elemento no interactivo.** `typescript:S6845`, Media, en
      `frontend/src/components/ui/DataTable.tsx:25`. **Planificado:**
      [ECL-87](https://continental-team-il84x39k.atlassian.net/browse/ECL-87), Sprint 4.

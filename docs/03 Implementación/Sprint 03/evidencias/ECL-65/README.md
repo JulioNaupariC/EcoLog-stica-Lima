@@ -11,6 +11,19 @@ el 29/10/2026, tras el análisis de `main` en el commit `7fd891a`.
 | [sonarcloud-issues-main-7fd891a.json](sonarcloud-issues-main-7fd891a.json) | `api/issues/search?resolved=false` | Los 8 issues abiertos, con regla, severidad, archivo, línea y esfuerzo (117 min) |
 | [sonarcloud-analyses-main.json](sonarcloud-analyses-main.json) | `api/project_analyses/search` | Los 5 últimos análisis de `main`, con fecha y commit; el evaluado es el del 29/10/2026 a las 20:39 UTC |
 
+## Capturas de SonarCloud (rama `main`, 29/10/2026)
+
+Tomadas por Antony Munive después del análisis de `7fd891a`.
+
+| Captura | Qué muestra |
+|---|---|
+| [sonarcloud-overview-main.png](sonarcloud-overview-main.png) | Quality Gate «Passed — All conditions passed», 8 issues, duplicación 0,0 %, cobertura 94,5 %, calificaciones Seguridad C, Revisión de seguridad A, Fiabilidad A y Mantenibilidad A |
+| [sonarcloud-measures-coverage-main.png](sonarcloud-measures-coverage-main.png) | Cobertura del código nuevo 94,8 %: 459 líneas por cubrir, 13 sin cubrir, 97,2 % de líneas, 371 condiciones con 30 sin cubrir; 292 archivos |
+
+![Overview de main](sonarcloud-overview-main.png)
+
+![Measures, cobertura de main](sonarcloud-measures-coverage-main.png)
+
 Los JSON no contienen credenciales, correos ni rutas locales; se revisó antes de publicarlos.
 Para reproducir, abrir los mismos endpoints con `component`/`project`
 `JulioNaupariC_EcoLog-stica-Lima` con una sesión iniciada en SonarCloud.
