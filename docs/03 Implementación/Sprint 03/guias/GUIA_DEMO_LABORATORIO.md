@@ -48,12 +48,27 @@ Los servicios se utilizan mediante:
 - Aplicación: http://127.0.0.1:5173
 - Verificación del backend: http://127.0.0.1:8000/health
 
-El inicio lanza FastAPI y React mediante procesos independientes de `cmd.exe`,
-con ventanas minimizadas, PID en `run/backend.pid` y `run/frontend.pid`, y logs
-`backend.out.log`, `backend.err.log`, `frontend.out.log` y `frontend.err.log`
-en `run`, dentro de `ECOLOGISTICA_DEMO_HOME`. Espera hasta 60 segundos por
-comprobación de puerto y por comprobación HTTP: `/health` debe responder
-con `status: ok` y React debe devolver HTTP 200.
+El inicio crea un supervisor Windows PowerShell 5.1 independiente y minimizado
+por servicio (`scripts/lab/servicio-demo.ps1`). Cada supervisor inicia directamente
+Python o Node con `Start-Process -NoNewWindow`, redirige stdout/stderr a archivos
+y permanece esperando al proceso real. No se usa `cmd /c` ni `start`: se evita
+confundir el PID de un intermediario con el del servicio y se mantienen vivos
+los propietarios de las redirecciones aunque termine la consola de inicio.
+
+En `run`, dentro de `ECOLOGISTICA_DEMO_HOME`, se guardan:
+
+- `backend.pid` y `frontend.pid`: PID real de Python o Node, no de `cmd.exe`.
+- `*.process.json`: PID, fecha de creación y PID del supervisor, sin credenciales.
+- `*.out.log` y `*.err.log`: salida del arranque actual.
+- `*.lifecycle.log`: inicio y salida con PID, hora y código de salida.
+- `*.lock`: bloqueo exclusivo mientras vive el supervisor; no borrarlo durante la ejecución.
+
+Se espera hasta 60 segundos por publicación del PID, por comprobación de puerto
+y por comprobación HTTP. `/health` debe devolver `status: ok` y React HTTP 200.
+También se comprueba que el propietario del puerto pertenece al proyecto.
+El backend recibe `DATABASE_URL` solo por herencia del entorno; el supervisor la
+retira tras crear Python. React no la hereda. No se escribe en argumentos ni
+registros de diagnóstico del supervisor.
 
 Estos cambios requieren una prueba personal en la laptop Windows de Julio.
 No se declara superada esa prueba.
@@ -77,12 +92,15 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File ".\scripts\lab\detener-d
 ```
 
 El apagado prioriza los PID guardados y detiene sus árboles mediante
-`taskkill /PID ... /T /F`. Comprueba el ejecutable y la firma del comando del
-proyecto antes de detenerlos. Si falta el PID o está obsoleto, busca por puerto
+`taskkill /PID ... /T /F`. Comprueba el ejecutable, la firma del comando del
+proyecto y la fecha de creación del PID guardado antes de detenerlos. Si falta el PID o está obsoleto, busca por puerto
 y aplica la misma validación; deja intactos los procesos que no puede identificar.
 Un proceso iniciado manualmente debe usar las rutas absolutas de las herramientas
-y de `vite.js` para que pueda identificarse con seguridad.
-El apagado conserva la información de PostgreSQL.
+y de `vite.js` para que pueda identificarse con seguridad. El backend debe incluir
+`--app-dir` con la ruta absoluta de `backend` y `--port 8000`.
+El apagado conserva la información de PostgreSQL. Su arranque y cierre siguen
+usando `pg_ctl -D` con el directorio de datos existente; no se ejecutan migraciones,
+reinicializaciones ni borrados de datos.
 
 ## 7. Evidencia en video
 
@@ -116,3 +134,37 @@ No subir a GitHub contraseñas, archivos de base de datos,
 tokens ni archivos privados de configuración.
 
 [Volver al README principal](../../../../README.md)
+
+## 11. Diagnóstico de la prueba de Windows pendiente
+
+El reporte de Windows 11 indica que PostgreSQL respondió en 55432, pero Uvicorn
+arrancó y después desapareció; el PID 13824 ya no existía. El `cmd.exe` 17520
+correspondía a PostgreSQL y no debe tratarse como backend o frontend.
+El log disponible no permite atribuir con certeza la salida a una causa concreta.
+La revisión anterior guardaba el PID del `cmd /c` y no registraba la salida del
+servicio. Además, React no llegaba a lanzarse si fallaba antes FastAPI.
+
+Para repetir la prueba: iniciar con el bloque de la sección 4, cerrar la consola
+que inició la demo y abrir otra PowerShell. Esperar al menos 60 segundos y ejecutar:
+
+```powershell
+$env:ECOLOGISTICA_DEMO_HOME = "D:\EcoLogisticaDemo"
+Invoke-RestMethod http://127.0.0.1:8000/health
+(Invoke-WebRequest http://127.0.0.1:5173/ -UseBasicParsing).StatusCode
+Get-NetTCPConnection -LocalPort 55432,8000,5173 -State Listen |
+    Select-Object LocalPort, OwningProcess
+Get-Content "$env:ECOLOGISTICA_DEMO_HOME\run\backend.process.json"
+Get-Content "$env:ECOLOGISTICA_DEMO_HOME\run\frontend.process.json"
+```
+
+Comprobar el login, detener con la sección 6 y repetir el arranque. Si falla,
+conservar `*.lifecycle.log` y revisar localmente `*.err.log`; no publicar el
+entorno ni registros sin comprobar antes que no contienen datos privados.
+La sintaxis y las pruebas simuladas pueden ejecutarse sin iniciar servicios:
+
+```powershell
+powershell.exe -NoProfile -File .\scripts\lab\tests\test-procesos-demo.ps1
+python scripts/check_docs.py
+```
+
+Estas verificaciones no declaran superada la prueba real de Windows 11.

@@ -1,3 +1,4 @@
+#requires -Version 5.1
 
 # ECL-68 - Detener la demostracion local
 # Sin Docker ni permisos de administrador.
@@ -12,44 +13,41 @@ if ($env:ECOLOGISTICA_DEMO_HOME) {
     $base = Join-Path $env:LOCALAPPDATA "EcoLogisticaDemo"
 }
 
+$base = [IO.Path]::GetFullPath($base)
+
 $pg = Join-Path $base "tools\postgresql-16\pgsql"
 $datos = Join-Path $base "pgdata"
 $run = Join-Path $base "run"
 
-function Es-ProcesoDelProyecto($Proceso, [string]$Servicio) {
-    if (-not $Proceso) { return $false }
-    $comando = [string]$Proceso.CommandLine
-    $ejecutable = [string]$Proceso.ExecutablePath
-    $python = Join-Path $repo "backend\.venv\Scripts\python.exe"
-    $node = Join-Path $base "tools\node-v22.18.0-win-x64\node.exe"
-    $vite = Join-Path $repo "frontend\node_modules\vite\bin\vite.js"
-    $cmd = Join-Path $env:SystemRoot "System32\cmd.exe"
+. (Join-Path $PSScriptRoot "procesos-demo.ps1")
 
-    if ($Servicio -eq "backend") {
-        $patron = '\s-m\s+uvicorn\s+app\.main:create_app(?:\s|$)'
-        $rutaServicio = $python
-        $binario = $python
-    }
-    else {
-        $patron = [regex]::Escape('"' + $vite + '"') + '\s+--host\s+127\.0\.0\.1\s+--port\s+5173(?:\s|$)'
-        $rutaServicio = $vite
-        $binario = $node
-    }
-
-    # Paréntesis explícitos: rechazar si falta la firma O si no es el binario
-    # esperado NI el cmd que contiene la ruta absoluta del servicio del repo.
-    if (
-        ($comando -notmatch $patron) -or
-        (($ejecutable -ine $binario) -and
-         (($ejecutable -ine $cmd) -or
-          ($comando -notmatch [regex]::Escape('"' + $rutaServicio + '"'))))
-    ) { return $false }
-    return $true
-}
-
-function Detener-Arbol([int]$IdProceso, [string]$Servicio) {
+function Detener-Arbol([int]$IdProceso, [string]$Servicio, [switch]$Guardado) {
     $proceso = Get-CimInstance Win32_Process -Filter "ProcessId = $IdProceso" -ErrorAction SilentlyContinue
     if (-not $proceso) { return $true }
+    if ($Guardado) {
+        # Un PID puede reutilizarse. El registro nuevo debe coincidir en ID y fecha.
+        $archivoEstado = Join-Path $run "$Servicio.process.json"
+        if (Test-Path -LiteralPath $archivoEstado) {
+            try {
+                $estado = Get-Content -LiteralPath $archivoEstado -Raw | ConvertFrom-Json
+                $actual = Get-Process -Id $IdProceso -ErrorAction Stop
+                if (($estado.ProcessId -ne $IdProceso) -or
+                    ([long]$estado.StartTicks -ne $actual.StartTime.ToUniversalTime().Ticks)) {
+                    Write-Host "[AVISO] PID $IdProceso obsoleto o reutilizado; se comprobara el puerto."
+                    return $false
+                }
+            }
+            catch {
+                Write-Host "[AVISO] No se pudo validar la fecha del PID $IdProceso; se comprobara el puerto."
+                return $false
+            }
+        }
+        else {
+            # PID de la version antigua: no confiar en un cmd intermediario.
+            Write-Host "[AVISO] PID sin registro de identidad; se comprobara el puerto."
+            return $false
+        }
+    }
     if (-not (Es-ProcesoDelProyecto $proceso $Servicio)) {
         Write-Host "[AVISO] PID $IdProceso no identificado como $Servicio del proyecto; no se detiene."
         return $false
@@ -64,13 +62,13 @@ function Detener-Arbol([int]$IdProceso, [string]$Servicio) {
 
 function Detener-ServicioWeb([int]$Puerto, [string]$Servicio) {
     $archivoPid = Join-Path $run "$Servicio.pid"
-    # Primero el cmd raíz guardado, incluso si el servicio aún no abrió su puerto.
+    # Primero el PID real guardado, incluso si aun no abrio su puerto.
     if (Test-Path -LiteralPath $archivoPid) {
         $idGuardado = 0
         $contenido = ([string](Get-Content -LiteralPath $archivoPid -Raw)).Trim()
         if (([int]::TryParse($contenido, [ref]$idGuardado)) -and ($idGuardado -gt 0)) {
-            if (Detener-Arbol $idGuardado $Servicio) {
-                Remove-Item -LiteralPath $archivoPid
+            if (Detener-Arbol $idGuardado $Servicio -Guardado) {
+                Remove-Item -LiteralPath $archivoPid -ErrorAction SilentlyContinue
             }
         }
         else {
@@ -83,9 +81,13 @@ function Detener-ServicioWeb([int]$Puerto, [string]$Servicio) {
     foreach ($idProceso in @($conexiones | Select-Object -ExpandProperty OwningProcess -Unique)) {
         $null = Detener-Arbol $idProceso $Servicio
     }
-    if ($conexiones.Count -eq 0) {
+    $restantes = @(Get-NetTCPConnection -LocalPort $Puerto -State Listen -ErrorAction SilentlyContinue)
+    if ($restantes.Count -eq 0) {
         Write-Host "[DETENIDO] Puerto $Puerto libre."
+        return $true
     }
+    Write-Host "[AVISO] El puerto $Puerto sigue ocupado; no se confirma el cierre de $Servicio."
+    return $false
 }
 
 Write-Host ""
@@ -94,10 +96,10 @@ Write-Host "  DETENIENDO ECOLOGISTICA LIMA"
 Write-Host "========================================"
 
 Write-Host "[1/3] Deteniendo frontend..."
-Detener-ServicioWeb -Puerto 5173 -Servicio "frontend"
+$frontendDetenido = Detener-ServicioWeb -Puerto 5173 -Servicio "frontend"
 
 Write-Host "[2/3] Deteniendo backend..."
-Detener-ServicioWeb -Puerto 8000 -Servicio "backend"
+$backendDetenido = Detener-ServicioWeb -Puerto 8000 -Servicio "backend"
 
 Write-Host "[3/3] Deteniendo PostgreSQL..."
 
@@ -122,5 +124,10 @@ else {
 }
 
 Write-Host ""
-Write-Host "Demostracion detenida."
+if ($frontendDetenido -and $backendDetenido) {
+    Write-Host "Demostracion detenida."
+}
+else {
+    Write-Host "[AVISO] Cierre incompleto. Se conservaron los procesos no identificados."
+}
 Write-Host "Los datos de PostgreSQL se conservan."

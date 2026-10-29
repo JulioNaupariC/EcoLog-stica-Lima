@@ -1,3 +1,4 @@
+#requires -Version 5.1
 
 # ECL-68 - Inicio de la demostracion local
 # No necesita Docker ni permisos de administrador.
@@ -12,12 +13,16 @@ if ($env:ECOLOGISTICA_DEMO_HOME) {
     $base = Join-Path $env:LOCALAPPDATA "EcoLogisticaDemo"
 }
 
+$base = [IO.Path]::GetFullPath($base)
+
 $pg = Join-Path $base "tools\postgresql-16\pgsql"
 $node = Join-Path $base "tools\node-v22.18.0-win-x64"
 $datos = Join-Path $base "pgdata"
 $run = Join-Path $base "run"
 $backend = Join-Path $repo "backend"
 $frontend = Join-Path $repo "frontend"
+
+. (Join-Path $PSScriptRoot "procesos-demo.ps1")
 
 New-Item -ItemType Directory -Force -Path $run | Out-Null
 
@@ -49,8 +54,9 @@ function Puerto-Activo([int]$puerto) {
     }
 }
 
-function Esperar-Puerto([int]$puerto, [int]$segundos = 60) {
+function Esperar-Puerto([int]$puerto, [int]$segundos = 60, $Proceso = $null, [string]$Servicio = "servicio") {
     for ($i = 0; $i -lt $segundos; $i++) {
+        Confirmar-Proceso $Proceso $Servicio
         if (Puerto-Activo $puerto) {
             return $true
         }
@@ -77,6 +83,50 @@ function Esperar-HTTP([string]$uri, [switch]$Backend, [int]$segundos = 60) {
     return $false
 }
 
+function Iniciar-Servicio([string]$Servicio) {
+    # Consola nueva: el supervisor mantiene abiertos los handles de los logs.
+    # -File recibe solo la ruta y el nombre del servicio, nunca credenciales.
+    $supervisor = Start-Process `
+        -FilePath "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe" `
+        -ArgumentList @('-NoLogo', '-NoProfile', '-ExecutionPolicy', 'Bypass',
+            '-File', ('"{0}"' -f (Join-Path $PSScriptRoot 'servicio-demo.ps1')),
+            '-Servicio', $Servicio) `
+        -WorkingDirectory $repo -WindowStyle Minimized -PassThru
+    # El supervisor publica el PID REAL antes de que el llamante compruebe HTTP.
+    $limite = (Get-Date).AddSeconds(60)
+    do {
+        $supervisor.Refresh()
+        if ($supervisor.HasExited) {
+            throw "El supervisor de $Servicio termino. Revisar $run\$Servicio.lifecycle.log"
+        }
+        $archivo = Join-Path $run "$Servicio.process.json"
+        if (Test-Path -LiteralPath $archivo) {
+            try {
+                $estado = Get-Content -LiteralPath $archivo -Raw | ConvertFrom-Json
+                if ($estado.SupervisorId -eq $supervisor.Id) {
+                    $proceso = Get-Process -Id $estado.ProcessId -ErrorAction Stop
+                    if ($proceso.StartTime.ToUniversalTime().Ticks -eq [long]$estado.StartTicks) {
+                        Write-Host "[PID] $Servicio servicio=$($proceso.Id), supervisor=$($supervisor.Id)"
+                        return $proceso
+                    }
+                }
+            }
+            catch { }
+        }
+        Start-Sleep -Milliseconds 200
+    } while ((Get-Date) -lt $limite)
+    throw "No se publico un PID valido para $Servicio. Revisar $run\$Servicio.lifecycle.log"
+}
+
+function Confirmar-Proceso($Proceso, [string]$Servicio) {
+    if ($null -ne $Proceso) {
+        $Proceso.Refresh()
+        if ($Proceso.HasExited) {
+            throw "$Servicio termino (codigo $($Proceso.ExitCode)). Revisar $run\$Servicio.lifecycle.log y $run\$Servicio.err.log"
+        }
+    }
+}
+
 Write-Host ""
 Write-Host "========================================"
 Write-Host "  ECOLOGISTICA LIMA - DEMO LOCAL"
@@ -86,6 +136,7 @@ Write-Host "Herramientas: $base"
 Write-Host ""
 
 # Verificar herramientas previamente instaladas.
+Verificar-Archivo (Join-Path $PSScriptRoot "servicio-demo.ps1")
 Verificar-Archivo "$pg\bin\pg_ctl.exe"
 Verificar-Archivo "$pg\bin\pg_isready.exe"
 Verificar-Archivo "$node\node.exe"
@@ -129,43 +180,43 @@ if ($LASTEXITCODE -ne 0) {
 Write-Host "[OK] PostgreSQL disponible."
 
 # Guardar y restaurar el entorno de la consola. Solo FastAPI hereda DATABASE_URL.
-$variablesDemo = @('DATABASE_URL', 'APP_ENV', 'CORS_ALLOWED_ORIGINS', 'PATH', 'VITE_API_BASE_URL', 'npm_config_cache')
+$variablesDemo = @('ECOLOGISTICA_DEMO_HOME', 'DATABASE_URL', 'APP_ENV', 'CORS_ALLOWED_ORIGINS', 'PATH', 'VITE_API_BASE_URL', 'npm_config_cache')
 $entornoAnterior = @{}
 foreach ($nombre in $variablesDemo) {
     $entornoAnterior[$nombre] = [Environment]::GetEnvironmentVariable($nombre, 'Process')
 }
 
 try {
+    $env:ECOLOGISTICA_DEMO_HOME = $base
     $env:APP_ENV = "development"
     $env:CORS_ALLOWED_ORIGINS = '["http://127.0.0.1:5173"]'
+
+    $procesoBackend = $null
+    $procesoFrontend = $null
 
     # 2. FastAPI
     Write-Host "[2/3] Comprobando FastAPI..."
 
     if (-not (Puerto-Activo 8000)) {
-        # cmd conserva el árbol y la redirección sin depender de la consola llamante.
-        # Las credenciales solo se heredan por entorno; nunca van en argumentos.
-        $comandoBackend = '""{0}\.venv\Scripts\python.exe" -m uvicorn app.main:create_app --factory --host 127.0.0.1 --port 8000 1>"{1}\backend.out.log" 2>"{1}\backend.err.log""' -f $backend, $run
-        $procesoBackend = Start-Process `
-            -FilePath "$env:SystemRoot\System32\cmd.exe" `
-            -ArgumentList @('/d', '/s', '/c', $comandoBackend) `
-            -WorkingDirectory $backend `
-            -WindowStyle Minimized `
-            -PassThru
-        Set-Content "$run\backend.pid" $procesoBackend.Id
+        $procesoBackend = Iniciar-Servicio "backend"
     }
     else {
         Write-Host "[EXISTE] Puerto 8000 ocupado; se verificara FastAPI."
     }
 
-    if (-not (Esperar-Puerto 8000 60)) {
+    if (-not (Esperar-Puerto 8000 60 $procesoBackend "backend")) {
+        Confirmar-Proceso $procesoBackend "backend"
         throw "FastAPI no inicio. Revisar $run\backend.err.log"
     }
 
+    if (-not (Verificar-PuertoDelProyecto 8000 "backend")) {
+        throw "Puerto 8000 ocupado por un proceso no identificado como backend del proyecto."
+    }
     if (-not (Esperar-HTTP "http://127.0.0.1:8000/health" -Backend)) {
         throw "FastAPI no responde correctamente en /health. Revisar $run\backend.err.log"
     }
 
+    Confirmar-Proceso $procesoBackend "backend"
     Write-Host "[OK] FastAPI disponible."
 
     Remove-Item Env:\DATABASE_URL -ErrorAction SilentlyContinue
@@ -178,27 +229,32 @@ try {
     $env:npm_config_cache = "$base\cache\npm"
 
     if (-not (Puerto-Activo 5173)) {
-        $comandoFrontend = '""{0}\node.exe" "{1}\node_modules\vite\bin\vite.js" --host 127.0.0.1 --port 5173 --strictPort 1>"{2}\frontend.out.log" 2>"{2}\frontend.err.log""' -f $node, $frontend, $run
-        $procesoFrontend = Start-Process `
-            -FilePath "$env:SystemRoot\System32\cmd.exe" `
-            -ArgumentList @('/d', '/s', '/c', $comandoFrontend) `
-            -WorkingDirectory $frontend `
-            -WindowStyle Minimized `
-            -PassThru
-        Set-Content "$run\frontend.pid" $procesoFrontend.Id
+        $procesoFrontend = Iniciar-Servicio "frontend"
     }
     else {
         Write-Host "[EXISTE] Puerto 5173 ocupado."
     }
 
-    if (-not (Esperar-Puerto 5173 60)) {
+    if (-not (Esperar-Puerto 5173 60 $procesoFrontend "frontend")) {
+        Confirmar-Proceso $procesoFrontend "frontend"
         throw "React no inicio. Revisar $run\frontend.err.log"
     }
 
+    if (-not (Verificar-PuertoDelProyecto 5173 "frontend")) {
+        throw "Puerto 5173 ocupado por un proceso no identificado como frontend del proyecto."
+    }
     if (-not (Esperar-HTTP "http://127.0.0.1:5173/")) {
         throw "React no responde por HTTP. Revisar $run\frontend.err.log"
     }
 
+    Confirmar-Proceso $procesoFrontend "frontend"
+    # Detectar una salida inmediatamente posterior al primer HTTP correcto.
+    Start-Sleep -Seconds 2
+    Confirmar-Proceso $procesoBackend "backend"
+    Confirmar-Proceso $procesoFrontend "frontend"
+    if ((-not (Puerto-Activo 8000)) -or (-not (Puerto-Activo 5173))) {
+        throw "Un servicio dejo de escuchar tras el inicio. Revisar los logs en $run"
+    }
     Write-Host "[OK] Frontend disponible."
 
     Write-Host ""
