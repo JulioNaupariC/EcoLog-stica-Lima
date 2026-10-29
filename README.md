@@ -241,7 +241,8 @@ Guías de integración:
 
 <!-- ECL-66 04 OWASP -->
 
-[Guía de demostración ECL-68](docs/03%20Implementaci%C3%B3n/Sprint%2003/guias/GUIA_DEMO_LABORATORIO.md)
+- [ECL-68 / EN-012 — Guía de demostración en laboratorio](<docs/03 Implementación/Sprint 03/guias/GUIA_DEMO_LABORATORIO.md>)
+- [ECL-68 / EN-012 — Diagnóstico técnico de la demostración](<docs/03 Implementación/Sprint 03/guias/DIAGNOSTICO_ECL68.md>)
 
 
 - [Índice del Sprint 3](<docs/03 Implementación/Sprint 03/README.md>)

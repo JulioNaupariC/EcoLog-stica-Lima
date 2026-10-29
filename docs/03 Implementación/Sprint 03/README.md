@@ -15,7 +15,7 @@ arriba, en [`docs/03 Implementación/`](<../>).
 
 <!-- ECL-66 04 OWASP -->
 
-[Guía de demostración ECL-68](guias/GUIA_DEMO_LABORATORIO.md)
+- [ECL-68 / EN-012 — Guía de demostración en laboratorio](<guias/GUIA_DEMO_LABORATORIO.md>)
 
 ### Coherencia documental
 
