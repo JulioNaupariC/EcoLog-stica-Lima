@@ -20,7 +20,7 @@ argon2-cffi-bindings==26.1.0
     # via argon2-cffi
 build==1.6.1
     # via pip-tools
-certifi==2026.7.22
+certifi==2026.10.19
     # via
     #   httpcore
     #   httpx
@@ -136,5 +136,5 @@ wheel==0.48.0
 # The following packages are considered to be unsafe in a requirements file:
 pip==26.2.1
     # via pip-tools
-setuptools==84.0.0
+setuptools==84.1.0
     # via pip-tools
