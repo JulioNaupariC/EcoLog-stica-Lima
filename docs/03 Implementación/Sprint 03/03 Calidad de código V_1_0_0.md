@@ -38,7 +38,8 @@ se puede ocultar.
 
 El Quality Gate por defecto evalúa el **código nuevo**; por eso pasa aunque la calificación
 global de seguridad sea C: las dos vulnerabilidades se detectaron el 09/10 y el 25/10, antes
-del periodo de código nuevo del último análisis, y se corrigen en el [PR #78](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/78).
+del periodo de código nuevo del último análisis. Su tratamiento y el resultado del re-análisis
+están en la sección 3.
 
 Cobertura por componente en las ejecuciones locales del 29/10/2026 sobre el mismo código:
 backend **92,81 %** (868 pruebas, pytest) y frontend **97,67 %** de líneas (732 pruebas, Vitest).
@@ -78,16 +79,22 @@ Exclusiones del análisis, justificadas en `sonar-project.properties`:
   calcula SonarCloud es **1 h 57 min** (8 issues).
 - **Principales hallazgos y acciones correctivas:**
   1. **SSRF en el sondeo de disponibilidad.** `pythonsecurity:S8703`, vulnerabilidad Media, en
-     `backend/app/monitoring/poll.py:17`. **Corregido** en el [PR #78](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/78):
+     `backend/app/monitoring/poll.py:17`. **Mitigado** en el [PR #78](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/78):
      el sondeo solo acepta hosts de loopback salvo los declarados en `MONITOR_ALLOWED_HOSTS`,
-     con 6 pruebas nuevas.
+     con 6 pruebas nuevas. **SonarCloud mantiene la alerta abierta** (ahora en la línea 31): su
+     análisis de flujo sigue el valor de `--url` hasta `urlopen` y no reconoce la comprobación del
+     host como saneamiento. Acción: [ECL-84](https://continental-team-il84x39k.atlassian.net/browse/ECL-84)
+     (Sprint 4) reescribe el sondeo para que `urlopen` reciba solo orígenes de la allowlist; hasta
+     entonces el riesgo residual es bajo, porque es una herramienta del operador y no un endpoint.
   2. **«Credencial embebida».** `python:S2068`, vulnerabilidad Media, en
      `backend/app/api/dependencies.py:19`. **Falso positivo, eliminado** en el
      [PR #78](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/78): era el mensaje de error
-     «Cambio de contraseña requerido»; la constante se renombra sin cambiar la API.
+     «Cambio de contraseña requerido»; la constante se renombra sin cambiar la API. **Cerrado**
+     por SonarCloud en el re-análisis.
   3. **Función que siempre devuelve el mismo valor.** `python:S3516`, Bloqueante, en
      `backend/app/monitoring/poll.py:50`. **Corregido** en el [PR #78](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/78):
-     `main()` devuelve 130 cuando se interrumpe con Ctrl+C.
+     `main()` devuelve 130 cuando se interrumpe con Ctrl+C. **Cerrado** por SonarCloud en el
+     re-análisis.
   4. **Orden de `CORSMiddleware`.** `python:S8414`, Bloqueante, en `backend/app/main.py:93`.
      **Aceptado con justificación, sin cambio:** `MetricsMiddleware` va por fuera a propósito
      para contar también las solicitudes preflight CORS (ECL-60, prueba
@@ -108,9 +115,21 @@ Exclusiones del análisis, justificadas en `sonar-project.properties`:
      `frontend/src/pages/VehiclesPage.tsx:60`. **Planificado:**
      [ECL-87](https://continental-team-il84x39k.atlassian.net/browse/ECL-87), Sprint 4.
 
-Con el PR #78 aplicado, quedan 4 de los 8 issues (todos Media, frontend), unos 50 min de
-deuda, y la calificación de seguridad pasa a **A** al no quedar vulnerabilidades abiertas.
-Ese resultado se confirmará con el siguiente análisis de `main` y se registrará en el Sprint 4.
+**Re-análisis tras la remediación.** Análisis de `main` del 29/10/2026 después del merge de los
+PR #77 y #78 (commit `6323f34`):
+
+| Estado | Antes (`7fd891a`) | Después (`6323f34`) |
+|---|---|---|
+| Issues sin resolver | 8 | **5**: `S8703` y los 4 code smells del frontend |
+| Vulnerabilidades | 2 | **1** (`S8703`, Media) |
+| Code smells | 6 | **4** (Media, frontend; ECL-87) |
+| Esfuerzo de remediación | 117 min | **80 min** |
+| Calificación de seguridad | C | C (por `S8703`, ver hallazgo 1) |
+| Quality Gate, cobertura, duplicación | Passed · 94,5 % · 0,0 % | Passed · 94,5 % · 0,0 % |
+
+Se cerraron `S2068` y `S3516`, y `S8414` quedó aceptado. La calificación de seguridad pasará a A
+cuando ECL-84 resuelva `S8703`. Evidencia: [issues del re-análisis](<evidencias/ECL-65/sonarcloud-issues-main-6323f34.json>)
+y [Overview](<evidencias/ECL-65/sonarcloud-overview-main-6323f34.png>).
 
 **Calidad fuera de SonarCloud.** La auditoría de dependencias del mismo commit encontró
 vulnerabilidades conocidas solo en herramientas de desarrollo (`vite`, `vitest`, `certifi`,
