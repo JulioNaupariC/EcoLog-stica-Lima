@@ -49,13 +49,31 @@ function Puerto-Activo([int]$puerto) {
     }
 }
 
-function Esperar-Puerto([int]$puerto, [int]$segundos = 30) {
+function Esperar-Puerto([int]$puerto, [int]$segundos = 60) {
     for ($i = 0; $i -lt $segundos; $i++) {
         if (Puerto-Activo $puerto) {
             return $true
         }
         Start-Sleep -Seconds 1
     }
+    return $false
+}
+
+function Esperar-HTTP([string]$uri, [switch]$Backend, [int]$segundos = 60) {
+    $limite = (Get-Date).AddSeconds($segundos)
+    do {
+        try {
+            $restante = [Math]::Max(1, [Math]::Min(5, [int]($limite - (Get-Date)).TotalSeconds))
+            $respuesta = Invoke-WebRequest -Uri $uri -UseBasicParsing -TimeoutSec $restante
+            if ($respuesta.StatusCode -eq 200) {
+                if (-not $Backend) { return $true }
+                $salud = $respuesta.Content | ConvertFrom-Json
+                if ($salud.status -eq "ok") { return $true }
+            }
+        }
+        catch { }
+        Start-Sleep -Seconds 1
+    } while ((Get-Date) -lt $limite)
     return $false
 }
 
@@ -73,7 +91,9 @@ Verificar-Archivo "$pg\bin\pg_isready.exe"
 Verificar-Archivo "$node\node.exe"
 Verificar-Archivo "$backend\.venv\Scripts\python.exe"
 Verificar-Archivo "$frontend\node_modules\vite\bin\vite.js"
-Verificar-Archivo "$run\postgres-password.txt"
+if ([string]::IsNullOrWhiteSpace($env:DATABASE_URL)) {
+    throw "Define DATABASE_URL en el entorno antes de iniciar (ver la guía)."
+}
 
 if (-not (Test-Path "$datos\PG_VERSION")) {
     throw "PostgreSQL no esta inicializado en $datos"
@@ -93,7 +113,7 @@ if ($LASTEXITCODE -ne 0) {
         -D "$datos" `
         -l "$run\postgres.log" `
         -o "-h 127.0.0.1 -p 55432" `
-        -w start
+        -t 60 -w start
 
     if ($LASTEXITCODE -ne 0) {
         throw "No se pudo iniciar PostgreSQL."
@@ -108,62 +128,47 @@ if ($LASTEXITCODE -ne 0) {
 
 Write-Host "[OK] PostgreSQL disponible."
 
-# Preparar la conexion del backend.
-$clave = [System.IO.File]::ReadAllText(
-    "$run\postgres-password.txt"
-).Trim()
-
-$claveURL = [Uri]::EscapeDataString($clave)
-
-$env:DATABASE_URL = "postgresql+psycopg://demo_admin:$claveURL@127.0.0.1:55432/ecologistica_demo"
-$env:APP_ENV = "development"
-$env:CORS_ALLOWED_ORIGINS = '["http://127.0.0.1:5173"]'
-
-Remove-Variable clave, claveURL
+# Guardar y restaurar el entorno de la consola. Solo FastAPI hereda DATABASE_URL.
+$variablesDemo = @('DATABASE_URL', 'APP_ENV', 'CORS_ALLOWED_ORIGINS', 'PATH', 'VITE_API_BASE_URL', 'npm_config_cache')
+$entornoAnterior = @{}
+foreach ($nombre in $variablesDemo) {
+    $entornoAnterior[$nombre] = [Environment]::GetEnvironmentVariable($nombre, 'Process')
+}
 
 try {
+    $env:APP_ENV = "development"
+    $env:CORS_ALLOWED_ORIGINS = '["http://127.0.0.1:5173"]'
+
     # 2. FastAPI
     Write-Host "[2/3] Comprobando FastAPI..."
 
     if (-not (Puerto-Activo 8000)) {
+        # cmd conserva el árbol y la redirección sin depender de la consola llamante.
+        # Las credenciales solo se heredan por entorno; nunca van en argumentos.
+        $comandoBackend = '""{0}\.venv\Scripts\python.exe" -m uvicorn app.main:create_app --factory --host 127.0.0.1 --port 8000 1>"{1}\backend.out.log" 2>"{1}\backend.err.log""' -f $backend, $run
         $procesoBackend = Start-Process `
-            -FilePath "$backend\.venv\Scripts\python.exe" `
-            -ArgumentList @(
-                "-m", "uvicorn",
-                "app.main:create_app",
-                "--factory",
-                "--host", "127.0.0.1",
-                "--port", "8000"
-            ) `
+            -FilePath "$env:SystemRoot\System32\cmd.exe" `
+            -ArgumentList @('/d', '/s', '/c', $comandoBackend) `
             -WorkingDirectory $backend `
-            -RedirectStandardOutput "$run\backend.out.log" `
-            -RedirectStandardError "$run\backend.err.log" `
+            -WindowStyle Minimized `
             -PassThru
-
         Set-Content "$run\backend.pid" $procesoBackend.Id
     }
     else {
         Write-Host "[EXISTE] Puerto 8000 ocupado; se verificara FastAPI."
     }
 
-    if (-not (Esperar-Puerto 8000 30)) {
+    if (-not (Esperar-Puerto 8000 60)) {
         throw "FastAPI no inicio. Revisar $run\backend.err.log"
     }
 
-    try {
-        $salud = Invoke-RestMethod `
-            -Uri "http://127.0.0.1:8000/health" `
-            -TimeoutSec 5
-
-        if ($salud.status -ne "ok") {
-            throw "Respuesta inesperada del backend."
-        }
-    }
-    catch {
-        throw "FastAPI no responde correctamente en /health."
+    if (-not (Esperar-HTTP "http://127.0.0.1:8000/health" -Backend)) {
+        throw "FastAPI no responde correctamente en /health. Revisar $run\backend.err.log"
     }
 
     Write-Host "[OK] FastAPI disponible."
+
+    Remove-Item Env:\DATABASE_URL -ErrorAction SilentlyContinue
 
     # 3. Frontend React
     Write-Host "[3/3] Comprobando React..."
@@ -173,27 +178,25 @@ try {
     $env:npm_config_cache = "$base\cache\npm"
 
     if (-not (Puerto-Activo 5173)) {
+        $comandoFrontend = '""{0}\node.exe" "{1}\node_modules\vite\bin\vite.js" --host 127.0.0.1 --port 5173 --strictPort 1>"{2}\frontend.out.log" 2>"{2}\frontend.err.log""' -f $node, $frontend, $run
         $procesoFrontend = Start-Process `
-            -FilePath "$node\node.exe" `
-            -ArgumentList @(
-                "node_modules/vite/bin/vite.js",
-                "--host", "127.0.0.1",
-                "--port", "5173",
-                "--strictPort"
-            ) `
+            -FilePath "$env:SystemRoot\System32\cmd.exe" `
+            -ArgumentList @('/d', '/s', '/c', $comandoFrontend) `
             -WorkingDirectory $frontend `
-            -RedirectStandardOutput "$run\frontend.out.log" `
-            -RedirectStandardError "$run\frontend.err.log" `
+            -WindowStyle Minimized `
             -PassThru
-
         Set-Content "$run\frontend.pid" $procesoFrontend.Id
     }
     else {
         Write-Host "[EXISTE] Puerto 5173 ocupado."
     }
 
-    if (-not (Esperar-Puerto 5173 30)) {
+    if (-not (Esperar-Puerto 5173 60)) {
         throw "React no inicio. Revisar $run\frontend.err.log"
+    }
+
+    if (-not (Esperar-HTTP "http://127.0.0.1:5173/")) {
+        throw "React no responde por HTTP. Revisar $run\frontend.err.log"
     }
 
     Write-Host "[OK] Frontend disponible."
@@ -207,6 +210,7 @@ try {
     Write-Host ""
 }
 finally {
-    Remove-Item Env:\DATABASE_URL -ErrorAction SilentlyContinue
-    Remove-Item Env:\VITE_API_BASE_URL -ErrorAction SilentlyContinue
+    foreach ($nombre in $variablesDemo) {
+        [Environment]::SetEnvironmentVariable($nombre, $entornoAnterior[$nombre], 'Process')
+    }
 }

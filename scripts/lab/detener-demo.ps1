@@ -16,49 +16,75 @@ $pg = Join-Path $base "tools\postgresql-16\pgsql"
 $datos = Join-Path $base "pgdata"
 $run = Join-Path $base "run"
 
-function Detener-ServicioWeb {
-    param(
-        [int]$Puerto,
-        [string]$Nombre,
-        [string]$Patron
-    )
+function Es-ProcesoDelProyecto($Proceso, [string]$Servicio) {
+    if (-not $Proceso) { return $false }
+    $comando = [string]$Proceso.CommandLine
+    $ejecutable = [string]$Proceso.ExecutablePath
+    $python = Join-Path $repo "backend\.venv\Scripts\python.exe"
+    $node = Join-Path $base "tools\node-v22.18.0-win-x64\node.exe"
+    $vite = Join-Path $repo "frontend\node_modules\vite\bin\vite.js"
+    $cmd = Join-Path $env:SystemRoot "System32\cmd.exe"
 
-    $conexiones = @(
-        Get-NetTCPConnection -LocalPort $Puerto -State Listen `
-            -ErrorAction SilentlyContinue
-    )
-
-    if ($conexiones.Count -eq 0) {
-        Write-Host "[DETENIDO] $Nombre no esta activo."
-        return
+    if ($Servicio -eq "backend") {
+        $patron = '\s-m\s+uvicorn\s+app\.main:create_app(?:\s|$)'
+        $rutaServicio = $python
+        $binario = $python
+    }
+    else {
+        $patron = [regex]::Escape('"' + $vite + '"') + '\s+--host\s+127\.0\.0\.1\s+--port\s+5173(?:\s|$)'
+        $rutaServicio = $vite
+        $binario = $node
     }
 
-    $ids = @($conexiones | Select-Object -ExpandProperty OwningProcess -Unique)
+    # Paréntesis explícitos: rechazar si falta la firma O si no es el binario
+    # esperado NI el cmd que contiene la ruta absoluta del servicio del repo.
+    if (
+        ($comando -notmatch $patron) -or
+        (($ejecutable -ine $binario) -and
+         (($ejecutable -ine $cmd) -or
+          ($comando -notmatch [regex]::Escape('"' + $rutaServicio + '"'))))
+    ) { return $false }
+    return $true
+}
 
-    foreach ($idProceso in $ids) {
-        $proceso = Get-CimInstance Win32_Process `
-            -Filter "ProcessId = $idProceso" `
-            -ErrorAction SilentlyContinue
+function Detener-Arbol([int]$IdProceso, [string]$Servicio) {
+    $proceso = Get-CimInstance Win32_Process -Filter "ProcessId = $IdProceso" -ErrorAction SilentlyContinue
+    if (-not $proceso) { return $true }
+    if (-not (Es-ProcesoDelProyecto $proceso $Servicio)) {
+        Write-Host "[AVISO] PID $IdProceso no identificado como $Servicio del proyecto; no se detiene."
+        return $false
+    }
+    & "$env:SystemRoot\System32\taskkill.exe" /PID $IdProceso /T /F | Out-Host
+    if ($LASTEXITCODE -ne 0) {
+        throw "No se pudo detener el árbol de $Servicio (PID $IdProceso)."
+    }
+    Write-Host "[OK] $Servicio detenido (PID $IdProceso y descendientes)."
+    return $true
+}
 
-        if (-not $proceso) {
-            continue
+function Detener-ServicioWeb([int]$Puerto, [string]$Servicio) {
+    $archivoPid = Join-Path $run "$Servicio.pid"
+    # Primero el cmd raíz guardado, incluso si el servicio aún no abrió su puerto.
+    if (Test-Path -LiteralPath $archivoPid) {
+        $idGuardado = 0
+        $contenido = ([string](Get-Content -LiteralPath $archivoPid -Raw)).Trim()
+        if (([int]::TryParse($contenido, [ref]$idGuardado)) -and ($idGuardado -gt 0)) {
+            if (Detener-Arbol $idGuardado $Servicio) {
+                Remove-Item -LiteralPath $archivoPid
+            }
         }
-
-        $comando = [string]$proceso.CommandLine
-        $ejecutable = [string]$proceso.ExecutablePath
-
-        # No detener servicios ajenos al proyecto.
-        if (
-            $comando -notmatch $Patron -or
-            $ejecutable -notlike "$base\*" -and
-            $ejecutable -notlike "$repo\*"
-        ) {
-            Write-Host "[AVISO] Puerto $Puerto pertenece a otro proceso. No se detiene."
-            continue
+        else {
+            Write-Host "[AVISO] PID inválido en $archivoPid; se comprobará el puerto."
         }
+    }
 
-        Stop-Process -Id $idProceso -ErrorAction Stop
-        Write-Host "[OK] $Nombre detenido (PID $idProceso)."
+    # Respaldo para PID ausente, obsoleto o servicio iniciado manualmente.
+    $conexiones = @(Get-NetTCPConnection -LocalPort $Puerto -State Listen -ErrorAction SilentlyContinue)
+    foreach ($idProceso in @($conexiones | Select-Object -ExpandProperty OwningProcess -Unique)) {
+        $null = Detener-Arbol $idProceso $Servicio
+    }
+    if ($conexiones.Count -eq 0) {
+        Write-Host "[DETENIDO] Puerto $Puerto libre."
     }
 }
 
@@ -68,16 +94,10 @@ Write-Host "  DETENIENDO ECOLOGISTICA LIMA"
 Write-Host "========================================"
 
 Write-Host "[1/3] Deteniendo frontend..."
-Detener-ServicioWeb `
-    -Puerto 5173 `
-    -Nombre "React" `
-    -Patron "vite"
+Detener-ServicioWeb -Puerto 5173 -Servicio "frontend"
 
 Write-Host "[2/3] Deteniendo backend..."
-Detener-ServicioWeb `
-    -Puerto 8000 `
-    -Nombre "FastAPI" `
-    -Patron "uvicorn"
+Detener-ServicioWeb -Puerto 8000 -Servicio "backend"
 
 Write-Host "[3/3] Deteniendo PostgreSQL..."
 
