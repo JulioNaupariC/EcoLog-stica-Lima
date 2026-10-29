@@ -1,0 +1,55 @@
+{
+  "paging": {
+    "pageIndex": 1,
+    "pageSize": 5,
+    "total": 5
+  },
+  "analyses": [
+    {
+      "key": "aa81deeb-7379-4f68-80f5-66326774b1fb",
+      "date": "2026-10-29T20:39:41+0000",
+      "events": [
+        {
+          "key": "AaGJaVMAjAfFX3nOtN9V",
+          "category": "VERSION",
+          "name": "not provided"
+        }
+      ],
+      "projectVersion": "not provided",
+      "manualNewCodePeriodBaseline": false,
+      "revision": "7fd891a03aa17f8ea2355bc7706895993a8d9d81"
+    },
+    {
+      "key": "59273752-d108-4db6-9778-9feec88abbe1",
+      "date": "2026-10-29T20:18:14+0000",
+      "events": [],
+      "projectVersion": "not provided",
+      "manualNewCodePeriodBaseline": false,
+      "revision": "440d57df31d01cb64296d89158988613aececb04"
+    },
+    {
+      "key": "9788f629-8d01-4a2e-a21f-15cc352349c2",
+      "date": "2026-10-28T02:49:04+0000",
+      "events": [],
+      "projectVersion": "not provided",
+      "manualNewCodePeriodBaseline": false,
+      "revision": "d358ab289729c9d0fd06c849a4c5b299ea5e7a84"
+    },
+    {
+      "key": "fb00a13c-6576-4915-8327-f4261dea58a1",
+      "date": "2026-10-27T02:19:27+0000",
+      "events": [],
+      "projectVersion": "not provided",
+      "manualNewCodePeriodBaseline": false,
+      "revision": "6d53e089dcfdfdc1008463ec182dc81a030642f9"
+    },
+    {
+      "key": "a02d2d44-581e-4b02-91fe-24d4de2284b4",
+      "date": "2026-10-26T03:29:09+0000",
+      "events": [],
+      "projectVersion": "not provided",
+      "manualNewCodePeriodBaseline": false,
+      "revision": "ad82a1d9eb9d364c42c2a3ebbc4bf96c6845a148"
+    }
+  ]
+}

@@ -1,0 +1,611 @@
+{
+  "total": 8,
+  "p": 1,
+  "ps": 500,
+  "paging": {
+    "pageIndex": 1,
+    "pageSize": 500,
+    "total": 8
+  },
+  "effortTotal": 117,
+  "debtTotal": 117,
+  "issues": [
+    {
+      "key": "AaF2RnFFgQ6c6GT2zXTp",
+      "rule": "python:S2068",
+      "severity": "MAJOR",
+      "component": "JulioNaupariC_EcoLog-stica-Lima:backend/app/api/dependencies.py",
+      "project": "JulioNaupariC_EcoLog-stica-Lima",
+      "line": 19,
+      "hash": "8b74c775f39521c499b2e90bde139ddd",
+      "textRange": {
+        "startLine": 19,
+        "endLine": 19,
+        "startOffset": 0,
+        "endOffset": 59
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "\"password\" detected here, review this potentially hard-coded credential.",
+      "effort": "30min",
+      "debt": "30min",
+      "tags": [
+        "cwe",
+        "former-hotspot",
+        "secret"
+      ],
+      "creationDate": "2026-10-25T23:28:08+0000",
+      "updateDate": "2026-10-26T03:29:09+0000",
+      "type": "VULNERABILITY",
+      "organization": "julionauparic",
+      "cleanCodeAttribute": "TRUSTWORTHY",
+      "cleanCodeAttributeCategory": "RESPONSIBLE",
+      "impacts": [
+        {
+          "softwareQuality": "SECURITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "projectName": "EcoLog-stica-Lima",
+      "internalTags": [],
+      "lastChangeAnalysisUuid": "a02d2d44-581e-4b02-91fe-24d4de2284b4",
+      "lastChangeSource": "ANALYSIS"
+    },
+    {
+      "key": "AaF2RnGhgQ6c6GT2zXT3",
+      "rule": "typescript:S6845",
+      "severity": "MAJOR",
+      "component": "JulioNaupariC_EcoLog-stica-Lima:frontend/src/components/ui/DataTable.tsx",
+      "project": "JulioNaupariC_EcoLog-stica-Lima",
+      "line": 25,
+      "hash": "3e5dddac411b6f401267dbed5818a5fa",
+      "textRange": {
+        "startLine": 25,
+        "endLine": 25,
+        "startOffset": 75,
+        "endOffset": 87
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "`tabIndex` should only be declared on interactive elements.",
+      "effort": "5min",
+      "debt": "5min",
+      "tags": [
+        "accessibility",
+        "react"
+      ],
+      "creationDate": "2026-10-13T22:40:23+0000",
+      "updateDate": "2026-10-26T03:29:09+0000",
+      "type": "CODE_SMELL",
+      "organization": "julionauparic",
+      "cleanCodeAttribute": "CONVENTIONAL",
+      "cleanCodeAttributeCategory": "CONSISTENT",
+      "impacts": [
+        {
+          "softwareQuality": "RELIABILITY",
+          "severity": "MEDIUM"
+        },
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "LOW"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "projectName": "EcoLog-stica-Lima",
+      "internalTags": [],
+      "lastChangeAnalysisUuid": "a02d2d44-581e-4b02-91fe-24d4de2284b4",
+      "lastChangeSource": "ANALYSIS"
+    },
+    {
+      "key": "AaF2RnGhgQ6c6GT2zXT4",
+      "rule": "typescript:S6843",
+      "severity": "MAJOR",
+      "component": "JulioNaupariC_EcoLog-stica-Lima:frontend/src/components/ui/DataTable.tsx",
+      "project": "JulioNaupariC_EcoLog-stica-Lima",
+      "line": 36,
+      "hash": "02470fe9ecbd8987b6a5bd5df31100aa",
+      "textRange": {
+        "startLine": 36,
+        "endLine": 36,
+        "startOffset": 54,
+        "endOffset": 65
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "Interactive elements should not be assigned non-interactive roles.",
+      "effort": "5min",
+      "debt": "5min",
+      "tags": [
+        "accessibility",
+        "react"
+      ],
+      "creationDate": "2026-10-13T22:40:23+0000",
+      "updateDate": "2026-10-26T03:29:09+0000",
+      "type": "CODE_SMELL",
+      "organization": "julionauparic",
+      "cleanCodeAttribute": "CONVENTIONAL",
+      "cleanCodeAttributeCategory": "CONSISTENT",
+      "impacts": [
+        {
+          "softwareQuality": "RELIABILITY",
+          "severity": "MEDIUM"
+        },
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "LOW"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "projectName": "EcoLog-stica-Lima",
+      "internalTags": [],
+      "lastChangeAnalysisUuid": "a02d2d44-581e-4b02-91fe-24d4de2284b4",
+      "lastChangeSource": "ANALYSIS"
+    },
+    {
+      "key": "AaF2RnFggQ6c6GT2zXTr",
+      "rule": "pythonsecurity:S8703",
+      "severity": "MAJOR",
+      "component": "JulioNaupariC_EcoLog-stica-Lima:backend/app/monitoring/poll.py",
+      "project": "JulioNaupariC_EcoLog-stica-Lima",
+      "line": 17,
+      "hash": "6703704b753d58fb27bfda3780fb700e",
+      "textRange": {
+        "startLine": 17,
+        "endLine": 17,
+        "startOffset": 13,
+        "endOffset": 36
+      },
+      "flows": [
+        {
+          "locations": [
+            {
+              "component": "JulioNaupariC_EcoLog-stica-Lima:backend/app/monitoring/poll.py",
+              "textRange": {
+                "startLine": 17,
+                "endLine": 17,
+                "startOffset": 13,
+                "endOffset": 36
+              },
+              "msg": "Sink: this invocation is not safe; a malicious value can be used as argument"
+            },
+            {
+              "component": "JulioNaupariC_EcoLog-stica-Lima:backend/app/monitoring/poll.py",
+              "textRange": {
+                "startLine": 12,
+                "endLine": 12,
+                "startOffset": 10,
+                "endOffset": 18
+              },
+              "msg": "This instruction can propagate malicious content"
+            },
+            {
+              "component": "JulioNaupariC_EcoLog-stica-Lima:backend/app/monitoring/poll.py",
+              "textRange": {
+                "startLine": 12,
+                "endLine": 12,
+                "startOffset": 4,
+                "endOffset": 9
+              },
+              "msg": "This instruction can propagate malicious content"
+            },
+            {
+              "component": "JulioNaupariC_EcoLog-stica-Lima:backend/app/monitoring/poll.py",
+              "textRange": {
+                "startLine": 39,
+                "endLine": 39,
+                "startOffset": 15,
+                "endOffset": 48
+              },
+              "msg": "This instruction can propagate malicious content"
+            },
+            {
+              "component": "JulioNaupariC_EcoLog-stica-Lima:backend/app/monitoring/poll.py",
+              "textRange": {
+                "startLine": 39,
+                "endLine": 39,
+                "startOffset": 21,
+                "endOffset": 47
+              },
+              "msg": "This concatenation can propagate malicious content to the newly created string"
+            },
+            {
+              "component": "JulioNaupariC_EcoLog-stica-Lima:backend/app/monitoring/poll.py",
+              "textRange": {
+                "startLine": 39,
+                "endLine": 39,
+                "startOffset": 21,
+                "endOffset": 29
+              },
+              "msg": "The malicious content is concatenated into the string"
+            },
+            {
+              "component": "JulioNaupariC_EcoLog-stica-Lima:backend/app/monitoring/poll.py",
+              "textRange": {
+                "startLine": 36,
+                "endLine": 36,
+                "startOffset": 11,
+                "endOffset": 24
+              },
+              "msg": "This instruction can propagate malicious content"
+            },
+            {
+              "component": "JulioNaupariC_EcoLog-stica-Lima:backend/app/monitoring/poll.py",
+              "textRange": {
+                "startLine": 36,
+                "endLine": 36,
+                "startOffset": 4,
+                "endOffset": 10
+              },
+              "msg": "This instruction can propagate malicious content"
+            },
+            {
+              "component": "JulioNaupariC_EcoLog-stica-Lima:backend/app/monitoring/poll.py",
+              "textRange": {
+                "startLine": 74,
+                "endLine": 74,
+                "startOffset": 29,
+                "endOffset": 40
+              },
+              "msg": "This instruction can propagate malicious content"
+            },
+            {
+              "component": "JulioNaupariC_EcoLog-stica-Lima:backend/app/monitoring/poll.py",
+              "textRange": {
+                "startLine": 56,
+                "endLine": 56,
+                "startOffset": 4,
+                "endOffset": 30
+              },
+              "msg": "A malicious value can be assigned to variable ‘url’"
+            },
+            {
+              "component": "JulioNaupariC_EcoLog-stica-Lima:backend/app/monitoring/poll.py",
+              "textRange": {
+                "startLine": 56,
+                "endLine": 56,
+                "startOffset": 10,
+                "endOffset": 30
+              },
+              "msg": "This string operation can propagate malicious content to the returned object"
+            },
+            {
+              "component": "JulioNaupariC_EcoLog-stica-Lima:backend/app/monitoring/poll.py",
+              "textRange": {
+                "startLine": 56,
+                "endLine": 56,
+                "startOffset": 10,
+                "endOffset": 18
+              },
+              "msg": "A malicious value was previously assigned to the field ‘url’"
+            },
+            {
+              "component": "JulioNaupariC_EcoLog-stica-Lima:backend/app/monitoring/poll.py",
+              "textRange": {
+                "startLine": 55,
+                "endLine": 55,
+                "startOffset": 4,
+                "endOffset": 30
+              },
+              "msg": "A malicious value can be assigned to variable ‘args’"
+            },
+            {
+              "component": "JulioNaupariC_EcoLog-stica-Lima:backend/app/monitoring/poll.py",
+              "textRange": {
+                "startLine": 55,
+                "endLine": 55,
+                "startOffset": 11,
+                "endOffset": 30
+              },
+              "msg": "Source: a user can craft an HTTP request with malicious content"
+            }
+          ]
+        }
+      ],
+      "status": "OPEN",
+      "message": "Server-Side Request Forgery via faulty LLM-supplied CLI arguments in poll.check()",
+      "effort": "30min",
+      "debt": "30min",
+      "tags": [
+        "cwe"
+      ],
+      "creationDate": "2026-10-09T07:55:30+0000",
+      "updateDate": "2026-10-26T03:29:09+0000",
+      "type": "VULNERABILITY",
+      "organization": "julionauparic",
+      "cleanCodeAttribute": "COMPLETE",
+      "cleanCodeAttributeCategory": "INTENTIONAL",
+      "impacts": [
+        {
+          "softwareQuality": "SECURITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "projectName": "EcoLog-stica-Lima",
+      "internalTags": [
+        "taint",
+        "advanced"
+      ],
+      "lastChangeAnalysisUuid": "a02d2d44-581e-4b02-91fe-24d4de2284b4",
+      "lastChangeSource": "ANALYSIS"
+    },
+    {
+      "key": "AaF2RnFggQ6c6GT2zXTq",
+      "rule": "python:S3516",
+      "severity": "BLOCKER",
+      "component": "JulioNaupariC_EcoLog-stica-Lima:backend/app/monitoring/poll.py",
+      "project": "JulioNaupariC_EcoLog-stica-Lima",
+      "line": 50,
+      "hash": "47f3de9af82a33143787e17eca8c1ff4",
+      "textRange": {
+        "startLine": 50,
+        "endLine": 50,
+        "startOffset": 4,
+        "endOffset": 8
+      },
+      "flows": [
+        {
+          "locations": [
+            {
+              "component": "JulioNaupariC_EcoLog-stica-Lima:backend/app/monitoring/poll.py",
+              "textRange": {
+                "startLine": 82,
+                "endLine": 82,
+                "startOffset": 4,
+                "endOffset": 12
+              },
+              "msg": "returned value"
+            }
+          ]
+        },
+        {
+          "locations": [
+            {
+              "component": "JulioNaupariC_EcoLog-stica-Lima:backend/app/monitoring/poll.py",
+              "textRange": {
+                "startLine": 81,
+                "endLine": 81,
+                "startOffset": 8,
+                "endOffset": 16
+              },
+              "msg": "returned value"
+            }
+          ]
+        }
+      ],
+      "status": "OPEN",
+      "message": "Refactor this method to not always return the same value.",
+      "effort": "2min",
+      "debt": "2min",
+      "tags": [
+        "confusing",
+        "design"
+      ],
+      "creationDate": "2026-10-09T07:55:30+0000",
+      "updateDate": "2026-10-26T03:29:09+0000",
+      "type": "CODE_SMELL",
+      "organization": "julionauparic",
+      "cleanCodeAttribute": "LOGICAL",
+      "cleanCodeAttributeCategory": "INTENTIONAL",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "BLOCKER"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "projectName": "EcoLog-stica-Lima",
+      "internalTags": [],
+      "lastChangeAnalysisUuid": "a02d2d44-581e-4b02-91fe-24d4de2284b4",
+      "lastChangeSource": "ANALYSIS"
+    },
+    {
+      "key": "AaF2RnGkgQ6c6GT2zXT5",
+      "rule": "typescript:S8786",
+      "severity": "MAJOR",
+      "component": "JulioNaupariC_EcoLog-stica-Lima:frontend/src/domain/driverForm.ts",
+      "project": "JulioNaupariC_EcoLog-stica-Lima",
+      "line": 59,
+      "hash": "f6e04281a79c3a2e7441f319ccda81bb",
+      "textRange": {
+        "startLine": 59,
+        "endLine": 59,
+        "startOffset": 9,
+        "endOffset": 38
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "Simplify this regular expression to reduce its runtime, as it has super-linear performance due to backtracking.",
+      "effort": "20min",
+      "debt": "20min",
+      "tags": [
+        "performance",
+        "regex"
+      ],
+      "creationDate": "2026-10-09T07:28:20+0000",
+      "updateDate": "2026-10-26T03:29:09+0000",
+      "type": "CODE_SMELL",
+      "organization": "julionauparic",
+      "cleanCodeAttribute": "EFFICIENT",
+      "cleanCodeAttributeCategory": "INTENTIONAL",
+      "impacts": [
+        {
+          "softwareQuality": "RELIABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "projectName": "EcoLog-stica-Lima",
+      "internalTags": [],
+      "lastChangeAnalysisUuid": "a02d2d44-581e-4b02-91fe-24d4de2284b4",
+      "lastChangeSource": "ANALYSIS"
+    },
+    {
+      "key": "AaF2RnGpgQ6c6GT2zXT6",
+      "rule": "typescript:S8786",
+      "severity": "MAJOR",
+      "component": "JulioNaupariC_EcoLog-stica-Lima:frontend/src/pages/VehiclesPage.tsx",
+      "project": "JulioNaupariC_EcoLog-stica-Lima",
+      "line": 60,
+      "hash": "f42bc4362792dbb8c07f1d91b1f84421",
+      "textRange": {
+        "startLine": 60,
+        "endLine": 60,
+        "startOffset": 44,
+        "endOffset": 50
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "Simplify this regular expression to reduce its runtime, as it has super-linear performance due to backtracking.",
+      "effort": "20min",
+      "debt": "20min",
+      "tags": [
+        "performance",
+        "regex"
+      ],
+      "creationDate": "2026-10-01T06:18:29+0000",
+      "updateDate": "2026-10-26T03:29:09+0000",
+      "type": "CODE_SMELL",
+      "organization": "julionauparic",
+      "cleanCodeAttribute": "EFFICIENT",
+      "cleanCodeAttributeCategory": "INTENTIONAL",
+      "impacts": [
+        {
+          "softwareQuality": "RELIABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "projectName": "EcoLog-stica-Lima",
+      "internalTags": [],
+      "lastChangeAnalysisUuid": "a02d2d44-581e-4b02-91fe-24d4de2284b4",
+      "lastChangeSource": "ANALYSIS"
+    },
+    {
+      "key": "AaF2RnGAgQ6c6GT2zXTs",
+      "rule": "python:S8414",
+      "severity": "BLOCKER",
+      "component": "JulioNaupariC_EcoLog-stica-Lima:backend/app/main.py",
+      "project": "JulioNaupariC_EcoLog-stica-Lima",
+      "line": 93,
+      "hash": "0a11595d804db4233a61fea24af82500",
+      "textRange": {
+        "startLine": 93,
+        "endLine": 93,
+        "startOffset": 4,
+        "endOffset": 22
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "Add CORSMiddleware last in the middleware chain.",
+      "effort": "5min",
+      "debt": "5min",
+      "tags": [
+        "configuration",
+        "cors",
+        "fastapi",
+        "middleware"
+      ],
+      "creationDate": "2026-09-30T04:52:47+0000",
+      "updateDate": "2026-10-26T03:29:09+0000",
+      "type": "CODE_SMELL",
+      "organization": "julionauparic",
+      "cleanCodeAttribute": "LOGICAL",
+      "cleanCodeAttributeCategory": "INTENTIONAL",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "BLOCKER"
+        },
+        {
+          "softwareQuality": "RELIABILITY",
+          "severity": "BLOCKER"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "projectName": "EcoLog-stica-Lima",
+      "internalTags": [],
+      "lastChangeAnalysisUuid": "97a51039-49dd-43d5-b62f-8bf1d4770e2b",
+      "lastChangeSource": "ANALYSIS"
+    }
+  ],
+  "components": [
+    {
+      "organization": "julionauparic",
+      "key": "JulioNaupariC_EcoLog-stica-Lima:backend/app/api/dependencies.py",
+      "uuid": "AaF2Rm5zgQ6c6GT2zXNz",
+      "enabled": true,
+      "qualifier": "FIL",
+      "name": "dependencies.py",
+      "longName": "backend/app/api/dependencies.py",
+      "path": "backend/app/api/dependencies.py"
+    },
+    {
+      "organization": "julionauparic",
+      "key": "JulioNaupariC_EcoLog-stica-Lima:frontend/src/pages/VehiclesPage.tsx",
+      "uuid": "AaF2Rm5zgQ6c6GT2zXSP",
+      "enabled": true,
+      "qualifier": "FIL",
+      "name": "VehiclesPage.tsx",
+      "longName": "frontend/src/pages/VehiclesPage.tsx",
+      "path": "frontend/src/pages/VehiclesPage.tsx"
+    },
+    {
+      "organization": "julionauparic",
+      "key": "JulioNaupariC_EcoLog-stica-Lima:backend/app/main.py",
+      "uuid": "AaF2Rm5zgQ6c6GT2zXOy",
+      "enabled": true,
+      "qualifier": "FIL",
+      "name": "main.py",
+      "longName": "backend/app/main.py",
+      "path": "backend/app/main.py"
+    },
+    {
+      "organization": "julionauparic",
+      "key": "JulioNaupariC_EcoLog-stica-Lima:frontend/src/components/ui/DataTable.tsx",
+      "uuid": "AaF2Rm5zgQ6c6GT2zXRl",
+      "enabled": true,
+      "qualifier": "FIL",
+      "name": "DataTable.tsx",
+      "longName": "frontend/src/components/ui/DataTable.tsx",
+      "path": "frontend/src/components/ui/DataTable.tsx"
+    },
+    {
+      "organization": "julionauparic",
+      "key": "JulioNaupariC_EcoLog-stica-Lima:backend/app/monitoring/poll.py",
+      "uuid": "AaF2Rm5zgQ6c6GT2zXN9",
+      "enabled": true,
+      "qualifier": "FIL",
+      "name": "poll.py",
+      "longName": "backend/app/monitoring/poll.py",
+      "path": "backend/app/monitoring/poll.py"
+    },
+    {
+      "organization": "julionauparic",
+      "key": "JulioNaupariC_EcoLog-stica-Lima:frontend/src/domain/driverForm.ts",
+      "uuid": "AaF2Rm5zgQ6c6GT2zXR7",
+      "enabled": true,
+      "qualifier": "FIL",
+      "name": "driverForm.ts",
+      "longName": "frontend/src/domain/driverForm.ts",
+      "path": "frontend/src/domain/driverForm.ts"
+    },
+    {
+      "organization": "julionauparic",
+      "key": "JulioNaupariC_EcoLog-stica-Lima",
+      "uuid": "AaF2QRzudkEpBguA0ykq",
+      "enabled": true,
+      "qualifier": "TRK",
+      "name": "EcoLog-stica-Lima",
+      "longName": "EcoLog-stica-Lima"
+    }
+  ],
+  "organizations": [
+    {
+      "key": "julionauparic",
+      "name": "JulioNaupariC"
+    }
+  ],
+  "facets": []
+}
