@@ -3,7 +3,7 @@
 $ErrorActionPreference = 'Stop'
 $raiz = Split-Path $PSScriptRoot -Parent
 $funciones = @{}
-foreach ($archivo in @('levantar-demo.ps1', 'detener-demo.ps1', 'procesos-demo.ps1', 'servicio-demo.ps1')) {
+foreach ($archivo in @('levantar-demo.ps1', 'detener-demo.ps1', 'procesos-demo.ps1', 'servicio-demo.ps1', 'observar-demo.ps1')) {
     $tokens = $null; $errores = $null
     $ast = [Management.Automation.Language.Parser]::ParseFile((Join-Path $raiz $archivo), [ref]$tokens, [ref]$errores)
     if ($errores.Count) { throw ($errores | Out-String) }
@@ -74,4 +74,19 @@ function Invoke-WebRequest { return [pscustomobject]@{StatusCode=200;Content='{"
 Assert (-not (Esperar-HTTP 'http://test/health' -Backend -segundos 0)) 'Health incorrecto aceptado'
 function Invoke-WebRequest { throw 'Offline' }
 Assert (-not (Esperar-HTTP 'http://test/' -segundos 0)) 'Error HTTP aceptado'
-Write-Host 'OK: sintaxis (4 scripts), identidad (11 casos), PID obsoleto/corrupto/ausente, orden PID-puerto, HTTP.'
+# El observador debe rechazar acciones destructivas para los servicios reales.
+$osAnterior = $env:OS
+try {
+    $env:OS = 'Windows_NT'
+    foreach ($accion in @('ForzarArbolPrueba', 'LimpiarPrueba')) {
+        $rechazado = $false
+        try {
+            $opciones = @{}; $opciones[$accion] = $true
+            & "$raiz/observar-demo.ps1" @opciones
+        }
+        catch { $rechazado = ($_.Exception.Message -match 'solo se permiten para el fixture') }
+        Assert $rechazado "Observador permitio $accion sobre servicio real"
+    }
+}
+finally { $env:OS = $osAnterior }
+Write-Host 'OK: sintaxis (5 scripts), identidad (11 casos), PID obsoleto/corrupto/ausente, orden PID-puerto, HTTP.'
