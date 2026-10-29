@@ -13,7 +13,7 @@ arriba, en [`docs/03 Implementación/`](<../>).
 
 - [ECL-65 / EN-009 — Evaluación de Calidad de Código con SonarCloud](<03 Calidad de código V_1_0_0.md>) · [Evidencias](<evidencias/ECL-65/README.md>)
 
-<!-- ECL-66 04 OWASP -->
+- [ECL-66 / EN-010 — Reporte de Seguridad OWASP Top 10 2025](<04 OWASP V_1_0_0.md>) · [Evidencias](<evidencias/ECL-66/README.md>)
 
 - [ECL-68 / EN-012 — Guía de demostración en laboratorio](<guias/GUIA_DEMO_LABORATORIO.md>)
 
