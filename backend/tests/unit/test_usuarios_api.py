@@ -13,7 +13,7 @@ from fastapi.testclient import TestClient
 
 from app.api.conductores import get_conductor_service
 from app.api.dependencies import (
-    PASSWORD_CHANGE_REQUIRED,
+    CHANGE_REQUIRED_DETAIL,
     get_authenticated_session,
     get_authentication_service,
     get_current_session,
@@ -108,7 +108,7 @@ def test_list_users_is_administrator_only_and_denial_is_audited(role):
 
 def test_password_change_required_detail_is_a_stable_frontend_contract():
     # The frontend matches this exact text to redirect to /cambiar-contrasena.
-    assert PASSWORD_CHANGE_REQUIRED == "Cambio de contraseña requerido"
+    assert CHANGE_REQUIRED_DETAIL == "Cambio de contraseña requerido"
     app, _, _ = build(Rol.OPERADOR, must_change=True)
     with run(app) as (client, _):
         response = client.get("/usuarios")
@@ -309,7 +309,7 @@ def test_session_gate_dependency():
     with pytest.raises(HTTPException) as error:
         get_authenticated_session(pending)
     assert error.value.status_code == 403
-    assert error.value.detail == PASSWORD_CHANGE_REQUIRED
+    assert error.value.detail == CHANGE_REQUIRED_DETAIL
     normal = AuthenticatedSession(uuid4(), Identidad(uuid4(), Rol.OPERADOR, "ACTIVO"))
     assert get_authenticated_session(normal) is normal
 
