@@ -28,13 +28,13 @@ relaciona cada categoría con el nombre que trae la plantilla.
 
 | Categoría OWASP 2025 | Estado en Proyecto (Limpio / Vulnerable / Bajo Revisión) | Hallazgos de SonarQube |
 |---|---|---|
-| A01:2025 – Broken Access Control | **Vulnerable → corregido** en [PR #78](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/78) | 1 vulnerabilidad MEDIUM: `pythonsecurity:S8703` SSRF en `backend/app/monitoring/poll.py:17` (ver Vulnerabilidad #1). Controles: RBAC por permiso con `require_permission` (`backend/app/core/rbac.py`), alcance propio del Conductor en itinerario e incidencias, `GET /usuarios` solo para quien tiene `USUARIOS_ACTUALIZAR` (Administrador). |
+| A01:2025 – Broken Access Control | **Vulnerable → mitigado** en [PR #78](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/78); alerta aún abierta en SonarCloud, cierre en [ECL-84](https://continental-team-il84x39k.atlassian.net/browse/ECL-84) | 1 vulnerabilidad MEDIUM: `pythonsecurity:S8703` SSRF en `backend/app/monitoring/poll.py:17` (ver Vulnerabilidad #1). Controles: RBAC por permiso con `require_permission` (`backend/app/core/rbac.py`), alcance propio del Conductor en itinerario e incidencias, `GET /usuarios` solo para quien tiene `USUARIOS_ACTUALIZAR` (Administrador). |
 | A02:2025 – Security Misconfiguration | **Bajo revisión** — [ECL-84](https://continental-team-il84x39k.atlassian.net/browse/ECL-84) | 0 vulnerabilidades. 1 code smell BLOCKER de configuración: `python:S8414` orden de `CORSMiddleware` en `backend/app/main.py:93`, aceptado con justificación (ver Hallazgo #4). Controles: CORS con orígenes exactos y métodos/cabeceras explícitos; cookie de sesión `HttpOnly`, `SameSite=Strict` y `Secure` en producción (`backend/app/api/auth.py`); producción exige URLs `https` (`backend/app/core/config.py`). Falta: cabeceras HTTP de seguridad. |
 | A03:2025 – Software Supply Chain Failures | **Vulnerable → corregido** en [PR #77](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/77); acciones del CI **bajo revisión** — [ECL-85](https://continental-team-il84x39k.atlassian.net/browse/ECL-85) | SonarCloud no reporta hallazgos (no es una herramienta SCA). `pip-audit` y `npm audit`: producción limpia; 2 paquetes Python y 7 avisos npm en dependencias de desarrollo (sección 4). Controles: `requirements.lock`, `package-lock.json` e imágenes Docker fijadas por digest `sha256`. Falta: acciones de GitHub por SHA y alertas de Dependabot. |
 | A04:2025 – Cryptographic Failures | **Limpio** | 0 hallazgos. Controles: Argon2id (`t=3`, `m=64 MiB`, `p=4`) en `backend/app/core/passwords.py`; token de sesión de 256 bits (`secrets.token_urlsafe(32)`) guardado solo como SHA-256 (`backend/app/core/session_tokens.py`); contraseña temporal de US-013 persistida solo como hash; HTTPS obligatorio en producción. |
 | A05:2025 – Injection | **Limpio** | 0 hallazgos. Controles: SQLAlchemy ORM con parámetros enlazados; las únicas sentencias `text()` son literales fijos (`SELECT 1`, versión de PostgreSQL/PostGIS, expresión de índice); validación estricta con Pydantic (`extra="forbid"`); React escapa la salida y no hay `dangerouslySetInnerHTML`, `innerHTML` ni `eval` en `frontend/src`. |
 | A06:2025 – Insecure Design | **Bajo revisión** — [ECL-86](https://continental-team-il84x39k.atlassian.net/browse/ECL-86) | No aplica a SAST. Controles de diseño: BDD por ruta (dorada, feliz, infeliz, de borde) por historia, reglas RN-001 a RN-022, idempotencia por `operation_id`, mínimo privilegio. Falta: modelo de amenazas formal de los flujos críticos. |
-| A07:2025 – Authentication Failures | **Limpio** (falso positivo eliminado en [PR #78](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/78)) | 1 vulnerabilidad MEDIUM: `python:S2068` «credencial embebida» en `backend/app/api/dependencies.py:19`, **falso positivo** (ver Vulnerabilidad #2). Controles: bloqueo tras 3 intentos fallidos por 15 min (RN-001), 401 genérico sin enumerar cuentas, sesión de 60 min, contraseña temporal de 24 h y un solo ciclo con cambio obligatorio de mínimo 12 caracteres (US-013, RN-016 a RN-018). |
+| A07:2025 – Authentication Failures | **Limpio** (falso positivo eliminado en [PR #78](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/78); cerrado en el re-análisis) | 1 vulnerabilidad MEDIUM: `python:S2068` «credencial embebida» en `backend/app/api/dependencies.py:19`, **falso positivo** (ver Vulnerabilidad #2). Controles: bloqueo tras 3 intentos fallidos por 15 min (RN-001), 401 genérico sin enumerar cuentas, sesión de 60 min, contraseña temporal de 24 h y un solo ciclo con cambio obligatorio de mínimo 12 caracteres (US-013, RN-016 a RN-018). |
 | A08:2025 – Software or Data Integrity Failures | **Bajo revisión** — [ECL-85](https://continental-team-il84x39k.atlassian.net/browse/ECL-85) | 0 hallazgos. Controles: CI obligatorio con pruebas, CodeQL y Quality Gate de SonarCloud; protección de `main` con aprobación de otra persona; `CODEOWNERS` por carpeta; solo JSON validado, sin deserialización de objetos. Falta: que la protección exija la aprobación de los Code Owners. |
 | A09:2025 – Security Logging and Alerting Failures | **Bajo revisión** — [ECL-86](https://continental-team-il84x39k.atlassian.net/browse/ECL-86) | 0 hallazgos. Controles: auditoría de `LOGIN_EXITOSO`, `LOGIN_FALLIDO`, `CUENTA_BLOQUEADA`, `AUTORIZACION_DENEGADA`, `CONTRASENA_RESTABLECIDA`, `CONTRASENA_CAMBIADA` e `INCIDENCIA_REGISTRADA`, sin contraseñas, hashes ni datos personales (`backend/app/repositories/auditoria.py`); métricas HTTP y 5xx (ECL-60). Falta: alertas ante patrones anómalos. |
 | A10:2025 – Mishandling of Exceptional Conditions | **Bajo revisión** — [ECL-84](https://continental-team-il84x39k.atlassian.net/browse/ECL-84) | 0 vulnerabilidades. 1 code smell BLOCKER `python:S3516` en `backend/app/monitoring/poll.py:50`, corregido en [PR #78](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/78) (ver Hallazgo #3). Controles: los 422 no repiten la entrada (`SanitizedRoute`, `hide_input_in_errors` en login y auditoría); errores de almacenamiento convertidos en excepciones saneadas. Falta: `pedidos` y `vehiculos` aún incluyen `input` en sus 422. |
@@ -42,9 +42,10 @@ relaciona cada categoría con el nombre que trae la plantilla.
 **Resumen:**
 
 - A04 y A05 están limpias.
-- A01, A03 y A07 tienen hallazgos corregidos en el sprint (#77 y #78).
+- A03 y A07 tienen hallazgos corregidos en el sprint: A03 en #77 (la nueva auditoría de dependencias da 0) y A07 en #78 (SonarCloud lo cerró en el re-análisis).
+- A01 tiene la SSRF mitigada en el código (#78), pero SonarCloud mantiene la alerta abierta; se cierra en ECL-84.
 - A02, A06, A08, A09 y A10 quedan bajo revisión, cada una con su ticket del Sprint 4. A03 también tiene pendiente la parte del CI (ECL-85).
-- No hay vulnerabilidades altas ni críticas abiertas.
+- No hay vulnerabilidades altas ni críticas. Queda 1 vulnerabilidad Media abierta (`S8703`).
 
 ## 2. Detalles de Security Hotspots y Vulnerabilidades Críticas
 
@@ -56,8 +57,9 @@ El único hotspot anterior fue reclasificado por SonarCloud como vulnerabilidad
 (etiqueta `former-hotspot`) y se detalla como Vulnerabilidad #2.
 
 **Vulnerabilidades:** 2, ambas de severidad **MEDIUM** en seguridad (Security Rating **C**
-por esa causa). Ninguna es alta ni crítica. Ambas se corrigen en el
-[PR #78](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/78).
+por esa causa). Ninguna es alta ni crítica. Ambas se tratan en el
+[PR #78](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/78); el re-análisis cerró la
+#2 y mantiene abierta la #1.
 
 - **Vulnerabilidad #1 — SSRF (`pythonsecurity:S8703`, A01:2025).**
   *Descripción:* `check()` abre con `urlopen` una URL derivada del argumento `--url`.
@@ -69,6 +71,12 @@ por esa causa). Ninguna es alta ni crítica. Ambas se corrigen en el
   *Mitigación aplicada:* solo se aceptan `127.0.0.1`, `localhost` y `::1`; cualquier otro
   origen debe declararse explícitamente en `MONITOR_ALLOWED_HOSTS`. Pruebas nuevas:
   host no permitido rechazado sin sondear, loopback aceptado y allowlist explícita.
+  *Estado tras el re-análisis (`6323f34`):* **sigue abierta en SonarCloud** (ahora en la
+  línea 31). Su análisis de flujo traza el valor de `--url` hasta `urlopen` y no reconoce la
+  comprobación del host como saneamiento. El riesgo residual es bajo: lo invoca el operador,
+  no un usuario de la API, y un host interno no permitido se rechaza antes de sondear (lo
+  verifican las pruebas). *Cierre:* [ECL-84](https://continental-team-il84x39k.atlassian.net/browse/ECL-84)
+  reescribe el sondeo para que `urlopen` reciba solo orígenes tomados de la allowlist.
 - **Vulnerabilidad #2 — Credencial embebida (`python:S2068`, A07:2025).**
   *Descripción:* SonarCloud detecta la palabra «password» en una asignación literal.
   *Ubicación:* `backend/app/api/dependencies.py:19`,
@@ -124,14 +132,17 @@ Los resultados completos están en [evidencias/ECL-66](<evidencias/ECL-66/README
 
 | Ticket | Categorías | Acción | Fecha objetivo |
 |---|---|---|---|
-| [PR #77](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/77) | A03 | Dependencias de desarrollo actualizadas | Sprint 3 (en revisión) |
-| [PR #78](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/78) | A01, A07, A10 | SSRF, falso positivo y código de salida | Sprint 3 (en revisión) |
-| [ECL-84](https://continental-team-il84x39k.atlassian.net/browse/ECL-84) | A02, A10 | Cabeceras HTTP de seguridad; 422 saneados en `pedidos` y `vehiculos` | Sprint 4 |
+| [PR #77](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/77) | A03 | Dependencias de desarrollo actualizadas | Sprint 3 (integrado) |
+| [PR #78](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/78) | A01, A07, A10 | SSRF mitigada, falso positivo y código de salida | Sprint 3 (integrado) |
+| [ECL-84](https://continental-team-il84x39k.atlassian.net/browse/ECL-84) | A01, A02, A10 | Cierre de `S8703` con orígenes de la allowlist; cabeceras HTTP de seguridad; 422 saneados en `pedidos` y `vehiculos` | Sprint 4 |
 | [ECL-85](https://continental-team-il84x39k.atlassian.net/browse/ECL-85) | A03, A08 | Acciones del CI por SHA, alertas de Dependabot, revisión obligatoria de Code Owners | Sprint 4 |
 | [ECL-86](https://continental-team-il84x39k.atlassian.net/browse/ECL-86) | A06, A09 | Modelo de amenazas de los flujos críticos y alertas de eventos de seguridad | Sprint 4 |
 
-Tras el merge de #77 y #78, el siguiente análisis de SonarCloud sobre `main` debe mostrar
-0 vulnerabilidades; ese resultado se registrará en la revisión del Sprint 4.
+**Re-análisis tras la remediación** (SonarCloud, `main` en `6323f34`, después del merge de
+#77 y #78): **1 vulnerabilidad** (`S8703`, Media) en lugar de 2, 0 security hotspots y 5 issues
+sin resolver en lugar de 8. `S2068` y `S3516` se cerraron y `S8414` quedó aceptado. La
+calificación de seguridad sigue en C hasta cerrar `S8703` en ECL-84. Evidencia:
+[sonarcloud-issues-main-6323f34.json](<evidencias/ECL-66/sonarcloud-issues-main-6323f34.json>).
 
 [Evidencias ECL-66](<evidencias/ECL-66/README.md>) ·
 [Volver al índice del Sprint 3](README.md) ·
