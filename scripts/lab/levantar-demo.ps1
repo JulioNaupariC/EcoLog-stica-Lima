@@ -84,14 +84,16 @@ function Esperar-HTTP([string]$uri, [switch]$Backend, [int]$segundos = 60) {
 }
 
 function Iniciar-Servicio([string]$Servicio) {
-    # Consola nueva: el supervisor mantiene abiertos los handles de los logs.
-    # -File recibe solo la ruta y el nombre del servicio, nunca credenciales.
-    $supervisor = Start-Process `
-        -FilePath "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe" `
-        -ArgumentList @('-NoLogo', '-NoProfile', '-ExecutionPolicy', 'Bypass',
-            '-File', ('"{0}"' -f (Join-Path $PSScriptRoot 'servicio-demo.ps1')),
-            '-Servicio', $Servicio) `
-        -WorkingDirectory $repo -WindowStyle Minimized -PassThru
+    # CREATE_NO_WINDOW mediante .NET: ocultar/minimizar una ventana no la separa.
+    $inicio = New-Object System.Diagnostics.ProcessStartInfo
+    $inicio.FileName = "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe"
+    $inicio.Arguments = '-NoLogo -NoProfile -NonInteractive -ExecutionPolicy Bypass -File "{0}" -Servicio {1}' -f (Join-Path $PSScriptRoot 'servicio-demo.ps1'), $Servicio
+    $inicio.WorkingDirectory = $repo
+    $inicio.UseShellExecute = $false
+    $inicio.CreateNoWindow = $true
+    $inicio.RedirectStandardInput = $true
+    $supervisor = [System.Diagnostics.Process]::Start($inicio)
+    $supervisor.StandardInput.Close()
     # El supervisor publica el PID REAL antes de que el llamante compruebe HTTP.
     $limite = (Get-Date).AddSeconds(60)
     do {

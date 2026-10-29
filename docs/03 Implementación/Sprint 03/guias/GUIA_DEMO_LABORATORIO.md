@@ -1,5 +1,8 @@
 # ECL-68 - Guía de demostración de EcoLogística Lima
 
+> Modo vigente: ejecución sin consola (sección 14). Las pruebas de ventanas de
+> las secciones 12 y 13 documentan revisiones anteriores.
+
 ## 1. Objetivo
 
 Facilitar la ejecución local de EcoLogística Lima en Windows,
@@ -428,3 +431,119 @@ que no quedan listeners web. Volver a arrancar con la sección 4 y repetir A.
 No reinicializar PostgreSQL, no borrar su directorio ni archivos de contraseña.
 Si el reinicio falla, conservar el motivo de identidad y la señal por separado.
 Solo se considerará validado el reinicio cuando Julio lo confirme en Windows 11.
+
+## 14. Servicios sin consola: validación pendiente de reinicio
+
+La prueba real de `c4a9134` aceptó `backend-verified-descendant` y
+`frontend-project-node`. El lanzador terminó su bloque `finally` a las
+14:38:23.664 -05:00; el supervisor recibió señal 2 a las 14:38:26.938, unos
+3,27 segundos después. Python salió con `0xC000013A` ocho milisegundos más tarde.
+Es compatible con terminación por control de consola. `launcher-finally` no
+prueba por sí solo que el proceso lanzador ya hubiese terminado, y la señal no
+identifica quién cerró la consola.
+
+La revisión actual usa `System.Diagnostics.ProcessStartInfo` con
+`UseShellExecute=false` y `CreateNoWindow=true` para el supervisor y Python/Node.
+No se usa `WindowStyle Hidden/Minimized`, `cmd start`, WMI ni tareas programadas.
+Ocultar una ventana conserva su consola; WMI no conserva automáticamente el
+entorno privado del llamante y una tarea programada añade configuración persistente.
+La API de procesos de .NET funciona desde Windows PowerShell 5.1 sin administrador.
+
+El supervisor sigue siendo propietario de las redirecciones. Un pequeño ejecutor
+C# drena stdout/stderr asincrónicamente a los archivos de `run`, sin callbacks
+PowerShell en hilos sin runspace ni tuberías cuyo propietario sea el lanzador.
+El stdin se cierra explícitamente. Se conserva `CI=true` para Vite y la herencia
+privada de `DATABASE_URL` solo hacia el backend. No se añaden credenciales a
+argumentos o registros. Los fallos de escritura se informan como fallos.
+
+No se suprimen señales: cuando no hay consola no hay handler que instalar; si
+se ejecuta el supervisor manualmente con una consola, el handler anterior sigue
+siendo observacional. `supervisor-start` debe indicar `hasConsole=False` con el
+lanzador nuevo. El JSON incluye `SupervisorHasConsole` y `ChildCreateNoWindow`.
+El último campo es la configuración del proceso creado, no una medición de todos
+los descendientes del redirector Python. Comprobar también que no aparece una
+ventana propia de un descendiente durante la prueba.
+
+Esto separa la vida de los servicios de la consola original. No evade políticas
+de Jobs de Windows: un Job configurado para terminar sus miembros sigue siendo
+una causa distinta que habría que confirmar si persiste el fallo. No se solicita
+breakaway ni se ignoran cierres. La identidad y las verificaciones HTTP permanecen.
+No se modifica el arranque/cierre de PostgreSQL ni el directorio de datos.
+
+### Prueba reproducible de Windows PowerShell 5.1
+
+Primero actualizar y comprobar los scripts (sin iniciar servicios de prueba):
+
+```powershell
+git switch feat/ECL-68-demo-laboratorio
+git pull --ff-only origin feat/ECL-68-demo-laboratorio
+$env:ECOLOGISTICA_DEMO_HOME = "D:\EcoLogisticaDemo"
+powershell.exe -NoProfile -File .\scripts\lab\tests\test-procesos-demo.ps1
+powershell.exe -NoProfile -File .\scripts\lab\tests\test-sin-consola.ps1 -Node "$env:ECOLOGISTICA_DEMO_HOME\tools\node-v22.18.0-win-x64\node.exe"
+python scripts/check_docs.py
+```
+
+`test-sin-consola.ps1` ejecuta solo un fixture de stdout/stderr, EOF, herencia de
+una variable sintética y código de salida 7. No usa red, puertos o PostgreSQL.
+No demuestra aún persistencia tras cerrar la consola.
+
+1. Usar el apagado normal de la sección 6 para no conservar supervisores de una
+   revisión anterior. No borrar archivos de datos ni cambiar contraseñas.
+2. En una ventana A de PowerShell abierta desde Inicio, ejecutar el bloque seguro
+   de la sección 4 con `powershell.exe -NoProfile ... -File levantar-demo.ps1`.
+   No usar `-NoExit` en esta prueba. Debe volver al prompt con `DEMO INICIADA`.
+   No deben aparecer ventanas de los supervisores o de Python/Node.
+3. En otra ventana B, desde la raíz del repo, guardar los registros actuales:
+
+```powershell
+$env:ECOLOGISTICA_DEMO_HOME = "D:\EcoLogisticaDemo"
+$run = Join-Path $env:ECOLOGISTICA_DEMO_HOME 'run'
+$b = Get-Content "$run\backend.process.json" -Raw | ConvertFrom-Json
+$f = Get-Content "$run\frontend.process.json" -Raw | ConvertFrom-Json
+$b | Select-Object ProcessId, SupervisorId, SupervisorHasConsole, ChildCreateNoWindow
+$f | Select-Object ProcessId, SupervisorId, SupervisorHasConsole, ChildCreateNoWindow
+if (($b.SupervisorHasConsole -ne $false) -or ($f.SupervisorHasConsole -ne $false)) {
+    throw 'Un supervisor tiene consola o pertenece a una revision anterior; no dar la prueba por superada.'
+}
+powershell.exe -NoProfile -File .\scripts\lab\diagnosticar-identidad.ps1 -Servicio backend
+powershell.exe -NoProfile -File .\scripts\lab\diagnosticar-identidad.ps1 -Servicio frontend
+```
+
+4. Cerrar únicamente A. Mantener B y tomar una muestra cada 15 segundos durante
+   180 segundos; cualquier error invalida esa ejecución. No se reinicia nada:
+
+```powershell
+$limite = (Get-Date).AddSeconds(180)
+do {
+    foreach ($e in @($b, $f)) {
+        $s = Get-Process -Id $e.SupervisorId -ErrorAction Stop
+        if ($s.StartTime.ToUniversalTime().Ticks -ne [long]$e.SupervisorStartTicks) {
+            throw 'El PID del supervisor fue reutilizado'
+        }
+    }
+    if ((Invoke-RestMethod http://127.0.0.1:8000/health -TimeoutSec 5).status -ne 'ok') {
+        throw 'Backend sin salud'
+    }
+    if ((Invoke-WebRequest http://127.0.0.1:5173/ -UseBasicParsing -TimeoutSec 5).StatusCode -ne 200) {
+        throw 'Frontend sin HTTP 200'
+    }
+    powershell.exe -NoProfile -File .\scripts\lab\diagnosticar-identidad.ps1 -Servicio backend
+    if ($LASTEXITCODE -ne 0) { throw 'Identidad backend rechazada' }
+    powershell.exe -NoProfile -File .\scripts\lab\diagnosticar-identidad.ps1 -Servicio frontend
+    if ($LASTEXITCODE -ne 0) { throw 'Identidad frontend rechazada' }
+    Write-Host "$(Get-Date -Format o) HTTP e identidades correctos"
+    Start-Sleep -Seconds 15
+} while ((Get-Date) -lt $limite)
+```
+
+5. Revisar los `*.lifecycle.log` actuales por PID y hora: deben continuar los
+   heartbeats tras `launcher-finally` y aparecer `launcher-exited` cuando se pudo
+   observar. No interpretar señales antiguas de `*.console.log` como señales del
+   arranque actual. Si falla, conservar esos registros y repetir con el observador
+   de la sección 13 en otra ventana; no concluir automáticamente que es un Job.
+6. Ejecutar el apagado normal, comprobar los puertos libres y volver a ejecutar
+   los pasos 2 a 5. Se necesitan tanto la persistencia como el segundo arranque.
+
+La estabilidad de 180 segundos y el apagado pasaron en una ejecución anterior,
+pero la nueva revisión sin consola y el reinicio completo requieren confirmación
+real de Julio en Windows 11.

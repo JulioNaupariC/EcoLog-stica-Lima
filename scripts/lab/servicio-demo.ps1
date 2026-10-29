@@ -1,5 +1,5 @@
 #requires -Version 5.1
-# Supervisor con consola propia. No ejecutar directamente: usar levantar-demo.ps1.
+# Supervisor sin consola. No ejecutar directamente: usar levantar-demo.ps1.
 param(
     [Parameter(Mandatory = $true)][ValidateSet('backend', 'frontend')][string]$Servicio,
     [ValidateSet('Ninguna', 'Normal', 'FalloSupervisor', 'Espera')][string]$Prueba = 'Ninguna'
@@ -11,8 +11,6 @@ if (-not $base) { $base = Join-Path $env:LOCALAPPDATA 'EcoLogisticaDemo' }
 $run = Join-Path $base 'run'
 New-Item -ItemType Directory -Force -Path $run | Out-Null
 if (($Prueba -ne 'Ninguna') -and ($Servicio -ne 'frontend')) { throw 'Prueba solo de frontend' }
-if ($Prueba -eq 'Ninguna') { $Host.UI.RawUI.WindowTitle = "ECL-68 $Servicio supervisor=$PID" }
-if ($Prueba -ne 'Ninguna') { $Host.UI.RawUI.WindowTitle = "ECL-68 fixture $Prueba supervisor=$PID" }
 $registro = $Servicio
 if ($Prueba -ne 'Ninguna') { $registro = "frontend-prueba-$Prueba" }
 $archivoPid = Join-Path $run "$registro.pid"
@@ -20,16 +18,22 @@ $archivoEstado = Join-Path $run "$registro.process.json"
 $log = Join-Path $run "$registro.lifecycle.log"
 $bloqueo = $null
 $proceso = $null
+$captura = $null
+$supervisorTieneConsola = $null
 $etapa = 'lock'
 try {
     # Evitar dos lanzamientos simultaneos, incluso antes de abrir el puerto.
     $bloqueo = [IO.File]::Open((Join-Path $run "$registro.lock"), 'OpenOrCreate', 'ReadWrite', 'None')
     $etapa = 'console-hooks'
+    if (-not ('EcoLogHeadlessProcess' -as [type])) {
+        Add-Type -Path (Join-Path $PSScriptRoot 'diagnostico-consola.cs')
+    }
     if ($env:OS -eq 'Windows_NT') {
-        if (-not ('EcoLogConsoleEvidence' -as [type])) {
-            Add-Type -Path (Join-Path $PSScriptRoot 'diagnostico-consola.cs')
+        # Sin consola no hay handler que instalar; no ignorar ni suprimir senales.
+        $supervisorTieneConsola = [EcoLogConsoleEvidence]::HasConsole()
+        if ($supervisorTieneConsola) {
+            [EcoLogConsoleEvidence]::Install((Join-Path $run "$registro.console.log"), $PID)
         }
-        [EcoLogConsoleEvidence]::Install((Join-Path $run "$registro.console.log"), $PID)
         Add-Content -LiteralPath $log -Value "$(Get-Date -Format o) supervisor-start pid=$PID $([EcoLogConsoleEvidence]::Snapshot())" -Encoding ASCII
     }
     if ($Servicio -eq 'backend') {
@@ -48,14 +52,12 @@ try {
     if ($Prueba -ne 'Ninguna') {
         $argumentos = '"{0}" {1}' -f (Join-Path $PSScriptRoot 'tests\proceso-fixture.cjs'), $Prueba
     }
-    # Sin cmd /c ni start: no hay una segunda capa de expansion/comillas.
-    # NoNewWindow comparte SOLO la consola independiente del supervisor.
-    # La redireccion nativa evita tratar stderr de Uvicorn como error PowerShell 5.1.
+    # Python/Node tampoco deben crear ni heredar una consola del supervisor.
     $etapa = 'launch-child'
-    $proceso = Start-Process -FilePath $ejecutable -ArgumentList $argumentos `
-        -WorkingDirectory $directorio -NoNewWindow `
-        -RedirectStandardOutput (Join-Path $run "$registro.out.log") `
-        -RedirectStandardError (Join-Path $run "$registro.err.log") -PassThru
+    $captura = New-Object EcoLogHeadlessProcess -ArgumentList @(
+        $ejecutable, $argumentos, $directorio,
+        (Join-Path $run "$registro.out.log"), (Join-Path $run "$registro.err.log"))
+    $proceso = $captura.Process
     # Abrir y conservar el handle antes de que el redirector termine (PS 5.1).
     $null = $proceso.Handle
     Remove-Item Env:\DATABASE_URL -ErrorAction SilentlyContinue
@@ -70,7 +72,7 @@ try {
         if ($null -ne $lanzador) { $null = $lanzador.Handle }
         Add-Content -LiteralPath $log -Value "$(Get-Date -Format o) launcher-parent pid=$lanzadorId" -Encoding ASCII
     }
-    $estado = [ordered]@{ ProcessId = $proceso.Id; StartTicks = $inicio; SupervisorId = $PID; SupervisorStartTicks = (Get-Process -Id $PID).StartTime.ToUniversalTime().Ticks; Trial = $Prueba; LauncherId = $lanzadorId }
+    $estado = [ordered]@{ ProcessId = $proceso.Id; StartTicks = $inicio; SupervisorId = $PID; SupervisorStartTicks = (Get-Process -Id $PID).StartTime.ToUniversalTime().Ticks; Trial = $Prueba; LauncherId = $lanzadorId; ChildCreateNoWindow = $true; SupervisorHasConsole = $supervisorTieneConsola }
     $temporal = "$archivoEstado.$PID.tmp"
     $estado | ConvertTo-Json | Set-Content -LiteralPath $temporal -Encoding ASCII
     Move-Item -LiteralPath $temporal -Destination $archivoEstado -Force
@@ -84,6 +86,7 @@ try {
     $contador = 0
     $lanzadorTermino = $false
     while (-not $proceso.WaitForExit(1000)) {
+        if ($captura.LogFailed) { throw 'No se pudieron escribir los logs del servicio' }
         $contador++
         if (($null -ne $lanzador) -and (-not $lanzadorTermino)) {
             $lanzador.Refresh()
@@ -102,6 +105,7 @@ try {
         }
     }
     $proceso.WaitForExit() # Drenar las redirecciones asincronas antes de registrar salida.
+    if ($captura.LogFailed) { throw 'No se pudieron escribir los logs del servicio' }
     $codigo = $proceso.ExitCode
     $codigoTexto = 'unknown'
     if ($null -ne $codigo) { $codigoTexto = [string]$codigo }
@@ -124,6 +128,7 @@ finally {
             }
         }
     }
+    if ($null -ne $captura) { $captura.Dispose() }
     if ($null -ne $bloqueo) { $bloqueo.Dispose() }
     Add-Content -LiteralPath $log -Value "$(Get-Date -Format o) supervisor-finally pid=$PID" -Encoding ASCII
 }
