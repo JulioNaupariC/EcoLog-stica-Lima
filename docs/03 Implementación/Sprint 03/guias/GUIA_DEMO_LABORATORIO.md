@@ -80,3 +80,5 @@ No se afirma haber realizado pruebas en otra computadora.
 
 No subir a GitHub contrasenas, archivos de base de datos,
 tokens ni archivos privados de configuracion.
+
+[Volver al README principal](../../../../README.md)

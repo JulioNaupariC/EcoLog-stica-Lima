@@ -321,3 +321,7 @@ Frontend:
 - [ECL-58](frontend/evidencias/ECL-58/README.md)
 - [ECL-58 — reprueba offline con el rediseño (13/10/2026)](frontend/evidencias/ECL-58/retest-20261013/README.md)
 - [ECL-22 — rediseño UI/UX, capturas antes/después y accesibilidad](frontend/evidencias/ECL-22-rediseno/README.md)
+
+## Demostración de laboratorio ECL-68
+
+[Guía de demostración ECL-68](docs/03%20Implementaci%C3%B3n/Sprint%2003/guias/GUIA_DEMO_LABORATORIO.md)
