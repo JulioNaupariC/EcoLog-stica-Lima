@@ -49,7 +49,8 @@ relaciona cada categoría con el nombre que trae la plantilla.
 ## 2. Detalles de Security Hotspots y Vulnerabilidades Críticas
 
 **Security Hotspots:** SonarCloud no tiene hotspots abiertos en `main`
-(`security_hotspots = 0`, Security Review Rating **A**). La exportación de la API
+(`security_hotspots = 0`, Security Review Rating **A**, «100 % Security hotspots reviewed»
+en la [captura](<evidencias/ECL-66/sonarcloud-security-hotspots-main.png>)). La exportación de la API
 está en [sonarcloud-hotspots-main-7fd891a.json](<evidencias/ECL-66/sonarcloud-hotspots-main-7fd891a.json>).
 El único hotspot anterior fue reclasificado por SonarCloud como vulnerabilidad
 (etiqueta `former-hotspot`) y se detalla como Vulnerabilidad #2.
@@ -87,8 +88,9 @@ Hallazgos de configuración relacionados con seguridad (code smells):
   sin cambio de código.** `MetricsMiddleware` va por fuera a propósito para contar también
   las solicitudes preflight CORS (ECL-60, prueba
   `test_cors_preflight_and_unsupported_method_are_counted`); ese middleware nunca genera
-  respuestas propias, así que ninguna respuesta pierde las cabeceras CORS. Se marca como
-  *Accepted* en SonarCloud con este motivo.
+  respuestas propias, así que ninguna respuesta pierde las cabeceras CORS. Julio Naupari lo
+  registró como *Accepted* en SonarCloud con este motivo el 29/10/2026: los issues abiertos de
+  `main` bajaron de 8 a 7 ([captura](<evidencias/ECL-66/sonarcloud-issues-main.png>)).
 
 ## 3. Correspondencia con los nombres de la plantilla (2021)
 
