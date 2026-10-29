@@ -97,4 +97,39 @@ def test_invalid_options_rejected(monkeypatch, args):
 def test_keyboard_interrupt_exits(monkeypatch):
     monkeypatch.setattr("sys.argv", ["poll"])
     monkeypatch.setattr(poll, "sample", Mock(side_effect=KeyboardInterrupt))
+    assert poll.main() == poll.INTERRUPTED == 130
+
+
+@pytest.mark.parametrize(
+    "url", ["http://169.254.169.254", "http://internal.example", "http://10.0.0.5"]
+)
+def test_non_loopback_host_rejected_without_allowlist(monkeypatch, url):
+    monkeypatch.delenv(poll.ALLOWED_HOSTS_ENV, raising=False)
+    monkeypatch.setattr("sys.argv", ["poll", "--url", url, "--samples", "1"])
+    probe = Mock()
+    monkeypatch.setattr(poll, "sample", probe)
+    with pytest.raises(SystemExit):
+        poll.main()
+    probe.assert_not_called()
+
+
+@pytest.mark.parametrize("url", ["http://localhost:8000", "http://[::1]:8000"])
+def test_loopback_hosts_allowed_by_default(monkeypatch, url):
+    monkeypatch.delenv(poll.ALLOWED_HOSTS_ENV, raising=False)
+    monkeypatch.setattr("sys.argv", ["poll", "--url", url, "--samples", "1"])
+    monkeypatch.setattr(poll, "sample", lambda base: {"state": "AVAILABLE"})
     assert poll.main() == 0
+
+
+def test_explicit_allowlist_enables_monitored_origin(monkeypatch, capsys):
+    monkeypatch.setenv(poll.ALLOWED_HOSTS_ENV, " api.ecologistica.test , ")
+    monkeypatch.setattr(
+        "sys.argv", ["poll", "--url", "https://API.ecologistica.test", "--samples", "1"]
+    )
+    seen = []
+    monkeypatch.setattr(
+        poll, "sample", lambda base: seen.append(base) or {"state": "AVAILABLE"}
+    )
+    assert poll.main() == 0
+    assert seen == ["https://API.ecologistica.test"]
+    assert json.loads(capsys.readouterr().out)["state"] == "AVAILABLE"
