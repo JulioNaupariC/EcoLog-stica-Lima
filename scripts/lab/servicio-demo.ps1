@@ -11,6 +11,7 @@ if (-not $base) { $base = Join-Path $env:LOCALAPPDATA 'EcoLogisticaDemo' }
 $run = Join-Path $base 'run'
 New-Item -ItemType Directory -Force -Path $run | Out-Null
 if (($Prueba -ne 'Ninguna') -and ($Servicio -ne 'frontend')) { throw 'Prueba solo de frontend' }
+if ($Prueba -eq 'Ninguna') { $Host.UI.RawUI.WindowTitle = "ECL-68 $Servicio supervisor=$PID" }
 if ($Prueba -ne 'Ninguna') { $Host.UI.RawUI.WindowTitle = "ECL-68 fixture $Prueba supervisor=$PID" }
 $registro = $Servicio
 if ($Prueba -ne 'Ninguna') { $registro = "frontend-prueba-$Prueba" }
@@ -55,10 +56,21 @@ try {
         -WorkingDirectory $directorio -NoNewWindow `
         -RedirectStandardOutput (Join-Path $run "$registro.out.log") `
         -RedirectStandardError (Join-Path $run "$registro.err.log") -PassThru
+    # Abrir y conservar el handle antes de que el redirector termine (PS 5.1).
+    $null = $proceso.Handle
     Remove-Item Env:\DATABASE_URL -ErrorAction SilentlyContinue
     $etapa = 'publish-state'
     $inicio = $proceso.StartTime.ToUniversalTime().Ticks
-    $estado = [ordered]@{ ProcessId = $proceso.Id; StartTicks = $inicio; SupervisorId = $PID; SupervisorStartTicks = (Get-Process -Id $PID).StartTime.ToUniversalTime().Ticks; Trial = $Prueba }
+    $lanzadorId = 0
+    $lanzador = $null
+    if ($env:OS -eq 'Windows_NT') {
+        $yo = Get-CimInstance Win32_Process -Filter "ProcessId = $PID" -ErrorAction Stop
+        $lanzadorId = $yo.ParentProcessId
+        $lanzador = Get-Process -Id $lanzadorId -ErrorAction SilentlyContinue
+        if ($null -ne $lanzador) { $null = $lanzador.Handle }
+        Add-Content -LiteralPath $log -Value "$(Get-Date -Format o) launcher-parent pid=$lanzadorId" -Encoding ASCII
+    }
+    $estado = [ordered]@{ ProcessId = $proceso.Id; StartTicks = $inicio; SupervisorId = $PID; SupervisorStartTicks = (Get-Process -Id $PID).StartTime.ToUniversalTime().Ticks; Trial = $Prueba; LauncherId = $lanzadorId }
     $temporal = "$archivoEstado.$PID.tmp"
     $estado | ConvertTo-Json | Set-Content -LiteralPath $temporal -Encoding ASCII
     Move-Item -LiteralPath $temporal -Destination $archivoEstado -Force
@@ -70,8 +82,16 @@ try {
     # Mantener vivo al propietario de las tuberias y esperar al servicio real.
     $etapa = 'monitor'
     $contador = 0
+    $lanzadorTermino = $false
     while (-not $proceso.WaitForExit(1000)) {
         $contador++
+        if (($null -ne $lanzador) -and (-not $lanzadorTermino)) {
+            $lanzador.Refresh()
+            if ($lanzador.HasExited) {
+                Add-Content -LiteralPath $log -Value "$(Get-Date -Format o) launcher-exited pid=$lanzadorId" -Encoding ASCII
+                $lanzadorTermino = $true
+            }
+        }
         # Diario pequeno: no registrar argumentos, rutas privadas ni entorno.
         if (($contador % 5) -eq 0) {
             Add-Content -LiteralPath $log -Value "$(Get-Date -Format o) heartbeat pid=$($proceso.Id) supervisor=$PID" -Encoding ASCII
@@ -82,7 +102,10 @@ try {
         }
     }
     $proceso.WaitForExit() # Drenar las redirecciones asincronas antes de registrar salida.
-    Add-Content -LiteralPath $log -Value "$(Get-Date -Format o) exited pid=$($proceso.Id) code=$($proceso.ExitCode)" -Encoding ASCII
+    $codigo = $proceso.ExitCode
+    $codigoTexto = 'unknown'
+    if ($null -ne $codigo) { $codigoTexto = [string]$codigo }
+    Add-Content -LiteralPath $log -Value "$(Get-Date -Format o) exited pid=$($proceso.Id) code=$codigoTexto" -Encoding ASCII
 }
 catch {
     # No imprimir la excepcion: puede incluir datos del entorno o argumentos.

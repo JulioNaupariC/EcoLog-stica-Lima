@@ -18,6 +18,7 @@ $repo = Split-Path (Split-Path $PSScriptRoot -Parent) -Parent
 $base = $env:ECOLOGISTICA_DEMO_HOME
 if (-not $base) { $base = Join-Path $env:LOCALAPPDATA 'EcoLogisticaDemo' }
 $run = Join-Path $base 'run'
+. (Join-Path $PSScriptRoot 'procesos-demo.ps1')
 $registro = $Servicio
 if ($Prueba -ne 'Ninguna') { $registro = "frontend-prueba-$Prueba" }
 $archivo = Join-Path $run "$registro.process.json"
@@ -72,6 +73,7 @@ Write-Host "Observando desde PID $PID. No cerrar esta consola. Registro: $salida
 $inicio = Get-Date
 $forzado = $false
 $vistos = @{}
+$ultimoListener = ''
 try {
     do {
         foreach ($tipo in @('child', 'supervisor')) {
@@ -85,6 +87,22 @@ try {
                 Registrar @{event='process-exit'; role=$tipo; pid=$p.Id; code=$codigo; hex=$hex}
                 $vistos[$tipo] = $true
                 Write-Host "$tipo PID=$($p.Id) termino: code=$codigo hex=$hex"
+            }
+        }
+        if ($Prueba -eq 'Ninguna') {
+            $puerto = 8000
+            if ($Servicio -eq 'frontend') { $puerto = 5173 }
+            $conexiones = @(Get-NetTCPConnection -LocalPort $puerto -State Listen -ErrorAction SilentlyContinue)
+            $filas = @()
+            foreach ($idListener in @($conexiones | Select-Object -ExpandProperty OwningProcess -Unique)) {
+                $listener = Get-CimInstance Win32_Process -Filter "ProcessId = $idListener" -ErrorAction SilentlyContinue
+                $identidad = Obtener-IdentidadProceso $listener $Servicio
+                $filas += [ordered]@{pid=$idListener; parentId=$listener.ParentProcessId; accepted=$identidad.Aceptado; reason=$identidad.Motivo}
+            }
+            $clave = ConvertTo-Json -InputObject $filas -Compress
+            if ($clave -ne $ultimoListener) {
+                Registrar @{event='listener-identity'; port=$puerto; rootPid=$estado.ProcessId; listeners=$filas}
+                $ultimoListener = $clave
             }
         }
         Registrar @{event='sample'; childAlive=(-not $procesos['child'].HasExited); supervisorAlive=(-not $procesos['supervisor'].HasExited)}

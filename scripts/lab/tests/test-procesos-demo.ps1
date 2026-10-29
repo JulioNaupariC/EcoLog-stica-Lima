@@ -3,7 +3,7 @@
 $ErrorActionPreference = 'Stop'
 $raiz = Split-Path $PSScriptRoot -Parent
 $funciones = @{}
-foreach ($archivo in @('levantar-demo.ps1', 'detener-demo.ps1', 'procesos-demo.ps1', 'servicio-demo.ps1', 'observar-demo.ps1')) {
+foreach ($archivo in @('levantar-demo.ps1', 'detener-demo.ps1', 'procesos-demo.ps1', 'servicio-demo.ps1', 'observar-demo.ps1', 'diagnosticar-identidad.ps1')) {
     $tokens = $null; $errores = $null
     $ast = [Management.Automation.Language.Parser]::ParseFile((Join-Path $raiz $archivo), [ref]$tokens, [ref]$errores)
     if ($errores.Count) { throw ($errores | Out-String) }
@@ -11,7 +11,7 @@ foreach ($archivo in @('levantar-demo.ps1', 'detener-demo.ps1', 'procesos-demo.p
         $funciones[$fn.Name] = $fn.Extent.Text
     }
 }
-foreach ($nombre in @('Es-ProcesoDelProyecto', 'Verificar-PuertoDelProyecto', 'Detener-Arbol', 'Detener-ServicioWeb', 'Esperar-HTTP')) {
+foreach ($nombre in @('Patron-ArgumentoLiteral', 'Es-FirmaBackend', 'Es-DescendienteBackend', 'Obtener-IdentidadProceso', 'Es-ProcesoDelProyecto', 'Verificar-PuertoDelProyecto', 'Detener-Arbol', 'Detener-ServicioWeb', 'Esperar-HTTP')) {
     Invoke-Expression $funciones[$nombre]
 }
 function Assert($Condicion, [string]$Mensaje) { if (-not $Condicion) { throw $Mensaje } }
@@ -27,7 +27,7 @@ $backendCmd = '"{0}" -m uvicorn app.main:create_app --factory --app-dir "{1}\bac
 $frontendCmd = '"{0}" "{1}" --host 127.0.0.1 --port 5173 --strictPort' -f $node, $vite
 $casos = @(
     @($python, $backendCmd, 'backend', $true),
-    @('C:\Python\python.exe', $backendCmd, 'backend', $true),
+    @('C:\Python\python.exe', $backendCmd, 'backend', $false),
     @($node, $frontendCmd, 'frontend', $true),
     @('C:\Windows\System32\cmd.exe', 'cmd /c pg_ctl start', 'backend', $false),
     @('C:\Windows\System32\cmd.exe', ('cmd /c ' + $backendCmd), 'backend', $false),
@@ -42,6 +42,50 @@ foreach ($caso in $casos) {
     $p = [pscustomobject]@{ExecutablePath=$caso[0]; CommandLine=$caso[1]}
     Assert ((Es-ProcesoDelProyecto $p $caso[2]) -eq $caso[3]) "Identidad incorrecta: $($caso[0])"
 }
+# Hijo del redirector, argv reconstruido sin comillas innecesarias.
+$repoAnterior = $repo
+$repo = 'C:\EcoLog'
+$cmdSinComillas = 'C:\Python\python.exe -m uvicorn app.main:create_app --factory --app-dir C:\EcoLog\backend --host 127.0.0.1 --port 8000'
+$cmdRaiz = '"C:\EcoLog\backend\.venv\Scripts\python.exe" -m uvicorn app.main:create_app --factory --app-dir "C:\EcoLog\backend" --host 127.0.0.1 --port 8000'
+$t0 = [datetime]'2026-10-29T12:00:00Z'
+$t1 = $t0.AddSeconds(1)
+$script:raizFake = [pscustomobject]@{ProcessId=5716;ParentProcessId=15080;ExecutablePath='C:\EcoLog\backend\.venv\Scripts\python.exe';CommandLine=$cmdRaiz}
+$script:hijoFake = [pscustomobject]@{ProcessId=5720;ParentProcessId=5716;ExecutablePath='C:\Python\python.exe';CommandLine=$cmdSinComillas}
+$script:padreAjeno = [pscustomobject]@{ProcessId=9999;ParentProcessId=0;ExecutablePath='C:\Python\python.exe';CommandLine='python otro.py'}
+function Get-Content { return ('{"ProcessId":5716,"StartTicks":' + $t0.ToUniversalTime().Ticks + ',"Trial":"Ninguna"}') }
+function Get-CimInstance($ClassName, $Filter) {
+    if ($Filter -eq 'ProcessId = 5716') { return $script:raizFake }
+    if ($Filter -eq 'ProcessId = 5720') { return $script:hijoFake }
+    if ($Filter -eq 'ProcessId = 9999') { return $script:padreAjeno }
+    return $null
+}
+$script:fechaRaiz = $t0
+$script:fechaHijo = $t1
+function Get-Process([int]$Id) {
+    if ($Id -eq 5716) { return [pscustomobject]@{StartTime=$script:fechaRaiz} }
+    return [pscustomobject]@{StartTime=$script:fechaHijo}
+}
+Assert (Es-FirmaBackend $cmdRaiz) 'Firma entrecomillada rechazada'
+Assert (Es-FirmaBackend $cmdSinComillas) 'Firma reconstruida rechazada'
+Assert (Es-ProcesoDelProyecto $script:hijoFake backend) 'Hijo verificado rechazado'
+$script:fechaHijo = $t0.AddSeconds(-1)
+Assert (-not (Es-ProcesoDelProyecto $script:hijoFake backend)) 'Hijo anterior al padre aceptado'
+$script:fechaHijo = $t1
+$script:hijoFake.ParentProcessId = 5720
+Assert (-not (Es-ProcesoDelProyecto $script:hijoFake backend)) 'Ciclo de ancestros aceptado'
+$script:hijoFake.ParentProcessId = 5716
+$script:fechaRaiz = $t0.AddMinutes(1)
+Assert (-not (Es-ProcesoDelProyecto $script:hijoFake backend)) 'Raiz reutilizada aceptada'
+$script:fechaRaiz = $t0
+$script:hijoFake.ParentProcessId = 9999
+Assert (-not (Es-ProcesoDelProyecto $script:hijoFake backend)) 'Python ajeno con argumentos iguales aceptado'
+$script:hijoFake.ParentProcessId = 5716
+$script:fechaRaiz = $t0.AddMilliseconds(500)
+Assert (-not (Es-ProcesoDelProyecto $script:hijoFake backend)) 'Fecha de raiz diferente aceptada'
+$script:fechaRaiz = $t0
+$script:hijoFake.CommandLine = $cmdSinComillas.Replace('C:\EcoLog\backend','C:\Otro\backend')
+Assert (-not (Es-ProcesoDelProyecto $script:hijoFake backend)) 'Hijo de otro proyecto aceptado'
+$repo = $repoAnterior
 # Verificar PID reutilizado sin invocar taskkill (la rama debe retornar antes).
 function Get-CimInstance { return [pscustomobject]@{ExecutablePath=$python;CommandLine=$backendCmd} }
 function Test-Path { return $true }
@@ -89,4 +133,4 @@ try {
     }
 }
 finally { $env:OS = $osAnterior }
-Write-Host 'OK: sintaxis (5 scripts), identidad (11 casos), PID obsoleto/corrupto/ausente, orden PID-puerto, HTTP.'
+Write-Host 'OK: sintaxis (6 scripts), identidad y linaje (20 casos), PID obsoleto/corrupto/ausente, orden PID-puerto, HTTP.'

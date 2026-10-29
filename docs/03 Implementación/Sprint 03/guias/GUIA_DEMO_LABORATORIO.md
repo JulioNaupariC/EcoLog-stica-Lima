@@ -299,3 +299,132 @@ en Windows; no se ejecutaron sus llamadas nativas en Linux.
 También se reprodujo con Vite 8.3.0 y un servidor aislado que stdin EOF cierra el
 proceso sin `CI=true`, y que con `CI=true` permanece activo. Esto verifica el
 mecanismo de stdin, no la causa del incidente de Windows 11.
+
+## 13. Reinicio: separar identidad del listener y cierre de consola
+
+Estado confirmado por Julio en Windows 11 sobre `978fe8d`: estabilidad, cierre de
+la consola inicial y apagado superados. **El reinicio no está validado**: el
+backend arrancó, se rechazó su identidad y el supervisor recibió señal 2.
+Los tiempos 14:18:28 -05:00 y 19:18:28 Z corresponden al mismo instante.
+`CTRL_CLOSE_EVENT` precedió a la salida registrada, pero no identifica al emisor.
+`inJob=True` solo indica pertenencia, no la política del Job ni su responsabilidad.
+
+Se corrigieron dos limitaciones sin cambiar el método de lanzamiento ni los
+plazos de espera:
+
+- La firma ahora admite `--app-dir "C:\EcoLog\backend"` y
+  `--app-dir C:\EcoLog\backend` cuando no hay espacios. El redirector del
+  entorno virtual puede reconstruir argv y eliminar comillas innecesarias.
+  Con espacios sigue exigiéndose el argumento completo entre comillas.
+- Un `python.exe` fuera del venv solo se acepta si tiene la firma del backend y
+  pertenece a una cadena Python viva hasta el PID raíz guardado: se comprueban
+  el ejecutable del venv del proyecto, la fecha de creación de la raíz, los
+  argumentos, la relación padre-hijo y el orden temporal de cada enlace.
+  Una raíz reutilizada, un linaje inaccesible o un Python ajeno se rechazan.
+
+La misma regla se utiliza para arrancar y para autorizar el apagado. No se
+acepta un listener solo por su puerto o por llamarse Python. La reconstrucción
+de comillas es un fallo reproducido en pruebas simuladas, no una atribución
+confirmada del rechazo anterior: faltaba la identidad del listener de esa prueba.
+
+El supervisor conserva el handle del proceso desde el lanzamiento y escribe
+`code=unknown` si el código no está disponible, en vez de dejarlo vacío.
+Registra el PID del lanzador y su terminación cuando puede observarla.
+`launcher.lifecycle.log` conserva inicio, fallo con fase y salida del lanzador;
+`*.identity.jsonl` explica las decisiones de identidad sin volcar comandos ni
+credenciales. El observador registra cambios del PID listener, su padre y el
+motivo de aceptación, además del PID raíz que ya vigilaba.
+
+No se ignora la señal 2 ni se reinicia silenciosamente el backend. Revisar el
+código no encontró una llamada del lanzador que cierre la ventana del supervisor;
+un `throw` mantiene el fallo visible y no ejecuta `taskkill` ni `CloseMainWindow`.
+La causa del cierre de consola sigue sin determinarse. Si la señal persiste,
+se compararán su hora, el fallo/fin del lanzador y los eventos del observador.
+
+### A. Comprobar identidad sin cerrar ninguna consola
+
+Actualizar la rama, ejecutar las pruebas y conservar abiertas tanto la consola
+inicial como las ventanas de supervisores:
+
+```powershell
+git switch feat/ECL-68-demo-laboratorio
+git pull --ff-only origin feat/ECL-68-demo-laboratorio
+powershell.exe -NoProfile -File .\scripts\lab\tests\test-procesos-demo.ps1
+python scripts/check_docs.py
+```
+
+Arrancar mediante el bloque seguro de la sección 4. En otra ventana PowerShell,
+en la raíz del repositorio (ajustar únicamente la ruta de herramientas si difiere):
+
+```powershell
+$env:ECOLOGISTICA_DEMO_HOME = "D:\EcoLogisticaDemo"
+powershell.exe -NoProfile -File .\scripts\lab\diagnosticar-identidad.ps1 -Servicio backend
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\scripts\lab\observar-demo.ps1 -Servicio backend -Segundos 90
+```
+
+Se espera `aceptado=True`, con `backend-project-venv` o
+`backend-verified-descendant`. Si el listener es el hijo, su PID puede diferir
+del `.pid`, pero la cadena verificada debe terminar en esa raíz. Si se rechaza,
+no cerrar ventanas ni ejecutar apagados para intentar resolverlo; recoger:
+
+```powershell
+Get-Content "$env:ECOLOGISTICA_DEMO_HOME\run\backend.identity.jsonl" -Tail 20
+Get-Content "$env:ECOLOGISTICA_DEMO_HOME\run\launcher.lifecycle.log" -Tail 20
+Get-Content "$env:ECOLOGISTICA_DEMO_HOME\run\backend.lifecycle.log" -Tail 30
+Get-Content "$env:ECOLOGISTICA_DEMO_HOME\run\backend.console.log" -Tail 10
+Get-ChildItem "$env:ECOLOGISTICA_DEMO_HOME\run\backend.observer.*.jsonl" |
+    Sort-Object LastWriteTime | Select-Object -Last 1 | Get-Content
+```
+
+Los registros son de campos permitidos. No publicar `DATABASE_URL`, el entorno
+ni una lista de comandos completa de todos los procesos. Si el fallo ocurre antes
+de poder abrir el observador, iniciar el observador primero en otra consola:
+espera hasta 30 segundos a la publicación del registro. En una repetición con
+registros anteriores, pasar `-SupervisorIdEsperado` con el PID nuevo; no usar un
+observador conectado a un arranque anterior como evidencia del nuevo.
+
+Comparación adicional para separar el error del cierre automático del host:
+con `DATABASE_URL` configurada mediante el mismo bloque seguro de la sección 4,
+sustituir solo la invocación del arranque por:
+
+```powershell
+powershell.exe -NoLogo -NoProfile -NoExit -ExecutionPolicy Bypass -File .\scripts\lab\levantar-demo.ps1
+```
+
+`-NoExit` deja visible el error y mantiene el prompt del lanzador. No elimina la
+validación ni captura el fallo como éxito. No cerrar esa ventana ni el supervisor
+mientras se recogen los registros. Comparar con la ejecución normal, sin lanzar
+una segunda copia sobre un backend ya activo. Si la señal solo aparece al cerrar
+la ventana o al terminar el host, hay correlación reproducible, todavía no una
+identificación del emisor. Si ocurre con todas las ventanas abiertas, conservar
+la evidencia y no atribuirla automáticamente al error del lanzador.
+
+### B. Reproducir solo la señal de consola, sin backend ni PostgreSQL
+
+Usar el fixture `Espera` de la sección 12, cuya ventana tiene título inequívoco:
+
+```powershell
+$env:ECOLOGISTICA_DEMO_HOME = "D:\EcoLogisticaDemo"
+$lab = Join-Path (Get-Location) "scripts\lab"
+$p = Start-Process -FilePath "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe" `
+    -ArgumentList @('-NoLogo', '-NoProfile', '-ExecutionPolicy', 'Bypass',
+        '-File', ('"{0}\servicio-demo.ps1"' -f $lab),
+        '-Servicio', 'frontend', '-Prueba', 'Espera') -WindowStyle Normal -PassThru
+& "$lab\observar-demo.ps1" -Prueba Espera -Segundos 30 -SupervisorIdEsperado $p.Id -LimpiarPrueba
+```
+
+Primera ejecución: no cerrar ninguna ventana. El fixture debe seguir vivo hasta
+la limpieza registrada al final. Segunda ejecución del mismo bloque: cerrar
+únicamente la ventana titulada `ECL-68 fixture Espera supervisor=...`; conservar
+el observador. Comparar `frontend-prueba-Espera.console.log`, lifecycle y el
+archivo observer nuevo. Se espera la señal 2 observada y luego las salidas;
+no interviene la validación del puerto 8000. La falta de una escritura no descarta
+la señal, porque Windows puede terminar el proceso antes de completar el registro.
+
+### C. Repetir el reinicio completo
+
+Una vez hecha A, usar el apagado normal ya validado de la sección 6; comprobar
+que no quedan listeners web. Volver a arrancar con la sección 4 y repetir A.
+No reinicializar PostgreSQL, no borrar su directorio ni archivos de contraseña.
+Si el reinicio falla, conservar el motivo de identidad y la señal por separado.
+Solo se considerará validado el reinicio cuando Julio lo confirme en Windows 11.

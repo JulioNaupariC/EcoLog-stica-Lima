@@ -105,6 +105,7 @@ function Iniciar-Servicio([string]$Servicio) {
                 $estado = Get-Content -LiteralPath $archivo -Raw | ConvertFrom-Json
                 if ($estado.SupervisorId -eq $supervisor.Id) {
                     $proceso = Get-Process -Id $estado.ProcessId -ErrorAction Stop
+                    $null = $proceso.Handle
                     if ($proceso.StartTime.ToUniversalTime().Ticks -eq [long]$estado.StartTicks) {
                         Write-Host "[PID] $Servicio servicio=$($proceso.Id), supervisor=$($supervisor.Id)"
                         return $proceso
@@ -186,6 +187,8 @@ foreach ($nombre in $variablesDemo) {
     $entornoAnterior[$nombre] = [Environment]::GetEnvironmentVariable($nombre, 'Process')
 }
 
+$fase = 'environment'
+Add-Content -LiteralPath "$run\launcher.lifecycle.log" -Value "$(Get-Date -Format o) launcher-start pid=$PID" -Encoding ASCII
 try {
     $env:ECOLOGISTICA_DEMO_HOME = $base
     $env:APP_ENV = "development"
@@ -194,6 +197,7 @@ try {
     $procesoBackend = $null
     $procesoFrontend = $null
 
+    $fase = 'backend-start'
     # 2. FastAPI
     Write-Host "[2/3] Comprobando FastAPI..."
 
@@ -209,9 +213,11 @@ try {
         throw "FastAPI no inicio. Revisar $run\backend.err.log"
     }
 
+    $fase = 'backend-identity'
     if (-not (Verificar-PuertoDelProyecto 8000 "backend")) {
         throw "Puerto 8000 ocupado por un proceso no identificado como backend del proyecto."
     }
+    $fase = 'backend-http'
     if (-not (Esperar-HTTP "http://127.0.0.1:8000/health" -Backend)) {
         throw "FastAPI no responde correctamente en /health. Revisar $run\backend.err.log"
     }
@@ -221,6 +227,7 @@ try {
 
     Remove-Item Env:\DATABASE_URL -ErrorAction SilentlyContinue
 
+    $fase = 'frontend-start'
     # 3. Frontend React
     Write-Host "[3/3] Comprobando React..."
 
@@ -240,6 +247,7 @@ try {
         throw "React no inicio. Revisar $run\frontend.err.log"
     }
 
+    $fase = 'frontend-identity'
     if (-not (Verificar-PuertoDelProyecto 5173 "frontend")) {
         throw "Puerto 5173 ocupado por un proceso no identificado como frontend del proyecto."
     }
@@ -259,13 +267,20 @@ try {
 
     Write-Host ""
     Write-Host "========================================"
+    $fase = 'ready'
+    Add-Content -LiteralPath "$run\launcher.lifecycle.log" -Value "$(Get-Date -Format o) launcher-ready pid=$PID" -Encoding ASCII
     Write-Host "  DEMO INICIADA"
     Write-Host "========================================"
     Write-Host "Aplicacion: http://127.0.0.1:5173"
     Write-Host "API:        http://127.0.0.1:8000/health"
     Write-Host ""
 }
+catch {
+    Add-Content -LiteralPath "$run\launcher.lifecycle.log" -Value "$(Get-Date -Format o) launcher-failed pid=$PID stage=$fase type=$($_.Exception.GetType().Name)" -Encoding ASCII -ErrorAction Continue
+    throw # Conservar el fallo: no cerrar ventanas ni terminar el arbol.
+}
 finally {
+    Add-Content -LiteralPath "$run\launcher.lifecycle.log" -Value "$(Get-Date -Format o) launcher-finally pid=$PID stage=$fase" -Encoding ASCII -ErrorAction Continue
     foreach ($nombre in $variablesDemo) {
         [Environment]::SetEnvironmentVariable($nombre, $entornoAnterior[$nombre], 'Process')
     }
