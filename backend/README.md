@@ -586,6 +586,9 @@ GET /health conserva liveness. GET /health/ready comprueba SELECT 1 con un pool 
 lectura limitado y devuelve 200/503. El healthcheck Docker usa este segundo endpoint.
 Para observaciones externas: `python -m app.monitoring.poll --interval 60`, desde backend;
 produce JSONL y exige que API y BD respondan correctamente dentro de 5 s.
+Por defecto solo sondea `127.0.0.1`, `localhost` o `::1` (ECL-66, mitigación de SSRF);
+otro origen monitorizado debe declararse en `MONITOR_ALLOWED_HOSTS`, separado por comas.
+Ctrl+C termina con código 130.
 
 Ver [VALIDACION_ST034.md](<../docs/03 Implementación/Sprint 02/validaciones/VALIDACION_ST034.md>) y
 [evidencias ECL-60](evidencias/ECL-60/README.md) para permisos, límites y reproducción.

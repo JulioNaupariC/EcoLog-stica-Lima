@@ -16,7 +16,8 @@ from app.services.autenticacion import (
 from app.services.autorizacion import AuthorizationDenied, AutorizacionService
 
 COOKIE_NAME = "ecologistica_session"
-PASSWORD_CHANGE_REQUIRED = "Cambio de contraseña requerido"
+# Error message, not a credential (SonarCloud python:S2068 false positive).
+CHANGE_REQUIRED_DETAIL = "Cambio de contraseña requerido"
 
 
 def get_authentication_service(request: Request) -> AutenticacionService:
@@ -51,7 +52,7 @@ def get_authenticated_session(
 ) -> AuthenticatedSession:
     """ECL-77: every other endpoint is closed until the temporary password changes."""
     if authenticated.debe_cambiar_contrasena:
-        raise HTTPException(status.HTTP_403_FORBIDDEN, PASSWORD_CHANGE_REQUIRED)
+        raise HTTPException(status.HTTP_403_FORBIDDEN, CHANGE_REQUIRED_DETAIL)
     return authenticated
 
 
