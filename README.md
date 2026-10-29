@@ -239,7 +239,7 @@ Guías de integración:
 
 <!-- ECL-65 03 Calidad -->
 
-<!-- ECL-66 04 OWASP -->
+- [ECL-66 / EN-010 — Reporte de Seguridad OWASP Top 10 2025](<docs/03 Implementación/Sprint 03/04 OWASP V_1_0_0.md>) · [Evidencias](<docs/03 Implementación/Sprint 03/evidencias/ECL-66/README.md>)
 
 - [ECL-68 / EN-012 — Guía de demostración en laboratorio](<docs/03 Implementación/Sprint 03/guias/GUIA_DEMO_LABORATORIO.md>)
 - [ECL-68 / EN-012 — Diagnóstico técnico de la demostración](<docs/03 Implementación/Sprint 03/guias/DIAGNOSTICO_ECL68.md>)
