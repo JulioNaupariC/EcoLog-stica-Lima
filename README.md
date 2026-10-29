@@ -235,7 +235,7 @@ Guías de integración:
 
 <!-- ECL-69 01 Revisión -->
 
-- [ECL-70 — Retrospectiva del Sprint 3 (borrador)](<docs/03 Implementación/Sprint 03/02 Retrospectiva del Sprint V_1_0_0.md>)
+- [ECL-70 — Retrospectiva del Sprint 3](<docs/03 Implementación/Sprint 03/02 Retrospectiva del Sprint V_1_0_0.md>)
 
 - [ECL-65 / EN-009 — Evaluación de Calidad de Código con SonarCloud](<docs/03 Implementación/Sprint 03/03 Calidad de código V_1_0_0.md>) · [Evidencias](<docs/03 Implementación/Sprint 03/evidencias/ECL-65/README.md>)
 

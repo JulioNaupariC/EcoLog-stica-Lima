@@ -9,7 +9,7 @@ arriba, en [`docs/03 Implementación/`](<../>).
 
 <!-- ECL-69 01 Revisión -->
 
-- [ECL-70 — Retrospectiva del Sprint 3 (borrador)](<02 Retrospectiva del Sprint V_1_0_0.md>)
+- [ECL-70 — Retrospectiva del Sprint 3](<02 Retrospectiva del Sprint V_1_0_0.md>)
 
 - [ECL-65 / EN-009 — Evaluación de Calidad de Código con SonarCloud](<03 Calidad de código V_1_0_0.md>) · [Evidencias](<evidencias/ECL-65/README.md>)
 

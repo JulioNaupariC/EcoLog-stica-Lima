@@ -20,16 +20,16 @@ individuales. Los datos de PR se pueden verificar en la pestaña *Pull requests*
 
 ### Reunión de retrospectiva
 
-- Fecha y hora: [COMPLETAR]
-- Medio: [COMPLETAR, por ejemplo llamada o WhatsApp]
-- Asistentes: [COMPLETAR]
+- Fecha y hora: 29/10/2026, 17:30 aprox. (America/Lima)
+- Medio: coordinaciones del equipo por WhatsApp.
+- Asistentes: Julio Armando Naupari Camarena, Frank Roy Yupanqui Acevedo, Giancarlo Marcio Soto Escobar, Antony Munive Ríos y José Samuel Delgadillo Pantoja.
 - Acuerdos: el equipo revisó y aceptó el análisis de las 4 dimensiones y las acciones A9–A13.
 
 ### Resultado del sprint en cifras
 
 | Indicador | Valor | Fuente |
 |---|---|---|
-| Elementos del sprint en Jira | 16 reportados: 11 en Finalizada y 5 en Tareas por hacer; solo se identificaron 4 pendientes (ECL-68, ECL-69, ECL-70, ECL-71). Conteo pendiente de conciliación | Jira, sprint 38 |
+| Elementos del sprint en Jira | 15: 11 en Finalizada y 4 en Tareas por hacer (ECL-68, ECL-69, ECL-70, ECL-71) | Jira, sprint 38 |
 | Historias completas | US-012 (ECL-18, con ECL-72 a ECL-76) y US-013 (ECL-77) | Jira y `main` |
 | PR integrados | 21 (#59–#80, sin contar el #75, que se cerró sin integrar) | GitHub |
 | PR integrados con aprobación de una persona distinta del autor | 21 de 21 | GitHub |
@@ -136,7 +136,7 @@ individuales. Los datos de PR se pueden verificar en la pestaña *Pull requests*
 | A3 — Autoría alineada con Jira | Antony | Cumplida | El autor de cada PR coincide con el responsable de su ticket; verificación PR por PR, sin el script de cruce |
 | A4 — Ratificar las BDD antes de implementar | Frank | Parcial | ECL-47 y ECL-51 se aprobaron en el #64 (26/10, después del 20/10 comprometido); el #61 (ECL-73) se abrió antes de la BDD de ECL-72 (#62) y de su aprobación (#63), con contrato provisional, y se integró después de la aprobación |
 | A5 — Story Points en historias y subtareas | Frank | Parcial | Padres y tareas con 26 SP; las subtareas ECL-72 a ECL-76 no tienen SP |
-| A6 — Ensayo cronometrado de la demo | Giancarlo | Pendiente de confirmar | Frank lo confirmará con Giancarlo: fecha y duración si se realizó; en caso contrario, no cumplida. |
+| A6 — Ensayo cronometrado de la demo | Giancarlo | Cumplida | Ensayo del 28/10/2026: Frank confirma el cumplimiento del criterio de hasta 15 minutos y todas las historias demostradas. La [guía de laboratorio](<guias/GUIA_DEMO_LABORATORIO.md#7-evidencia-en-video>) enlaza la [grabación](https://drive.google.com/file/d/1sx-a97hDRjneDUoZ5CvitxmUftrTEZIK/view?usp=sharing), cargada en Drive el 29/10/2026 a las 00:19 (America/Lima). Duración exacta no consignada; confirmación aportada por Frank, sin reproducción independiente del video en esta revisión. |
 | A7 — Exigir la revisión de Code Owners en `main` | Julio | No cumplida | La protección solo exige 1 aprobación; el #69 tocó `frontend/` y `backend/` y se integró solo con la aprobación de backend. Continúa como A9 |
 | A8 — Rama `sprint-N` protegida y eliminar las ramas de trabajo | Julio | Parcial | Existen `sprint-1` y `sprint-2`, pero `sprint-2` no está protegida y sigue abierta `feat/ECL-57-responsive-accessibility`; las del Sprint 3 se conservan hasta el 30/10 (acuerdo R4) |
 
