@@ -1,0 +1,73 @@
+{
+  "component": {
+    "id": "AaF2QRzudkEpBguA0ykq",
+    "key": "JulioNaupariC_EcoLog-stica-Lima",
+    "name": "EcoLog-stica-Lima",
+    "qualifier": "TRK",
+    "measures": [
+      {
+        "metric": "coverage",
+        "value": "94.5",
+        "bestValue": false
+      },
+      {
+        "metric": "reliability_rating",
+        "value": "1.0",
+        "bestValue": true
+      },
+      {
+        "metric": "duplicated_lines_density",
+        "value": "0.0",
+        "bestValue": true
+      },
+      {
+        "metric": "code_smells",
+        "value": "6",
+        "bestValue": false
+      },
+      {
+        "metric": "security_rating",
+        "value": "3.0",
+        "bestValue": false
+      },
+      {
+        "metric": "security_hotspots",
+        "value": "0",
+        "bestValue": true
+      },
+      {
+        "metric": "security_review_rating",
+        "value": "1.0",
+        "bestValue": true
+      },
+      {
+        "metric": "sqale_index",
+        "value": "57",
+        "bestValue": false
+      },
+      {
+        "metric": "sqale_rating",
+        "value": "1.0",
+        "bestValue": true
+      },
+      {
+        "metric": "alert_status",
+        "value": "OK"
+      },
+      {
+        "metric": "bugs",
+        "value": "0",
+        "bestValue": true
+      },
+      {
+        "metric": "ncloc",
+        "value": "13230"
+      },
+      {
+        "metric": "vulnerabilities",
+        "value": "2",
+        "bestValue": false
+      }
+    ]
+  }
+}

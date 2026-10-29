@@ -237,7 +237,7 @@ Guías de integración:
 
 <!-- ECL-70 02 Retrospectiva -->
 
-<!-- ECL-65 03 Calidad -->
+- [ECL-65 / EN-009 — Evaluación de Calidad de Código con SonarCloud](<docs/03 Implementación/Sprint 03/03 Calidad de código V_1_0_0.md>) · [Evidencias](<docs/03 Implementación/Sprint 03/evidencias/ECL-65/README.md>)
 
 <!-- ECL-66 04 OWASP -->
 
