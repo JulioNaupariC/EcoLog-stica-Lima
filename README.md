@@ -186,14 +186,51 @@ de nuevo los servicios. Las instrucciones de arranque sin Docker siguen en
 > `docs/02 Planificación/evidencias-jira/` y están integradas en
 > [`02 Artefactos Jira V_1_0_0.md`](<docs/02 Planificación/02 Artefactos Jira V_1_0_0.md>).
 
-## Fase 03: Implementación — entregables del Sprint 2
+## Fase 03: Implementación
+
+Cada sprint tiene su propia sección, con el mismo orden: los entregables de su
+rúbrica, la documentación técnica y el estado de cierre. Los documentos de un sprint
+cerrado se conservan en su rama `sprint-N`: los archivos `01`–`04` de
+`docs/03 Implementación/` se reescribieron en el Sprint 2, y por eso los del Sprint 1
+se enlazan en su rama.
+
+| Sprint | Periodo (Jira) | Objetivo | Entregables | Rama de cierre |
+|---|---|---|---|---|
+| [Sprint 1 — Base Operativa](#sprint-1--base-operativa) | 11/09/2026–02/10/2026 | Base ejecutable y segura: autenticación, flota, pedidos y CI/CD | 01–04, en la rama `sprint-1` | `sprint-1` |
+| [Sprint 2 — Gestión operativa y experiencia del conductor](#sprint-2--gestión-operativa-y-experiencia-del-conductor) | 08/10/2026–23/10/2026 | Conductores y preferencias, experiencia móvil accesible y tolerante a desconexiones, capacidad y observabilidad | 01–04, en `docs/03 Implementación/` | `sprint-2` |
+| [Sprint 3 — Calidad y Seguridad](#sprint-3--calidad-y-seguridad) | 26/10/2026–30/10/2026 | Incidencias del conductor (US-012) y calidad, seguridad y accesibilidad acreditadas | 01–05 e Ítems 6–8, en `docs/03 Implementación/Sprint 03/` | Se crea tras la evaluación |
+
+### Sprint 1 — Base Operativa
+
+#### Entregables del Sprint 1
+
+Versión entregada, conservada en la rama `sprint-1` (commit `58c3d9c`, 02/10/2026):
+
+- [01 Informe de estado del proyecto V_1_0_0](https://github.com/JulioNaupariC/EcoLog-stica-Lima/blob/sprint-1/docs/03%20Implementaci%C3%B3n/01%20Informe%20de%20estado%20del%20proyecto%20V_1_0_0.md)
+- [02 Registro de Impedimentos V_1_0_0](https://github.com/JulioNaupariC/EcoLog-stica-Lima/blob/sprint-1/docs/03%20Implementaci%C3%B3n/02%20Registro%20de%20Impedimentos%20V_1_0_0.md)
+- [03 Revisión del Sprint V_1_0_0](https://github.com/JulioNaupariC/EcoLog-stica-Lima/blob/sprint-1/docs/03%20Implementaci%C3%B3n/03%20Revisi%C3%B3n%20del%20Sprint%20V_1_0_0.md)
+- [04 Retrospectiva del Sprint V_1_0_0](https://github.com/JulioNaupariC/EcoLog-stica-Lima/blob/sprint-1/docs/03%20Implementaci%C3%B3n/04%20Retrospectiva%20del%20Sprint%20V_1_0_0.md)
+
+#### Estado del Sprint 1 — cierre
+
+`Sprint 1 - Base Operativa`, 28 Story Points. El periodo original (11/09/2026–25/09/2026)
+se reprogramó en Jira hasta el 02/10/2026. Al corte, Jira registraba 28/28 SP de padres
+y 19/19 subtareas finalizadas, con ECL-29 integrado en los PR #20 y #21; el sprint abarca
+los PR #1–#22. La Review estaba programada para el 02/10/2026 (inspección G5117), según
+su [Revisión del Sprint](https://github.com/JulioNaupariC/EcoLog-stica-Lima/blob/sprint-1/docs/03%20Implementaci%C3%B3n/03%20Revisi%C3%B3n%20del%20Sprint%20V_1_0_0.md).
+Las precisiones de Jira de ese sprint están en la
+[adenda de Artefactos Jira V_1_0_1](<docs/02 Planificación/02 Artefactos Jira V_1_0_1.md>).
+
+### Sprint 2 — Gestión operativa y experiencia del conductor
+
+#### Entregables del Sprint 2
 
 - [01 Informe de estado del proyecto](<docs/03 Implementación/01 Informe de estado del proyecto V_1_0_0.md>)
 - [02 Registro de Impedimentos](<docs/03 Implementación/02 Registro de Impedimentos V_1_0_0.md>)
 - [03 Revisión del Sprint](<docs/03 Implementación/03 Revisión del Sprint V_1_0_0.md>)
 - [04 Retrospectiva del Sprint](<docs/03 Implementación/04 Retrospectiva del Sprint V_1_0_0.md>)
 
-### Documentación técnica del Sprint 2
+#### Documentación técnica del Sprint 2
 
 - [Índice del Sprint 2 y mapa de reubicación](<docs/03 Implementación/Sprint 02/README.md>)
 
@@ -231,32 +268,7 @@ Guías de integración:
 - [Guía ST-031 y ST-032](<docs/03 Implementación/Sprint 02/guias/GUIA_JOSE_ST031_ST032.md>)
 - [Guía ST-035](<docs/03 Implementación/Sprint 02/guias/GUIA_JOSE_ST035.md>)
 
-### Documentación técnica del Sprint 3
-
-- [ECL-69 — Revisión del Sprint 3](<docs/03 Implementación/Sprint 03/01 Revisión del Sprint V_1_0_0.md>)
-
-- [ECL-70 — Retrospectiva del Sprint 3](<docs/03 Implementación/Sprint 03/02 Retrospectiva del Sprint V_1_0_0.md>)
-
-- [ECL-65 / EN-009 — Evaluación de Calidad de Código con SonarCloud](<docs/03 Implementación/Sprint 03/03 Calidad de código V_1_0_0.md>) · [Evidencias](<docs/03 Implementación/Sprint 03/evidencias/ECL-65/README.md>)
-
-- [ECL-66 / EN-010 — Reporte de Seguridad OWASP Top 10 2025](<docs/03 Implementación/Sprint 03/04 OWASP V_1_0_0.md>) · [Evidencias](<docs/03 Implementación/Sprint 03/evidencias/ECL-66/README.md>)
-
-- [ECL-68 / EN-012 — Guía de demostración en laboratorio](<docs/03 Implementación/Sprint 03/guias/GUIA_DEMO_LABORATORIO.md>)
-- [ECL-68 / EN-012 — Diagnóstico técnico de la demostración](<docs/03 Implementación/Sprint 03/guias/DIAGNOSTICO_ECL68.md>)
-
-
-- [Índice del Sprint 3](<docs/03 Implementación/Sprint 03/README.md>)
-- [Ítem 7 — Coherencia y versionamiento documental](<docs/03 Implementación/Sprint 03/07 Coherencia y versionamiento documental V_1_0_0.md>)
-- [US-013 / ECL-77 — Restablecer contraseña de un usuario](<docs/03 Implementación/Sprint 03/validaciones/VALIDACION_US013.md>)
-- [US-013 / ECL-77 — Evidencias visuales](<docs/03 Implementación/Sprint 03/validaciones/evidencias/ECL-77/README.md>)
-- [ECL-74 / ST-041 — Formulario móvil de incidencias y validación](<docs/03 Implementación/Sprint 03/validaciones/VALIDACION_ST041.md>)
-- [ECL-74 — Evidencias de Chrome y Firefox](<docs/03 Implementación/Sprint 03/validaciones/evidencias/ECL-74/README.md>)
-- [ECL-74 — Cuerpo preparado del pull request](<docs/03 Implementación/Sprint 03/validaciones/ECL-74-PR.md>)
-- [ECL-75 / ST-042 — Vista de incidencias pendientes para Operación](<docs/03 Implementación/Sprint 03/validaciones/VALIDACION_ST042.md>) · [Evidencias](<docs/03 Implementación/Sprint 03/validaciones/evidencias/ECL-75/README.md>)
-- [ECL-67 / EN-011 — Evaluación WCAG del Sprint 3](<docs/03 Implementación/Sprint 03/05 WCAG V_1_0_0.md>) · [Evidencias finales](<docs/03 Implementación/Sprint 03/evidencias/ECL-67/comprobacion-final-20261027/README.md>) · [Registro inicial](<docs/03 Implementación/Sprint 03/evidencias/ECL-67/README.md>)
-- ECL-76 / ST-043 — [Matriz US-012](<docs/03 Implementación/Sprint 03/validaciones/VALIDACION_US012.md>) · [Campaña real y evidencias de cierre](<docs/03 Implementación/Sprint 03/validaciones/evidencias/ECL-76/cierre-20261027/README.md>) · [Registro inicial](<docs/03 Implementación/Sprint 03/validaciones/evidencias/ECL-76/README.md>) · [Cuerpo del PR](<docs/03 Implementación/Sprint 03/validaciones/ECL-76-PR.md>)
-
-### Estado del Sprint 2 — cierre
+#### Estado del Sprint 2 — cierre
 
 Periodo planificado: 08/10/2026–23/10/2026. El informe de estado, el registro de
 impedimentos y la revisión están en la versión de contenido 1.3.1, y la
@@ -272,6 +284,48 @@ La retrospectiva se realizó en clase el 23/10/2026 con el equipo completo y la
 guía visual de ST-029 (ECL-55) se integró en el cierre. El sprint se cierra en
 Jira tras integrar el PR de cierre.
 
+### Sprint 3 — Calidad y Seguridad
+
+#### Entregables del Sprint 3
+
+En el orden de la rúbrica, todos en [`docs/03 Implementación/Sprint 03/`](<docs/03 Implementación/Sprint 03/README.md>):
+
+1. **Revisión del Sprint:** [01 Revisión del Sprint V_1_0_0](<docs/03 Implementación/Sprint 03/01 Revisión del Sprint V_1_0_0.md>) (ECL-69)
+2. **Retrospectiva:** [02 Retrospectiva del Sprint V_1_0_0](<docs/03 Implementación/Sprint 03/02 Retrospectiva del Sprint V_1_0_0.md>) (ECL-70)
+3. **Calidad de código:** [03 Calidad de código V_1_0_0](<docs/03 Implementación/Sprint 03/03 Calidad de código V_1_0_0.md>) (ECL-65, SonarCloud) · [Evidencias](<docs/03 Implementación/Sprint 03/evidencias/ECL-65/README.md>)
+4. **Seguridad OWASP:** [04 OWASP V_1_0_0](<docs/03 Implementación/Sprint 03/04 OWASP V_1_0_0.md>) (ECL-66, OWASP Top 10 2025) · [Evidencias](<docs/03 Implementación/Sprint 03/evidencias/ECL-66/README.md>)
+5. **Accesibilidad WCAG:** [05 WCAG V_1_0_0](<docs/03 Implementación/Sprint 03/05 WCAG V_1_0_0.md>) (ECL-67, WCAG 2.1 AA) · [Evidencias finales](<docs/03 Implementación/Sprint 03/evidencias/ECL-67/comprobacion-final-20261027/README.md>) · [Registro inicial](<docs/03 Implementación/Sprint 03/evidencias/ECL-67/README.md>)
+6. **Organización y `.gitignore`:** [Estructura del repositorio](#estructura-del-repositorio) y [`.gitignore`](.gitignore) (PR #66)
+7. **Versionamiento documental:** [07 Coherencia y versionamiento documental V_1_0_0](<docs/03 Implementación/Sprint 03/07 Coherencia y versionamiento documental V_1_0_0.md>) (PR #68)
+8. **Ubicación y enlaces bidireccionales:** [Índice del Sprint 3](<docs/03 Implementación/Sprint 03/README.md>); cada documento enlaza de vuelta a este README
+
+#### Documentación técnica del Sprint 3
+
+Historias de usuario:
+
+- US-012 / ECL-18 — [Matriz de validación I01–I16 (ECL-76)](<docs/03 Implementación/Sprint 03/validaciones/VALIDACION_US012.md>) · [Campaña real y evidencias de cierre](<docs/03 Implementación/Sprint 03/validaciones/evidencias/ECL-76/cierre-20261027/README.md>) · [Registro inicial](<docs/03 Implementación/Sprint 03/validaciones/evidencias/ECL-76/README.md>) · [Cuerpo del PR](<docs/03 Implementación/Sprint 03/validaciones/ECL-76-PR.md>)
+- US-013 / ECL-77 — [Restablecer contraseña de un usuario](<docs/03 Implementación/Sprint 03/validaciones/VALIDACION_US013.md>) · [Evidencias visuales](<docs/03 Implementación/Sprint 03/validaciones/evidencias/ECL-77/README.md>)
+
+Validaciones de subtareas:
+
+- [ECL-74 / ST-041 — Formulario móvil de incidencias](<docs/03 Implementación/Sprint 03/validaciones/VALIDACION_ST041.md>) · [Evidencias de Chrome y Firefox](<docs/03 Implementación/Sprint 03/validaciones/evidencias/ECL-74/README.md>) · [Cuerpo del PR](<docs/03 Implementación/Sprint 03/validaciones/ECL-74-PR.md>)
+- [ECL-75 / ST-042 — Vista de incidencias pendientes para Operación](<docs/03 Implementación/Sprint 03/validaciones/VALIDACION_ST042.md>) · [Evidencias](<docs/03 Implementación/Sprint 03/validaciones/evidencias/ECL-75/README.md>)
+
+Guías:
+
+- [ECL-68 / EN-012 — Guía de demostración en laboratorio](<docs/03 Implementación/Sprint 03/guias/GUIA_DEMO_LABORATORIO.md>)
+- [ECL-68 / EN-012 — Diagnóstico técnico de la demostración](<docs/03 Implementación/Sprint 03/guias/DIAGNOSTICO_ECL68.md>)
+
+#### Estado del Sprint 3 — cierre
+
+`Sprint 3 - Calidad y Seguridad`, 26/10/2026–30/10/2026. Al 29/10/2026, Jira registra
+13 de 15 elementos en «Finalizada» y 22 de 26 SP finalizados; ECL-69 se completa con la
+Revisión integrada. US-012 y US-013 están en `main`; el Quality Gate de SonarCloud está
+aprobado (cobertura 94,5 %, duplicación 0,0 %) y queda 1 vulnerabilidad Media mitigada
+(S8703, ECL-84). La ejecución en una PC de laboratorio sin administrador (ECL-68) pasa
+al Sprint 4. La Review se realiza el 30/10/2026; sus asistentes y el feedback del docente
+se registran después en la [Revisión del Sprint](<docs/03 Implementación/Sprint 03/01 Revisión del Sprint V_1_0_0.md>).
+
 ### Ramas de cierre por sprint
 
 Cada sprint conserva una rama con el estado final de su código y documentación,
@@ -281,8 +335,9 @@ sprint; las del Sprint 3 se conservan hasta su evaluación (30/10/2026).
 | Rama | Contenido | Commit de corte |
 |---|---|---|
 | `sprint-1` | Sprint 1 — Base Operativa (PR #1–#22) | `58c3d9c` (02/10/2026) |
-| `sprint-2` | Sprint 2 — Gestión operativa y experiencia del conductor, con el parche posterior a la Review (PR #23–#57) y el cierre | Merge del PR de cierre del Sprint 2 |
-| `main` | Rama de integración; punto de partida del Sprint 3 | — |
+| `sprint-2` | Sprint 2 — Gestión operativa y experiencia del conductor, con el parche posterior a la Review (PR #23–#57) y el cierre (PR #58) | `1d7666a` (25/10/2026) |
+| `sprint-3` | Sprint 3 — Calidad y Seguridad (PR #59–#82) | Se crea tras la evaluación del 30/10/2026 |
+| `main` | Rama de integración | — |
 
 ## Fase 04: Contribución
 
