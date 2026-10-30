@@ -233,7 +233,7 @@ Guías de integración:
 
 ### Documentación técnica del Sprint 3
 
-<!-- ECL-69 01 Revisión -->
+- [ECL-69 — Revisión del Sprint 3](<docs/03 Implementación/Sprint 03/01 Revisión del Sprint V_1_0_0.md>)
 
 - [ECL-70 — Retrospectiva del Sprint 3](<docs/03 Implementación/Sprint 03/02 Retrospectiva del Sprint V_1_0_0.md>)
 
