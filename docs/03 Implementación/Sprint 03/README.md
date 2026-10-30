@@ -1,9 +1,10 @@
 # Sprint 3 — Documentación técnica de implementación
 
-Esta carpeta reúne la documentación técnica del Sprint 3: validaciones de
-historias y subtareas, con sus evidencias. Los entregables de la rúbrica
-(informe de estado, impedimentos, revisión y retrospectiva) están un nivel más
-arriba, en [`docs/03 Implementación/`](<../>).
+Esta carpeta reúne los entregables de la rúbrica del Sprint 3 (revisión,
+retrospectiva, calidad de código, OWASP, WCAG y versionamiento documental) y su
+documentación técnica: validaciones de historias y subtareas, guías y evidencias.
+Los entregables de los Sprints 1 y 2 se listan en la Fase 03 del
+[README principal](<../../../README.md>).
 
 ## Índice
 
