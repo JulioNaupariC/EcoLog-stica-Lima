@@ -338,7 +338,7 @@ En el orden de la rúbrica, todos en [`docs/03 Implementación/Sprint 03/`](<doc
 | Story Points | 23 de 26 finalizados (30/10/2026) |
 | Elementos de Jira | 14 de 15 en «Finalizada» (10 elementos padre y 5 subtareas); ECL-68 sigue en «In Review / QA» |
 | Pull requests | #59–#83 |
-| Review | 30/10/2026; los asistentes y el feedback del docente se registran después en la [Revisión del Sprint](<docs/03 Implementación/Sprint 03/01 Revisión del Sprint V_1_0_0.md>) |
+| Review | 30/10/2026, demostración en vivo con los tres flujos; nota 19/20. Asistentes, evaluación y retroalimentación en la [Revisión del Sprint](<docs/03 Implementación/Sprint 03/01 Revisión del Sprint V_1_0_0.md>) |
 | Observaciones | US-012 y US-013 están en `main`. Quality Gate de SonarCloud aprobado (cobertura 94,5 %, duplicación 0,0 %); la vulnerabilidad Media `S8703`, ya mitigada, se cierra en ECL-84 y los 4 code smells en ECL-87. La demo en una PC de laboratorio sin administrador (ECL-68) pasa al Sprint 4 |
 
 ### Ramas de cierre por sprint

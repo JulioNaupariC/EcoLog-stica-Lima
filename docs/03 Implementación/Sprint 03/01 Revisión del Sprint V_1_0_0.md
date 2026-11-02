@@ -10,12 +10,13 @@
 | Sprint | Sprint 3 «Calidad y Seguridad», sprint 38 de Jira |
 | Periodo | 26/10/2026 al 30/10/2026 (America/Lima) |
 | Objetivo del sprint | Entregar el registro de incidencias del conductor (US-012) y acreditar la calidad de código (SonarCloud), la seguridad (OWASP Top 10 2025) y la accesibilidad (WCAG 2.1 AA), dejando la aplicación ejecutable en una PC de laboratorio sin permisos de administrador para la demostración del 30/10/2026. |
-| Versión | 1.0.0 |
+| Versión | 1.1.0 |
 | Fecha de corte | 29/10/2026 |
+| Registro de la Review | 30/10/2026 |
 | Autor | Julio Armando Naupari Camarena — @JulioNaupariC |
-| Fuentes | Jira sprint 38, PR y documentos de validación del repositorio; hechos disponibles hasta el 29/10/2026 |
+| Fuentes | Jira sprint 38, PR y documentos de validación del repositorio; hechos disponibles hasta el 29/10/2026; rúbrica y retroalimentación del docente del 30/10/2026 |
 
-**Alcance temporal.** Este informe es un estado **previo** a la Review del 30/10/2026. No presenta como realizada una demostración ante el docente que aún no ha ocurrido.
+**Alcance temporal.** El informe se preparó con corte al 29/10/2026 y la sección «Registro de la Review del 30/10/2026» documenta lo ocurrido en la evaluación.
 
 ## Historias de Usuario completadas en este Sprint
 
@@ -107,17 +108,51 @@ La demostración **aún no se presenta como ejecutada ante los stakeholders**. S
 
 **Ensayo previo:** 28/10/2026, grabado y enlazado en la guía, según la acción A6 de la [Retrospectiva](<02 Retrospectiva del Sprint V_1_0_0.md>). Es un **ensayo**, no evidencia de la Review frente al docente. Las pruebas offline Chrome y Firefox referidas arriba acreditan la campaña técnica, no una demostración pública.
 
-### Registro a completar después de la Review
+## Registro de la Review del 30/10/2026
 
-**Lugar, fecha y ejecución frente al docente:** se documentarán con los hechos de la Review del 30/10/2026, mediante un PR de actualización pequeño. Solo entonces se indicará quién asistió realmente, qué flujos se mostraron y qué observaciones se recibieron, vinculando cada acción nueva con su ticket Jira.
+**Asistentes:** Julio Armando Naupari Camarena, Frank Roy Yupanqui Acevedo, Giancarlo Marcio Soto Escobar, Antony Munive Ríos, José Samuel Delgadillo Pantoja y el docente Daniel Gamarra Moreno.
 
-Asistentes y feedback del docente: se registrarán después de la Review del 30/10/2026.
+**Demostración en vivo:** ejecutada por Giancarlo en su laptop, en lugar de la laptop de Julio prevista inicialmente. Se demostraron tres flujos:
+
+1. **Administrador (US-013):** restablecimiento de contraseña.
+2. **Conductor (US-012):** registro de una incidencia en línea y otra sin conexión, con una sola sincronización al reconectar.
+3. **Operador:** vista de incidencias pendientes.
+
+Además, se recorrieron el `README.md` principal y los documentos del Sprint 3. La laptop de Giancarlo fue una segunda computadora del equipo, **no** una PC de laboratorio sin permisos de administrador. Por ello, ECL-68 continúa pendiente.
+
+**Preguntas del docente:** preguntó por la diferencia entre deuda técnica y esfuerzo de remediación en SonarCloud. El equipo respondió y reconoció que debe profundizar en esos conceptos. También declaró que utilizó IA como apoyo para aprender temas de seguridad del sprint.
+
+### Evaluación del docente
+
+| Ítem | Puntaje |
+|---|---:|
+| 1. Revisión del Sprint | 75 |
+| 2. Retrospectiva | 100 |
+| 3. Calidad de código | 100 |
+| 4. Seguridad OWASP | 100 |
+| 5. Accesibilidad WCAG | 100 |
+| 6. Organización y `.gitignore` | 75 |
+| 7. Versionamiento documental | 100 |
+| 8. Ubicación y enlaces bidireccionales | 100 |
+
+**Nota global: 19/20.**
+
+**Retroalimentación textual del docente:**
+
+> Gestión todo el contenido del repositorio, se evidencia que no está el sprint1. En la revisión del sprint se reporta las historias técnicas, si hay necesidad de hacerlo indíquelo explicitame con un prefijo. La demostración del sprint contempla la demostración como parte de ella. Revise los conceptos usados en el informe.
+
+**Acciones derivadas para crear como tickets en la planificación del Sprint 4:**
+
+1. Incluir los tres sprints en `main`: carpeta `Sprint 01` con los documentos de la rama `sprint-1` y documentos 01–04 del Sprint 2 dentro de `Sprint 02`.
+2. Introducir un prefijo explícito para identificar historias técnicas en la Revisión.
+3. Documentar expresamente la demostración como realizada dentro de la Revisión.
+4. Revisar los conceptos empleados en los informes: deuda técnica, esfuerzo de remediación y velocidad.
 
 ## Pendientes
 
 | Ticket / seguimiento | Motivo y próximo paso |
 |---|---|
-| [ECL-68 / EN-012](https://continental-team-il84x39k.atlassian.net/browse/ECL-68), 3 SP | La demo y scripts están en [PR #74](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/74) y [PR #76](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/76); la ejecución está **validada solo en la laptop Windows 11** (commit `85dd92b`). Falta validación en una PC real del laboratorio sin administrador. Riesgo: `scripts/lab/diagnostico-consola.cs` se compila con `Add-Type`, posiblemente restringido en laboratorio. Pasa al Sprint 4; Jira figura **«En curso»**. |
+| [ECL-68 / EN-012](https://continental-team-il84x39k.atlassian.net/browse/ECL-68), 3 SP | La demo y scripts están en [PR #74](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/74) y [PR #76](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/76); la ejecución está **validada solo en la laptop Windows 11** (commit `85dd92b`). Falta validación en una PC real del laboratorio sin administrador. Riesgo: `scripts/lab/diagnostico-consola.cs` se compila con `Add-Type`, posiblemente restringido en laboratorio. Jira figura **«In Review / QA»**; pasa al Sprint 4 al cerrar el sprint. |
 | [ECL-82](https://continental-team-il84x39k.atlassian.net/browse/ECL-82) | Cerrar la validación de jornada I03 cuando esté disponible el modelo de rutas del Sprint 4. |
 | [ECL-83](https://continental-team-il84x39k.atlassian.net/browse/ECL-83) | Resolver WCAG 2.2.1, aviso de sesión de 60 minutos. |
 | [ECL-84](https://continental-team-il84x39k.atlassian.net/browse/ECL-84) | Cerrar hallazgo S8703 (SSRF), cabeceras HTTP de seguridad y respuestas 422 saneadas en pedidos y vehículos. |
@@ -128,6 +163,13 @@ Asistentes y feedback del docente: se registrarán después de la Review del 30/
 
 **Retrospectiva, acciones A9–A12:** seguimiento [ECL-88](https://continental-team-il84x39k.atlassian.net/browse/ECL-88) (Code Owners y rama actualizada), [ECL-89](https://continental-team-il84x39k.atlassian.net/browse/ECL-89) (comentarios de revisión), [ECL-90](https://continental-team-il84x39k.atlassian.net/browse/ECL-90) (entorno local para cinco integrantes) y [ECL-91](https://continental-team-il84x39k.atlassian.net/browse/ECL-91) (control de alcance de PR), según [02 Retrospectiva del Sprint V_1_0_0.md](<02 Retrospectiva del Sprint V_1_0_0.md>).
 
-**Después de la Review:** registrar asistentes reales y feedback docente mediante PR pequeño; no cerrar el Sprint 3 en Jira sin acuerdo expreso del equipo, porque el cierre es irreversible. Tras la evaluación y el merge final, acordar la creación/protección de la rama `sprint-3` y la limpieza de ramas de trabajo (acuerdo R4). Estas acciones **no se ejecutan en este PR**.
+**Después de la Review:** La Review se registró en la versión 1.1.0. Quedan, con acuerdo del equipo: crear y proteger la rama `sprint-3`, limpiar las ramas de trabajo y cerrar el sprint 38 en Jira.
+
+### Historial de versiones
+
+| Versión | Fecha | Descripción |
+|---|---|---|
+| 1.0.0 | 29/10/2026 | Informe previo a la Review. |
+| 1.1.0 | 31/10/2026 | Registro de la Review y evaluación del docente. |
 
 [Volver al índice del Sprint 3](README.md) · [← Volver al README principal](../../../README.md)
