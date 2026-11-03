@@ -94,7 +94,7 @@ Demostración a los stakeholders de las funcionalidades implementadas.
 
 ### Guion previsto para la Review del 30/10/2026
 
-La demostración **aún no se presenta como ejecutada ante los stakeholders**. Se propone este orden con las cuentas y roles preparados mediante `seed_demo.py`, sin revelar contraseñas:
+Este fue el guion preparado el 29/10/2026. La demostración se ejecutó en vivo el 30/10/2026; su ejecución real (quién la corrió, en qué equipo y qué flujos se mostraron) está en la sección Registro de la Review del 30/10/2026.
 
 | Orden | Rol / área | Acciones previstas y criterio visible |
 |---|---|---|
@@ -104,7 +104,7 @@ La demostración **aún no se presenta como ejecutada ante los stakeholders**. S
 | 4 | **Calidad y seguridad** | Mostrar el **Quality Gate PASSED** y métricas de SonarCloud; resumir el reporte OWASP 2025 y declarar el hallazgo S8703 pendiente |
 | 5 | **Accesibilidad** | Mostrar una interacción por teclado (orden del foco y control accesible); mencionar la reserva de WCAG 2.2.1 |
 
-**Entorno previsto:** laptop de Julio conectada por **HDMI**; aplicación en `http://127.0.0.1:5173`; [guía local ECL-68](<guias/GUIA_DEMO_LABORATORIO.md>) con [video de respaldo](https://drive.google.com/file/d/1sx-a97hDRjneDUoZ5CvitxmUftrTEZIK/view?usp=sharing). Se confirmó la ejecución en la laptop de desarrollo Windows 11 (commit `85dd92b`); **no** se ha validado una computadora del laboratorio sin permisos administrativos.
+**Entorno previsto:** laptop de Julio conectada por **HDMI**; aplicación en `http://127.0.0.1:5173`; [guía local ECL-68](<guias/GUIA_DEMO_LABORATORIO.md>) con [video de respaldo](https://drive.google.com/file/d/1sx-a97hDRjneDUoZ5CvitxmUftrTEZIK/view?usp=sharing). Se confirmó la ejecución en la laptop de desarrollo Windows 11 (commit `85dd92b`); **no** se ha validado una computadora del laboratorio sin permisos administrativos. En la Review se ejecutó finalmente en la laptop de Giancarlo.
 
 **Ensayo previo:** 28/10/2026, grabado y enlazado en la guía, según la acción A6 de la [Retrospectiva](<02 Retrospectiva del Sprint V_1_0_0.md>). Es un **ensayo**, no evidencia de la Review frente al docente. Las pruebas offline Chrome y Firefox referidas arriba acreditan la campaña técnica, no una demostración pública.
 
