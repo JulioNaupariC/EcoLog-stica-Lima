@@ -1,10 +1,9 @@
 # Sprint 2 — Documentación técnica de implementación
 
-Esta carpeta reúne la documentación técnica del Sprint 2 (08/10/2026–23/10/2026):
-validaciones de subtareas, informes de rendimiento y guías de integración.
-Los entregables de la rúbrica (informe de estado, impedimentos, revisión y
-retrospectiva) están un nivel más arriba, en
-[`docs/03 Implementación/`](<../>).
+Esta carpeta reúne los entregables de la rúbrica del Sprint 2 (08/10/2026–23/10/2026)
+y su documentación técnica: validaciones de subtareas, informes de rendimiento y guías
+de integración. Hasta el Sprint 3, los entregables estaban sueltos en
+`docs/03 Implementación/`; se movieron aquí sin cambiar su contenido (ECL-92).
 
 Las evidencias ejecutables (JSON, XML, registros y capturas) permanecen en
 [`backend/evidencias/`](<../../../backend/evidencias/>) y
@@ -12,6 +11,15 @@ Las evidencias ejecutables (JSON, XML, registros y capturas) permanecen en
 `verify-*.mjs` y `verify_metrics.py` escriben en esas rutas.
 
 ## Índice
+
+### Entregables
+
+| Documento | Contenido |
+|---|---|
+| [01 Informe de estado del proyecto V_1_0_0](<01 Informe de estado del proyecto V_1_0_0.md>) | Estado del proyecto al cierre del Sprint 2 |
+| [02 Registro de Impedimentos V_1_0_0](<02 Registro de Impedimentos V_1_0_0.md>) | Impedimentos y su tratamiento |
+| [03 Revisión del Sprint V_1_0_0](<03 Revisión del Sprint V_1_0_0.md>) | Revisión del Sprint 2 y demostración complementaria |
+| [04 Retrospectiva del Sprint V_1_0_0](<04 Retrospectiva del Sprint V_1_0_0.md>) | Retrospectiva del Sprint 2 |
 
 ### Validaciones
 

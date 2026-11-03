@@ -90,8 +90,8 @@ describe hechos del proceso y sus causas, no desempeños individuales.
 
 | # | Acuerdo | Cómo se aplica |
 |---|---|---|
-| R1 | Las acciones A1–A6 se mantienen y cada una corresponde al rol documentado de su responsable ([Equipo](<../../README.md#equipo>)) | Seguimiento en la retrospectiva del Sprint 3 |
-| R2 | Como no todos tienen la misma disponibilidad, los PR se atienden como una cola: cada PR lo aprueba el integrante del rol correspondiente tras revisar los cambios | Revisores por rol en [`.github/CODEOWNERS`](<../../.github/CODEOWNERS>) y sección 3.4 de la [política de PR](<../04 Contribución/01. Politica de pull requests V_1_0_0.md>) (acción A7) |
+| R1 | Las acciones A1–A6 se mantienen y cada una corresponde al rol documentado de su responsable ([Equipo](../../../README.md#equipo)) | Seguimiento en la retrospectiva del Sprint 3 |
+| R2 | Como no todos tienen la misma disponibilidad, los PR se atienden como una cola: cada PR lo aprueba el integrante del rol correspondiente tras revisar los cambios | Revisores por rol en [`.github/CODEOWNERS`](../../../.github/CODEOWNERS) y sección 3.4 de la [política de PR](<../../04 Contribución/01. Politica de pull requests V_1_0_0.md>) (acción A7) |
 | R3 | El Sprint 2 no se cierra en Jira hasta confirmar que el diseño de Giancarlo (ECL-55 / ST-029) está alineado con lo implementado | La guía se integra en el PR de cierre con la confirmación de Giancarlo; después se cierra el sprint en Jira |
 | R4 | Cada sprint conserva una rama final con su código y documentación como evidencia; las ramas de trabajo se eliminan al cerrar el sprint, y las del Sprint 3 se conservan hasta su evaluación del 30/10/2026 | Ramas `sprint-1` y `sprint-2` (acción A8) |
 
@@ -99,9 +99,9 @@ describe hechos del proceso y sus causas, no desempeños individuales.
 
 | Acción del Sprint 1 | Responsable | Fecha comprometida | Resultado | Evidencia |
 |---|---|---|---|---|
-| Validación cruzada del README (ECL-29) | José Samuel Delgadillo Pantoja | 02/10/2026 | Cumplida por otra persona: la revisó Giancarlo | Revisión del PR #20 ([adenda V_1_0_1](<../02 Planificación/02 Artefactos Jira V_1_0_1.md>)) |
+| Validación cruzada del README (ECL-29) | José Samuel Delgadillo Pantoja | 02/10/2026 | Cumplida por otra persona: la revisó Giancarlo | Revisión del PR #20 ([adenda V_1_0_1](<../../02 Planificación/02 Artefactos Jira V_1_0_1.md>)) |
 | Preparar cuentas y datos de demostración | Giancarlo Marcio Soto Escobar | 02/10/2026 | No cumplida en plazo; causó la Review sin demostración. Resuelta el 13/10 con `seed_demo.py` | [PR #52](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/52) |
-| Conciliar el estado de Jira | Julio Armando Naupari Camarena | 02/10/2026 | Cumplida | [Adenda V_1_0_1](<../02 Planificación/02 Artefactos Jira V_1_0_1.md>) |
+| Conciliar el estado de Jira | Julio Armando Naupari Camarena | 02/10/2026 | Cumplida | [Adenda V_1_0_1](<../../02 Planificación/02 Artefactos Jira V_1_0_1.md>) |
 | Revisión humana del PR #20 y de Docker Compose | Antony Munive Ríos con un revisor | 03/10/2026 | Cumplida: PR #20 aprobado por Giancarlo e integrado; Compose validado sin login ni persistencia de datos de negocio | Adenda V_1_0_1 |
 | Registrar el feedback del stakeholder | Frank Roy Yupanqui Acevedo | 02/10/2026 | No cumplida: no hay acta del Sprint 1 | — |
 
@@ -148,4 +148,4 @@ inicio del Sprint 3.
 
 El nombre V_1_0_0 del archivo se conserva por exigencia de la consigna.
 
-[← Volver al README principal](../../README.md)
+[Volver al índice del Sprint 2](README.md) · [← Volver al README principal](../../../README.md)

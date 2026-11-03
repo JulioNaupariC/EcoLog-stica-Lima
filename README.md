@@ -199,31 +199,32 @@ de nuevo los servicios. Las instrucciones de arranque sin Docker siguen en
 
 Cada sprint tiene su propia sección con la misma estructura: **entregables** de su
 rúbrica, **documentación técnica** y **estado de cierre**. Los documentos de un sprint
-cerrado se conservan en su rama `sprint-N`. Los archivos `01`–`04` de
-`docs/03 Implementación/` se reescribieron en el Sprint 2, y por eso los del Sprint 1
-se enlazan en su rama.
+cerrado están en su carpeta `docs/03 Implementación/Sprint 0N/` y, además, en su rama
+de cierre `sprint-N`.
 
 | Sprint | Periodo (Jira) | Objetivo | Entregables | Rama de cierre |
 |---|---|---|---|---|
-| [Sprint 1 — Base Operativa](#sprint-1--base-operativa) | 11/09/2026–02/10/2026 | Base ejecutable y segura: autenticación, flota, pedidos y CI/CD | 01–04, en la rama `sprint-1` | `sprint-1` |
-| [Sprint 2 — Gestión operativa y experiencia del conductor](#sprint-2--gestión-operativa-y-experiencia-del-conductor) | 08/10/2026–23/10/2026 | Conductores y preferencias, experiencia móvil accesible y tolerante a desconexiones, capacidad y observabilidad | 01–04, en `docs/03 Implementación/` | `sprint-2` |
+| [Sprint 1 — Base Operativa](#sprint-1--base-operativa) | 11/09/2026–02/10/2026 | Base ejecutable y segura: autenticación, flota, pedidos y CI/CD | 01–04, en `docs/03 Implementación/Sprint 01/` | `sprint-1` |
+| [Sprint 2 — Gestión operativa y experiencia del conductor](#sprint-2--gestión-operativa-y-experiencia-del-conductor) | 08/10/2026–23/10/2026 | Conductores y preferencias, experiencia móvil accesible y tolerante a desconexiones, capacidad y observabilidad | 01–04, en `docs/03 Implementación/Sprint 02/` | `sprint-2` |
 | [Sprint 3 — Calidad y Seguridad](#sprint-3--calidad-y-seguridad) | 26/10/2026–30/10/2026 | Incidencias del conductor (US-012) y calidad, seguridad y accesibilidad acreditadas | 01–05 e Ítems 6–8, en `docs/03 Implementación/Sprint 03/` | Se crea tras la evaluación |
 
 ### Sprint 1 — Base Operativa
 
 #### Entregables del Sprint 1
 
-Versión entregada, conservada en la rama `sprint-1` (commit `58c3d9c`, 02/10/2026):
+En [`docs/03 Implementación/Sprint 01/`](<docs/03 Implementación/Sprint 01/README.md>), en la versión entregada el 02/10/2026 (commit `58c3d9c`, rama `sprint-1`):
 
-1. **Informe de estado:** [01 Informe de estado del proyecto V_1_0_0](https://github.com/JulioNaupariC/EcoLog-stica-Lima/blob/sprint-1/docs/03%20Implementaci%C3%B3n/01%20Informe%20de%20estado%20del%20proyecto%20V_1_0_0.md)
-2. **Impedimentos:** [02 Registro de Impedimentos V_1_0_0](https://github.com/JulioNaupariC/EcoLog-stica-Lima/blob/sprint-1/docs/03%20Implementaci%C3%B3n/02%20Registro%20de%20Impedimentos%20V_1_0_0.md)
-3. **Revisión del Sprint:** [03 Revisión del Sprint V_1_0_0](https://github.com/JulioNaupariC/EcoLog-stica-Lima/blob/sprint-1/docs/03%20Implementaci%C3%B3n/03%20Revisi%C3%B3n%20del%20Sprint%20V_1_0_0.md)
-4. **Retrospectiva:** [04 Retrospectiva del Sprint V_1_0_0](https://github.com/JulioNaupariC/EcoLog-stica-Lima/blob/sprint-1/docs/03%20Implementaci%C3%B3n/04%20Retrospectiva%20del%20Sprint%20V_1_0_0.md)
+1. **Informe de estado:** [01 Informe de estado del proyecto V_1_0_0](<docs/03 Implementación/Sprint 01/01 Informe de estado del proyecto V_1_0_0.md>)
+2. **Impedimentos:** [02 Registro de Impedimentos V_1_0_0](<docs/03 Implementación/Sprint 01/02 Registro de Impedimentos V_1_0_0.md>)
+3. **Revisión del Sprint:** [03 Revisión del Sprint V_1_0_0](<docs/03 Implementación/Sprint 01/03 Revisión del Sprint V_1_0_0.md>)
+4. **Retrospectiva:** [04 Retrospectiva del Sprint V_1_0_0](<docs/03 Implementación/Sprint 01/04 Retrospectiva del Sprint V_1_0_0.md>)
 
 #### Documentación técnica del Sprint 1
 
-El Sprint 1 no tiene una carpeta de documentación técnica propia. La instalación y las
-pruebas de esa versión están en sus README, en la rama `sprint-1`:
+[Índice del Sprint 1](<docs/03 Implementación/Sprint 01/README.md>)
+
+El Sprint 1 no tiene documentación técnica propia. La instalación y las pruebas de esa
+versión están en sus README, en la rama `sprint-1`:
 
 - [Backend: instalación, pruebas y API](https://github.com/JulioNaupariC/EcoLog-stica-Lima/blob/sprint-1/backend/README.md)
 - [Frontend: instalación, pruebas y verificaciones](https://github.com/JulioNaupariC/EcoLog-stica-Lima/blob/sprint-1/frontend/README.md)
@@ -236,19 +237,19 @@ pruebas de esa versión están en sus README, en la rama `sprint-1`:
 | Story Points | 28 de 28 finalizados |
 | Elementos de Jira | 6 elementos padre y 19 subtareas en «Finalizada» |
 | Pull requests | #1–#22 (ECL-29 se integró en los PR #20 y #21) |
-| Review | Programada el 02/10/2026 (inspección G5117), según su [Revisión del Sprint](https://github.com/JulioNaupariC/EcoLog-stica-Lima/blob/sprint-1/docs/03%20Implementaci%C3%B3n/03%20Revisi%C3%B3n%20del%20Sprint%20V_1_0_0.md) |
+| Review | Programada el 02/10/2026 (inspección G5117), según su [Revisión del Sprint](<docs/03 Implementación/Sprint 01/03 Revisión del Sprint V_1_0_0.md>) |
 | Observaciones | Las precisiones de Jira del sprint están en la [adenda de Artefactos Jira V_1_0_1](<docs/02 Planificación/02 Artefactos Jira V_1_0_1.md>) |
 
 ### Sprint 2 — Gestión operativa y experiencia del conductor
 
 #### Entregables del Sprint 2
 
-En `docs/03 Implementación/`, en la versión de contenido 1.3.1 (la retrospectiva, en la 1.3.0):
+En [`docs/03 Implementación/Sprint 02/`](<docs/03 Implementación/Sprint 02/README.md>), en la versión de contenido 1.3.1 (la retrospectiva, en la 1.3.0):
 
-1. **Informe de estado:** [01 Informe de estado del proyecto V_1_0_0](<docs/03 Implementación/01 Informe de estado del proyecto V_1_0_0.md>)
-2. **Impedimentos:** [02 Registro de Impedimentos V_1_0_0](<docs/03 Implementación/02 Registro de Impedimentos V_1_0_0.md>)
-3. **Revisión del Sprint:** [03 Revisión del Sprint V_1_0_0](<docs/03 Implementación/03 Revisión del Sprint V_1_0_0.md>)
-4. **Retrospectiva:** [04 Retrospectiva del Sprint V_1_0_0](<docs/03 Implementación/04 Retrospectiva del Sprint V_1_0_0.md>)
+1. **Informe de estado:** [01 Informe de estado del proyecto V_1_0_0](<docs/03 Implementación/Sprint 02/01 Informe de estado del proyecto V_1_0_0.md>)
+2. **Impedimentos:** [02 Registro de Impedimentos V_1_0_0](<docs/03 Implementación/Sprint 02/02 Registro de Impedimentos V_1_0_0.md>)
+3. **Revisión del Sprint:** [03 Revisión del Sprint V_1_0_0](<docs/03 Implementación/Sprint 02/03 Revisión del Sprint V_1_0_0.md>)
+4. **Retrospectiva:** [04 Retrospectiva del Sprint V_1_0_0](<docs/03 Implementación/Sprint 02/04 Retrospectiva del Sprint V_1_0_0.md>)
 
 #### Documentación técnica del Sprint 2
 
@@ -294,7 +295,7 @@ En `docs/03 Implementación/`, en la versión de contenido 1.3.1 (la retrospecti
 | Story Points | 27 de 27 finalizados |
 | Elementos de Jira | 5 elementos padre y 19 subtareas en «Finalizada» |
 | Pull requests | #23–#57 y el cierre (#58) |
-| Review | 09/10/2026, evaluada con 14/20 sin demostración; el parche posterior (PR #47–#57) y la demostración complementaria están en la [Revisión del Sprint](<docs/03 Implementación/03 Revisión del Sprint V_1_0_0.md>) |
+| Review | 09/10/2026, evaluada con 14/20 sin demostración; el parche posterior (PR #47–#57) y la demostración complementaria están en la [Revisión del Sprint](<docs/03 Implementación/Sprint 02/03 Revisión del Sprint V_1_0_0.md>) |
 | Observaciones | Contrastados con sus criterios de aceptación, ECL-11 y ECL-25 cumplen; ECL-9, ECL-22 y ECL-23 cumplen parcialmente. La retrospectiva se realizó en clase el 23/10/2026 con el equipo completo, y la guía visual de ST-029 (ECL-55) se integró en el cierre |
 
 ### Sprint 3 — Calidad y Seguridad

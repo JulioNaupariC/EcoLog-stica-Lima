@@ -127,7 +127,7 @@ individuales. Los datos de PR se pueden verificar en la pestaña *Pull requests*
 ### Acciones a realizar
 
 **Seguimiento de las acciones del Sprint 2** (definidas en la
-[Retrospectiva del Sprint 2](<../04 Retrospectiva del Sprint V_1_0_0.md>)):
+[Retrospectiva del Sprint 2](<../Sprint 02/04 Retrospectiva del Sprint V_1_0_0.md>)):
 
 | Acción | Responsable | Estado | Evidencia |
 |---|---|---|---|
