@@ -206,7 +206,7 @@ de cierre `sprint-N`.
 |---|---|---|---|---|
 | [Sprint 1 — Base Operativa](#sprint-1--base-operativa) | 11/09/2026–02/10/2026 | Base ejecutable y segura: autenticación, flota, pedidos y CI/CD | 01–04, en `docs/03 Implementación/Sprint 01/` | `sprint-1` |
 | [Sprint 2 — Gestión operativa y experiencia del conductor](#sprint-2--gestión-operativa-y-experiencia-del-conductor) | 08/10/2026–23/10/2026 | Conductores y preferencias, experiencia móvil accesible y tolerante a desconexiones, capacidad y observabilidad | 01–04, en `docs/03 Implementación/Sprint 02/` | `sprint-2` |
-| [Sprint 3 — Calidad y Seguridad](#sprint-3--calidad-y-seguridad) | 26/10/2026–30/10/2026 | Incidencias del conductor (US-012) y calidad, seguridad y accesibilidad acreditadas | 01–05 e Ítems 6–8, en `docs/03 Implementación/Sprint 03/` | Se crea tras la evaluación |
+| [Sprint 3 — Calidad y Seguridad](#sprint-3--calidad-y-seguridad) | 26/10/2026–30/10/2026 | Incidencias del conductor (US-012) y calidad, seguridad y accesibilidad acreditadas | 01–05 e Ítems 6–8, en `docs/03 Implementación/Sprint 03/` | `sprint-3` |
 
 ### Sprint 1 — Base Operativa
 
@@ -338,7 +338,7 @@ En el orden de la rúbrica, todos en [`docs/03 Implementación/Sprint 03/`](<doc
 | Periodo | 26/10/2026–30/10/2026 |
 | Story Points | 23 de 26 finalizados (30/10/2026) |
 | Elementos de Jira | 14 de 15 en «Finalizada» (10 elementos padre y 5 subtareas); ECL-68 sigue en «In Review / QA» |
-| Pull requests | #59–#83 |
+| Pull requests | #59–#85 (#84 registra la Review y #85 ordena `docs/03 Implementación` por sprint) |
 | Review | 30/10/2026, demostración en vivo con los tres flujos; nota 19/20. Asistentes, evaluación y retroalimentación en la [Revisión del Sprint](<docs/03 Implementación/Sprint 03/01 Revisión del Sprint V_1_0_0.md>) |
 | Observaciones | US-012 y US-013 están en `main`. Quality Gate de SonarCloud aprobado (cobertura 94,5 %, duplicación 0,0 %); la vulnerabilidad Media `S8703`, ya mitigada, se cierra en ECL-84 y los 4 code smells en ECL-87. La demo en una PC de laboratorio sin administrador (ECL-68) pasa al Sprint 4 |
 
@@ -346,13 +346,13 @@ En el orden de la rúbrica, todos en [`docs/03 Implementación/Sprint 03/`](<doc
 
 Cada sprint conserva una rama con el estado final de su código y documentación,
 como evidencia de lo entregado. Las ramas de trabajo se eliminan al cerrar cada
-sprint; las del Sprint 3 se conservan hasta su evaluación (30/10/2026).
+sprint; las tres ramas de cierre están protegidas contra cambios y borrado.
 
 | Rama | Contenido | Commit de corte |
 |---|---|---|
 | `sprint-1` | Sprint 1 — Base Operativa (PR #1–#22) | `58c3d9c` (02/10/2026) |
 | `sprint-2` | Sprint 2 — Gestión operativa y experiencia del conductor, con el parche posterior a la Review (PR #23–#57) y el cierre (PR #58) | `1d7666a` (25/10/2026) |
-| `sprint-3` | Sprint 3 — Calidad y Seguridad (PR #59–#83) | Se crea tras la evaluación del 30/10/2026 |
+| `sprint-3` | Sprint 3 — Calidad y Seguridad (PR #59–#85), con el registro de la Review y la carpeta de cada sprint | `cf4bb2c` (03/11/2026) |
 | `main` | Rama de integración | — |
 
 ## Fase 04: Contribución
