@@ -38,7 +38,7 @@ infeliz y de borde corresponde a caminos del flujo de usuario y de prueba.
 - [Entidad incidencia — Modelo de datos](<../../01 Inicio/11. Base de datos V_1_1_0.md>).
 - [Actores y matriz RBAC](<../../01 Inicio/08. Usuarios V_1_0_0.md>).
 - [Definition of Done](<../01 Transformando a ágil V_1_0_0.md#8-definition-of-done-dod-global>).
-- [Retrospectiva del Sprint 2 — acción A4](<../../03 Implementación/04 Retrospectiva del Sprint V_1_0_0.md>).
+- [Retrospectiva del Sprint 2 — acción A4](<../../03 Implementación/Sprint 02/04 Retrospectiva del Sprint V_1_0_0.md>).
 - [Modelo de formato: BDD de conductores](<ECL-47-ST-021-conductores.md>).
 
 ## Reglas respaldadas por la línea base
