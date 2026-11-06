@@ -23,6 +23,43 @@ def allowed_hosts() -> frozenset[str]:
     }
 
 
+SCHEMES = ("http", "https")
+DEFAULT_PORTS = {"http": 80, "https": 443}
+
+
+def safe_origin(url: str) -> str | None:
+    """ECL-84 / S8703: rebuild the origin from trusted values only.
+
+    The scheme comes from ``SCHEMES``, the host from the allowlist itself and
+    the port is an integer, so no character typed after ``--url`` reaches
+    ``urlopen``. Returns ``None`` for anything that is not a bare HTTP(S)
+    origin of an allowed host.
+    """
+    try:
+        parsed = urlsplit(url)
+        port = parsed.port
+    except ValueError:
+        return None
+    if (
+        parsed.username
+        or parsed.password
+        or parsed.query
+        or parsed.fragment
+        or parsed.path not in ("", "/")
+        or not parsed.hostname
+    ):
+        return None
+    scheme = next((s for s in SCHEMES if s == parsed.scheme), None)
+    host = next(
+        (h for h in sorted(allowed_hosts()) if h == parsed.hostname.lower()), None
+    )
+    if scheme is None or host is None:
+        return None
+    netloc = f"[{host}]" if ":" in host else host
+    port_number = int(port) if port is not None else DEFAULT_PORTS[scheme]
+    return f"{scheme}://{netloc}:{port_number}"
+
+
 def check(url: str) -> dict[str, object]:
     started = monotonic()
     status = None
@@ -67,22 +104,14 @@ def main() -> int:
     parser.add_argument("--interval", type=float, default=60)
     parser.add_argument("--samples", type=int, default=0, help="0: continuous")
     args = parser.parse_args()
-    url = args.url.rstrip("/")
-    parsed = urlsplit(url)
-    if (
-        parsed.scheme not in {"http", "https"}
-        or not parsed.hostname
-        or parsed.username
-        or parsed.password
-        or parsed.query
-        or parsed.fragment
-        or parsed.path
-        or args.interval <= 0
-        or args.samples < 0
-    ):
-        parser.error("Use an HTTP(S) origin without credentials and positive interval")
-    if parsed.hostname.lower() not in allowed_hosts():
-        parser.error(f"Host not allowed; list it in {ALLOWED_HOSTS_ENV}")
+    if args.interval <= 0 or args.samples < 0:
+        parser.error("Use a positive interval and a non-negative sample count")
+    url = safe_origin(args.url.rstrip("/"))
+    if url is None:
+        parser.error(
+            "Use an HTTP(S) origin without credentials or path whose host is "
+            f"allowed (list it in {ALLOWED_HOSTS_ENV})"
+        )
     count = 0
     deadline = monotonic()
     try:

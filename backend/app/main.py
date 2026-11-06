@@ -20,6 +20,7 @@ from app.api.pedidos import router as order_router
 from app.api.preferencias import router as preferencias_router
 from app.api.rutas import indicadores_router as sustainability_router
 from app.api.rutas import router as optimization_router
+from app.api.security_headers import SecurityHeadersMiddleware
 from app.api.usuarios import router as user_router
 from app.api.vehiculos import router as vehicle_router
 from app.core.config import Settings
@@ -100,6 +101,10 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         allow_headers=["Content-Type", "X-Expected-Owner-ID"],
     )
     app.add_middleware(MetricsMiddleware, metrics=metrics)
+    # Outermost: headers also reach CORS preflights, errors and /metrics.
+    app.add_middleware(
+        SecurityHeadersMiddleware, production=config.app_env == "production"
+    )
     app.include_router(health_router)
     app.include_router(metrics_router)
     app.include_router(auth_router)

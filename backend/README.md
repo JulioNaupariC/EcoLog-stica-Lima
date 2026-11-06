@@ -940,6 +940,39 @@ pendientes de validación: avería, tráfico y clima en Lima, la primera asociad
 a su parada 1. Su `operation_id` es determinista: se deriva con `uuid5` y se
 marca como versión 4, así que volver a sembrar no las duplica.
 
+## Endurecimiento HTTP — ECL-84 (OWASP A02/A10)
+
+`app/api/security_headers.py` es un middleware ASGI. Va por fuera de todos los
+demás, así que sus cabeceras llegan a toda respuesta: errores, preflight CORS y
+`/metrics`.
+
+| Cabecera | Valor |
+|---|---|
+| `X-Content-Type-Options` | `nosniff` |
+| `X-Frame-Options` | `DENY` |
+| `Referrer-Policy` | `no-referrer` |
+| `Content-Security-Policy` | `default-src 'none'; frame-ancestors 'none'; base-uri 'none'` (en `/docs` y `/redoc`, solo `frame-ancestors 'none'`, para que carguen sus recursos) |
+| `Cross-Origin-Opener-Policy` | `same-origin` |
+| `Cross-Origin-Resource-Policy` | `same-site` |
+| `Permissions-Policy` | `camera=(), microphone=(), geolocation=()` |
+| `Strict-Transport-Security` | `max-age=31536000; includeSubDomains`, solo con `APP_ENV=production` (allí `Settings` exige HTTPS) |
+
+- **Cabeceras propias:** si una respuesta ya trae una de estas cabeceras, el
+  middleware no la cambia. Por ejemplo, el `Cache-Control` de
+  `/indicadores/operacion` se conserva.
+- **422 saneado:** `/pedidos` y `/vehiculos` usan `SanitizedRoute`, como el resto
+  de la API. Un 422 tiene la forma
+  `{"detail":[{"loc","type","msg":"Entrada inválida"}]}` y nunca repite el valor
+  enviado: dirección, referencia o placa.
+- **SonarCloud `pythonsecurity:S8703` (SSRF):** `app/monitoring/poll.py` ya no
+  pasa a `urlopen` el texto de `--url`. `safe_origin()` rearma el origen con
+  valores de confianza:
+  - el esquema, de la lista `http`/`https`;
+  - el host, de la allowlist (`MONITOR_ALLOWED_HOSTS`);
+  - el puerto, como entero.
+
+  Rechaza credenciales, ruta, query, fragmento y puertos inválidos.
+
 ## API de rutas: contrato con datos simulados — ECL-94 / ST-045
 
 El contrato se publica antes que el optimizador para que el mapa (US-008) y el

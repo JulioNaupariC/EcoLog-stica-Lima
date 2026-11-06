@@ -131,5 +131,26 @@ def test_explicit_allowlist_enables_monitored_origin(monkeypatch, capsys):
         poll, "sample", lambda base: seen.append(base) or {"state": "AVAILABLE"}
     )
     assert poll.main() == 0
-    assert seen == ["https://API.ecologistica.test"]
+    assert seen == ["https://api.ecologistica.test:443"]
     assert json.loads(capsys.readouterr().out)["state"] == "AVAILABLE"
+
+
+@pytest.mark.parametrize(
+    ("url", "esperado"),
+    [
+        ("http://127.0.0.1:8000", "http://127.0.0.1:8000"),
+        ("http://LOCALHOST", "http://localhost:80"),
+        ("http://[::1]:8000/", "http://[::1]:8000"),
+        ("ftp://127.0.0.1", None),
+        ("http://user:secret@127.0.0.1", None),
+        ("http://127.0.0.1/health", None),
+        ("http://127.0.0.1?x=1", None),
+        ("http://127.0.0.1#x", None),
+        ("http://127.0.0.1:99999", None),
+        ("http://169.254.169.254", None),
+        ("http:///", None),
+    ],
+)
+def test_ecl84_origin_is_rebuilt_from_trusted_values(monkeypatch, url, esperado):
+    monkeypatch.delenv(poll.ALLOWED_HOSTS_ENV, raising=False)
+    assert poll.safe_origin(url) == esperado
