@@ -4,6 +4,8 @@
 #
 #    pip-compile --no-build-isolation --no-emit-index-url --no-emit-trusted-host --no-index --output-file=requirements.lock pyproject.toml
 #
+absl-py==2.5.1
+    # via ortools
 alembic==1.20.0
     # via ecologistica-backend (pyproject.toml)
 annotated-doc==0.0.5
@@ -30,12 +32,24 @@ h11==0.16.0
     # via uvicorn
 idna==3.19
     # via anyio
+immutabledict==4.3.1
+    # via ortools
 mako==1.4.1
     # via alembic
 markupsafe==3.0.3
     # via mako
+numpy==2.5.4
+    # via
+    #   ortools
+    #   pandas
+ortools==9.14.6206
+    # via ecologistica-backend (pyproject.toml)
 packaging==26.3
     # via geoalchemy2
+pandas==3.1.1
+    # via ortools
+protobuf==6.31.1
+    # via ortools
 psycopg[binary]==3.3.5
     # via ecologistica-backend (pyproject.toml)
 psycopg-binary==3.3.5
@@ -51,6 +65,8 @@ pydantic-core==2.46.5
     # via pydantic
 pydantic-settings==2.15.0
     # via ecologistica-backend (pyproject.toml)
+python-dateutil==4.0.0
+    # via pandas
 python-dotenv==1.2.3
     # via pydantic-settings
 sqlalchemy==2.0.54
@@ -65,6 +81,7 @@ typing-extensions==4.16.0
     #   alembic
     #   anyio
     #   fastapi
+    #   ortools
     #   psycopg
     #   pydantic
     #   pydantic-core
@@ -77,6 +94,8 @@ typing-inspection==0.4.4
     #   pydantic
     #   pydantic-settings
 tzdata==2026.4
-    # via psycopg
+    # via
+    #   psycopg
+    #   python-dateutil
 uvicorn==0.53.0
     # via ecologistica-backend (pyproject.toml)

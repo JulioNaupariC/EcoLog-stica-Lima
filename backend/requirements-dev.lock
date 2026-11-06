@@ -4,6 +4,8 @@
 #
 #    pip-compile --allow-unsafe --extra=dev --no-build-isolation --no-emit-index-url --no-emit-trusted-host --no-index --output-file=requirements-dev.lock pyproject.toml
 #
+absl-py==2.5.1
+    # via ortools
 alembic==1.20.0
     # via ecologistica-backend (pyproject.toml)
 annotated-doc==0.0.5
@@ -54,24 +56,36 @@ idna==3.19
     # via
     #   anyio
     #   httpx
+immutabledict==4.3.1
+    # via ortools
 iniconfig==2.3.0
     # via pytest
 mako==1.4.1
     # via alembic
 markupsafe==3.0.3
     # via mako
+numpy==2.5.4
+    # via
+    #   ortools
+    #   pandas
+ortools==9.14.6206
+    # via ecologistica-backend (pyproject.toml)
 packaging==26.3
     # via
     #   build
     #   geoalchemy2
     #   pytest
     #   wheel
+pandas==3.1.1
+    # via ortools
 pip-tools==7.6.1
     # via ecologistica-backend (pyproject.toml)
 pluggy==1.6.0
     # via
     #   pytest
     #   pytest-cov
+protobuf==6.31.1
+    # via ortools
 psycopg[binary]==3.3.5
     # via ecologistica-backend (pyproject.toml)
 psycopg-binary==3.3.5
@@ -99,6 +113,8 @@ pytest==9.1.1
     #   pytest-cov
 pytest-cov==7.1.0
     # via ecologistica-backend (pyproject.toml)
+python-dateutil==4.0.0
+    # via pandas
 python-dotenv==1.2.3
     # via pydantic-settings
 ruff==0.16.7
@@ -115,6 +131,7 @@ typing-extensions==4.16.0
     #   alembic
     #   anyio
     #   fastapi
+    #   ortools
     #   psycopg
     #   pydantic
     #   pydantic-core
@@ -127,7 +144,9 @@ typing-inspection==0.4.4
     #   pydantic
     #   pydantic-settings
 tzdata==2026.4
-    # via psycopg
+    # via
+    #   psycopg
+    #   python-dateutil
 uvicorn==0.53.0
     # via ecologistica-backend (pyproject.toml)
 wheel==0.48.0
