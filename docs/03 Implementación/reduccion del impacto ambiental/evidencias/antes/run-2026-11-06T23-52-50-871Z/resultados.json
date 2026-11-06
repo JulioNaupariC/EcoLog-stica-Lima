@@ -1,0 +1,25 @@
+{
+  "ticket": "ECL-108",
+  "baseline": "e09dcd80e32431018d4020bb02c89ffae7505705",
+  "documentationHead": "5f381f3726c184ee951a86eee205d494b08b1377",
+  "startedAt": "2026-11-06T23:52:50.921Z",
+  "timezone": "America/Lima",
+  "composeProject": "ecologistica-lima-ecl108",
+  "frontend": "Vite development",
+  "lighthouse": "12.8.2",
+  "api": [],
+  "pages": [
+    {
+      "name": "vehiculos-operador",
+      "path": "/vehiculos",
+      "role": "OPERADOR",
+      "rounds": [],
+      "attemptedAt": "2026-11-06T23:52:51.561Z",
+      "status": "ERROR",
+      "reason": "Cannot read properties of null (reading 'click')"
+    }
+  ],
+  "errors": [],
+  "chrome": "Chrome/156.0.8078.80",
+  "finishedAt": "2026-11-06T23:52:55.324Z"
+}

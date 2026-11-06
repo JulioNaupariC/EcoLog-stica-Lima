@@ -1,0 +1,98 @@
+{
+  "name": "login",
+  "path": "/login",
+  "role": null,
+  "rounds": [
+    {
+      "round": 1,
+      "at": "2026-11-06T23:50:22.700Z",
+      "performance": 55.00000000000001,
+      "fcpMs": 5653.690600000002,
+      "lcpMs": 10743.535900000003,
+      "tbtMs": 0,
+      "cls": 0.000005294924554183814,
+      "transferredBytes": 11434626,
+      "requests": 88,
+      "networkObservedMs": 3368.8769999999995
+    },
+    {
+      "round": 2,
+      "at": "2026-11-06T23:50:36.089Z",
+      "performance": 55.00000000000001,
+      "fcpMs": 5611.4601999999995,
+      "lcpMs": 10677.190299999998,
+      "tbtMs": 0,
+      "cls": 0.000005294924554183814,
+      "transferredBytes": 11434626,
+      "requests": 88,
+      "networkObservedMs": 3034.043300000001
+    },
+    {
+      "round": 3,
+      "at": "2026-11-06T23:50:49.373Z",
+      "performance": 55.00000000000001,
+      "fcpMs": 5744.590400000003,
+      "lcpMs": 10916.885600000005,
+      "tbtMs": 0,
+      "cls": 0.000005294924554183814,
+      "transferredBytes": 11434626,
+      "requests": 88,
+      "networkObservedMs": 3438.1917999999932
+    }
+  ],
+  "attemptedAt": "2026-11-06T23:50:13.785Z",
+  "settings": {
+    "output": "json",
+    "maxWaitForFcp": 30000,
+    "maxWaitForLoad": 45000,
+    "pauseAfterFcpMs": 1000,
+    "pauseAfterLoadMs": 1000,
+    "networkQuietThresholdMs": 1000,
+    "cpuQuietThresholdMs": 1000,
+    "formFactor": "desktop",
+    "throttling": {
+      "rttMs": 40,
+      "throughputKbps": 10240,
+      "requestLatencyMs": 0,
+      "downloadThroughputKbps": 0,
+      "uploadThroughputKbps": 0,
+      "cpuSlowdownMultiplier": 1
+    },
+    "throttlingMethod": "simulate",
+    "screenEmulation": {
+      "mobile": false,
+      "width": 1350,
+      "height": 940,
+      "deviceScaleFactor": 1,
+      "disabled": false
+    },
+    "emulatedUserAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36",
+    "auditMode": false,
+    "gatherMode": false,
+    "clearStorageTypes": [
+      "file_systems",
+      "shader_cache",
+      "service_workers",
+      "cache_storage"
+    ],
+    "disableStorageReset": true,
+    "debugNavigation": false,
+    "channel": "node",
+    "usePassiveGathering": false,
+    "disableFullPageScreenshot": false,
+    "skipAboutBlank": false,
+    "blankPage": "about:blank",
+    "ignoreStatusCode": false,
+    "locale": "en-US",
+    "blockedUrlPatterns": null,
+    "additionalTraceCategories": null,
+    "extraHeaders": null,
+    "precomputedLanternData": null,
+    "onlyAudits": null,
+    "onlyCategories": [
+      "performance"
+    ],
+    "skipAudits": null
+  },
+  "status": "MEDIDO"
+}

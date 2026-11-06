@@ -1,0 +1,166 @@
+{
+  "ticket": "ECL-108",
+  "baseline": "e09dcd80e32431018d4020bb02c89ffae7505705",
+  "documentationHead": "5f381f3726c184ee951a86eee205d494b08b1377",
+  "startedAt": "2026-11-06T23:47:43.831Z",
+  "timezone": "America/Lima",
+  "composeProject": "ecologistica-lima-ecl108",
+  "frontend": "Vite development",
+  "lighthouse": "12.8.2",
+  "api": [
+    {
+      "endpoint": "/vehiculos",
+      "count": 20,
+      "meanMs": 7.762804999999986,
+      "meanBytes": 1183,
+      "minBytes": 1183,
+      "maxBytes": 1183
+    },
+    {
+      "endpoint": "/conductores?page=1",
+      "count": 20,
+      "meanMs": 8.00711,
+      "meanBytes": 951,
+      "minBytes": 951,
+      "maxBytes": 951
+    },
+    {
+      "endpoint": "/incidencias?page=1",
+      "count": 20,
+      "meanMs": 9.427864999999997,
+      "meanBytes": 1255,
+      "minBytes": 1255,
+      "maxBytes": 1255
+    }
+  ],
+  "pages": [
+    {
+      "name": "login",
+      "path": "/login",
+      "role": null,
+      "rounds": [
+        {
+          "round": 1,
+          "at": "2026-11-06T23:47:53.927Z",
+          "performance": 55.00000000000001,
+          "fcpMs": 5608.888800000001,
+          "lcpMs": 10673.333200000001,
+          "tbtMs": 0,
+          "cls": 0.000005294924554183814,
+          "transferredBytes": 11434626,
+          "requests": 88,
+          "networkObservedMs": 3023.9795000000004
+        },
+        {
+          "round": 2,
+          "at": "2026-11-06T23:48:07.424Z",
+          "performance": 55.00000000000001,
+          "fcpMs": 5656.9929999999995,
+          "lcpMs": 10749.9895,
+          "tbtMs": 0,
+          "cls": 0.000005294924554183814,
+          "transferredBytes": 11434626,
+          "requests": 88,
+          "networkObservedMs": 3024.8907
+        },
+        {
+          "round": 3,
+          "at": "2026-11-06T23:48:20.441Z",
+          "performance": 55.00000000000001,
+          "fcpMs": 5616.7126,
+          "lcpMs": 10680.0689,
+          "tbtMs": 0,
+          "cls": 0.000005294924554183814,
+          "transferredBytes": 11434626,
+          "requests": 88,
+          "networkObservedMs": 3132.7346000000034
+        }
+      ],
+      "attemptedAt": "2026-11-06T23:47:45.325Z",
+      "settings": {
+        "output": "json",
+        "maxWaitForFcp": 30000,
+        "maxWaitForLoad": 45000,
+        "pauseAfterFcpMs": 1000,
+        "pauseAfterLoadMs": 1000,
+        "networkQuietThresholdMs": 1000,
+        "cpuQuietThresholdMs": 1000,
+        "formFactor": "desktop",
+        "throttling": {
+          "rttMs": 40,
+          "throughputKbps": 10240,
+          "requestLatencyMs": 0,
+          "downloadThroughputKbps": 0,
+          "uploadThroughputKbps": 0,
+          "cpuSlowdownMultiplier": 1
+        },
+        "throttlingMethod": "simulate",
+        "screenEmulation": {
+          "mobile": false,
+          "width": 1350,
+          "height": 940,
+          "deviceScaleFactor": 1,
+          "disabled": false
+        },
+        "emulatedUserAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36",
+        "auditMode": false,
+        "gatherMode": false,
+        "clearStorageTypes": [
+          "file_systems",
+          "shader_cache",
+          "service_workers",
+          "cache_storage"
+        ],
+        "disableStorageReset": true,
+        "debugNavigation": false,
+        "channel": "node",
+        "usePassiveGathering": false,
+        "disableFullPageScreenshot": false,
+        "skipAboutBlank": false,
+        "blankPage": "about:blank",
+        "ignoreStatusCode": false,
+        "locale": "en-US",
+        "blockedUrlPatterns": null,
+        "additionalTraceCategories": null,
+        "extraHeaders": null,
+        "precomputedLanternData": null,
+        "onlyAudits": null,
+        "onlyCategories": [
+          "performance"
+        ],
+        "skipAudits": null
+      },
+      "status": "MEDIDO"
+    },
+    {
+      "name": "inicio-operador",
+      "path": "/",
+      "role": "OPERADOR",
+      "rounds": [],
+      "attemptedAt": "2026-11-06T23:48:29.256Z",
+      "status": "ERROR",
+      "reason": "Timed out after waiting 30000ms"
+    },
+    {
+      "name": "vehiculos-operador",
+      "path": "/vehiculos",
+      "role": "OPERADOR",
+      "rounds": [],
+      "attemptedAt": "2026-11-06T23:49:01.133Z",
+      "status": "ERROR",
+      "reason": "Timed out after waiting 30000ms"
+    },
+    {
+      "name": "itinerario-conductor",
+      "path": "/conductor/itinerario",
+      "role": "CONDUCTOR",
+      "rounds": [],
+      "attemptedAt": "2026-11-06T23:49:33.228Z",
+      "status": "ERROR",
+      "reason": "Timed out after waiting 30000ms"
+    }
+  ],
+  "errors": [],
+  "chrome": "Chrome/156.0.8078.80",
+  "finishedAt": "2026-11-06T23:50:05.225Z"
+}
