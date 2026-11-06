@@ -106,11 +106,15 @@ def test_invalid_request_returns_422():
             "/pedidos", json=request_payload(ventana_fin="2026-10-01T08:00:00-05:00")
         )
         assert response.status_code == 422
-        # ECL-84: sanitized like the rest of the API; the form already validates
-        # the window on the client, and the value sent is never echoed.
+        # ECL-84: sanitized like the rest of the API, still pointing at the
+        # field so the form can show it, and never echoing the value sent.
         assert response.json() == {
             "detail": [
-                {"loc": ["body"], "type": "value_error", "msg": "Entrada inválida"}
+                {
+                    "loc": ["body", "ventana_fin"],
+                    "type": "value_error",
+                    "msg": "Entrada inválida",
+                }
             ]
         }
         service.create.assert_not_called()

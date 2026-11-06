@@ -1,5 +1,6 @@
 """Validated order creation and public response contracts."""
 
+from datetime import datetime
 from decimal import Decimal
 from enum import Enum
 from typing import Any
@@ -10,6 +11,7 @@ from pydantic import (
     BaseModel,
     ConfigDict,
     Field,
+    ValidationInfo,
     field_validator,
     model_validator,
 )
@@ -51,9 +53,17 @@ class PedidoCreate(BaseModel):
             raise ValueError("latitud y longitud deben enviarse juntas")
         if not has_latitude and self.referencia is None:
             raise ValueError("Se requiere coordenadas o referencia")
-        if self.ventana_fin <= self.ventana_inicio:
-            raise ValueError("ventana_fin debe ser posterior a ventana_inicio")
         return self
+
+    @field_validator("ventana_fin")
+    @classmethod
+    def window_after_start(cls, value: datetime, info: ValidationInfo) -> datetime:
+        # ECL-84: a field error keeps loc ["body", "ventana_fin"], so the
+        # sanitized 422 stays actionable without echoing the value.
+        inicio = info.data.get("ventana_inicio")
+        if inicio is not None and value <= inicio:
+            raise ValueError("ventana_fin debe ser posterior a ventana_inicio")
+        return value
 
 
 class PedidoResponse(BaseModel):
