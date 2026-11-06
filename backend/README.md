@@ -1020,4 +1020,65 @@ pedidos y 15 vehículos. El script no usa base de datos, red ni credenciales.
 Resultados, decisión y límites:
 [evidencias/ECL-93](evidencias/ECL-93/README.md).
 
+## API de rutas: contrato con datos simulados — ECL-94 / ST-045
+
+El contrato se publica antes que el optimizador para que el mapa (US-008) y el
+dashboard (US-009) avancen en paralelo. Mientras ST-047 no se integre, todas
+las respuestas traen `"simulado": true` y la cabecera `X-Datos-Simulados: true`.
+Los datos salen de los fixtures de `app/simulacion/rutas/`. ST-047 cambia el
+servicio, no el contrato. Esquemas: `app/schemas/rutas.py`. OpenAPI completo
+en `/docs`.
+
+| Endpoint | Permiso (matriz RBAC) | Roles |
+|---|---|---|
+| `POST /optimizaciones` → 202 | `optimizaciones.ejecutar` | Operador |
+| `GET /optimizaciones?fecha&page&page_size` | `optimizaciones.consultar` general | Administrador, Operador, Analista, Auditor |
+| `GET /optimizaciones/{id}` | `rutas.consultar` general | Administrador, Operador |
+| `GET /indicadores/sostenibilidad?desde&hasta` | `indicadores.consultar` general | Administrador, Operador, Analista, Auditor |
+
+- **Solicitud:** `fecha_operacion` es obligatoria. `pedido_ids` acepta hasta 150
+  y `vehiculo_ids` hasta 15 (RNF-001), sin repetidos. Si se omiten, se toman los
+  pedidos `PENDIENTE` de la fecha y los vehículos `ACTIVO`. Un campo extra o
+  inválido devuelve `422` sin repetir lo enviado.
+- **Detalle de una optimización:**
+  - rutas con paradas ordenadas y su `eta` dentro de la ventana;
+  - descansos (RN-005) y trazado GeoJSON `[longitud, latitud]` que sale y vuelve
+    al depósito;
+  - métricas (km, kg CO₂, L, S/) y comparación con la ruta secuencial sobre los
+    mismos pedidos;
+  - cumplimiento de ventanas;
+  - pedidos no asignados con motivo (RN-009): `SIN_UBICACION`,
+    `EXCEDE_CAPACIDAD`, `VENTANA_INVIABLE` o `SIN_VEHICULO`.
+
+  Una ruta puede venir sin conductor, con
+  `motivo_sin_conductor = SIN_CONDUCTOR_ELEGIBLE` (ECL-79). Mientras el estado es
+  `EN_PROCESO`, `rutas` va vacío y `resumen` en `null`; si es `FALLIDA`, trae
+  `error`. Solo el Administrador y el Operador lo consultan, porque incluye
+  nombres de conductores. El listado no lleva datos personales.
+- **Dashboard:** cuenta solo rutas `CERRADA` del periodo. Sin datos responde
+  `con_datos: false` con los indicadores en `null`, nunca en cero. Si
+  `desde > hasta`, responde `422`.
+- **Simulación:**
+  - `POST` siempre apunta a la optimización de ejemplo;
+  - el dashboard tiene datos si el periodo cruza el 01/11–20/11/2026 y, si no,
+    responde «sin datos».
+
+**Fixtures** (`app/simulacion/rutas/`, copia idéntica en
+`frontend/src/test/fixtures/rutas/`; una prueba falla si difieren):
+
+- `optimizacion-aceptada.json`
+- `optimizacion-completada.json`: 3 rutas y 2 no asignados.
+- `optimizacion-en-proceso.json`
+- `optimizacion-fallida.json`
+- `optimizaciones-pagina.json`
+- `sostenibilidad-con-datos.json`
+- `sostenibilidad-sin-datos.json`
+
+**De dónde salen los datos:** el escenario sintético del spike ST-044 (semilla
+2026, 28 pedidos más 2 inviables, 3 vehículos), resuelto con el optimizador. Los
+costos usan los valores de referencia de RN-011 (S/ 17.50 por galón de diésel)
+y RN-012 (S/ 1.20 por km). La versión de parámetros es `SIMULADO-2026-11` hasta
+EN-008. El periodo del dashboard repite 12 jornadas iguales a la de ejemplo. No
+contiene datos de personas reales.
+
 [← Volver al README principal](../README.md)

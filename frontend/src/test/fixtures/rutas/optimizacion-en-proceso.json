@@ -1,0 +1,14 @@
+{
+  "optimizacion_id": "137a1946-c318-5657-b117-56cec95ad53f",
+  "estado": "EN_PROCESO",
+  "fecha_operacion": "2026-11-21",
+  "solicitada_en": "2026-11-20T07:45:00-05:00",
+  "finalizada_en": null,
+  "duracion_s": null,
+  "parametros_version": "SIMULADO-2026-11",
+  "simulado": true,
+  "resumen": null,
+  "rutas": [],
+  "no_asignados": [],
+  "error": null
+}

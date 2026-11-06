@@ -1,0 +1,24 @@
+{
+  "periodo": {
+    "desde": "2026-11-01",
+    "hasta": "2026-11-20"
+  },
+  "con_datos": true,
+  "rutas_cerradas": 36,
+  "distancia_km": 919.92,
+  "co2_kg": 230.88,
+  "combustible_l": 86.16,
+  "costo_soles": 1502.16,
+  "ahorro_vs_secuencial": {
+    "distancia_km": 2096.64,
+    "co2_kg": 667.44,
+    "combustible_l": 249.0,
+    "costo_soles": 3667.2,
+    "pct": 69.5
+  },
+  "cumplimiento_ventanas_pct": 100.0,
+  "parametros_versiones": [
+    "SIMULADO-2026-11"
+  ],
+  "simulado": true
+}

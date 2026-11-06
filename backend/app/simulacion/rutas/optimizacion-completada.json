@@ -1,0 +1,592 @@
+{
+  "optimizacion_id": "d4967edb-c9c0-5f9b-add0-7981a2a5ba5e",
+  "estado": "COMPLETADA",
+  "fecha_operacion": "2026-11-20",
+  "solicitada_en": "2026-11-20T07:30:00-05:00",
+  "finalizada_en": "2026-11-20T07:30:05-05:00",
+  "duracion_s": 5.0,
+  "parametros_version": "SIMULADO-2026-11",
+  "simulado": true,
+  "resumen": {
+    "rutas": 3,
+    "pedidos_asignados": 28,
+    "pedidos_no_asignados": 2,
+    "optimizada": {
+      "distancia_km": 76.66,
+      "co2_kg": 19.24,
+      "combustible_l": 7.18,
+      "costo_soles": 125.18
+    },
+    "secuencial": {
+      "distancia_km": 251.38,
+      "co2_kg": 74.86,
+      "combustible_l": 27.93,
+      "costo_soles": 430.78
+    },
+    "ahorro_pct": {
+      "distancia": 69.5,
+      "co2": 74.3,
+      "combustible": 74.3,
+      "costo": 70.9
+    },
+    "cumplimiento_ventanas_pct": 100.0
+  },
+  "rutas": [
+    {
+      "ruta_id": "0c768f0f-4d59-51d7-a0f4-272a0a18447b",
+      "vehiculo": {
+        "vehiculo_id": "5fabad9d-4996-5424-b89e-8e6854c05fff",
+        "placa": "ECO-101",
+        "tipo": "FURGON"
+      },
+      "conductor": {
+        "conductor_id": "f7086eda-98d8-597d-b4df-8cd3009fc160",
+        "nombre": "Conductor Demo 1"
+      },
+      "motivo_sin_conductor": null,
+      "estado": "PLANIFICADA",
+      "salida": "2026-11-20T13:14:00-05:00",
+      "regreso": "2026-11-20T14:23:00-05:00",
+      "tiempo_min": 69,
+      "peso_kg": 225.16,
+      "volumen_m3": 1.388,
+      "metricas": {
+        "distancia_km": 10.3,
+        "co2_kg": 3.07,
+        "combustible_l": 1.14,
+        "costo_soles": 17.66
+      },
+      "trazado": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -76.968,
+            -12.047
+          ],
+          [
+            -76.983113,
+            -12.05099
+          ],
+          [
+            -76.983252,
+            -12.04808
+          ],
+          [
+            -76.985782,
+            -12.049167
+          ],
+          [
+            -76.987584,
+            -12.049586
+          ],
+          [
+            -76.997029,
+            -12.04524
+          ],
+          [
+            -76.990599,
+            -12.039442
+          ],
+          [
+            -76.98301,
+            -12.035417
+          ],
+          [
+            -76.968,
+            -12.047
+          ]
+        ]
+      },
+      "paradas": [
+        {
+          "parada_id": "97070750-c9b6-5dd9-8d2e-14fe1964084a",
+          "secuencia": 1,
+          "pedido_id": "5c525636-2a16-5cc8-b87d-88beb12538d9",
+          "latitud": -12.05099,
+          "longitud": -76.983113,
+          "ventana_inicio": "2026-11-20T09:30:00-05:00",
+          "ventana_fin": "2026-11-20T13:30:00-05:00",
+          "eta": "2026-11-20T13:21:00-05:00",
+          "estado": "PENDIENTE"
+        },
+        {
+          "parada_id": "10f1ea4c-b8d3-5530-88fb-a53255678c89",
+          "secuencia": 2,
+          "pedido_id": "031d44d9-0288-5329-a092-d4f38ccc61dc",
+          "latitud": -12.04808,
+          "longitud": -76.983252,
+          "ventana_inicio": "2026-11-20T11:00:00-05:00",
+          "ventana_fin": "2026-11-20T14:00:00-05:00",
+          "eta": "2026-11-20T13:28:00-05:00",
+          "estado": "PENDIENTE"
+        },
+        {
+          "parada_id": "c7a644cc-1d54-5f89-a9c4-ca6eaea2c7bc",
+          "secuencia": 3,
+          "pedido_id": "37864be8-8ee5-5362-bd6f-6a4fcab35e37",
+          "latitud": -12.049167,
+          "longitud": -76.985782,
+          "ventana_inicio": "2026-11-20T13:15:00-05:00",
+          "ventana_fin": "2026-11-20T14:45:00-05:00",
+          "eta": "2026-11-20T13:35:00-05:00",
+          "estado": "PENDIENTE"
+        },
+        {
+          "parada_id": "5bcf4fa5-7872-5c2b-96f8-f6f8d324cff2",
+          "secuencia": 4,
+          "pedido_id": "f2abc54f-9331-5643-8a06-bb0c53bf641c",
+          "latitud": -12.049586,
+          "longitud": -76.987584,
+          "ventana_inicio": "2026-11-20T12:45:00-05:00",
+          "ventana_fin": "2026-11-20T14:45:00-05:00",
+          "eta": "2026-11-20T13:41:00-05:00",
+          "estado": "PENDIENTE"
+        },
+        {
+          "parada_id": "0652d447-79ce-5350-bc2c-0afe215aef83",
+          "secuencia": 5,
+          "pedido_id": "bbc31336-389a-567f-8a08-e76993d9de3b",
+          "latitud": -12.04524,
+          "longitud": -76.997029,
+          "ventana_inicio": "2026-11-20T11:45:00-05:00",
+          "ventana_fin": "2026-11-20T15:45:00-05:00",
+          "eta": "2026-11-20T13:51:00-05:00",
+          "estado": "PENDIENTE"
+        },
+        {
+          "parada_id": "ca2c1eb7-dd3a-56bd-b99f-b4ada34d4d12",
+          "secuencia": 6,
+          "pedido_id": "5580bd21-b751-5601-9b8d-1ae260462a24",
+          "latitud": -12.039442,
+          "longitud": -76.990599,
+          "ventana_inicio": "2026-11-20T14:00:00-05:00",
+          "ventana_fin": "2026-11-20T16:00:00-05:00",
+          "eta": "2026-11-20T14:00:00-05:00",
+          "estado": "PENDIENTE"
+        },
+        {
+          "parada_id": "29f0ace6-a1fe-58af-b50a-e6e3a29434c6",
+          "secuencia": 7,
+          "pedido_id": "69355bfc-859f-5bda-abd4-fe95f79f0861",
+          "latitud": -12.035417,
+          "longitud": -76.98301,
+          "ventana_inicio": "2026-11-20T12:45:00-05:00",
+          "ventana_fin": "2026-11-20T14:15:00-05:00",
+          "eta": "2026-11-20T14:09:00-05:00",
+          "estado": "PENDIENTE"
+        }
+      ],
+      "descansos": []
+    },
+    {
+      "ruta_id": "52e08854-33f5-5a91-a52f-1004f50165d1",
+      "vehiculo": {
+        "vehiculo_id": "e0132d8f-9c3b-51d2-9e32-9827c9b536ee",
+        "placa": "ECO-102",
+        "tipo": "CAMIONETA"
+      },
+      "conductor": {
+        "conductor_id": "1f3d0245-e816-587b-9064-8e20e8440853",
+        "nombre": "Conductor Demo 2"
+      },
+      "motivo_sin_conductor": null,
+      "estado": "PLANIFICADA",
+      "salida": "2026-11-20T10:53:00-05:00",
+      "regreso": "2026-11-20T14:07:00-05:00",
+      "tiempo_min": 194,
+      "peso_kg": 246.46,
+      "volumen_m3": 1.689,
+      "metricas": {
+        "distancia_km": 28.36,
+        "co2_kg": 6.91,
+        "combustible_l": 2.58,
+        "costo_soles": 45.95
+      },
+      "trazado": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -76.968,
+            -12.047
+          ],
+          [
+            -76.9581,
+            -12.036043
+          ],
+          [
+            -76.955443,
+            -12.0459
+          ],
+          [
+            -76.922637,
+            -12.047401
+          ],
+          [
+            -76.920144,
+            -12.049462
+          ],
+          [
+            -76.893927,
+            -12.034149
+          ],
+          [
+            -76.892423,
+            -12.031419
+          ],
+          [
+            -76.906168,
+            -12.038088
+          ],
+          [
+            -76.928404,
+            -12.022922
+          ],
+          [
+            -76.931146,
+            -12.040389
+          ],
+          [
+            -76.968,
+            -12.047
+          ]
+        ]
+      },
+      "paradas": [
+        {
+          "parada_id": "18b961f0-7e61-5823-bcd0-73a145240430",
+          "secuencia": 1,
+          "pedido_id": "80aac497-2978-5e01-89e5-2397dcbf39c6",
+          "latitud": -12.036043,
+          "longitud": -76.9581,
+          "ventana_inicio": "2026-11-20T09:30:00-05:00",
+          "ventana_fin": "2026-11-20T11:00:00-05:00",
+          "eta": "2026-11-20T11:00:00-05:00",
+          "estado": "PENDIENTE"
+        },
+        {
+          "parada_id": "534fcb27-4b8f-5070-9498-efc8c77164b6",
+          "secuencia": 2,
+          "pedido_id": "7f9b712d-2361-5292-ada9-6cf2f3186bef",
+          "latitud": -12.0459,
+          "longitud": -76.955443,
+          "ventana_inicio": "2026-11-20T11:45:00-05:00",
+          "ventana_fin": "2026-11-20T13:15:00-05:00",
+          "eta": "2026-11-20T11:59:00-05:00",
+          "estado": "PENDIENTE"
+        },
+        {
+          "parada_id": "8eed4070-4521-5ae7-9beb-53d590470f79",
+          "secuencia": 3,
+          "pedido_id": "5769cc81-5e1b-5364-8bc8-8ddad78920b6",
+          "latitud": -12.047401,
+          "longitud": -76.922637,
+          "ventana_inicio": "2026-11-20T11:15:00-05:00",
+          "ventana_fin": "2026-11-20T12:45:00-05:00",
+          "eta": "2026-11-20T12:19:00-05:00",
+          "estado": "PENDIENTE"
+        },
+        {
+          "parada_id": "96d26d5e-9a5d-507d-b7e8-0643d06293c4",
+          "secuencia": 4,
+          "pedido_id": "cd2688e3-5044-5030-842b-7c1eff1f6883",
+          "latitud": -12.049462,
+          "longitud": -76.920144,
+          "ventana_inicio": "2026-11-20T09:45:00-05:00",
+          "ventana_fin": "2026-11-20T13:45:00-05:00",
+          "eta": "2026-11-20T12:26:00-05:00",
+          "estado": "PENDIENTE"
+        },
+        {
+          "parada_id": "9c6cb683-95db-5774-9612-0e3aa63f6335",
+          "secuencia": 5,
+          "pedido_id": "dbdf0941-a058-50a5-bcdd-8dca82edcb9a",
+          "latitud": -12.034149,
+          "longitud": -76.893927,
+          "ventana_inicio": "2026-11-20T11:15:00-05:00",
+          "ventana_fin": "2026-11-20T12:45:00-05:00",
+          "eta": "2026-11-20T12:45:00-05:00",
+          "estado": "PENDIENTE"
+        },
+        {
+          "parada_id": "340b8bd1-2146-5323-bef1-7d300224d6fc",
+          "secuencia": 6,
+          "pedido_id": "a8ddffab-8f5b-576b-9716-bca7750761eb",
+          "latitud": -12.031419,
+          "longitud": -76.892423,
+          "ventana_inicio": "2026-11-20T12:15:00-05:00",
+          "ventana_fin": "2026-11-20T15:15:00-05:00",
+          "eta": "2026-11-20T13:03:00-05:00",
+          "estado": "PENDIENTE"
+        },
+        {
+          "parada_id": "36677b97-af81-5bc6-a9c5-ac66a561fe77",
+          "secuencia": 7,
+          "pedido_id": "5ae40b03-eabf-53e7-b4dd-6046f7af73a0",
+          "latitud": -12.038088,
+          "longitud": -76.906168,
+          "ventana_inicio": "2026-11-20T13:00:00-05:00",
+          "ventana_fin": "2026-11-20T17:00:00-05:00",
+          "eta": "2026-11-20T13:15:00-05:00",
+          "estado": "PENDIENTE"
+        },
+        {
+          "parada_id": "5999105a-5e11-5772-b4b1-a1e9df7d43cf",
+          "secuencia": 8,
+          "pedido_id": "a3e07d52-c809-5e2a-9668-0ef1dc0ef0a7",
+          "latitud": -12.022922,
+          "longitud": -76.928404,
+          "ventana_inicio": "2026-11-20T12:30:00-05:00",
+          "ventana_fin": "2026-11-20T16:30:00-05:00",
+          "eta": "2026-11-20T13:32:00-05:00",
+          "estado": "PENDIENTE"
+        },
+        {
+          "parada_id": "65fe4181-6109-5573-9683-89de36da997c",
+          "secuencia": 9,
+          "pedido_id": "6c877105-1155-574e-ba33-758dfb8bf917",
+          "latitud": -12.040389,
+          "longitud": -76.931146,
+          "ventana_inicio": "2026-11-20T13:45:00-05:00",
+          "ventana_fin": "2026-11-20T16:45:00-05:00",
+          "eta": "2026-11-20T13:45:00-05:00",
+          "estado": "PENDIENTE"
+        }
+      ],
+      "descansos": []
+    },
+    {
+      "ruta_id": "9084b8e8-70aa-52a3-89e7-4899e2db87d7",
+      "vehiculo": {
+        "vehiculo_id": "7a9fefa7-1fab-5fdd-8cd3-1471504f5c59",
+        "placa": "ECO-103",
+        "tipo": "CAMIONETA"
+      },
+      "conductor": null,
+      "motivo_sin_conductor": "SIN_CONDUCTOR_ELEGIBLE",
+      "estado": "PLANIFICADA",
+      "salida": "2026-11-20T09:10:00-05:00",
+      "regreso": "2026-11-20T14:46:00-05:00",
+      "tiempo_min": 336,
+      "peso_kg": 270.87,
+      "volumen_m3": 1.683,
+      "metricas": {
+        "distancia_km": 38.0,
+        "co2_kg": 9.26,
+        "combustible_l": 3.45,
+        "costo_soles": 61.57
+      },
+      "trazado": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -76.968,
+            -12.047
+          ],
+          [
+            -76.972084,
+            -12.039215
+          ],
+          [
+            -76.984906,
+            -12.043704
+          ],
+          [
+            -76.989506,
+            -12.041819
+          ],
+          [
+            -76.996951,
+            -11.995392
+          ],
+          [
+            -76.997558,
+            -11.995178
+          ],
+          [
+            -76.993477,
+            -11.995517
+          ],
+          [
+            -76.996337,
+            -11.975122
+          ],
+          [
+            -77.014383,
+            -11.979274
+          ],
+          [
+            -76.995834,
+            -11.957878
+          ],
+          [
+            -76.992822,
+            -11.955452
+          ],
+          [
+            -76.979622,
+            -11.976055
+          ],
+          [
+            -76.98663,
+            -12.031091
+          ],
+          [
+            -76.968,
+            -12.047
+          ]
+        ]
+      },
+      "paradas": [
+        {
+          "parada_id": "9feead4e-916d-5817-abec-635b9b8c8d83",
+          "secuencia": 1,
+          "pedido_id": "ee591b05-2d46-5c7b-bac7-2f90db28b49a",
+          "latitud": -12.039215,
+          "longitud": -76.972084,
+          "ventana_inicio": "2026-11-20T08:45:00-05:00",
+          "ventana_fin": "2026-11-20T10:15:00-05:00",
+          "eta": "2026-11-20T09:14:00-05:00",
+          "estado": "PENDIENTE"
+        },
+        {
+          "parada_id": "19f278c3-a7fa-59a6-82e5-0f0f8484be60",
+          "secuencia": 2,
+          "pedido_id": "bcf44383-3dd9-5496-b7f1-e5ba65b40136",
+          "latitud": -12.043704,
+          "longitud": -76.984906,
+          "ventana_inicio": "2026-11-20T08:45:00-05:00",
+          "ventana_fin": "2026-11-20T10:15:00-05:00",
+          "eta": "2026-11-20T09:25:00-05:00",
+          "estado": "PENDIENTE"
+        },
+        {
+          "parada_id": "7f079988-8abb-5191-8f36-acd02c628f58",
+          "secuencia": 3,
+          "pedido_id": "781b7312-9f2e-5364-b43c-bd25c1b1ef38",
+          "latitud": -12.041819,
+          "longitud": -76.989506,
+          "ventana_inicio": "2026-11-20T09:15:00-05:00",
+          "ventana_fin": "2026-11-20T10:45:00-05:00",
+          "eta": "2026-11-20T09:33:00-05:00",
+          "estado": "PENDIENTE"
+        },
+        {
+          "parada_id": "ad5c1614-3bc5-55b6-938d-d9080d226365",
+          "secuencia": 4,
+          "pedido_id": "beb62cac-0002-5e39-b87e-67ebc2fe6564",
+          "latitud": -11.995392,
+          "longitud": -76.996951,
+          "ventana_inicio": "2026-11-20T08:30:00-05:00",
+          "ventana_fin": "2026-11-20T10:00:00-05:00",
+          "eta": "2026-11-20T10:00:00-05:00",
+          "estado": "PENDIENTE"
+        },
+        {
+          "parada_id": "5cbc52fc-9d05-589c-b97c-730541aa4f47",
+          "secuencia": 5,
+          "pedido_id": "b3311cc7-7d42-5fa7-b013-7ca4adf140ef",
+          "latitud": -11.995178,
+          "longitud": -76.997558,
+          "ventana_inicio": "2026-11-20T10:30:00-05:00",
+          "ventana_fin": "2026-11-20T12:00:00-05:00",
+          "eta": "2026-11-20T10:53:00-05:00",
+          "estado": "PENDIENTE"
+        },
+        {
+          "parada_id": "f9765f79-4b95-58a6-8e18-645d3b575107",
+          "secuencia": 6,
+          "pedido_id": "72b3e1b0-2202-5893-92c0-85937c93596a",
+          "latitud": -11.995517,
+          "longitud": -76.993477,
+          "ventana_inicio": "2026-11-20T11:00:00-05:00",
+          "ventana_fin": "2026-11-20T13:00:00-05:00",
+          "eta": "2026-11-20T11:00:00-05:00",
+          "estado": "PENDIENTE"
+        },
+        {
+          "parada_id": "a8a6b30f-57f3-5fe8-844c-9f9d8864e8c2",
+          "secuencia": 7,
+          "pedido_id": "b9e2fbbc-ccaf-56ec-9ef9-2a4ea90980ef",
+          "latitud": -11.975122,
+          "longitud": -76.996337,
+          "ventana_inicio": "2026-11-20T09:15:00-05:00",
+          "ventana_fin": "2026-11-20T11:15:00-05:00",
+          "eta": "2026-11-20T11:15:00-05:00",
+          "estado": "PENDIENTE"
+        },
+        {
+          "parada_id": "0c0ee6f9-b68b-5f80-aeb4-858af0603a6c",
+          "secuencia": 8,
+          "pedido_id": "d6c87819-f278-59b9-9415-c3506f67666e",
+          "latitud": -11.979274,
+          "longitud": -77.014383,
+          "ventana_inicio": "2026-11-20T10:30:00-05:00",
+          "ventana_fin": "2026-11-20T12:00:00-05:00",
+          "eta": "2026-11-20T11:29:00-05:00",
+          "estado": "PENDIENTE"
+        },
+        {
+          "parada_id": "c74e22a7-b84e-590e-ac2e-71444ae27a0b",
+          "secuencia": 9,
+          "pedido_id": "0f0e40ef-c800-5fa4-9248-5489118ba9d6",
+          "latitud": -11.957878,
+          "longitud": -76.995834,
+          "ventana_inicio": "2026-11-20T11:45:00-05:00",
+          "ventana_fin": "2026-11-20T14:45:00-05:00",
+          "eta": "2026-11-20T11:47:00-05:00",
+          "estado": "PENDIENTE"
+        },
+        {
+          "parada_id": "ab56ef69-6b71-55c0-87a5-5aaa20b7d389",
+          "secuencia": 10,
+          "pedido_id": "5f3048f0-6793-551d-8150-156fc6959b26",
+          "latitud": -11.955452,
+          "longitud": -76.992822,
+          "ventana_inicio": "2026-11-20T11:30:00-05:00",
+          "ventana_fin": "2026-11-20T15:30:00-05:00",
+          "eta": "2026-11-20T13:42:00-05:00",
+          "estado": "PENDIENTE"
+        },
+        {
+          "parada_id": "d7f32fb1-acdb-5695-b806-81032fcee86e",
+          "secuencia": 11,
+          "pedido_id": "91fe5135-fe2b-5096-a372-568dbf130ce8",
+          "latitud": -11.976055,
+          "longitud": -76.979622,
+          "ventana_inicio": "2026-11-20T14:00:00-05:00",
+          "ventana_fin": "2026-11-20T17:00:00-05:00",
+          "eta": "2026-11-20T14:00:00-05:00",
+          "estado": "PENDIENTE"
+        },
+        {
+          "parada_id": "7198f666-3ddc-5396-8301-87fdf1b98f31",
+          "secuencia": 12,
+          "pedido_id": "21018b58-06c2-534d-8aa1-a60e9790c286",
+          "latitud": -12.031091,
+          "longitud": -76.98663,
+          "ventana_inicio": "2026-11-20T12:45:00-05:00",
+          "ventana_fin": "2026-11-20T14:45:00-05:00",
+          "eta": "2026-11-20T14:30:00-05:00",
+          "estado": "PENDIENTE"
+        }
+      ],
+      "descansos": [
+        {
+          "inicio": "2026-11-20T11:52:00-05:00",
+          "fin": "2026-11-20T12:52:00-05:00"
+        }
+      ]
+    }
+  ],
+  "no_asignados": [
+    {
+      "pedido_id": "4f448b8d-f2d5-5080-beec-d7b92265a7f6",
+      "motivo": "EXCEDE_CAPACIDAD"
+    },
+    {
+      "pedido_id": "1975903d-21d1-5559-8201-1101f97ce5fe",
+      "motivo": "VENTANA_INVIABLE"
+    }
+  ],
+  "error": null
+}

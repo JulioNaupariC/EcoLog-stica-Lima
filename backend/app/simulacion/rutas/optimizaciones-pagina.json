@@ -1,0 +1,52 @@
+{
+  "items": [
+    {
+      "optimizacion_id": "137a1946-c318-5657-b117-56cec95ad53f",
+      "estado": "EN_PROCESO",
+      "fecha_operacion": "2026-11-21",
+      "solicitada_en": "2026-11-20T07:45:00-05:00",
+      "resumen": null
+    },
+    {
+      "optimizacion_id": "d4967edb-c9c0-5f9b-add0-7981a2a5ba5e",
+      "estado": "COMPLETADA",
+      "fecha_operacion": "2026-11-20",
+      "solicitada_en": "2026-11-20T07:30:00-05:00",
+      "resumen": {
+        "rutas": 3,
+        "pedidos_asignados": 28,
+        "pedidos_no_asignados": 2,
+        "optimizada": {
+          "distancia_km": 76.66,
+          "co2_kg": 19.24,
+          "combustible_l": 7.18,
+          "costo_soles": 125.18
+        },
+        "secuencial": {
+          "distancia_km": 251.38,
+          "co2_kg": 74.86,
+          "combustible_l": 27.93,
+          "costo_soles": 430.78
+        },
+        "ahorro_pct": {
+          "distancia": 69.5,
+          "co2": 74.3,
+          "combustible": 74.3,
+          "costo": 70.9
+        },
+        "cumplimiento_ventanas_pct": 100.0
+      }
+    },
+    {
+      "optimizacion_id": "00910bee-ae34-5d4d-9cc3-ea47a7807aee",
+      "estado": "FALLIDA",
+      "fecha_operacion": "2026-11-19",
+      "solicitada_en": "2026-11-19T07:30:00-05:00",
+      "resumen": null
+    }
+  ],
+  "page": 1,
+  "page_size": 20,
+  "total": 3,
+  "simulado": true
+}

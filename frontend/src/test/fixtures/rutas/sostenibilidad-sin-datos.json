@@ -1,0 +1,16 @@
+{
+  "periodo": {
+    "desde": "2025-01-01",
+    "hasta": "2025-01-31"
+  },
+  "con_datos": false,
+  "rutas_cerradas": 0,
+  "distancia_km": null,
+  "co2_kg": null,
+  "combustible_l": null,
+  "costo_soles": null,
+  "ahorro_vs_secuencial": null,
+  "cumplimiento_ventanas_pct": null,
+  "parametros_versiones": [],
+  "simulado": true
+}

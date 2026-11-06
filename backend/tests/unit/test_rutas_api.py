@@ -1,0 +1,294 @@
+"""ECL-94 (ST-045): route API contract with simulated data and real RBAC."""
+
+import json
+from contextlib import contextmanager
+from pathlib import Path
+from types import SimpleNamespace
+from unittest.mock import Mock
+from uuid import uuid4
+
+import pytest
+from fastapi.testclient import TestClient
+
+from app.api.dependencies import get_current_session
+from app.core.config import Settings
+from app.core.rbac import Identidad, Rol
+from app.main import create_app
+from app.schemas.rutas import (
+    EstadoOptimizacion,
+    IndicadoresSostenibilidad,
+    OptimizacionDetalle,
+    OptimizacionSolicitud,
+)
+from app.services import rutas_simuladas
+from app.services.autenticacion import AuthenticatedSession
+from app.services.autorizacion import AutorizacionService
+
+FIXTURES = rutas_simuladas.FIXTURES
+FRONTEND = Path(__file__).resolve().parents[3] / "frontend/src/test/fixtures/rutas"
+FECHA = "2026-11-20"
+
+
+@contextmanager
+def client_for(role):
+    app = create_app(Settings(database_url=None))
+    identity = Identidad(uuid4(), role, "ACTIVO")
+    app.dependency_overrides[get_current_session] = lambda: AuthenticatedSession(
+        uuid4(), identity
+    )
+    with TestClient(app) as client:
+        app.state.authorization_service = AutorizacionService(Mock())
+        yield SimpleNamespace(client=client)
+
+
+def ids() -> dict[EstadoOptimizacion, str]:
+    return {
+        d.estado: str(d.optimizacion_id) for d in rutas_simuladas.detalles().values()
+    }
+
+
+# --- fixtures ------------------------------------------------------------------
+
+
+def test_fixtures_validate_against_the_published_schemas():
+    detalles = rutas_simuladas.detalles()
+    assert {d.estado for d in detalles.values()} == set(EstadoOptimizacion)
+    completada = rutas_simuladas.completada()
+    assert len(completada.rutas) == 3 and len(completada.no_asignados) == 2
+    assert completada.resumen is not None
+    assert completada.resumen.rutas == len(completada.rutas)
+    asignados = sum(len(r.paradas) for r in completada.rutas)
+    assert completada.resumen.pedidos_asignados == asignados
+    for ruta in completada.rutas:
+        assert [p.secuencia for p in ruta.paradas] == list(
+            range(1, len(ruta.paradas) + 1)
+        )
+        for parada in ruta.paradas:
+            assert parada.ventana_inicio <= parada.eta <= parada.ventana_fin
+        assert ruta.trazado.coordinates[0] == ruta.trazado.coordinates[-1]  # depósito
+    sin_datos = IndicadoresSostenibilidad.model_validate_json(
+        (FIXTURES / "sostenibilidad-sin-datos.json").read_text(encoding="utf-8")
+    )
+    assert sin_datos.con_datos is False and sin_datos.distancia_km is None
+
+
+def test_service_outputs_match_the_published_examples():
+    servicio = rutas_simuladas.RutasSimuladasService()
+    aceptada = json.loads(
+        (FIXTURES / "optimizacion-aceptada.json").read_text(encoding="utf-8")
+    )
+    pagina = json.loads(
+        (FIXTURES / "optimizaciones-pagina.json").read_text(encoding="utf-8")
+    )
+    solicitud = OptimizacionSolicitud(fecha_operacion=FECHA)
+    assert servicio.solicitar(solicitud).model_dump(mode="json") == aceptada
+    assert servicio.listar(None, 1, 20).model_dump(mode="json") == pagina
+
+
+@pytest.mark.skipif(not FRONTEND.is_dir(), reason="frontend no disponible")
+def test_frontend_fixtures_are_identical_to_the_backend_ones():
+    backend = {p.name: p.read_bytes() for p in FIXTURES.glob("*.json")}
+    frontend = {p.name: p.read_bytes() for p in FRONTEND.glob("*.json")}
+    assert frontend == backend
+
+
+# --- POST /optimizaciones ------------------------------------------------------
+
+
+def test_operator_requests_an_optimization():
+    with client_for(Rol.OPERADOR) as ctx:
+        response = ctx.client.post("/optimizaciones", json={"fecha_operacion": FECHA})
+    assert response.status_code == 202
+    body = response.json()
+    assert body["estado"] == "EN_PROCESO" and body["simulado"] is True
+    assert body["optimizacion_id"] == ids()[EstadoOptimizacion.COMPLETADA]
+    assert response.headers["X-Datos-Simulados"] == "true"
+    assert response.headers["Cache-Control"] == "no-store"
+
+
+@pytest.mark.parametrize(
+    "role", [Rol.ADMINISTRADOR, Rol.ANALISTA, Rol.AUDITOR, Rol.CONDUCTOR]
+)
+def test_only_the_operator_can_request_an_optimization(role):
+    with client_for(role) as ctx:
+        response = ctx.client.post("/optimizaciones", json={"fecha_operacion": FECHA})
+    assert response.status_code == 403
+
+
+@pytest.mark.parametrize(
+    "body",
+    [
+        {},
+        {"fecha_operacion": "no-es-fecha"},
+        {"fecha_operacion": FECHA, "estado": "COMPLETADA"},
+        {"fecha_operacion": FECHA, "pedido_ids": []},
+        {"fecha_operacion": FECHA, "pedido_ids": [str(uuid4())] * 2},
+        {"fecha_operacion": FECHA, "vehiculo_ids": [str(uuid4()) for _ in range(16)]},
+    ],
+)
+def test_invalid_requests_are_422_without_echoing_input(body):
+    with client_for(Rol.OPERADOR) as ctx:
+        response = ctx.client.post("/optimizaciones", json=body)
+    assert response.status_code == 422
+    assert "no-es-fecha" not in response.text and "input" not in response.text
+
+
+def test_request_limits_follow_rnf001():
+    OptimizacionSolicitud(
+        fecha_operacion=FECHA,
+        pedido_ids=[uuid4() for _ in range(150)],
+        vehiculo_ids=[uuid4() for _ in range(15)],
+    )
+    with pytest.raises(ValueError):
+        OptimizacionSolicitud(
+            fecha_operacion=FECHA, pedido_ids=[uuid4() for _ in range(151)]
+        )
+
+
+# --- GET /optimizaciones -------------------------------------------------------
+
+
+@pytest.mark.parametrize(
+    "role", [Rol.ADMINISTRADOR, Rol.OPERADOR, Rol.ANALISTA, Rol.AUDITOR]
+)
+def test_list_is_available_to_general_consultation_roles(role):
+    with client_for(role) as ctx:
+        response = ctx.client.get("/optimizaciones")
+    assert response.status_code == 200
+    body = response.json()
+    assert body["total"] == 3 and body["simulado"] is True
+    fechas = [item["solicitada_en"] for item in body["items"]]
+    assert fechas == sorted(fechas, reverse=True)
+    assert "rutas" not in body["items"][0]  # no stops nor driver names
+
+
+def test_list_filters_by_date_and_paginates():
+    with client_for(Rol.OPERADOR) as ctx:
+        vacia = ctx.client.get("/optimizaciones", params={"fecha": "2020-01-01"})
+        pagina = ctx.client.get("/optimizaciones", params={"page": 2, "page_size": 2})
+        invalida = ctx.client.get("/optimizaciones", params={"page_size": 101})
+    assert vacia.json()["items"] == [] and vacia.json()["total"] == 0
+    assert len(pagina.json()["items"]) == 1 and pagina.json()["page"] == 2
+    assert invalida.status_code == 422
+
+
+def test_driver_cannot_list_optimizations():
+    with client_for(Rol.CONDUCTOR) as ctx:
+        assert ctx.client.get("/optimizaciones").status_code == 403
+
+
+# --- GET /optimizaciones/{id} --------------------------------------------------
+
+
+@pytest.mark.parametrize("role", [Rol.ADMINISTRADOR, Rol.OPERADOR])
+def test_detail_returns_routes_stops_and_unassigned(role):
+    with client_for(role) as ctx:
+        response = ctx.client.get(
+            f"/optimizaciones/{ids()[EstadoOptimizacion.COMPLETADA]}"
+        )
+    assert response.status_code == 200
+    detalle = OptimizacionDetalle.model_validate(response.json())
+    assert detalle.simulado is True and detalle.resumen is not None
+    assert {n.motivo.value for n in detalle.no_asignados} == {
+        "EXCEDE_CAPACIDAD",
+        "VENTANA_INVIABLE",
+    }
+    assert "dni" not in response.text.lower() and "telefono" not in response.text
+
+
+def test_in_progress_and_failed_examples():
+    with client_for(Rol.OPERADOR) as ctx:
+        proceso = ctx.client.get(
+            f"/optimizaciones/{ids()[EstadoOptimizacion.EN_PROCESO]}"
+        ).json()
+        fallida = ctx.client.get(
+            f"/optimizaciones/{ids()[EstadoOptimizacion.FALLIDA]}"
+        ).json()
+    assert proceso["rutas"] == [] and proceso["resumen"] is None
+    assert fallida["error"] and fallida["rutas"] == []
+
+
+@pytest.mark.parametrize("role", [Rol.ANALISTA, Rol.AUDITOR, Rol.CONDUCTOR])
+def test_detail_with_personal_data_is_403_for_other_roles(role):
+    with client_for(role) as ctx:
+        response = ctx.client.get(
+            f"/optimizaciones/{ids()[EstadoOptimizacion.COMPLETADA]}"
+        )
+    assert response.status_code == 403
+
+
+def test_unknown_or_malformed_id():
+    with client_for(Rol.OPERADOR) as ctx:
+        assert ctx.client.get(f"/optimizaciones/{uuid4()}").status_code == 404
+        malformado = ctx.client.get("/optimizaciones/no-es-uuid")
+    assert malformado.status_code == 422 and "no-es-uuid" not in malformado.text
+
+
+# --- GET /indicadores/sostenibilidad -------------------------------------------
+
+
+@pytest.mark.parametrize(
+    "role", [Rol.ADMINISTRADOR, Rol.OPERADOR, Rol.ANALISTA, Rol.AUDITOR]
+)
+def test_dashboard_with_data_keeps_the_requested_period(role):
+    with client_for(role) as ctx:
+        response = ctx.client.get(
+            "/indicadores/sostenibilidad",
+            params={"desde": "2026-11-01", "hasta": "2026-11-30"},
+        )
+    assert response.status_code == 200
+    body = response.json()
+    assert body["con_datos"] is True and body["simulado"] is True
+    assert body["periodo"] == {"desde": "2026-11-01", "hasta": "2026-11-30"}
+    assert body["co2_kg"] > 0 and body["parametros_versiones"]
+
+
+def test_dashboard_without_closed_routes_returns_nulls_not_zeros():
+    with client_for(Rol.ANALISTA) as ctx:
+        body = ctx.client.get(
+            "/indicadores/sostenibilidad",
+            params={"desde": "2025-01-01", "hasta": "2025-01-31"},
+        ).json()
+    assert body["con_datos"] is False and body["rutas_cerradas"] == 0
+    assert body["distancia_km"] is None and body["ahorro_vs_secuencial"] is None
+
+
+def test_dashboard_rejects_an_inverted_or_missing_period():
+    with client_for(Rol.ANALISTA) as ctx:
+        invertido = ctx.client.get(
+            "/indicadores/sostenibilidad",
+            params={"desde": "2026-11-30", "hasta": "2026-11-01"},
+        )
+        faltante = ctx.client.get("/indicadores/sostenibilidad")
+    assert invertido.status_code == 422 and faltante.status_code == 422
+
+
+def test_driver_cannot_open_the_dashboard():
+    with client_for(Rol.CONDUCTOR) as ctx:
+        response = ctx.client.get(
+            "/indicadores/sostenibilidad",
+            params={"desde": "2026-11-01", "hasta": "2026-11-30"},
+        )
+    assert response.status_code == 403
+
+
+def test_without_data_the_schema_rejects_values_and_vice_versa():
+    base = json.loads(
+        (FIXTURES / "sostenibilidad-con-datos.json").read_text(encoding="utf-8")
+    )
+    with pytest.raises(ValueError):
+        IndicadoresSostenibilidad.model_validate({**base, "co2_kg": None})
+    with pytest.raises(ValueError):
+        IndicadoresSostenibilidad.model_validate({**base, "con_datos": False})
+
+
+# --- OpenAPI -------------------------------------------------------------------
+
+
+def test_openapi_documents_the_contract():
+    app = create_app(Settings(database_url=None))
+    paths = app.openapi()["paths"]
+    assert {"post", "get"} <= set(paths["/optimizaciones"])
+    detalle = paths["/optimizaciones/{optimizacion_id}"]["get"]["responses"]
+    assert {"200", "401", "403", "404", "422"} <= set(detalle)
+    assert "/indicadores/sostenibilidad" in paths
