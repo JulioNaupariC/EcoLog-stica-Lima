@@ -973,6 +973,53 @@ demás, así que sus cabeceras llegan a toda respuesta: errores, preflight CORS 
 
   Rechaza credenciales, ruta, query, fragmento y puertos inválidos.
 
+## Optimizador de rutas VRPTW — ECL-93 / ST-044 (spike)
+
+`app/optimizacion/` resuelve el problema de rutas con ventanas de tiempo
+(VRPTW) usando OR-Tools `9.14.6206`. Es dominio puro: no usa FastAPI ni la
+base de datos. ST-047 lo conecta con la API y el modelo de rutas.
+
+| Módulo | Contenido |
+|---|---|
+| `modelo.py` | Entrada (pedidos, vehículos, depósito, configuración) y salida (rutas, paradas con ETA, descansos, métricas y no asignados con motivo). |
+| `distancias.py` | Haversine × factor de desvío y minutos de viaje a velocidad urbana configurable. No usa APIs externas. |
+| `vrptw.py` | Modelo OR-Tools y `resolver(problema)`. |
+| `metricas.py` | Distancia, CO₂ (RN-013) y litros de combustible (RN-011), y la ruta secuencial de referencia. |
+| `verificacion.py` | Revisa una solución contra las restricciones duras sin confiar en el solver. |
+| `sinteticos.py` | Escenarios reproducibles con semilla en los 4 distritos. |
+
+**Restricciones duras:**
+
+- Capacidad en kg y m³ (RN-003).
+- Ventanas de tiempo (RN-006): la hora de servicio queda dentro de la ventana.
+- Jornada de 8 h y descanso de 1 h tras 4 h continuas (RN-005). Se aplica de
+  forma conservadora: el servicio y la espera cuentan como conducción.
+
+**Función objetivo:** kg de CO₂, es decir, distancia × factor del vehículo
+(Green VRP). Cada pedido omitido suma una penalidad según su prioridad
+(RN-007), así que primero se dejan fuera los `ECONOMICO`.
+
+**Pedidos no asignados (RN-009):** nunca invalidan las rutas factibles. Cada uno
+lleva su motivo: `SIN_UBICACION`, `EXCEDE_CAPACIDAD`, `VENTANA_INVIABLE` o
+`SIN_VEHICULO`.
+
+**Ruta secuencial de referencia:** los pedidos se cargan en el orden de
+registro. Cada vehículo los lleva hasta que el siguiente no cabe, sin mirar las
+ventanas. El ahorro se calcula sobre los mismos pedidos que atendió el
+optimizador (Visión: «comparación sobre el mismo conjunto de pedidos»).
+
+Medición reproducible del spike (desde `backend/`):
+
+```powershell
+python scripts/spike_vrptw.py
+python scripts/spike_vrptw.py --corridas 30 --salida evidencias/ECL-93/medicion-<equipo>.json
+```
+
+Con `--corridas 30` se mide RNF-001: percentil 95 de 30 ejecuciones con 150
+pedidos y 15 vehículos. El script no usa base de datos, red ni credenciales.
+Resultados, decisión y límites:
+[evidencias/ECL-93](evidencias/ECL-93/README.md).
+
 ## API de rutas: contrato con datos simulados — ECL-94 / ST-045
 
 El contrato se publica antes que el optimizador para que el mapa (US-008) y el

@@ -1,0 +1,197 @@
+{
+  "ticket": "ECL-93 (ST-044)",
+  "medido_en": "2026-11-06T20:34:06+00:00",
+  "equipo": {
+    "sistema": "Windows-11-10.0.26200-SP0",
+    "procesador": "AMD64 Family 25 Model 117 Stepping 2, AuthenticAMD",
+    "nucleos_logicos": 16,
+    "python": "3.12.10",
+    "ortools": "9.14.6206"
+  },
+  "configuracion": {
+    "inicio_jornada_min": 480,
+    "jornada_max_min": 480,
+    "conduccion_continua_max_min": 240,
+    "descanso_min": 60,
+    "servicio_min": 5,
+    "velocidad_kmh": 20.0,
+    "factor_desvio": 1.35,
+    "tiempo_limite_s": 20,
+    "metaheuristica": true
+  },
+  "resultados": [
+    {
+      "pedidos": 150,
+      "vehiculos": 15,
+      "semilla": 2026,
+      "tiempo_limite_s": 20,
+      "corridas": 30,
+      "tiempos_s": [
+        20.03,
+        20.026,
+        20.027,
+        20.027,
+        20.025,
+        20.027,
+        20.026,
+        20.024,
+        20.019,
+        20.017,
+        20.03,
+        20.025,
+        20.029,
+        20.028,
+        20.039,
+        20.026,
+        20.03,
+        20.03,
+        20.029,
+        20.024,
+        20.017,
+        20.028,
+        20.035,
+        20.031,
+        20.027,
+        20.033,
+        20.029,
+        20.031,
+        20.026,
+        20.026
+      ],
+      "tiempo_max_s": 20.039,
+      "tiempo_p95_s": 20.035,
+      "tiempo_mediana_s": 20.027,
+      "cumple_rnf001": true,
+      "rutas": 11,
+      "pedidos_asignados": 148,
+      "no_asignados": [
+        {
+          "pedido_id": "X-CAPACIDAD",
+          "motivo": "EXCEDE_CAPACIDAD"
+        },
+        {
+          "pedido_id": "X-VENTANA",
+          "motivo": "VENTANA_INVIABLE"
+        }
+      ],
+      "violaciones": [],
+      "optimizada": {
+        "distancia_km": 226.453,
+        "co2_kg": 55.373,
+        "combustible_l": 20.68
+      },
+      "secuencial_registro": {
+        "distancia_km": 1077.152,
+        "co2_kg": 320.754,
+        "combustible_l": 119.684
+      },
+      "ahorro_distancia_pct": 79.0,
+      "ahorro_co2_pct": 82.7,
+      "ahorro_combustible_pct": 82.7,
+      "vecino_mas_cercano": {
+        "distancia_km": 183.857,
+        "cumplimiento_ventanas_pct": 35.8
+      },
+      "optimizada_sin_ventanas_km": 143.251,
+      "ahorro_sin_ventanas_vs_vecino_pct": 22.1,
+      "rutas_con_descanso": 7,
+      "duracion_max_ruta_min": 320
+    },
+    {
+      "pedidos": 100,
+      "vehiculos": 10,
+      "semilla": 2026,
+      "tiempo_limite_s": 20,
+      "corridas": 1,
+      "tiempos_s": [
+        20.015
+      ],
+      "tiempo_max_s": 20.015,
+      "tiempo_p95_s": 20.015,
+      "tiempo_mediana_s": 20.015,
+      "cumple_rnf001": true,
+      "rutas": 6,
+      "pedidos_asignados": 98,
+      "no_asignados": [
+        {
+          "pedido_id": "X-CAPACIDAD",
+          "motivo": "EXCEDE_CAPACIDAD"
+        },
+        {
+          "pedido_id": "X-VENTANA",
+          "motivo": "VENTANA_INVIABLE"
+        }
+      ],
+      "violaciones": [],
+      "optimizada": {
+        "distancia_km": 169.935,
+        "co2_kg": 42.726,
+        "combustible_l": 15.942
+      },
+      "secuencial_registro": {
+        "distancia_km": 721.201,
+        "co2_kg": 214.759,
+        "combustible_l": 80.133
+      },
+      "ahorro_distancia_pct": 76.4,
+      "ahorro_co2_pct": 80.1,
+      "ahorro_combustible_pct": 80.1,
+      "vecino_mas_cercano": {
+        "distancia_km": 156.086,
+        "cumplimiento_ventanas_pct": 38.8
+      },
+      "optimizada_sin_ventanas_km": 113.258,
+      "ahorro_sin_ventanas_vs_vecino_pct": 27.4,
+      "rutas_con_descanso": 3,
+      "duracion_max_ruta_min": 379
+    },
+    {
+      "pedidos": 50,
+      "vehiculos": 5,
+      "semilla": 2026,
+      "tiempo_limite_s": 20,
+      "corridas": 1,
+      "tiempos_s": [
+        20.004
+      ],
+      "tiempo_max_s": 20.004,
+      "tiempo_p95_s": 20.004,
+      "tiempo_mediana_s": 20.004,
+      "cumple_rnf001": true,
+      "rutas": 4,
+      "pedidos_asignados": 48,
+      "no_asignados": [
+        {
+          "pedido_id": "X-CAPACIDAD",
+          "motivo": "EXCEDE_CAPACIDAD"
+        },
+        {
+          "pedido_id": "X-VENTANA",
+          "motivo": "VENTANA_INVIABLE"
+        }
+      ],
+      "violaciones": [],
+      "optimizada": {
+        "distancia_km": 103.936,
+        "co2_kg": 30.95,
+        "combustible_l": 11.548
+      },
+      "secuencial_registro": {
+        "distancia_km": 394.091,
+        "co2_kg": 117.353,
+        "combustible_l": 43.788
+      },
+      "ahorro_distancia_pct": 73.6,
+      "ahorro_co2_pct": 73.6,
+      "ahorro_combustible_pct": 73.6,
+      "vecino_mas_cercano": {
+        "distancia_km": 107.039,
+        "cumplimiento_ventanas_pct": 27.1
+      },
+      "optimizada_sin_ventanas_km": 79.175,
+      "ahorro_sin_ventanas_vs_vecino_pct": 26.0,
+      "rutas_con_descanso": 1,
+      "duracion_max_ruta_min": 373
+    }
+  ]
+}
