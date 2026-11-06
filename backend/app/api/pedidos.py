@@ -5,6 +5,7 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException, Request, status
 
 from app.api.dependencies import require_permission
+from app.api.validation import SanitizedRoute
 from app.core.rbac import Identidad, Permiso
 from app.schemas.pedido import PedidoCreate, PedidoResponse
 from app.services.pedidos import (
@@ -13,7 +14,7 @@ from app.services.pedidos import (
     PedidoUnavailable,
 )
 
-router = APIRouter(prefix="/pedidos", tags=["pedidos"])
+router = APIRouter(prefix="/pedidos", tags=["pedidos"], route_class=SanitizedRoute)
 
 
 def get_pedido_service(request: Request) -> PedidoService:
