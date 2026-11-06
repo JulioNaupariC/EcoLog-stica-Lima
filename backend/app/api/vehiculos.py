@@ -6,6 +6,7 @@ from uuid import UUID
 from fastapi import APIRouter, Depends, HTTPException, Request, Response, status
 
 from app.api.dependencies import require_permission
+from app.api.validation import SanitizedRoute
 from app.core.rbac import Identidad, Permiso
 from app.schemas.vehiculo import VehicleCreate, VehicleResponse, VehicleUpdate
 from app.services.vehiculos import (
@@ -16,7 +17,7 @@ from app.services.vehiculos import (
     VehiculoService,
 )
 
-router = APIRouter(prefix="/vehiculos", tags=["vehiculos"])
+router = APIRouter(prefix="/vehiculos", tags=["vehiculos"], route_class=SanitizedRoute)
 
 
 def get_vehicle_service(request: Request) -> VehiculoService:
