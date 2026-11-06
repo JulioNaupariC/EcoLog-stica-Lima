@@ -355,6 +355,10 @@ sprint; las tres ramas de cierre están protegidas contra cambios y borrado.
 | `sprint-3` | Sprint 3 — Calidad y Seguridad (PR #59–#85), con el registro de la Review y la carpeta de cada sprint | `cf4bb2c` (03/11/2026) |
 | `main` | Rama de integración | — |
 
+### Sprint 4 — Green IT
+
+- [ECL-108 — Línea base ANTES: protocolo y estado de las mediciones](<docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/README.md>)
+
 ## Fase 04: Contribución
 
 - [01. Política de pull requests V_1_0_0](<docs/04 Contribución/01. Politica de pull requests V_1_0_0.md>)
