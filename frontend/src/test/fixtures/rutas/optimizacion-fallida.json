@@ -1,0 +1,14 @@
+{
+  "optimizacion_id": "00910bee-ae34-5d4d-9cc3-ea47a7807aee",
+  "estado": "FALLIDA",
+  "fecha_operacion": "2026-11-19",
+  "solicitada_en": "2026-11-19T07:30:00-05:00",
+  "finalizada_en": "2026-11-19T07:31:00-05:00",
+  "duracion_s": 45.0,
+  "parametros_version": "SIMULADO-2026-11",
+  "simulado": true,
+  "resumen": null,
+  "rutas": [],
+  "no_asignados": [],
+  "error": "La optimización superó el tiempo límite de 45 s"
+}
