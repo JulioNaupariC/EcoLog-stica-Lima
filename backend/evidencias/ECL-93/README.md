@@ -10,13 +10,28 @@ final.
 
 ## Medición
 
+Se midió en dos equipos con el mismo comando
+(`python scripts/spike_vrptw.py --corridas 30 --salida …`), semilla 2026 y límite
+de búsqueda de 20 s.
+
+### Laptop de desarrollo (criterio del ticket)
+
+- **Archivo:** [medicion-laptop.json](medicion-laptop.json), medido el 06/11/2026 por Antony Munive.
+- **Equipo:** Windows 11 (10.0.26200), procesador AMD64 Family 25 Model 117 (AuthenticAMD), 16 núcleos lógicos, Python 3.12.10. El script no registra la RAM.
+
+| Escenario | Corridas | p95 | Máximo | Rutas | Asignados | No asignados | Violaciones |
+|---|---|---|---|---|---|---|---|
+| 150 pedidos / 15 vehículos | 30 | 20,04 s | 20,04 s | 11 | 148 | 2 | 0 |
+| 100 pedidos / 10 vehículos | 1 | 20,02 s | 20,02 s | 6 | 98 | 2 | 0 |
+| 50 pedidos / 5 vehículos | 1 | 20,00 s | 20,00 s | 4 | 48 | 2 | 0 |
+
+En la laptop la solución de 150 / 15 recorre 226,5 km: 79,0 % menos distancia y 82,7 % menos CO₂ que la ruta secuencial.
+
+### Entorno de desarrollo en la nube
+
 - **Archivo:** [medicion-entorno-nube.json](medicion-entorno-nube.json), medido
   el 06/11/2026.
-- **Equipo:** entorno de desarrollo en la nube, Linux, 2 núcleos lógicos x86_64,
-  Python 3.12.3. **No es la laptop de desarrollo:** falta repetir la medición
-  allí (ver «Pendiente»).
-- **Comando:** `python scripts/spike_vrptw.py --corridas 30 --salida …` con
-  semilla 2026 y límite de búsqueda de 20 s.
+- **Equipo:** Linux, 2 núcleos lógicos x86_64, Python 3.12.3.
 
 | Escenario | Corridas | p95 | Máximo | Rutas | Asignados | No asignados | Violaciones |
 |---|---|---|---|---|---|---|---|
@@ -24,7 +39,7 @@ final.
 | 100 pedidos / 10 vehículos | 1 | 20,01 s | 20,01 s | 6 | 98 | 2 | 0 |
 | 50 pedidos / 5 vehículos | 1 | 20,01 s | 20,01 s | 3 | 48 | 2 | 0 |
 
-- **RNF-001 cumplido en este equipo:** p95 de 30 corridas ≤ 45 s. El tiempo lo
+- **RNF-001 cumplido en los dos equipos:** p95 de 30 corridas ≤ 45 s (20,04 s en la laptop y 20,02 s en la nube). El tiempo lo
   marca el límite de búsqueda. La primera solución factible sale en 0,5 s
   (400,0 km) y la búsqueda local la baja a 226,5 km en 10 s y a 222,7 km en 20 s.
   Un equipo más lento llega al mismo tiempo, con una solución algo peor, nunca
@@ -106,16 +121,6 @@ optimizador recorre:
   automatizar la prueba de rendimiento es EN-003 (ECL-21).
 - **Parámetros:** EN-008 (ECL-26) los reemplaza por valores versionados con
   fuente.
-
-## Pendiente
-
-Repetir la medición en la laptop de desarrollo, desde `backend/`:
-
-```powershell
-python scripts/spike_vrptw.py --corridas 30 --salida evidencias/ECL-93/medicion-laptop.json
-```
-
-Después, agregar aquí el procesador, la RAM y el p95 medidos.
 
 ## Reproducción
 
