@@ -444,6 +444,7 @@ Los siguientes comentarios reservan enlaces para entregas futuras.
 - [ECL-108 — Línea base ANTES: resultados y medianas](<docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-50-12-524Z/README.md>) · [Protocolo y preparación inicial](<docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/README.md>)
 - [ECL-111 — React.lazy, listados de 12 y verificación offline](<docs/03 Implementación/reduccion del impacto ambiental/ECL-111 React lazy y paginacion V_1_0_0.md>)
 - [ECL-113 - Build de produccion con Gzip y cache](<docs/03 Implementación/Sprint 04/ECL-113 build produccion.md>)
+- [ECL-114 — Lighthouse CI y corrección de pruebas diferidas](<docs/03 Implementación/reduccion del impacto ambiental/ECL-114 auditoria Green IT en CI.md>)
 
 ## Fase 04: Contribución
 

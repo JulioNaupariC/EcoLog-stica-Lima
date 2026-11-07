@@ -142,10 +142,10 @@ it('el Administrador ve Usuarios en el menú y el cambio voluntario en su cuenta
   await screen.findByRole('heading', { name: 'Inicio' })
   await user.click(screen.getByRole('link', { name: 'Usuarios' }))
   expect(await screen.findByRole('heading', { name: 'Usuarios', level: 1 })).toBeInTheDocument()
-  expect(listUsersMock).toHaveBeenCalledWith(1, 12)
+  await waitFor(() => expect(listUsersMock).toHaveBeenCalledWith(1, 12))
 
   await user.click(screen.getByRole('button', { name: /^Cuenta:/u }))
   await user.click(screen.getByRole('link', { name: 'Cambiar contraseña' }))
-  expect(screen.getByLabelText('Contraseña actual')).toBeInTheDocument()
+  expect(await screen.findByLabelText('Contraseña actual')).toBeInTheDocument()
   expect(screen.getByRole('navigation', { name: 'Navegación principal' })).toBeInTheDocument()
 })
