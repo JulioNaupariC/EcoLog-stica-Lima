@@ -119,7 +119,7 @@ describe('App', () => {
     expect(link).toHaveAttribute('href', '/operacion/incidencias')
     await user.click(link)
     expect(await screen.findByRole('table')).toBeInTheDocument()
-    expect(listIncidentsMock).toHaveBeenCalledOnce()
+    await waitFor(() => expect(listIncidentsMock).toHaveBeenCalledOnce())
   })
 
   it.each<AuthRole>(['ANALISTA', 'AUDITOR', 'CONDUCTOR'])('ECL-75: %s no ve el menú ni accede por URL', async role => {
@@ -313,7 +313,7 @@ describe('App', () => {
     listVehiclesMock.mockClear()
     await user.click(screen.getByRole('link', { name: 'Vehículos' }))
     expect(await screen.findByRole('table')).toBeInTheDocument()
-    expect(listVehiclesMock).toHaveBeenCalledTimes(1)
+    await waitFor(() => expect(listVehiclesMock).toHaveBeenCalledTimes(1))
     for (const [label, value] of Object.entries({
       Placa: ' abc-123 ', Tipo: 'CAMIONETA', 'Capacidad (kg)': '1000.00', 'Capacidad (m³)': '8.00',
       'Rendimiento (km/L)': '10.000', 'Factor CO₂ (kg/km)': '0.30000', 'Año de fabricación': '2024',
@@ -323,7 +323,7 @@ describe('App', () => {
     await user.click(screen.getByRole('button', { name: 'Registrar vehículo' }))
     expect(await screen.findByText('Vehículo registrado: ABC-123.')).toBeInTheDocument()
     expect(createVehicleMock).toHaveBeenCalledTimes(1)
-    expect(listVehiclesMock).toHaveBeenCalledTimes(2)
+    await waitFor(() => expect(listVehiclesMock).toHaveBeenCalledTimes(2))
     expect(screen.getByTestId('path').textContent).toBe('/vehiculos')
   })
 
