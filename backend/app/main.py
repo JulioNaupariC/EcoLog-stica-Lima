@@ -5,9 +5,11 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from starlette.middleware.gzip import GZipMiddleware
 
 from app.api.auth import router as auth_router
 from app.api.clientes import router as cliente_router
+from app.api.conditional_get import ConditionalGetMiddleware
 from app.api.conductores import router as conductor_router
 from app.api.contrasenas import router as password_router
 from app.api.driver_reports import router as driver_report_router
@@ -33,6 +35,8 @@ from app.services.auditoria import AuditoriaService
 from app.services.autenticacion import AutenticacionService
 from app.services.autorizacion import AutorizacionService
 from app.services.restablecimiento import RestablecimientoService
+
+GZIP_MINIMUM_BYTES = 1000
 
 
 def create_app(settings: Settings | None = None) -> FastAPI:
@@ -93,6 +97,10 @@ def create_app(settings: Settings | None = None) -> FastAPI:
 
     app = FastAPI(title="EcoLogística Lima API", version="0.1.0", lifespan=lifespan)
     app.state.metrics = metrics
+    # Green IT (ECL-110), innermost first: the ETag is computed on the JSON
+    # itself, then GZip compresses JSON bodies of at least 1 KB.
+    app.add_middleware(ConditionalGetMiddleware)
+    app.add_middleware(GZipMiddleware, minimum_size=GZIP_MINIMUM_BYTES)
     app.add_middleware(
         CORSMiddleware,
         allow_origins=config.cors_allowed_origins,

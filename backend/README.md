@@ -1144,4 +1144,36 @@ GZip (ECL-110). La medición real del DESPUÉS es ECL-115.
 - `tests/integration/test_vehiculo_crud.py`: página 1 y página 2 vacía con
   PostgreSQL real.
 
+## Green IT: compresión y revalidación HTTP — ECL-110
+
+Dos middlewares en `app/main.py`, registrados por dentro de CORS, métricas y
+cabeceras de seguridad (ECL-84):
+
+- **Compresión:** `GZipMiddleware` de Starlette comprime las respuestas de al
+  menos `GZIP_MINIMUM_BYTES = 1000` bytes cuando el cliente envía
+  `Accept-Encoding: gzip`. Es el equivalente en FastAPI del middleware
+  `compression` de Express. Las respuestas pequeñas, como `/health`, no se
+  comprimen.
+- **Revalidación con ETag:** `app/api/conditional_get.py` agrega un `ETag` débil
+  (SHA-256 del JSON sin comprimir) a los `GET` con `200` y JSON que cumplan una
+  de estas dos condiciones:
+  - la ruta está en `ETAG_PATHS`: catálogos sin datos personales, hoy
+    `/vehiculos`; si no traen política de caché, reciben
+    `Cache-Control: private, no-cache`;
+  - la ruta ya declaró `Cache-Control: private`, como `/indicadores/operacion`.
+
+  Si el navegador repite la petición con `If-None-Match` y el contenido no
+  cambió, responde `304 Not Modified` sin cuerpo. El caché HTTP del navegador
+  envía esa cabecera solo, así que el frontend no cambia.
+
+Reglas de seguridad:
+- Nunca se etiqueta una respuesta con `no-store`: contraseñas, preferencias,
+  listados con datos personales, rutas simuladas y `/metrics`.
+- `private` impide que un caché compartido guarde la respuesta.
+- La etiqueta se calcula por dentro de la compresión. Así no cambia entre gzip e
+  identidad y es débil porque la codificación puede variar.
+
+Las cifras ANTES/DESPUÉS de bytes transferidos se miden con el protocolo de
+ECL-108 en ECL-115. Este cambio no publica cifras propias.
+
 [← Volver al README principal](../README.md)
