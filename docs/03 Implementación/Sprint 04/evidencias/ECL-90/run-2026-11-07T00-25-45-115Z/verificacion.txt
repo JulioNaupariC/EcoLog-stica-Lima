@@ -1,0 +1,16 @@
+Preflight real: codigo 1 (puertos de la demo activa ocupados).
+
+Comprobacion       Estado Detalle
+------------       ------ -------
+Docker CLI         OK     Disponible.
+Motor Docker Linux OK     Activo y accesible.
+Docker Compose     OK     Compose v2 o superior disponible.
+.env de la raiz    OK     Existe; contenido y valores no inspeccionados.
+Puerto 8000        ERROR  No se puede reservar: ocupado, reservado o sin permiso. Identificar al propietario.
+Puerto 5173        ERROR  No se puede reservar: ocupado, reservado o sin permiso. Identificar al propietario.
+
+
+Solo preflight: no acredita login, configuracion de .env ni pruebas de integracion.
+
+Pruebas del verificador: codigo 0.
+OK: faltantes, motor detenido/Windows, Compose v1, puertos y privacidad.
