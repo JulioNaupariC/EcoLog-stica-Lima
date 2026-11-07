@@ -7,7 +7,7 @@
 | Ticket | [ECL-118](https://continental-team-il84x39k.atlassian.net/browse/ECL-118), 2 SP |
 | Autor | Frank Roy Yupanqui Acevedo — @FrankRoyYA |
 | Revisor | Julio Armando Naupari Camarena — @JulioNaupariC |
-| Versión del contenido | 0.1.0 — BORRADOR |
+| Versión del contenido | 0.2.0 — BORRADOR |
 | Fecha de elaboración y consulta de fuentes | 06/11/2026, America/Lima |
 | Código examinado | `main bb543a0`, después del merge de #91 |
 | Commit ANTES de Green IT | `e09dcd80e32431018d4020bb02c89ffae7505705`, medido en ECL-108 |
@@ -27,12 +27,11 @@ Brotli/Gzip) y ECL-114 (green-audit.yml con LHCI). La medición DESPUÉS es
 ECL-115; el cálculo SWDM v4 es ECL-116; el Informe 01 es ECL-117.
 La disponibilidad en el diagrama indica orden de trabajo, no aceptación técnica.
 
-La rúbrica exige ocho optimizaciones individuales. El diagrama no desglosa
-inequívocamente esos ocho elementos y en el corte examinado no existe el
-Informe 01 con ese inventario. Por tanto, la matriz de la sección 6 es una
-trazabilidad preliminar por paquete; no se presenta como la matriz definitiva
-de ocho optimizaciones implementadas. Su identificación y sus PR/mediciones
-son insumos pendientes del equipo.
+La rúbrica define ocho optimizaciones individuales, cuyo desglose y asignación
+a tickets fueron confirmados por Frank para esta revisión. La sección 6 las
+mapea en ocho filas; no se presentan como implementadas. Siguen pendientes
+los PR del incremento y las mediciones DESPUÉS de ECL-115. ECL-114 corresponde
+al criterio 3 de la rúbrica y no se contabiliza entre las ocho optimizaciones.
 
 La [campaña ANTES válida](<evidencias/antes/run-2026-11-06T23-50-12-524Z/README.md>)
 documenta tres corridas de login, tres del itinerario y 60 respuestas API 200.
@@ -118,6 +117,24 @@ datos y automatización. El mapeo es una interpretación del equipo, no una
 declaración de conformidad WSG. Si la rúbrica emplea otra versión, debe
 registrarse y compararse su numeración sin reemplazar títulos por conjetura.
 
+### 4.1 Equivalencias entre rúbrica y versión oficial fijada
+
+Los rótulos de la primera columna proceden de la rúbrica comunicada por Frank;
+no son los títulos oficiales de esos mismos números. La equivalencia es temática.
+Los títulos de la segunda columna se verificaron en la [publicación fijada][wsg].
+
+| Pauta según la rúbrica | Pauta oficial equivalente en la versión fijada (número y título exactos) | Correspondencia para el informe |
+|---|---|---|
+| 1.2 — Formatos de imagen | 2.9 — Optimize media to reduce resource use | Inventario de medios y elección de formatos; sin raster en la aplicación, documentar esa ausencia y el trabajo de fuente de ECL-112, sin fabricar imágenes para justificar una conversión. |
+| 2.4 — Caché | 4.2 — Optimize caching and support offline access | Caché de API, cliente y estáticos en ECL-110/113, con vigencia y autorización verificables. |
+| 3.1 — Red y compresión | 4.3 — Reduce data transfer with compression | Brotli/Gzip de API y estáticos en ECL-110/113, con transferencia y costo de procesamiento por comprobar. |
+
+La consulta del [borrador editorial][wsg-editor] también permitió localizar
+las materias, pero no confirmó los títulos alternativos indicados en la
+solicitud para caché y compresión. Se conservan los títulos comprobados de
+la versión fechada, sin atribuirle otras redacciones. La tabla oficial 1.2,
+2.4 y 3.1 anterior se mantiene para distinguir ambas numeraciones.
+
 ## 5. Guía de desarrollo verde para el stack del proyecto
 
 Las reglas siguientes son criterios de revisión. Los ejemplos proceden del
@@ -158,36 +175,49 @@ Un build de producción no se compara como si fuera la misma condición que
 Vite en desarrollo sin declarar el cambio de entorno y repetir la referencia
 que corresponda.
 
-## 6. Matriz preliminar del flujo y recepción de las ocho optimizaciones
+## 6. Matriz de mapeo directo de las ocho optimizaciones
 
-La matriz vincula **los paquetes identificados en el flujo**, no ocho cambios
-ya terminados. Los apartados WSG remiten a la versión fijada en la sección 4.
-La relación con ISO/GSF/WSG expresa una hipótesis de mejora que deberá verificarse.
+El inventario siguiente corresponde a la rúbrica y asignaciones comunicadas
+por Frank. Cada vínculo normativo es una aplicación propuesta, no prueba de
+conformidad ni de implementación. Los apartados WSG corresponden a la versión
+fijada en la sección 4. Las tres primeras eficiencias GSF son objetivos cuyo
+efecto debe comprobarse; la medición documentará su alcance y sus límites.
 
-| Ticket del flujo | Trabajo identificado | ISO/IEC 25010 | GSF seleccionado | WSG | Evidencia pendiente del incremento |
+| N.º | Optimización de la rúbrica y ticket | ISO/IEC 25010 | GSF seleccionado | WSG | Evidencia DESPUÉS |
 |---|---|---|---|---|---|
-| ECL-109 | Consultas y paginación | Comportamiento temporal, recursos y capacidad | Energía; carbono si se calcula su efecto | 3.16, 3.1 | Fragmentos SQL ANTES/DESPUÉS, número de consultas, planes, latencia y bytes. Los antecedentes ST-038 no sustituyen esta medición. |
-| ECL-110 | GZip y ETag en API | Recursos y modularidad | Energía y carbono, con evaluación del costo de compresión | 4.2, 4.3 | Middleware/condicionales reales, 200/304, cabeceras, separación por usuario, bytes y CPU. |
-| ECL-111 | React.lazy y paginación | Comportamiento temporal, recursos y modularidad | Energía; hardware como objetivo por comprobar | 3.3, 3.7, 2.4 | Código, solicitudes/chunks iniciales y diferidos; prueba de lista completa mediante páginas. |
-| ECL-112 | Fuentes, imágenes, SVG y dependencias | Recursos y analizabilidad | Energía; hardware por comprobar | 3.2, 3.12 | Inventario de assets/dependencias con tamaño, cambios y equivalencia visual/funcional. |
-| ECL-113 | Build y minificación con Brotli/Gzip | Comportamiento temporal y recursos | Energía y carbono | 3.2, 4.3 | Configuración real, versión, archivos generados y transferencia por Content-Encoding; declarar diferencia frente a Vite ANTES. |
-| ECL-114 | green-audit.yml con LHCI | Analizabilidad y modularidad | Medición; energía de la automatización por vigilar | 3.1, 4.6 | Workflow, ejecución y artefactos; Lighthouse no mide SCI ni kWh por sí solo. |
+| 1 | Consultas: columnas mínimas, filas en lugar de entidades e índices PostgreSQL — ECL-109 | Comportamiento temporal, utilización de recursos y analizabilidad | Eficiencia energética y de carbono; medición de consultas/bytes como indicadores, no kWh medidos | 3.16, 3.1 | pendiente: PR y medición ECL-115 |
+| 2 | Paginación de 12 — ECL-109 (backend) y ECL-111 (frontend) | Capacidad, utilización de recursos y comportamiento temporal | Eficiencia energética; hardware como objetivo por verificar; medición por página | 3.16, 2.4 | pendiente: PR y medición ECL-115 |
+| 3 | Imágenes WebP/AVIF — ECL-112: sin raster en la aplicación, documentar inventario y optimizar la fuente, sin fabricar imágenes | Utilización de recursos y analizabilidad | Eficiencia energética y de hardware como objetivos; medición del inventario y transferencia | 2.9; 2.11 para la fuente | pendiente: PR y medición ECL-115 |
+| 4 | Lazy loading y code splitting — ECL-111 | Comportamiento temporal y modularidad | Eficiencia energética; hardware como objetivo por verificar; medición de carga diferida | 3.3, 3.7 | pendiente: PR y medición ECL-115 |
+| 5 | Dependencias y APIs nativas — ECL-112 | Modularidad, analizabilidad y utilización de recursos | Eficiencia energética y de hardware como objetivos; medición del trabajo necesario | 3.12, 3.11 | pendiente: PR y medición ECL-115 |
+| 6 | Reducción de peticiones HTTP y SVG inline — ECL-112 | Comportamiento temporal y utilización de recursos | Eficiencia energética y de carbono como objetivos; medición de peticiones y bytes | 2.9, 3.1 | pendiente: PR y medición ECL-115 |
+| 7 | Caché: Cache-Control, ETag y cliente — ECL-110 (API) y ECL-113 (estáticos) | Utilización de recursos, comportamiento temporal y modularidad | Eficiencia energética y de carbono como objetivos; medición en visitas frías y repetidas | 4.2 | pendiente: PR y medición ECL-115 |
+| 8 | Compresión Brotli/Gzip — ECL-110 (API) y ECL-113 (estáticos) | Utilización de recursos y comportamiento temporal | Eficiencia energética y de carbono como objetivos; medición de transferencia y costo de compresión | 4.3 | pendiente: PR y medición ECL-115 |
 
-Para cerrar la matriz definitiva se requiere un registro de ocho filas,
-una por optimización acordada en la rúbrica/Informe 01. Cada fila incluirá:
-identificador y ticket, archivo y commit ANTES, archivo y commit DESPUÉS,
-evidencia de ejecución, vínculo ISO/GSF/WSG específico y conclusión sustentada.
-No se divide artificialmente un ticket en varias filas para alcanzar ocho.
-ECL-115 y ECL-116 aportarán resultados transversales; ECL-117 fijará el
-inventario individual junto con los autores de los cambios.
+La tercera fila conserva el criterio de la rúbrica, pero no declara una
+conversión WebP/AVIF realizada. Las capturas de evidencias del repositorio no
+son imágenes raster servidas por la aplicación y no se alteran para cumplirlo.
+El inventario y la optimización de fuente se documentarán en ECL-112.
+
+Para completar cada fila se enlazarán archivos y commits ANTES/DESPUÉS,
+pruebas de equivalencia funcional, mediciones y conclusión real. ECL-116
+aportará el cálculo ambiental reproducible y ECL-117 el Informe 01. Una
+reducción de peticiones no demuestra menor transferencia si el SVG inline
+agranda otro recurso; caché y compresión tampoco acreditan ahorro sin comparar
+condiciones equivalentes y sus costos.
+
+**ECL-114 es transversal al criterio 3 de la rúbrica:** el workflow
+green-audit.yml con LHCI debe conservar ejecuciones y artefactos. Se relaciona
+con analizabilidad/modularidad, medición GSF y WSG 3.1/4.6; no es una novena
+optimización ni sustituye ninguna de las ocho filas.
 
 ## 7. Método de comprobación y condiciones de cierre
 
 1. Conservar el [protocolo y sus límites](<evidencias/antes/README.md>) y
    las [mediciones válidas de ANTES](<evidencias/antes/run-2026-11-06T23-50-12-524Z/README.md>).
    No modificar archivos históricos de evidencias para adaptar cifras.
-2. Recibir el inventario exacto de ocho optimizaciones, sus commits y el Informe 01.
-   Actualizar la matriz por cambio real y sus resultados; registrar incumplimientos.
+2. Recibir los commits y la evidencia de las ocho optimizaciones ya identificadas,
+   junto con el Informe 01. Completar la matriz con resultados reales y registrar incumplimientos.
 3. Comparar condiciones equivalentes, páginas/roles y unidades. La rúbrica
    suministrada exige Performance ≥90, FCP ≤1,0 s, LCP ≤1,4 s, TBT ≤85 ms,
    CLS ≤0,02 y peso ≤1,1 MB; no se presentan como alcanzados en este borrador.
@@ -229,6 +259,7 @@ está disponible; una URL de versión actual puede cambiar después de esta cons
 | Versión | Fecha | Cambio |
 |---|---|---|
 | 0.1.0 | 06/11/2026 | Marco de estándares verificado, guía adaptada y matriz preliminar del flujo. Pendientes las ocho optimizaciones individuales y la evidencia DESPUÉS. |
+| 0.2.0 | 06/11/2026 | Matriz de ocho optimizaciones confirmadas por Frank y equivalencias WSG verificadas; ECL-114 separado como criterio 3. Evidencia DESPUÉS pendiente, contenido en BORRADOR. |
 
 [Índice del Sprint 4](<../Sprint 04/README.md>) ·
 [← Volver al README principal](../../../README.md)
