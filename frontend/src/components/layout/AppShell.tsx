@@ -20,6 +20,7 @@ function staffNavigation(role: AuthRole): { label: string, items: NavEntry[] }[]
     { to: '/pedidos/nuevo', label: 'Registrar pedido', icon: ClipboardList },
     { to: '/clientes/preferencias', label: 'Preferencias de entrega', icon: Building2 },
     { to: '/operacion/incidencias', label: 'Incidencias pendientes', icon: AlertTriangle },
+    { to: '/operacion/rutas', label: 'Rutas y alertas', icon: Map },
   ] : []
   const resources: NavEntry[] = [
     ...(canListVehicles(role) ? [{ to: '/vehiculos', label: 'Vehículos', icon: Truck }] : []),

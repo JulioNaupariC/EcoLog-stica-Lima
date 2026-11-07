@@ -1,0 +1,18 @@
+{
+  "ticket": "ECL-14",
+  "at": "2026-11-07T20:04:33.778Z",
+  "origin": "http://127.0.0.1:5184",
+  "baseCommit": "8ea6dcb197e4116f6fca08b73bf445fc5e59d4a7",
+  "sourceHashes": {
+    "frontend/src/pages/OperationRoutesPage.tsx": "cdb9fefc6115515e02d910c277288a6396ccc75a314cc69a29ee517b6ea7883d",
+    "frontend/src/components/OperationRouteMap.tsx": "8ea06d1e741c25e2088e8039e4ad6d59e9829df1485666c97d7fd1b90b9cfd51",
+    "frontend/src/components/OperationRouteDetail.tsx": "1342a153bca5daf1fa66a2bf17db8ebe92b9f4ac98aa6f5506d33fffd02492a5",
+    "frontend/src/domain/operationRoutes.ts": "ba5e72789e3f948d726dc4d5a02aeb1a08c6a08191846fdba5be87eef6732968",
+    "frontend/src/services/operationRoutes.ts": "df4ac2db4adfe267f858c20c294b29c9af59e65db4366bdaf857d49fc525575c",
+    "frontend/package-lock.json": "6d46bbdece69d3d58ea83442a811981852ace61f608b6e6484902f511a0453a1",
+    "frontend/scripts/verify-operation-routes.mjs": "b455f6b608fa45ded722b27de6e99ae26e0dc36cd04dc64371199b76afe735b7"
+  },
+  "source": "intercepted ST-045 fixtures; no actual login or backend",
+  "traffic": "SIN_DATOS",
+  "liveTiles": "OpenStreetMap; degradation tested separately"
+}
