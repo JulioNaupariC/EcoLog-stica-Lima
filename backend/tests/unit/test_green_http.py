@@ -15,6 +15,7 @@ from app.core.config import Settings
 from app.core.rbac import Identidad, Rol
 from app.main import GZIP_MINIMUM_BYTES, create_app
 from app.models.vehiculo import Vehiculo
+from app.schemas.vehiculo import VehiclePage, VehicleResponse
 from app.services.autenticacion import AuthenticatedSession
 from app.services.autorizacion import AutorizacionService
 
@@ -22,7 +23,8 @@ FRONTEND = "http://127.0.0.1:5173"
 
 
 def vehicles(count):
-    return [
+    """One page of ``count`` vehicles, as ``GET /vehiculos`` returns since ECL-109."""
+    rows = [
         Vehiculo(
             vehiculo_id=uuid4(),
             placa=f"ECO{index:03d}",
@@ -36,6 +38,12 @@ def vehicles(count):
         )
         for index in range(count)
     ]
+    return VehiclePage(
+        items=[VehicleResponse.model_validate(row) for row in rows],
+        page=1,
+        page_size=12,
+        total=count,
+    )
 
 
 @pytest.fixture
@@ -57,7 +65,7 @@ def api():
 
 def test_golden_large_json_is_gzip_compressed(api):
     client, service = api
-    service.list_all.return_value = vehicles(12)
+    service.list_page.return_value = vehicles(12)
     plain = client.get("/vehiculos", headers={"Accept-Encoding": "identity"})
     compressed = client.get("/vehiculos", headers={"Accept-Encoding": "gzip"})
     assert len(plain.content) >= GZIP_MINIMUM_BYTES
@@ -80,7 +88,7 @@ def test_small_responses_stay_uncompressed(api):
 
 def test_happy_catalogue_gets_weak_etag_and_revalidation_policy(api):
     client, service = api
-    service.list_all.return_value = vehicles(2)
+    service.list_page.return_value = vehicles(2)
     response = client.get("/vehiculos")
     assert response.status_code == 200
     assert response.headers["etag"].startswith('W/"')
@@ -91,7 +99,7 @@ def test_happy_catalogue_gets_weak_etag_and_revalidation_policy(api):
 
 def test_same_etag_answers_304_without_body(api):
     client, service = api
-    service.list_all.return_value = vehicles(3)
+    service.list_page.return_value = vehicles(3)
     first = client.get("/vehiculos")
     again = client.get("/vehiculos", headers={"If-None-Match": first.headers["etag"]})
     assert again.status_code == 304
@@ -102,18 +110,18 @@ def test_same_etag_answers_304_without_body(api):
 
 def test_unhappy_changed_data_returns_200_with_new_etag(api):
     client, service = api
-    service.list_all.return_value = vehicles(1)
+    service.list_page.return_value = vehicles(1)
     first = client.get("/vehiculos")
-    service.list_all.return_value = vehicles(2)
+    service.list_page.return_value = vehicles(2)
     second = client.get("/vehiculos", headers={"If-None-Match": first.headers["etag"]})
     assert second.status_code == 200
     assert second.headers["etag"] != first.headers["etag"]
-    assert len(second.json()) == 2
+    assert len(second.json()["items"]) == 2
 
 
 def test_etag_is_stable_across_gzip_and_identity(api):
     client, service = api
-    service.list_all.return_value = vehicles(12)
+    service.list_page.return_value = vehicles(12)
     gz = client.get("/vehiculos", headers={"Accept-Encoding": "gzip"})
     plain = client.get("/vehiculos", headers={"Accept-Encoding": "identity"})
     assert gz.headers["etag"] == plain.headers["etag"]
