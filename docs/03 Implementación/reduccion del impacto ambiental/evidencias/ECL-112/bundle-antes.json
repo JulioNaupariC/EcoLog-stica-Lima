@@ -1,0 +1,1454 @@
+{
+  "schema": 1,
+  "ticket": "ECL-112",
+  "generatedAt": "2026-11-07T21:28:28.053Z",
+  "commit": "1b8a5501d27bf42c3bd04718add156eb5ba89f67",
+  "modifiedTrackedFiles": [],
+  "environment": {
+    "node": "v22.20.0",
+    "cpu": "Intel(R) Core(TM) i7-10700F CPU @ 2.90GHz",
+    "ramBytes": 17068310528
+  },
+  "notes": {
+    "gzip": "Independent gzipSync defaults; not measured HTTP transfer",
+    "modules": "Vite/Rolldown rendered module lengths before final minification, not additive network bytes",
+    "raster": "Own src/public files only. Leaflet map requests external OpenStreetMap PNG tiles."
+  },
+  "publicFiles": [
+    {
+      "path": "public/sw.js",
+      "bytes": 2793,
+      "sha256": "736c75dabd03e6bbe31f4754b91a36d6a4a07125079a4c5301be03c0b4c53034"
+    }
+  ],
+  "ownRasterFiles": [],
+  "declaredDependencies": {
+    "@fontsource-variable/inter": "5.3.0",
+    "leaflet": "1.9.4",
+    "lucide-react": "1.48.0",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "react-router-dom": "7.18.4"
+  },
+  "importedPackages": [
+    "leaflet",
+    "lucide-react",
+    "react",
+    "react-dom",
+    "react-dom/client",
+    "react-router-dom"
+  ],
+  "packageModules": [
+    {
+      "name": "react-dom",
+      "modules": 4,
+      "renderedBytes": 536687
+    },
+    {
+      "name": "leaflet",
+      "modules": 2,
+      "renderedBytes": 242177
+    },
+    {
+      "name": "react-router",
+      "modules": 1,
+      "renderedBytes": 92651
+    },
+    {
+      "name": "lucide-react",
+      "modules": 65,
+      "renderedBytes": 30241
+    },
+    {
+      "name": "react",
+      "modules": 4,
+      "renderedBytes": 17166
+    },
+    {
+      "name": "scheduler",
+      "modules": 2,
+      "renderedBytes": 9212
+    }
+  ],
+  "fonts": {
+    "files": [
+      {
+        "file": "assets/inter-latin-ext-wght-normal-DO1Apj_S.woff2",
+        "bytes": 85068,
+        "gzipBytes": 85116,
+        "sha256": "34b9c504cab7a73e37b746343a449132e56cf7b5481af2cb81dc74dcff25c956"
+      },
+      {
+        "file": "assets/inter-latin-wght-normal-Dx4kXJAl.woff2",
+        "bytes": 48256,
+        "gzipBytes": 48254,
+        "sha256": "3100e775e8616cd2611beecfa23a4263d7037586789b43f035236a2e6fbd4c62"
+      }
+    ],
+    "bytes": 133324
+  },
+  "javascript": {
+    "files": 27,
+    "bytes": 620775
+  },
+  "lucide": {
+    "modules": [
+      {
+        "path": "node_modules/lucide-react/dist/esm/icons/building-complex.mjs",
+        "chunk": "assets/index-Da9HpHhB.js",
+        "renderedBytes": 623
+      },
+      {
+        "path": "node_modules/lucide-react/dist/esm/icons/chart-column.mjs",
+        "chunk": "assets/index-Da9HpHhB.js",
+        "renderedBytes": 461
+      },
+      {
+        "path": "node_modules/lucide-react/dist/esm/icons/chevron-down.mjs",
+        "chunk": "assets/index-Da9HpHhB.js",
+        "renderedBytes": 252
+      },
+      {
+        "path": "node_modules/lucide-react/dist/esm/icons/clipboard-list.mjs",
+        "chunk": "assets/index-Da9HpHhB.js",
+        "renderedBytes": 657
+      },
+      {
+        "path": "node_modules/lucide-react/dist/esm/icons/house.mjs",
+        "chunk": "assets/index-Da9HpHhB.js",
+        "renderedBytes": 424
+      },
+      {
+        "path": "node_modules/lucide-react/dist/esm/icons/key-round.mjs",
+        "chunk": "assets/index-Da9HpHhB.js",
+        "renderedBytes": 497
+      },
+      {
+        "path": "node_modules/lucide-react/dist/esm/icons/log-in.mjs",
+        "chunk": "assets/index-Da9HpHhB.js",
+        "renderedBytes": 385
+      },
+      {
+        "path": "node_modules/lucide-react/dist/esm/icons/log-out.mjs",
+        "chunk": "assets/index-Da9HpHhB.js",
+        "renderedBytes": 386
+      },
+      {
+        "path": "node_modules/lucide-react/dist/esm/icons/map-pinned.mjs",
+        "chunk": "assets/index-Da9HpHhB.js",
+        "renderedBytes": 594
+      },
+      {
+        "path": "node_modules/lucide-react/dist/esm/icons/map.mjs",
+        "chunk": "assets/index-Da9HpHhB.js",
+        "renderedBytes": 576
+      },
+      {
+        "path": "node_modules/lucide-react/dist/esm/icons/menu.mjs",
+        "chunk": "assets/index-Da9HpHhB.js",
+        "renderedBytes": 340
+      },
+      {
+        "path": "node_modules/lucide-react/dist/esm/icons/monitor.mjs",
+        "chunk": "assets/index-Da9HpHhB.js",
+        "renderedBytes": 466
+      },
+      {
+        "path": "node_modules/lucide-react/dist/esm/icons/moon.mjs",
+        "chunk": "assets/index-Da9HpHhB.js",
+        "renderedBytes": 323
+      },
+      {
+        "path": "node_modules/lucide-react/dist/esm/icons/panel-left-close.mjs",
+        "chunk": "assets/index-Da9HpHhB.js",
+        "renderedBytes": 455
+      },
+      {
+        "path": "node_modules/lucide-react/dist/esm/icons/panel-left-open.mjs",
+        "chunk": "assets/index-Da9HpHhB.js",
+        "renderedBytes": 450
+      },
+      {
+        "path": "node_modules/lucide-react/dist/esm/icons/route.mjs",
+        "chunk": "assets/index-Da9HpHhB.js",
+        "renderedBytes": 424
+      },
+      {
+        "path": "node_modules/lucide-react/dist/esm/icons/shield-alert.mjs",
+        "chunk": "assets/index-Da9HpHhB.js",
+        "renderedBytes": 516
+      },
+      {
+        "path": "node_modules/lucide-react/dist/esm/icons/shield-check.mjs",
+        "chunk": "assets/index-Da9HpHhB.js",
+        "renderedBytes": 453
+      },
+      {
+        "path": "node_modules/lucide-react/dist/esm/icons/sun.mjs",
+        "chunk": "assets/index-Da9HpHhB.js",
+        "renderedBytes": 730
+      },
+      {
+        "path": "node_modules/lucide-react/dist/esm/icons/user-round.mjs",
+        "chunk": "assets/index-Da9HpHhB.js",
+        "renderedBytes": 341
+      },
+      {
+        "path": "node_modules/lucide-react/dist/esm/icons/users.mjs",
+        "chunk": "assets/index-Da9HpHhB.js",
+        "renderedBytes": 483
+      },
+      {
+        "path": "node_modules/lucide-react/dist/esm/icons/wifi-off.mjs",
+        "chunk": "assets/index-Da9HpHhB.js",
+        "renderedBytes": 677
+      },
+      {
+        "path": "node_modules/lucide-react/dist/esm/icons/rotate-ccw.mjs",
+        "chunk": "assets/DeliveryPreferencesPage-ws39HaHs.js",
+        "renderedBytes": 329
+      },
+      {
+        "path": "node_modules/lucide-react/dist/esm/icons/search.mjs",
+        "chunk": "assets/DeliveryPreferencesPage-ws39HaHs.js",
+        "renderedBytes": 298
+      },
+      {
+        "path": "node_modules/lucide-react/dist/esm/icons/cloud-off.mjs",
+        "chunk": "assets/DriverItineraryPage-0ZRl-tfz.js",
+        "renderedBytes": 457
+      },
+      {
+        "path": "node_modules/lucide-react/dist/esm/icons/navigation.mjs",
+        "chunk": "assets/DriverItineraryPage-0ZRl-tfz.js",
+        "renderedBytes": 266
+      },
+      {
+        "path": "node_modules/lucide-react/dist/esm/icons/package-check.mjs",
+        "chunk": "assets/DriverItineraryPage-0ZRl-tfz.js",
+        "renderedBytes": 614
+      },
+      {
+        "path": "node_modules/lucide-react/dist/esm/icons/package-x.mjs",
+        "chunk": "assets/DriverItineraryPage-0ZRl-tfz.js",
+        "renderedBytes": 653
+      },
+      {
+        "path": "node_modules/lucide-react/dist/esm/icons/pencil.mjs",
+        "chunk": "assets/DriversPage-BgVkIP-w.js",
+        "renderedBytes": 392
+      },
+      {
+        "path": "node_modules/lucide-react/dist/esm/icons/package.mjs",
+        "chunk": "assets/HomePage-CWlSJLY6.js",
+        "renderedBytes": 537
+      },
+      {
+        "path": "node_modules/lucide-react/dist/esm/icons/circle-alert.mjs",
+        "chunk": "assets/IncidentCreatePage-BtjLx0gO.js",
+        "renderedBytes": 475
+      },
+      {
+        "path": "node_modules/lucide-react/dist/esm/icons/map-pin-off.mjs",
+        "chunk": "assets/NotFoundPage-DOmxXLpu.js",
+        "renderedBytes": 663
+      },
+      {
+        "path": "node_modules/lucide-react/dist/esm/icons/external-link.mjs",
+        "chunk": "assets/OperationIncidentsPage-D3oZdX_M.js",
+        "renderedBytes": 410
+      },
+      {
+        "path": "node_modules/lucide-react/dist/esm/icons/send.mjs",
+        "chunk": "assets/OrderCreatePage-Chr5cL0Z.js",
+        "renderedBytes": 402
+      },
+      {
+        "path": "node_modules/lucide-react/dist/esm/icons/copy.mjs",
+        "chunk": "assets/UsersPage-B1S14uYS.js",
+        "renderedBytes": 368
+      },
+      {
+        "path": "node_modules/lucide-react/dist/esm/icons/calendar-clock.mjs",
+        "chunk": "assets/calendar-clock-DWz3L-Ck.js",
+        "renderedBytes": 603
+      },
+      {
+        "path": "node_modules/lucide-react/dist/esm/icons/chevron-left.mjs",
+        "chunk": "assets/chevron-left-CFLj-s1f.js",
+        "renderedBytes": 245
+      },
+      {
+        "path": "node_modules/lucide-react/dist/esm/icons/cloud-upload.mjs",
+        "chunk": "assets/cloud-upload-BXpX0fp4.js",
+        "renderedBytes": 436
+      },
+      {
+        "path": "node_modules/lucide-react/dist/esm/icons/plus.mjs",
+        "chunk": "assets/plus-D7O8BzMu.js",
+        "renderedBytes": 265
+      },
+      {
+        "path": "node_modules/lucide-react/dist/esm/icons/refresh-cw.mjs",
+        "chunk": "assets/refresh-cw-QRB8X-Fu.js",
+        "renderedBytes": 491
+      },
+      {
+        "path": "node_modules/lucide-react/dist/esm/icons/save.mjs",
+        "chunk": "assets/save-CgQXFL3F.js",
+        "renderedBytes": 469
+      },
+      {
+        "path": "node_modules/lucide-react/dist/esm/shared/src/utils/toKebabCase.mjs",
+        "chunk": "assets/ui-CHjI8OM2.js",
+        "renderedBytes": 163
+      },
+      {
+        "path": "node_modules/lucide-react/dist/esm/shared/src/utils/toLucideIconData.mjs",
+        "chunk": "assets/ui-CHjI8OM2.js",
+        "renderedBytes": 355
+      },
+      {
+        "path": "node_modules/lucide-react/dist/esm/shared/src/utils/toCamelCase.mjs",
+        "chunk": "assets/ui-CHjI8OM2.js",
+        "renderedBytes": 403
+      },
+      {
+        "path": "node_modules/lucide-react/dist/esm/shared/src/utils/toPascalCase.mjs",
+        "chunk": "assets/ui-CHjI8OM2.js",
+        "renderedBytes": 212
+      },
+      {
+        "path": "node_modules/lucide-react/dist/esm/shared/src/utils/mergeClasses.mjs",
+        "chunk": "assets/ui-CHjI8OM2.js",
+        "renderedBytes": 267
+      },
+      {
+        "path": "node_modules/lucide-react/dist/esm/shared/src/build/defaultAttributes.mjs",
+        "chunk": "assets/ui-CHjI8OM2.js",
+        "renderedBytes": 308
+      },
+      {
+        "path": "node_modules/lucide-react/dist/esm/shared/src/build/buildLucideIconNode.mjs",
+        "chunk": "assets/ui-CHjI8OM2.js",
+        "renderedBytes": 2597
+      },
+      {
+        "path": "node_modules/lucide-react/dist/esm/shared/src/build/buildLucideIconForReact.mjs",
+        "chunk": "assets/ui-CHjI8OM2.js",
+        "renderedBytes": 416
+      },
+      {
+        "path": "node_modules/lucide-react/dist/esm/shared/src/utils/hasA11yProp.mjs",
+        "chunk": "assets/ui-CHjI8OM2.js",
+        "renderedBytes": 229
+      },
+      {
+        "path": "node_modules/lucide-react/dist/esm/context.mjs",
+        "chunk": "assets/ui-CHjI8OM2.js",
+        "renderedBytes": 181
+      },
+      {
+        "path": "node_modules/lucide-react/dist/esm/Icon.mjs",
+        "chunk": "assets/ui-CHjI8OM2.js",
+        "renderedBytes": 1343
+      },
+      {
+        "path": "node_modules/lucide-react/dist/esm/createLucideIcon.mjs",
+        "chunk": "assets/ui-CHjI8OM2.js",
+        "renderedBytes": 528
+      },
+      {
+        "path": "node_modules/lucide-react/dist/esm/icons/ban.mjs",
+        "chunk": "assets/ui-CHjI8OM2.js",
+        "renderedBytes": 308
+      },
+      {
+        "path": "node_modules/lucide-react/dist/esm/icons/chevron-right.mjs",
+        "chunk": "assets/ui-CHjI8OM2.js",
+        "renderedBytes": 253
+      },
+      {
+        "path": "node_modules/lucide-react/dist/esm/icons/circle-check.mjs",
+        "chunk": "assets/ui-CHjI8OM2.js",
+        "renderedBytes": 354
+      },
+      {
+        "path": "node_modules/lucide-react/dist/esm/icons/circle-x.mjs",
+        "chunk": "assets/ui-CHjI8OM2.js",
+        "renderedBytes": 396
+      },
+      {
+        "path": "node_modules/lucide-react/dist/esm/icons/circle.mjs",
+        "chunk": "assets/ui-CHjI8OM2.js",
+        "renderedBytes": 248
+      },
+      {
+        "path": "node_modules/lucide-react/dist/esm/icons/clock.mjs",
+        "chunk": "assets/ui-CHjI8OM2.js",
+        "renderedBytes": 297
+      },
+      {
+        "path": "node_modules/lucide-react/dist/esm/icons/info.mjs",
+        "chunk": "assets/ui-CHjI8OM2.js",
+        "renderedBytes": 362
+      },
+      {
+        "path": "node_modules/lucide-react/dist/esm/icons/leaf.mjs",
+        "chunk": "assets/ui-CHjI8OM2.js",
+        "renderedBytes": 419
+      },
+      {
+        "path": "node_modules/lucide-react/dist/esm/icons/triangle-alert.mjs",
+        "chunk": "assets/ui-CHjI8OM2.js",
+        "renderedBytes": 462
+      },
+      {
+        "path": "node_modules/lucide-react/dist/esm/icons/truck.mjs",
+        "chunk": "assets/ui-CHjI8OM2.js",
+        "renderedBytes": 610
+      },
+      {
+        "path": "node_modules/lucide-react/dist/esm/icons/x.mjs",
+        "chunk": "assets/ui-CHjI8OM2.js",
+        "renderedBytes": 260
+      },
+      {
+        "path": "node_modules/lucide-react/dist/esm/icons/map-pin.mjs",
+        "chunk": "assets/useOnlineStatus-BcyHZJu4.js",
+        "renderedBytes": 384
+      }
+    ],
+    "renderedBytes": 30241
+  },
+  "assets": [
+    {
+      "file": "assets/index-Da9HpHhB.js",
+      "bytes": 254088,
+      "gzipBytes": 78907,
+      "sha256": "7d332e3d6650519eacd9afe0330021847071d856798e032ef055c56b6784d921",
+      "entry": true,
+      "dynamicEntry": false
+    },
+    {
+      "file": "assets/OperationRouteMap-m7-7HnG6.js",
+      "bytes": 151298,
+      "gzipBytes": 44390,
+      "sha256": "9ff14d243fbf5fcc31a8498db5bdd1a18376099f3bd5af954ce09d4fd225b7ee",
+      "entry": false,
+      "dynamicEntry": true
+    },
+    {
+      "file": "assets/inter-latin-ext-wght-normal-DO1Apj_S.woff2",
+      "bytes": 85068,
+      "gzipBytes": 85116,
+      "sha256": "34b9c504cab7a73e37b746343a449132e56cf7b5481af2cb81dc74dcff25c956"
+    },
+    {
+      "file": "assets/ui-CHjI8OM2.js",
+      "bytes": 62789,
+      "gzipBytes": 21772,
+      "sha256": "59e6c2db081398dcc8c5cfd4f9d4aef92af6d57b6aac047b98d6a80f45bd86cf",
+      "entry": false,
+      "dynamicEntry": false
+    },
+    {
+      "file": "assets/inter-latin-wght-normal-Dx4kXJAl.woff2",
+      "bytes": 48256,
+      "gzipBytes": 48254,
+      "sha256": "3100e775e8616cd2611beecfa23a4263d7037586789b43f035236a2e6fbd4c62"
+    },
+    {
+      "file": "assets/index-C09Lw252.css",
+      "bytes": 47720,
+      "gzipBytes": 8683,
+      "sha256": "1932e2695ab7bb504ca8e78d1bfcadfc88f5ab92d74044bd533daccce6c06d60"
+    },
+    {
+      "file": "assets/DriverItineraryPage-0ZRl-tfz.js",
+      "bytes": 20673,
+      "gzipBytes": 6683,
+      "sha256": "42e315ca6d4e9f7af421ee1ea0658a75718b7c14f3cfac3ff38c0ba3c89f70bb",
+      "entry": false,
+      "dynamicEntry": true
+    },
+    {
+      "file": "assets/DriversPage-BgVkIP-w.js",
+      "bytes": 19913,
+      "gzipBytes": 6728,
+      "sha256": "e6bbaf53dbd2a14412e71b63d3ddb1594dd98b03fcd621e7cf972650d9a2fdbc",
+      "entry": false,
+      "dynamicEntry": true
+    },
+    {
+      "file": "assets/OperationRoutesPage-CPQQyGJy.js",
+      "bytes": 17801,
+      "gzipBytes": 6206,
+      "sha256": "6b4399d555a6392a803f38b272f0f88979bb384f41f79c303c96f3450ec241dc",
+      "entry": false,
+      "dynamicEntry": true
+    },
+    {
+      "file": "assets/OperationRouteMap-vh-t_kPv.css",
+      "bytes": 15095,
+      "gzipBytes": 6371,
+      "sha256": "86d3d093fad979e1d185c8a93258f5f124d863fd13ca894c0b9f50bb68b66997"
+    },
+    {
+      "file": "assets/VehiclesPage-6rNM0ppP.js",
+      "bytes": 13390,
+      "gzipBytes": 5026,
+      "sha256": "7a50c44262ca9a99eeb810b44a263e5e8d91cb57d4a847d77b22bf70f05f3680",
+      "entry": false,
+      "dynamicEntry": true
+    },
+    {
+      "file": "assets/OperationIncidentsPage-D3oZdX_M.js",
+      "bytes": 12737,
+      "gzipBytes": 4612,
+      "sha256": "e7b301aad3de1e105f7f11726a4efe7677ccb085b219d7d6a9770b6aebafaaeb",
+      "entry": false,
+      "dynamicEntry": true
+    },
+    {
+      "file": "assets/OrderCreatePage-Chr5cL0Z.js",
+      "bytes": 12638,
+      "gzipBytes": 4584,
+      "sha256": "d0172c7606253cc9171f62b0a94bffc72d40f3315e3b295a45fd2e853a4b7a22",
+      "entry": false,
+      "dynamicEntry": true
+    },
+    {
+      "file": "assets/IncidentCreatePage-BtjLx0gO.js",
+      "bytes": 9225,
+      "gzipBytes": 3567,
+      "sha256": "ced368bc87a636e9d18cb79530e8e2c812d2738524e3e31016f9dfa1b5f796a4",
+      "entry": false,
+      "dynamicEntry": true
+    },
+    {
+      "file": "assets/jsx-runtime-de8dDx6i.js",
+      "bytes": 8784,
+      "gzipBytes": 3328,
+      "sha256": "9cc833e3c40dd38eed52d092e8bc32c041e73a05c14387de6e7645ed536dfdd3",
+      "entry": false,
+      "dynamicEntry": false
+    },
+    {
+      "file": "assets/HomePage-CWlSJLY6.js",
+      "bytes": 8531,
+      "gzipBytes": 3163,
+      "sha256": "55d14790485a311325fb3b468f985240f1502f8974b8f91dd8bcd521b7ff2d41",
+      "entry": false,
+      "dynamicEntry": true
+    },
+    {
+      "file": "assets/DeliveryPreferencesPage-ws39HaHs.js",
+      "bytes": 8451,
+      "gzipBytes": 3272,
+      "sha256": "e474d9806e1f28cb26da1c5d06e5f5be0102f343722fa32eda93bae9cf5999f7",
+      "entry": false,
+      "dynamicEntry": true
+    },
+    {
+      "file": "assets/UsersPage-B1S14uYS.js",
+      "bytes": 6834,
+      "gzipBytes": 2626,
+      "sha256": "a6a58da2e7af7b63bea8868607179b78c0cb195e5601e37c3fdd23a2706a62f0",
+      "entry": false,
+      "dynamicEntry": true
+    },
+    {
+      "file": "assets/ChangePasswordPage-DPoNHdF9.js",
+      "bytes": 3506,
+      "gzipBytes": 1595,
+      "sha256": "23f3466aa1617a34509e7e3c060a7e81ebe9d44443fd6eead571a38e30aa1204",
+      "entry": false,
+      "dynamicEntry": true
+    },
+    {
+      "file": "assets/offlineStorage-B5RfBy3L.js",
+      "bytes": 3159,
+      "gzipBytes": 1229,
+      "sha256": "0d6031adb85400efbc24b4256cc0beeb814f04f561ff4174e23914f50826cdc0",
+      "entry": false,
+      "dynamicEntry": false
+    },
+    {
+      "file": "assets/deliveryPreferences-B002IHH5.js",
+      "bytes": 2176,
+      "gzipBytes": 1129,
+      "sha256": "3873a7a439147680b59fdbbc87c7c1f37fb103275956e3142b4d49fda620124f",
+      "entry": false,
+      "dynamicEntry": false
+    },
+    {
+      "file": "assets/incident-BWdB7_N0.js",
+      "bytes": 1076,
+      "gzipBytes": 634,
+      "sha256": "cdd1e2349e0668804837e3ea26c1fec23132e9e94ae6e2c9ca2503aceb72af0c",
+      "entry": false,
+      "dynamicEntry": false
+    },
+    {
+      "file": "assets/NotFoundPage-DOmxXLpu.js",
+      "bytes": 871,
+      "gzipBytes": 563,
+      "sha256": "a00a1e9440cdfc8f95999d80689d965fc40404da13cccf2e84859a53bec689ba",
+      "entry": false,
+      "dynamicEntry": true
+    },
+    {
+      "file": "index.html",
+      "bytes": 757,
+      "gzipBytes": 385,
+      "sha256": "757337c9c3d391c4b4cc10b9f99635db44f3e81820c6d33e0d419a482496d652"
+    },
+    {
+      "file": "assets/useOnlineStatus-BcyHZJu4.js",
+      "bytes": 715,
+      "gzipBytes": 441,
+      "sha256": "792b4aaca1134a369d00349ba33b0899812dfe833391124951901aa85c012eba",
+      "entry": false,
+      "dynamicEntry": false
+    },
+    {
+      "file": "assets/calendar-clock-DWz3L-Ck.js",
+      "bytes": 407,
+      "gzipBytes": 274,
+      "sha256": "7f7237cd8191f3dfef1d864254351b40a4fc58b6aa53045bcd8fa62847a5acbe",
+      "entry": false,
+      "dynamicEntry": false
+    },
+    {
+      "file": "assets/FormField-BXEUfaaX.js",
+      "bytes": 376,
+      "gzipBytes": 238,
+      "sha256": "6ea6e3b2e88ec47c12b840ae037a59dfb2526ac6100fc90ec66586e29b1b2bfb",
+      "entry": false,
+      "dynamicEntry": false
+    },
+    {
+      "file": "assets/save-CgQXFL3F.js",
+      "bytes": 353,
+      "gzipBytes": 243,
+      "sha256": "e1b807adda8a85882b9ad1f3962ef61f7338b6d178f280d62bd0fad4845525dd",
+      "entry": false,
+      "dynamicEntry": false
+    },
+    {
+      "file": "assets/refresh-cw-QRB8X-Fu.js",
+      "bytes": 347,
+      "gzipBytes": 244,
+      "sha256": "2e2b8cb25d7967adc3bd4e4f56984a8c878bd3e929e60f7fb9bb23026d603188",
+      "entry": false,
+      "dynamicEntry": false
+    },
+    {
+      "file": "assets/cloud-upload-BXpX0fp4.js",
+      "bytes": 302,
+      "gzipBytes": 239,
+      "sha256": "adee90fd3d8e528f4c667401bb568f1796ddefc42b264117d2ea2b600db2e2d7",
+      "entry": false,
+      "dynamicEntry": false
+    },
+    {
+      "file": "assets/plus-D7O8BzMu.js",
+      "bytes": 179,
+      "gzipBytes": 166,
+      "sha256": "01f8ed654ba82fc1533511e737cba4d8f9e0335d415eb3030e4cadb82242aac8",
+      "entry": false,
+      "dynamicEntry": false
+    },
+    {
+      "file": "assets/chevron-left-CFLj-s1f.js",
+      "bytes": 156,
+      "gzipBytes": 162,
+      "sha256": "5196d1945946f7cea4ac8fa96d438a7fca858301a66da777dbc79cb48a709842",
+      "entry": false,
+      "dynamicEntry": false
+    }
+  ],
+  "modules": [
+    {
+      "path": "node_modules/react-dom/cjs/react-dom-client.production.js",
+      "chunk": "assets/index-Da9HpHhB.js",
+      "renderedBytes": 529536
+    },
+    {
+      "path": "node_modules/leaflet/dist/leaflet-src.js",
+      "chunk": "assets/OperationRouteMap-m7-7HnG6.js",
+      "renderedBytes": 241996
+    },
+    {
+      "path": "node_modules/react-router/dist/development/chunk-OB3PAWPO.mjs",
+      "chunk": "assets/ui-CHjI8OM2.js",
+      "renderedBytes": 92651
+    },
+    {
+      "path": "src/pages/DriverItineraryPage.tsx",
+      "chunk": "assets/DriverItineraryPage-0ZRl-tfz.js",
+      "renderedBytes": 23162
+    },
+    {
+      "path": "src/pages/VehiclesPage.tsx",
+      "chunk": "assets/VehiclesPage-6rNM0ppP.js",
+      "renderedBytes": 17420
+    },
+    {
+      "path": "src/pages/IncidentCreatePage.tsx",
+      "chunk": "assets/IncidentCreatePage-BtjLx0gO.js",
+      "renderedBytes": 16484
+    },
+    {
+      "path": "node_modules/react/cjs/react.production.js",
+      "chunk": "assets/jsx-runtime-de8dDx6i.js",
+      "renderedBytes": 15979
+    },
+    {
+      "path": "src/pages/OrderCreatePage.tsx",
+      "chunk": "assets/OrderCreatePage-Chr5cL0Z.js",
+      "renderedBytes": 15757
+    },
+    {
+      "path": "src/pages/OperationIncidentsPage.tsx",
+      "chunk": "assets/OperationIncidentsPage-D3oZdX_M.js",
+      "renderedBytes": 14892
+    },
+    {
+      "path": "src/app/App.tsx",
+      "chunk": "assets/index-Da9HpHhB.js",
+      "renderedBytes": 12947
+    },
+    {
+      "path": "src/pages/OperationRoutesPage.tsx",
+      "chunk": "assets/OperationRoutesPage-CPQQyGJy.js",
+      "renderedBytes": 12270
+    },
+    {
+      "path": "src/components/layout/AppShell.tsx",
+      "chunk": "assets/index-Da9HpHhB.js",
+      "renderedBytes": 12197
+    },
+    {
+      "path": "src/pages/UsersPage.tsx",
+      "chunk": "assets/UsersPage-B1S14uYS.js",
+      "renderedBytes": 11888
+    },
+    {
+      "path": "src/pages/DriversPage.tsx",
+      "chunk": "assets/DriversPage-BgVkIP-w.js",
+      "renderedBytes": 11682
+    },
+    {
+      "path": "src/pages/HomePage.tsx",
+      "chunk": "assets/HomePage-CWlSJLY6.js",
+      "renderedBytes": 10917
+    },
+    {
+      "path": "src/components/DriverForm.tsx",
+      "chunk": "assets/DriversPage-BgVkIP-w.js",
+      "renderedBytes": 10815
+    },
+    {
+      "path": "src/components/OperationRouteDetail.tsx",
+      "chunk": "assets/OperationRoutesPage-CPQQyGJy.js",
+      "renderedBytes": 10600
+    },
+    {
+      "path": "node_modules/scheduler/cjs/scheduler.production.js",
+      "chunk": "assets/index-Da9HpHhB.js",
+      "renderedBytes": 9044
+    },
+    {
+      "path": "src/pages/LoginPage.tsx",
+      "chunk": "assets/index-Da9HpHhB.js",
+      "renderedBytes": 8968
+    },
+    {
+      "path": "src/components/DeliveryPreferencesForm.tsx",
+      "chunk": "assets/DeliveryPreferencesPage-ws39HaHs.js",
+      "renderedBytes": 7825
+    },
+    {
+      "path": "src/components/ClientCombobox.tsx",
+      "chunk": "assets/ui-CHjI8OM2.js",
+      "renderedBytes": 7202
+    },
+    {
+      "path": "src/domain/operationRoutes.ts",
+      "chunk": "assets/OperationRoutesPage-CPQQyGJy.js",
+      "renderedBytes": 6415
+    },
+    {
+      "path": "node_modules/react-dom/cjs/react-dom.production.js",
+      "chunk": "assets/ui-CHjI8OM2.js",
+      "renderedBytes": 6250
+    },
+    {
+      "path": "src/pages/DeliveryPreferencesPage.tsx",
+      "chunk": "assets/DeliveryPreferencesPage-ws39HaHs.js",
+      "renderedBytes": 5719
+    },
+    {
+      "path": "src/services/drivers.ts",
+      "chunk": "assets/DriversPage-BgVkIP-w.js",
+      "renderedBytes": 5716
+    },
+    {
+      "path": "src/pages/ChangePasswordPage.tsx",
+      "chunk": "assets/ChangePasswordPage-DPoNHdF9.js",
+      "renderedBytes": 5606
+    },
+    {
+      "path": "src/services/vehicles.ts",
+      "chunk": "assets/VehiclesPage-6rNM0ppP.js",
+      "renderedBytes": 5474
+    },
+    {
+      "path": "src/services/offlineStorage.ts",
+      "chunk": "assets/offlineStorage-B5RfBy3L.js",
+      "renderedBytes": 5451
+    },
+    {
+      "path": "src/components/OfflineReportPanel.tsx",
+      "chunk": "assets/DriverItineraryPage-0ZRl-tfz.js",
+      "renderedBytes": 5315
+    },
+    {
+      "path": "src/domain/driverForm.ts",
+      "chunk": "assets/DriversPage-BgVkIP-w.js",
+      "renderedBytes": 5054
+    },
+    {
+      "path": "src/services/reportQueue.ts",
+      "chunk": "assets/index-Da9HpHhB.js",
+      "renderedBytes": 4779
+    },
+    {
+      "path": "src/services/users.ts",
+      "chunk": "assets/index-Da9HpHhB.js",
+      "renderedBytes": 4600
+    },
+    {
+      "path": "src/components/layout/AccountMenu.tsx",
+      "chunk": "assets/index-Da9HpHhB.js",
+      "renderedBytes": 4373
+    },
+    {
+      "path": "src/services/driverItinerary.ts",
+      "chunk": "assets/index-Da9HpHhB.js",
+      "renderedBytes": 4118
+    },
+    {
+      "path": "src/components/OperationRouteMap.tsx",
+      "chunk": "assets/OperationRouteMap-m7-7HnG6.js",
+      "renderedBytes": 4084
+    },
+    {
+      "path": "src/components/ClientPreferencesProposal.tsx",
+      "chunk": "assets/OrderCreatePage-Chr5cL0Z.js",
+      "renderedBytes": 3854
+    },
+    {
+      "path": "src/services/incidentList.ts",
+      "chunk": "assets/OperationIncidentsPage-D3oZdX_M.js",
+      "renderedBytes": 3721
+    },
+    {
+      "path": "src/services/auth.ts",
+      "chunk": "assets/index-Da9HpHhB.js",
+      "renderedBytes": 3605
+    },
+    {
+      "path": "src/services/deliveryPreferences.ts",
+      "chunk": "assets/deliveryPreferences-B002IHH5.js",
+      "renderedBytes": 3290
+    },
+    {
+      "path": "\u0000vite/preload-helper.js",
+      "chunk": "assets/index-Da9HpHhB.js",
+      "renderedBytes": 2970
+    },
+    {
+      "path": "src/services/indicators.ts",
+      "chunk": "assets/HomePage-CWlSJLY6.js",
+      "renderedBytes": 2922
+    },
+    {
+      "path": "src/components/ui/DataTable.tsx",
+      "chunk": "assets/ui-CHjI8OM2.js",
+      "renderedBytes": 2841
+    },
+    {
+      "path": "src/services/incidentStorage.ts",
+      "chunk": "assets/index-Da9HpHhB.js",
+      "renderedBytes": 2789
+    },
+    {
+      "path": "src/services/orders.ts",
+      "chunk": "assets/OrderCreatePage-Chr5cL0Z.js",
+      "renderedBytes": 2715
+    },
+    {
+      "path": "node_modules/lucide-react/dist/esm/shared/src/build/buildLucideIconNode.mjs",
+      "chunk": "assets/ui-CHjI8OM2.js",
+      "renderedBytes": 2597
+    },
+    {
+      "path": "src/services/clients.ts",
+      "chunk": "assets/ui-CHjI8OM2.js",
+      "renderedBytes": 2455
+    },
+    {
+      "path": "src/components/ui/Dialog.tsx",
+      "chunk": "assets/ui-CHjI8OM2.js",
+      "renderedBytes": 2381
+    },
+    {
+      "path": "src/hooks/useReportSynchronization.ts",
+      "chunk": "assets/DriverItineraryPage-0ZRl-tfz.js",
+      "renderedBytes": 2329
+    },
+    {
+      "path": "src/services/incidentResolution.ts",
+      "chunk": "assets/OperationIncidentsPage-D3oZdX_M.js",
+      "renderedBytes": 2169
+    },
+    {
+      "path": "src/components/ui/Toast.tsx",
+      "chunk": "assets/ui-CHjI8OM2.js",
+      "renderedBytes": 2099
+    },
+    {
+      "path": "src/components/ui/PageHeader.tsx",
+      "chunk": "assets/ui-CHjI8OM2.js",
+      "renderedBytes": 2013
+    },
+    {
+      "path": "src/data/demoDriverItinerary.ts",
+      "chunk": "assets/DriverItineraryPage-0ZRl-tfz.js",
+      "renderedBytes": 1861
+    },
+    {
+      "path": "src/services/operationRoutes.ts",
+      "chunk": "assets/OperationRoutesPage-CPQQyGJy.js",
+      "renderedBytes": 1861
+    },
+    {
+      "path": "src/services/incidentSync.ts",
+      "chunk": "assets/index-Da9HpHhB.js",
+      "renderedBytes": 1695
+    },
+    {
+      "path": "src/services/incidents.ts",
+      "chunk": "assets/index-Da9HpHhB.js",
+      "renderedBytes": 1672
+    },
+    {
+      "path": "src/services/reportSync.ts",
+      "chunk": "assets/DriverItineraryPage-0ZRl-tfz.js",
+      "renderedBytes": 1633
+    },
+    {
+      "path": "src/services/api.ts",
+      "chunk": "assets/ui-CHjI8OM2.js",
+      "renderedBytes": 1547
+    },
+    {
+      "path": "src/components/ui/Button.tsx",
+      "chunk": "assets/ui-CHjI8OM2.js",
+      "renderedBytes": 1434
+    },
+    {
+      "path": "src/domain/incident.ts",
+      "chunk": "assets/incident-BWdB7_N0.js",
+      "renderedBytes": 1417
+    },
+    {
+      "path": "src/components/ui/Badge.tsx",
+      "chunk": "assets/ui-CHjI8OM2.js",
+      "renderedBytes": 1349
+    },
+    {
+      "path": "node_modules/lucide-react/dist/esm/Icon.mjs",
+      "chunk": "assets/ui-CHjI8OM2.js",
+      "renderedBytes": 1343
+    },
+    {
+      "path": "src/domain/deliveryPreferencesForm.ts",
+      "chunk": "assets/DeliveryPreferencesPage-ws39HaHs.js",
+      "renderedBytes": 1251
+    },
+    {
+      "path": "src/services/offlineAccess.ts",
+      "chunk": "assets/index-Da9HpHhB.js",
+      "renderedBytes": 1187
+    },
+    {
+      "path": "\u0000vite/modulepreload-polyfill.js",
+      "chunk": "assets/index-Da9HpHhB.js",
+      "renderedBytes": 1185
+    },
+    {
+      "path": "\u0000rolldown/runtime.js",
+      "chunk": "assets/jsx-runtime-de8dDx6i.js",
+      "renderedBytes": 1155
+    },
+    {
+      "path": "src/components/ui/Alert.tsx",
+      "chunk": "assets/ui-CHjI8OM2.js",
+      "renderedBytes": 1141
+    },
+    {
+      "path": "src/components/ui/Card.tsx",
+      "chunk": "assets/ui-CHjI8OM2.js",
+      "renderedBytes": 1087
+    },
+    {
+      "path": "src/hooks/useIncidentSynchronization.ts",
+      "chunk": "assets/index-Da9HpHhB.js",
+      "renderedBytes": 1016
+    },
+    {
+      "path": "src/domain/driverItinerary.ts",
+      "chunk": "assets/DriverItineraryPage-0ZRl-tfz.js",
+      "renderedBytes": 1010
+    },
+    {
+      "path": "src/components/ui/StatCard.tsx",
+      "chunk": "assets/ui-CHjI8OM2.js",
+      "renderedBytes": 1004
+    },
+    {
+      "path": "src/components/ui/EmptyState.tsx",
+      "chunk": "assets/ui-CHjI8OM2.js",
+      "renderedBytes": 959
+    },
+    {
+      "path": "node_modules/react/cjs/react-jsx-runtime.production.js",
+      "chunk": "assets/jsx-runtime-de8dDx6i.js",
+      "renderedBytes": 851
+    },
+    {
+      "path": "src/services/passwordChangeGuard.ts",
+      "chunk": "assets/index-Da9HpHhB.js",
+      "renderedBytes": 847
+    },
+    {
+      "path": "src/types/driverReport.ts",
+      "chunk": "assets/index-Da9HpHhB.js",
+      "renderedBytes": 821
+    },
+    {
+      "path": "src/hooks/useTheme.ts",
+      "chunk": "assets/index-Da9HpHhB.js",
+      "renderedBytes": 816
+    },
+    {
+      "path": "src/components/ui/Form.tsx",
+      "chunk": "assets/ui-CHjI8OM2.js",
+      "renderedBytes": 793
+    },
+    {
+      "path": "node_modules/lucide-react/dist/esm/icons/sun.mjs",
+      "chunk": "assets/index-Da9HpHhB.js",
+      "renderedBytes": 730
+    },
+    {
+      "path": "src/hooks/useOnlineStatus.ts",
+      "chunk": "assets/useOnlineStatus-BcyHZJu4.js",
+      "renderedBytes": 704
+    },
+    {
+      "path": "node_modules/lucide-react/dist/esm/icons/wifi-off.mjs",
+      "chunk": "assets/index-Da9HpHhB.js",
+      "renderedBytes": 677
+    },
+    {
+      "path": "node_modules/lucide-react/dist/esm/icons/map-pin-off.mjs",
+      "chunk": "assets/NotFoundPage-DOmxXLpu.js",
+      "renderedBytes": 663
+    },
+    {
+      "path": "src/components/FormField.tsx",
+      "chunk": "assets/FormField-BXEUfaaX.js",
+      "renderedBytes": 661
+    },
+    {
+      "path": "node_modules/lucide-react/dist/esm/icons/clipboard-list.mjs",
+      "chunk": "assets/index-Da9HpHhB.js",
+      "renderedBytes": 657
+    },
+    {
+      "path": "node_modules/lucide-react/dist/esm/icons/package-x.mjs",
+      "chunk": "assets/DriverItineraryPage-0ZRl-tfz.js",
+      "renderedBytes": 653
+    },
+    {
+      "path": "node_modules/lucide-react/dist/esm/icons/building-complex.mjs",
+      "chunk": "assets/index-Da9HpHhB.js",
+      "renderedBytes": 623
+    },
+    {
+      "path": "src/domain/passwordForm.ts",
+      "chunk": "assets/ChangePasswordPage-DPoNHdF9.js",
+      "renderedBytes": 618
+    },
+    {
+      "path": "node_modules/lucide-react/dist/esm/icons/package-check.mjs",
+      "chunk": "assets/DriverItineraryPage-0ZRl-tfz.js",
+      "renderedBytes": 614
+    },
+    {
+      "path": "node_modules/lucide-react/dist/esm/icons/truck.mjs",
+      "chunk": "assets/ui-CHjI8OM2.js",
+      "renderedBytes": 610
+    },
+    {
+      "path": "node_modules/lucide-react/dist/esm/icons/calendar-clock.mjs",
+      "chunk": "assets/calendar-clock-DWz3L-Ck.js",
+      "renderedBytes": 603
+    },
+    {
+      "path": "node_modules/lucide-react/dist/esm/icons/map-pinned.mjs",
+      "chunk": "assets/index-Da9HpHhB.js",
+      "renderedBytes": 594
+    },
+    {
+      "path": "node_modules/lucide-react/dist/esm/icons/map.mjs",
+      "chunk": "assets/index-Da9HpHhB.js",
+      "renderedBytes": 576
+    },
+    {
+      "path": "src/pages/NotFoundPage.tsx",
+      "chunk": "assets/NotFoundPage-DOmxXLpu.js",
+      "renderedBytes": 564
+    },
+    {
+      "path": "node_modules/lucide-react/dist/esm/icons/package.mjs",
+      "chunk": "assets/HomePage-CWlSJLY6.js",
+      "renderedBytes": 537
+    },
+    {
+      "path": "src/components/ConnectionStatus.tsx",
+      "chunk": "assets/DriverItineraryPage-0ZRl-tfz.js",
+      "renderedBytes": 528
+    },
+    {
+      "path": "node_modules/lucide-react/dist/esm/createLucideIcon.mjs",
+      "chunk": "assets/ui-CHjI8OM2.js",
+      "renderedBytes": 528
+    },
+    {
+      "path": "src/domain/roles.ts",
+      "chunk": "assets/index-Da9HpHhB.js",
+      "renderedBytes": 520
+    },
+    {
+      "path": "node_modules/lucide-react/dist/esm/icons/shield-alert.mjs",
+      "chunk": "assets/index-Da9HpHhB.js",
+      "renderedBytes": 516
+    },
+    {
+      "path": "node_modules/lucide-react/dist/esm/icons/key-round.mjs",
+      "chunk": "assets/index-Da9HpHhB.js",
+      "renderedBytes": 497
+    },
+    {
+      "path": "node_modules/lucide-react/dist/esm/icons/refresh-cw.mjs",
+      "chunk": "assets/refresh-cw-QRB8X-Fu.js",
+      "renderedBytes": 491
+    },
+    {
+      "path": "node_modules/lucide-react/dist/esm/icons/users.mjs",
+      "chunk": "assets/index-Da9HpHhB.js",
+      "renderedBytes": 483
+    },
+    {
+      "path": "node_modules/lucide-react/dist/esm/icons/circle-alert.mjs",
+      "chunk": "assets/IncidentCreatePage-BtjLx0gO.js",
+      "renderedBytes": 475
+    },
+    {
+      "path": "node_modules/lucide-react/dist/esm/icons/save.mjs",
+      "chunk": "assets/save-CgQXFL3F.js",
+      "renderedBytes": 469
+    },
+    {
+      "path": "node_modules/lucide-react/dist/esm/icons/monitor.mjs",
+      "chunk": "assets/index-Da9HpHhB.js",
+      "renderedBytes": 466
+    },
+    {
+      "path": "node_modules/lucide-react/dist/esm/icons/triangle-alert.mjs",
+      "chunk": "assets/ui-CHjI8OM2.js",
+      "renderedBytes": 462
+    },
+    {
+      "path": "node_modules/lucide-react/dist/esm/icons/chart-column.mjs",
+      "chunk": "assets/index-Da9HpHhB.js",
+      "renderedBytes": 461
+    },
+    {
+      "path": "node_modules/lucide-react/dist/esm/icons/cloud-off.mjs",
+      "chunk": "assets/DriverItineraryPage-0ZRl-tfz.js",
+      "renderedBytes": 457
+    },
+    {
+      "path": "node_modules/lucide-react/dist/esm/icons/panel-left-close.mjs",
+      "chunk": "assets/index-Da9HpHhB.js",
+      "renderedBytes": 455
+    },
+    {
+      "path": "src/main.tsx",
+      "chunk": "assets/index-Da9HpHhB.js",
+      "renderedBytes": 455
+    },
+    {
+      "path": "node_modules/react-dom/client.js",
+      "chunk": "assets/index-Da9HpHhB.js",
+      "renderedBytes": 453
+    },
+    {
+      "path": "node_modules/lucide-react/dist/esm/icons/shield-check.mjs",
+      "chunk": "assets/index-Da9HpHhB.js",
+      "renderedBytes": 453
+    },
+    {
+      "path": "node_modules/lucide-react/dist/esm/icons/panel-left-open.mjs",
+      "chunk": "assets/index-Da9HpHhB.js",
+      "renderedBytes": 450
+    },
+    {
+      "path": "node_modules/react-dom/index.js",
+      "chunk": "assets/ui-CHjI8OM2.js",
+      "renderedBytes": 448
+    },
+    {
+      "path": "node_modules/lucide-react/dist/esm/icons/cloud-upload.mjs",
+      "chunk": "assets/cloud-upload-BXpX0fp4.js",
+      "renderedBytes": 436
+    },
+    {
+      "path": "node_modules/lucide-react/dist/esm/icons/house.mjs",
+      "chunk": "assets/index-Da9HpHhB.js",
+      "renderedBytes": 424
+    },
+    {
+      "path": "node_modules/lucide-react/dist/esm/icons/route.mjs",
+      "chunk": "assets/index-Da9HpHhB.js",
+      "renderedBytes": 424
+    },
+    {
+      "path": "node_modules/lucide-react/dist/esm/icons/leaf.mjs",
+      "chunk": "assets/ui-CHjI8OM2.js",
+      "renderedBytes": 419
+    },
+    {
+      "path": "node_modules/lucide-react/dist/esm/shared/src/build/buildLucideIconForReact.mjs",
+      "chunk": "assets/ui-CHjI8OM2.js",
+      "renderedBytes": 416
+    },
+    {
+      "path": "node_modules/lucide-react/dist/esm/icons/external-link.mjs",
+      "chunk": "assets/OperationIncidentsPage-D3oZdX_M.js",
+      "renderedBytes": 410
+    },
+    {
+      "path": "node_modules/lucide-react/dist/esm/shared/src/utils/toCamelCase.mjs",
+      "chunk": "assets/ui-CHjI8OM2.js",
+      "renderedBytes": 403
+    },
+    {
+      "path": "src/components/ui/Skeleton.tsx",
+      "chunk": "assets/ui-CHjI8OM2.js",
+      "renderedBytes": 403
+    },
+    {
+      "path": "node_modules/lucide-react/dist/esm/icons/send.mjs",
+      "chunk": "assets/OrderCreatePage-Chr5cL0Z.js",
+      "renderedBytes": 402
+    },
+    {
+      "path": "node_modules/lucide-react/dist/esm/icons/circle-x.mjs",
+      "chunk": "assets/ui-CHjI8OM2.js",
+      "renderedBytes": 396
+    },
+    {
+      "path": "node_modules/lucide-react/dist/esm/icons/pencil.mjs",
+      "chunk": "assets/DriversPage-BgVkIP-w.js",
+      "renderedBytes": 392
+    },
+    {
+      "path": "node_modules/lucide-react/dist/esm/icons/log-out.mjs",
+      "chunk": "assets/index-Da9HpHhB.js",
+      "renderedBytes": 386
+    },
+    {
+      "path": "node_modules/lucide-react/dist/esm/icons/log-in.mjs",
+      "chunk": "assets/index-Da9HpHhB.js",
+      "renderedBytes": 385
+    },
+    {
+      "path": "node_modules/lucide-react/dist/esm/icons/map-pin.mjs",
+      "chunk": "assets/useOnlineStatus-BcyHZJu4.js",
+      "renderedBytes": 384
+    },
+    {
+      "path": "node_modules/lucide-react/dist/esm/icons/copy.mjs",
+      "chunk": "assets/UsersPage-B1S14uYS.js",
+      "renderedBytes": 368
+    },
+    {
+      "path": "node_modules/lucide-react/dist/esm/icons/info.mjs",
+      "chunk": "assets/ui-CHjI8OM2.js",
+      "renderedBytes": 362
+    },
+    {
+      "path": "node_modules/lucide-react/dist/esm/shared/src/utils/toLucideIconData.mjs",
+      "chunk": "assets/ui-CHjI8OM2.js",
+      "renderedBytes": 355
+    },
+    {
+      "path": "node_modules/lucide-react/dist/esm/icons/circle-check.mjs",
+      "chunk": "assets/ui-CHjI8OM2.js",
+      "renderedBytes": 354
+    },
+    {
+      "path": "node_modules/lucide-react/dist/esm/icons/user-round.mjs",
+      "chunk": "assets/index-Da9HpHhB.js",
+      "renderedBytes": 341
+    },
+    {
+      "path": "node_modules/lucide-react/dist/esm/icons/menu.mjs",
+      "chunk": "assets/index-Da9HpHhB.js",
+      "renderedBytes": 340
+    },
+    {
+      "path": "node_modules/lucide-react/dist/esm/icons/rotate-ccw.mjs",
+      "chunk": "assets/DeliveryPreferencesPage-ws39HaHs.js",
+      "renderedBytes": 329
+    },
+    {
+      "path": "node_modules/lucide-react/dist/esm/icons/moon.mjs",
+      "chunk": "assets/index-Da9HpHhB.js",
+      "renderedBytes": 323
+    },
+    {
+      "path": "node_modules/lucide-react/dist/esm/shared/src/build/defaultAttributes.mjs",
+      "chunk": "assets/ui-CHjI8OM2.js",
+      "renderedBytes": 308
+    },
+    {
+      "path": "node_modules/lucide-react/dist/esm/icons/ban.mjs",
+      "chunk": "assets/ui-CHjI8OM2.js",
+      "renderedBytes": 308
+    },
+    {
+      "path": "node_modules/lucide-react/dist/esm/icons/search.mjs",
+      "chunk": "assets/DeliveryPreferencesPage-ws39HaHs.js",
+      "renderedBytes": 298
+    },
+    {
+      "path": "node_modules/lucide-react/dist/esm/icons/clock.mjs",
+      "chunk": "assets/ui-CHjI8OM2.js",
+      "renderedBytes": 297
+    },
+    {
+      "path": "node_modules/lucide-react/dist/esm/shared/src/utils/mergeClasses.mjs",
+      "chunk": "assets/ui-CHjI8OM2.js",
+      "renderedBytes": 267
+    },
+    {
+      "path": "node_modules/lucide-react/dist/esm/icons/navigation.mjs",
+      "chunk": "assets/DriverItineraryPage-0ZRl-tfz.js",
+      "renderedBytes": 266
+    },
+    {
+      "path": "node_modules/lucide-react/dist/esm/icons/plus.mjs",
+      "chunk": "assets/plus-D7O8BzMu.js",
+      "renderedBytes": 265
+    },
+    {
+      "path": "node_modules/lucide-react/dist/esm/icons/x.mjs",
+      "chunk": "assets/ui-CHjI8OM2.js",
+      "renderedBytes": 260
+    },
+    {
+      "path": "node_modules/lucide-react/dist/esm/icons/chevron-right.mjs",
+      "chunk": "assets/ui-CHjI8OM2.js",
+      "renderedBytes": 253
+    },
+    {
+      "path": "node_modules/lucide-react/dist/esm/icons/chevron-down.mjs",
+      "chunk": "assets/index-Da9HpHhB.js",
+      "renderedBytes": 252
+    },
+    {
+      "path": "node_modules/lucide-react/dist/esm/icons/circle.mjs",
+      "chunk": "assets/ui-CHjI8OM2.js",
+      "renderedBytes": 248
+    },
+    {
+      "path": "node_modules/lucide-react/dist/esm/icons/chevron-left.mjs",
+      "chunk": "assets/chevron-left-CFLj-s1f.js",
+      "renderedBytes": 245
+    },
+    {
+      "path": "node_modules/lucide-react/dist/esm/shared/src/utils/hasA11yProp.mjs",
+      "chunk": "assets/ui-CHjI8OM2.js",
+      "renderedBytes": 229
+    },
+    {
+      "path": "node_modules/lucide-react/dist/esm/shared/src/utils/toPascalCase.mjs",
+      "chunk": "assets/ui-CHjI8OM2.js",
+      "renderedBytes": 212
+    },
+    {
+      "path": "src/components/ui/toastContext.ts",
+      "chunk": "assets/ui-CHjI8OM2.js",
+      "renderedBytes": 191
+    },
+    {
+      "path": "node_modules/leaflet/dist/leaflet.css",
+      "chunk": "assets/OperationRouteMap-m7-7HnG6.js",
+      "renderedBytes": 181
+    },
+    {
+      "path": "node_modules/lucide-react/dist/esm/context.mjs",
+      "chunk": "assets/ui-CHjI8OM2.js",
+      "renderedBytes": 181
+    },
+    {
+      "path": "node_modules/react/jsx-runtime.js",
+      "chunk": "assets/jsx-runtime-de8dDx6i.js",
+      "renderedBytes": 180
+    },
+    {
+      "path": "node_modules/scheduler/index.js",
+      "chunk": "assets/index-Da9HpHhB.js",
+      "renderedBytes": 168
+    },
+    {
+      "path": "src/services/offlineShell.ts",
+      "chunk": "assets/index-Da9HpHhB.js",
+      "renderedBytes": 163
+    },
+    {
+      "path": "node_modules/lucide-react/dist/esm/shared/src/utils/toKebabCase.mjs",
+      "chunk": "assets/ui-CHjI8OM2.js",
+      "renderedBytes": 163
+    },
+    {
+      "path": "node_modules/react/index.js",
+      "chunk": "assets/jsx-runtime-de8dDx6i.js",
+      "renderedBytes": 156
+    },
+    {
+      "path": "src/components/ui/cx.ts",
+      "chunk": "assets/ui-CHjI8OM2.js",
+      "renderedBytes": 94
+    }
+  ]
+}

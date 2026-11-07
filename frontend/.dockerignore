@@ -4,3 +4,5 @@ node_modules/
 dist/
 coverage/
 .npm-cache/
+# Herramientas y resultados temporales de auditoría local (ECL-112).
+.tmp-*/
