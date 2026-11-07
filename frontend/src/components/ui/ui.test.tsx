@@ -1,6 +1,7 @@
 import { act, fireEvent, render, screen, within } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import { Truck } from 'lucide-react'
+import userEvent from '@testing-library/user-event'
 import {
   Alert, Badge, Button, Card, DataTable, EmptyState, FormActions, FormSection, LinkButton, PageHeader,
   Skeleton, StatCard, StatusBadge, ToastProvider, useToast,
@@ -66,7 +67,63 @@ describe('Componentes de UI (ECL-22)', () => {
     const cells = within(row).getAllByRole('cell')
     expect(cells.map(cell => cell.dataset.label)).toEqual(['Placa', 'Capacidad'])
     expect(cells[1]).toHaveClass('is-end')
-    expect(screen.getByRole('region', { name: 'Tabla de flota' })).toHaveAttribute('tabindex', '0')
+    expect(screen.getByRole('region', { name: 'Tabla de flota' })).not.toHaveAttribute('tabindex')
+    expect(screen.queryByRole('button', { name: /Desplazar tabla/u })).not.toBeInTheDocument()
+  })
+
+  it('permite desplazar una tabla desbordada con Tab, Enter y Espacio y limpia el observador', async () => {
+    let resize: () => void = () => undefined
+    const disconnect = vi.fn()
+    const observer = vi.spyOn(globalThis, 'ResizeObserver').mockImplementation(class {
+      constructor(callback: ResizeObserverCallback) { resize = () => callback([], this) }
+      observe = vi.fn()
+      unobserve = vi.fn()
+      disconnect = disconnect
+    })
+    try {
+      const view = render(<DataTable caption="Flota" label="Tabla de flota" rowKey={row => row.id}
+        rows={[{ id: '1' }]} columns={[{ key: 'id', header: 'ID', render: row => row.id }]} />)
+      const viewport = screen.getByRole('table').parentElement!
+      Object.defineProperties(viewport, {
+        scrollWidth: { configurable: true, value: 1200 },
+        clientWidth: { configurable: true, value: 600 },
+      })
+      act(resize)
+      const user = userEvent.setup()
+      const left = screen.getByRole('button', { name: 'Desplazar tabla a la izquierda' })
+      const right = screen.getByRole('button', { name: 'Desplazar tabla a la derecha' })
+      expect(left).toHaveAttribute('aria-controls', viewport.id)
+      expect(right).toHaveAttribute('aria-controls', viewport.id)
+      await user.tab()
+      expect(left).toHaveFocus()
+      await user.tab()
+      expect(right).toHaveFocus()
+      await user.keyboard('{Enter}')
+      expect(viewport.scrollLeft).toBe(600)
+      expect(right).toHaveFocus()
+      await user.tab({ shift: true })
+      await user.keyboard(' ')
+      expect(viewport.scrollLeft).toBe(0)
+      expect(left).toHaveFocus()
+      Object.defineProperty(viewport, 'scrollWidth', { value: 600 })
+      act(resize)
+      expect(screen.queryByRole('button', { name: /Desplazar tabla/u })).not.toBeInTheDocument()
+      view.unmount()
+      expect(disconnect).toHaveBeenCalledOnce()
+    } finally {
+      observer.mockRestore()
+    }
+  })
+
+  it('mantiene los controles de cada fila en el recorrido de Tab', async () => {
+    render(<DataTable caption="Flota" label="Tabla de flota" rowKey={row => row.id}
+      rows={[{ id: '1' }, { id: '2' }]}
+      columns={[{ key: 'accion', header: 'Acción', render: row => <button>Editar {row.id}</button> }]} />)
+    const user = userEvent.setup()
+    await user.tab()
+    expect(screen.getByRole('button', { name: 'Editar 1' })).toHaveFocus()
+    await user.tab()
+    expect(screen.getByRole('button', { name: 'Editar 2' })).toHaveFocus()
   })
 
   it('Card, EmptyState, FormSection, FormActions, StatCard y Skeleton renderizan su estructura', () => {

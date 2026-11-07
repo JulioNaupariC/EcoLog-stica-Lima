@@ -126,7 +126,7 @@ describe('VehiclesPage', () => {
     expect(screen.getByText('<script>otro</script>')).toBeInTheDocument()
     expect(table.querySelector('script')).toBeNull()
     for (const header of within(table).getAllByRole('columnheader')) expect(header).toHaveAttribute('scope', 'col')
-    expect(screen.getByRole('region', { name: /Tabla de vehículos/u })).toHaveAttribute('tabindex', '0')
+    expect(screen.getByRole('region', { name: /Tabla de vehículos/u })).not.toHaveAttribute('tabindex')
   })
 
   it('GET fallido enfoca la alerta y permite reintentar con teclado sin crear', async () => {
@@ -238,6 +238,26 @@ describe('VehiclesPage', () => {
     submit()
     await screen.findByText('Vehículo registrado: ABC-123.')
     expect(createMock).toHaveBeenCalledWith(expect.objectContaining({ placa: ' abcdefghij ', anio_fabricacion: Number(year) }))
+  })
+
+  it.each([100_000, 200_000, 400_000])('rechaza fracciones adversarias de %i ceros y conserva el formulario', async size => {
+    await renderReady()
+    const value = `1.${'0'.repeat(size)}1`
+    fillValid({ 'Capacidad (kg)': value, Placa: 'x'.repeat(size) })
+    submit()
+    expect(screen.getByLabelText('Capacidad (kg)')).toHaveAttribute('aria-invalid', 'true')
+    expect(screen.getByLabelText('Capacidad (kg)')).toHaveValue(value)
+    expect(screen.getByLabelText('Placa')).toHaveAttribute('aria-invalid', 'true')
+    expect(createMock).not.toHaveBeenCalled()
+  })
+
+  it('acepta una fracción larga de ceros finales sin alterar el payload', async () => {
+    await renderReady()
+    const value = `1.23${'0'.repeat(100_000)}`
+    fillValid({ 'Capacidad (kg)': value })
+    submit()
+    await screen.findByText('Vehículo registrado: ABC-123.')
+    expect(createMock).toHaveBeenCalledWith(expect.objectContaining({ capacidad_kg: value }))
   })
 
   it('acepta ceros finales e iniciales, precisión mínima y factor CO₂ cero sin alterar strings', async () => {
