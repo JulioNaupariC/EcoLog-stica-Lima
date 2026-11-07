@@ -11,13 +11,18 @@ from app.core.passwords import PasswordOperationError, verify_password
 from app.core.rbac import Identidad, Rol
 from app.core.session_tokens import generate_session_token, hash_session_token
 from app.repositories.auditoria import (
+    AuditoriaRepository,
     AuditStorageError,
     DetalleAcceso,
     Evento,
     Registro,
     ResultadoAcceso,
 )
-from app.repositories.sesiones import SesionRepository, SessionStorageError
+from app.repositories.sesiones import (
+    SesionRepository,
+    SessionIdentity,
+    SessionStorageError,
+)
 from app.repositories.usuarios import CredentialStorageError, UsuarioRepository
 from app.services.auditoria import AuditoriaService
 from app.services.credenciales import CredentialService
@@ -35,6 +40,19 @@ class AuthenticationUnavailable(RuntimeError):
     """Sanitized operational authentication failure."""
 
 
+class SessionLimitReached(RuntimeError):
+    """A still-valid session already expires at the absolute limit."""
+
+
+ABSOLUTE_SESSION_LIFETIME = timedelta(hours=12)
+
+
+@dataclass(frozen=True)
+class SessionExtension:
+    expira_en: datetime
+    max_expira_en: datetime
+
+
 @dataclass(frozen=True, repr=False)
 class LoginResult:
     token: str
@@ -42,6 +60,7 @@ class LoginResult:
     identidad: Identidad
     expira_en: datetime
     debe_cambiar_contrasena: bool = False
+    max_expira_en: datetime | None = None
 
 
 @dataclass(frozen=True, repr=False)
@@ -160,11 +179,13 @@ class AutenticacionService:
                             bloqueado_hasta=None,
                         )
                         token = generate_session_token()
-                        expires = current + self._ttl
+                        maximum = current + ABSOLUTE_SESSION_LIFETIME
+                        expires = min(current + self._ttl, maximum)
                         session_id = SesionRepository(session).create(
                             account.usuario_id,
                             hash_session_token(token),
                             expires,
+                            creado_en=current,
                         )
                         result = LoginResult(
                             token,
@@ -174,6 +195,7 @@ class AutenticacionService:
                             ),
                             expires,
                             account.debe_cambiar_contrasena,
+                            maximum,
                         )
                     elif eligible:
                         blocked = register_failed_attempt(
@@ -218,10 +240,23 @@ class AutenticacionService:
             raise InvalidSession("Invalid session") from None
         except (SessionStorageError, SQLAlchemyError):
             raise AuthenticationUnavailable("Authentication unavailable") from None
+        identity = self._eligible_identity(found, current)
+        return AuthenticatedSession(
+            found.sesion_id, identity, found.debe_cambiar_contrasena
+        )
+
+    @staticmethod
+    def _eligible_identity(
+        found: SessionIdentity | None, current: datetime
+    ) -> Identidad:
         if (
             found is None
             or found.revocada_en is not None
             or found.expira_en <= current
+            or (
+                found.creado_en is not None
+                and found.creado_en + ABSOLUTE_SESSION_LIFETIME <= current
+            )
             or found.estado != "ACTIVO"
             or (found.bloqueado_hasta is not None and found.bloqueado_hasta > current)
         ):
@@ -230,11 +265,38 @@ class AutenticacionService:
             role = Rol(found.rol)
         except (TypeError, ValueError):
             raise InvalidSession("Invalid session") from None
-        return AuthenticatedSession(
-            found.sesion_id,
-            Identidad(found.usuario_id, role, found.estado),
-            found.debe_cambiar_contrasena,
-        )
+        return Identidad(found.usuario_id, role, found.estado)
+
+    def extend(
+        self, authenticated: AuthenticatedSession, *, now: datetime | None = None
+    ) -> SessionExtension:
+        current = now or datetime.now(timezone.utc)
+        try:
+            with self._business_factory.begin() as session:
+                repository = SesionRepository(session)
+                found = repository.lock_for_extension(authenticated.sesion_id)
+                identity = self._eligible_identity(found, current)
+                if (
+                    found.creado_en is None
+                    or identity.usuario_id != authenticated.identidad.usuario_id
+                ):
+                    raise InvalidSession("Invalid session")
+                maximum = found.creado_en + ABSOLUTE_SESSION_LIFETIME
+                if found.expira_en >= maximum:
+                    raise SessionLimitReached("Absolute session limit")
+                expires = min(current + self._ttl, maximum)
+                repository.extend(found.sesion_id, expires)
+                AuditoriaRepository(session).insert(
+                    Registro(
+                        usuario_id=identity.usuario_id,
+                        entidad_id=found.sesion_id,
+                        evento=Evento.SESION_EXTENDIDA,
+                        detalle=DetalleAcceso(resultado=ResultadoAcceso.RENOVACION),
+                    )
+                )
+            return SessionExtension(expires, maximum)
+        except (SessionStorageError, SQLAlchemyError, AuditStorageError):
+            raise AuthenticationUnavailable("Authentication unavailable") from None
 
     def logout(
         self,

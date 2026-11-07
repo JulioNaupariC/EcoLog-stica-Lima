@@ -23,7 +23,10 @@ export function recallDriver(): LoginResponse | null {
         Date.parse(hint.expires_at) > Date.now() + 86_400_000) {
       forgetDriver(); return null
     }
-    return { usuario_id: hint.usuario_id, rol: 'CONDUCTOR', expires_at: hint.expires_at }
+    return { usuario_id: hint.usuario_id, rol: 'CONDUCTOR', expires_at: hint.expires_at,
+      ...(typeof hint.max_expires_at === 'string' && Number.isFinite(Date.parse(hint.max_expires_at)) &&
+        Date.parse(hint.max_expires_at) >= Date.parse(hint.expires_at)
+        ? { max_expires_at: hint.max_expires_at } : {}) }
   } catch { return null }
 }
 

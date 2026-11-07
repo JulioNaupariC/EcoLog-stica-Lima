@@ -6,7 +6,11 @@ import { useIncidentSynchronization } from '../hooks/useIncidentSynchronization'
 import { listIncidents } from '../services/incidentStorage'
 import { LoginPage } from '../pages/LoginPage'
 import { DriverShell, PublicShell, StaffShell } from '../components/layout/AppShell'
-import { Alert, EmptyState, LinkButton, ToastProvider, useToast } from '../components/ui'
+import { Alert, Button, EmptyState, LinkButton, ToastProvider, useToast } from '../components/ui'
+import { SessionExpiryNotice } from '../components/SessionExpiryNotice'
+import { captureSessionDraft, downloadSessionDraft } from '../services/sessionDraft'
+import type { SessionDraft } from '../services/sessionDraft'
+import type { SessionExtension } from '../services/auth'
 import { canListVehicles, canManageOperations, canManageUsers, ROLE_LABEL } from '../domain/roles'
 import { logout, type LoginResponse } from '../services/auth'
 import { clearItinerary } from '../services/offlineStorage'
@@ -63,6 +67,8 @@ function AppRoutes() {
   const [logoutMessage, setLogoutMessage] = useState('')
   const [loggingOut, setLoggingOut] = useState(false)
   const navigate = useNavigate()
+  const location = useLocation()
+  const [expiredDraft, setExpiredDraft] = useState<SessionDraft | null>(null)
   const { notify } = useToast()
   const createOrdersAllowed = identity !== null && canManageOperations(identity.rol)
   const vehiclesAllowed = identity !== null && canListVehicles(identity.rol)
@@ -71,6 +77,7 @@ function AppRoutes() {
   useIncidentSynchronization(identity?.rol === 'CONDUCTOR' && !mustChangePassword ? identity.usuario_id : undefined)
 
   function handleLoginSuccess(loggedInIdentity: LoginResponse, email: string) {
+    setExpiredDraft(current => current?.owner === loggedInIdentity.usuario_id ? current : null)
     // A temporary-password session is not remembered as a usable driver tab.
     if (!loggedInIdentity.debe_cambiar_contrasena) rememberDriver(loggedInIdentity)
     setIdentity(loggedInIdentity)
@@ -92,6 +99,7 @@ function AppRoutes() {
   function handlePasswordChanged() {
     if (identity) {
       const updated: LoginResponse = { usuario_id: identity.usuario_id, rol: identity.rol,
+        ...(identity.max_expires_at ? { max_expires_at: identity.max_expires_at } : {}),
         ...(identity.expires_at ? { expires_at: identity.expires_at } : {}) }
       rememberDriver(updated)
       setIdentity(updated)
@@ -101,18 +109,32 @@ function AppRoutes() {
   }
 
   const handleSessionExpired = useCallback(() => {
+    if (identity) {
+      const draft = captureSessionDraft(identity.usuario_id, location.pathname)
+      if (draft) setExpiredDraft(draft)
+    }
     forgetDriver()
     setIdentity(null)
     setLogoutMessage('Tu sesión ha vencido. Vuelve a iniciar sesión.')
     void navigate('/login', { replace: true })
-  }, [navigate])
+  }, [identity, location.pathname, navigate])
 
-  useEffect(() => {
-    if (!identity?.expires_at) return
-    const remaining = Date.parse(identity.expires_at) - Date.now()
-    const timer = setTimeout(handleSessionExpired, Math.max(0, remaining))
-    return () => clearTimeout(timer)
-  }, [identity, handleSessionExpired])
+  function handleSessionExtended(extension: SessionExtension) {
+    if (!identity) return
+    const updated = { ...identity, ...extension }
+    if (!updated.debe_cambiar_contrasena) rememberDriver(updated)
+    else forgetDriver()
+    setIdentity(updated)
+    notify('Sesión renovada. Puedes continuar con tu trabajo.')
+  }
+
+  function saveAndExit() {
+    if (identity) {
+      const draft = captureSessionDraft(identity.usuario_id, location.pathname)
+      if (draft) downloadSessionDraft(draft)
+    }
+    void handleLogout()
+  }
 
   async function handleLogout() {
     if (!identity || loggingOut) return
@@ -138,6 +160,7 @@ function AppRoutes() {
         }
       }
       await logout()
+      setExpiredDraft(null)
       forgetDriver()
       setIdentity(null)
       setAccountEmail('')
@@ -168,11 +191,19 @@ function AppRoutes() {
     </PublicShell>
   }
 
-  const banner = logoutMessage
-    ? <div className="shell-banner"><Alert tone="danger">{logoutMessage}</Alert></div>
-    : null
+  const draft = expiredDraft?.owner === identity.usuario_id ? expiredDraft : null
+  const banner = <>
+    {logoutMessage ? <div className="shell-banner"><Alert tone="danger">{logoutMessage}</Alert></div> : null}
+    {draft ? <Alert tone="info" role="status" actions={<Button onClick={() => downloadSessionDraft(draft)}>Descargar borrador</Button>}>
+      Conservamos un borrador del formulario anterior. Descárgalo antes de cerrar o recargar esta pestaña. Las contraseñas no se guardan.
+    </Alert> : null}
+  </>
+  const sessionNotice = <SessionExpiryNotice key={identity.usuario_id} identity={identity}
+    onExtended={handleSessionExtended} onExpired={handleSessionExpired}
+    onLogout={() => { void handleLogout() }} onSaveAndExit={saveAndExit} />
   if (mustChangePassword) {
     return <PublicShell>
+      {sessionNotice}
       {banner}
       <PageContent><Routes>
         <Route path={CHANGE_PASSWORD_PATH} element={<ChangePasswordPage required onChanged={handlePasswordChanged}
@@ -213,6 +244,6 @@ function AppRoutes() {
     <Route path="*" element={<NotFoundPage />} />
   </Routes>
   return identity.rol === 'CONDUCTOR'
-    ? <DriverShell {...shellProps}><PageContent>{routes}</PageContent></DriverShell>
-    : <StaffShell {...shellProps}><PageContent>{routes}</PageContent></StaffShell>
+    ? <DriverShell {...shellProps}>{sessionNotice}<PageContent>{routes}</PageContent></DriverShell>
+    : <StaffShell {...shellProps}>{sessionNotice}<PageContent>{routes}</PageContent></StaffShell>
 }

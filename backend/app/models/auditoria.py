@@ -19,7 +19,7 @@ class Auditoria(Base):
             "'VEHICULO_PARAMETROS_ACTUALIZADOS','VEHICULO_DESACTIVADO',"
             "'CONDUCTOR_REGISTRADO','CONDUCTOR_ACTUALIZADO',"
             "'CONTRASENA_RESTABLECIDA','CONTRASENA_CAMBIADA',"
-            "'INCIDENCIA_REGISTRADA','INCIDENCIA_RESUELTA')",
+            "'INCIDENCIA_REGISTRADA','INCIDENCIA_RESUELTA','SESION_EXTENDIDA')",
             name="ck_auditoria_accion",
         ),
         CheckConstraint(

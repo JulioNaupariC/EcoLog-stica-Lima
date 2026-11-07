@@ -26,17 +26,27 @@ class SessionIdentity:
     expira_en: datetime
     revocada_en: datetime | None
     debe_cambiar_contrasena: bool = False
+    creado_en: datetime | None = None
 
 
 class SesionRepository:
     def __init__(self, session: Session) -> None:
         self._session = session
 
-    def create(self, usuario_id: UUID, token_hash: str, expira_en: datetime) -> UUID:
+    def create(
+        self,
+        usuario_id: UUID,
+        token_hash: str,
+        expira_en: datetime,
+        *,
+        creado_en: datetime | None = None,
+    ) -> UUID:
         try:
             row = Sesion(
                 usuario_id=usuario_id, token_hash=token_hash, expira_en=expira_en
             )
+            if creado_en is not None:
+                row.creado_en = creado_en
             self._session.add(row)
             self._session.flush()
             return row.sesion_id
@@ -62,6 +72,47 @@ class SesionRepository:
                 sesion.expira_en,
                 sesion.revocada_en,
                 usuario.debe_cambiar_contrasena,
+                sesion.creado_en,
+            )
+        except SQLAlchemyError:
+            raise SessionStorageError("Session storage unavailable") from None
+
+    def lock_for_extension(self, sesion_id: UUID) -> SessionIdentity | None:
+        """Lock user before session, like password reset, avoiding lock inversion."""
+        try:
+            usuario = self._session.scalar(
+                select(Usuario)
+                .join(Sesion)
+                .where(Sesion.sesion_id == sesion_id)
+                .with_for_update(of=Usuario)
+            )
+            if usuario is None:
+                return None
+            sesion = self._session.scalar(
+                select(Sesion).where(Sesion.sesion_id == sesion_id).with_for_update()
+            )
+            if sesion is None:
+                return None
+            return SessionIdentity(
+                sesion.sesion_id,
+                usuario.usuario_id,
+                usuario.rol,
+                usuario.estado,
+                usuario.bloqueado_hasta,
+                sesion.expira_en,
+                sesion.revocada_en,
+                usuario.debe_cambiar_contrasena,
+                sesion.creado_en,
+            )
+        except SQLAlchemyError:
+            raise SessionStorageError("Session storage unavailable") from None
+
+    def extend(self, sesion_id: UUID, expires: datetime) -> None:
+        try:
+            self._session.execute(
+                update(Sesion)
+                .where(Sesion.sesion_id == sesion_id)
+                .values(expira_en=expires)
             )
         except SQLAlchemyError:
             raise SessionStorageError("Session storage unavailable") from None

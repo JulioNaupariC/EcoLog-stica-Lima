@@ -855,9 +855,7 @@ def test_I16_mismo_uuid_de_otro_conductor_es_independiente(setup):
 
 def test_0013_upgrade_downgrade_upgrade_una_sola_cabeza(migration_database):
     engine, config = migration_database
-    assert ScriptDirectory.from_config(config).get_heads() == [
-        "0014_resolver_incidencias"
-    ]
+    assert len(ScriptDirectory.from_config(config).get_heads()) == 1
     command.upgrade(config, "0013_incidencias")
     with engine.connect() as connection:
         constraints = dict(

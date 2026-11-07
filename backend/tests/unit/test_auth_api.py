@@ -41,11 +41,19 @@ def test_login_contract_and_cookie(environment, secure):
         "usuario_id": str(identity.usuario_id),
         "rol": "OPERADOR",
         "debe_cambiar_contrasena": False,
+        "expires_at": service.login.return_value.expira_en.isoformat().replace(
+            "+00:00", "Z"
+        ),
+        "max_expires_at": service.login.return_value.expira_en.isoformat().replace(
+            "+00:00", "Z"
+        ),
     }
     assert "clear-session-token" not in response.text
     cookie = response.headers["set-cookie"]
     assert "HttpOnly" in cookie and "SameSite=strict" in cookie
     assert ("Secure" in cookie) is secure
+    # ECL-83: the cookie lives up to the absolute 12 h limit; the server decides.
+    assert "Max-Age=43200" in cookie
 
 
 def test_driver_login_exposes_expiration_without_session_token():
