@@ -1,12 +1,13 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import type { FormEvent } from 'react'
-import { Plus, RefreshCw, Truck } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Plus, RefreshCw, Truck } from 'lucide-react'
 import { Alert, Badge, Button, Card, DataTable, EmptyState, FormActions, FormSection, PageHeader, Skeleton, StatusBadge } from '../components/ui'
 import type { Column } from '../components/ui'
 import { createVehicle, listVehicles, VehicleServiceError } from '../services/vehicles'
 import type { VehicleCreatePayload, VehicleResponse, VehicleType } from '../services/vehicles'
 
 type VehicleField = keyof VehicleCreatePayload
+const PAGE_SIZE = 12
 type FormValues = Record<VehicleField, string>
 type FieldErrors = Partial<Record<VehicleField, string>>
 
@@ -247,20 +248,38 @@ interface ListState {
   status: 'loading' | 'ready' | 'error'
   vehicles: VehicleResponse[]
   error: string
+  page: number
+  total: number
 }
 
 export function VehiclesPage({ canCreate }: { canCreate: boolean }) {
-  const [list, setList] = useState<ListState>({ status: 'loading', vehicles: [], error: '' })
+  const [list, setList] = useState<ListState>({ status: 'loading', vehicles: [], error: '', page: 1, total: 0 })
   const [createdVehicle, setCreatedVehicle] = useState<VehicleResponse | null>(null)
   const latestRequest = useRef(0)
+  const legacyVehicles = useRef<VehicleResponse[] | null>(null)
   const listErrorRef = useRef<HTMLDivElement>(null)
 
-  const loadList = useCallback((afterCreate = false) => {
+  const loadList = useCallback((targetPage = 1, afterCreate = false) => {
     const requestId = ++latestRequest.current
-    void listVehicles().then(
-      (vehicles) => {
+    void (async () => {
+      let result = legacyVehicles.current ?? await listVehicles(targetPage, PAGE_SIZE)
+      if (requestId !== latestRequest.current) return
+      if (!Array.isArray(result)) {
+        const lastPage = Math.max(1, Math.ceil(result.total / PAGE_SIZE))
+        if (targetPage > lastPage) result = await listVehicles(lastPage, PAGE_SIZE)
+      }
+      return result
+    })().then(
+      (result) => {
         if (requestId !== latestRequest.current) return
-        setList({ status: 'ready', vehicles, error: '' })
+        if (!result) return
+        if (Array.isArray(result)) {
+          legacyVehicles.current = result
+          const page = Math.min(targetPage, Math.max(1, Math.ceil(result.length / PAGE_SIZE)))
+          setList({ status: 'ready', vehicles: result.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE), total: result.length, page, error: '' })
+        } else {
+          setList({ status: 'ready', vehicles: result.items, total: result.total, page: result.page, error: '' })
+        }
       },
       (error: unknown) => {
         if (requestId !== latestRequest.current) return
@@ -285,8 +304,14 @@ export function VehiclesPage({ canCreate }: { canCreate: boolean }) {
   }, [list])
 
   function refreshList(afterCreate = false) {
-    setList((current) => ({ ...current, status: 'loading', error: '' }))
-    loadList(afterCreate)
+    legacyVehicles.current = null
+    setList(current => ({ ...current, status: 'loading', error: '' }))
+    loadList(afterCreate ? 1 : list.page, afterCreate)
+  }
+
+  function changePage(page: number) {
+    setList(current => ({ ...current, status: 'loading', error: '' }))
+    loadList(page)
   }
 
   function handleCreated(vehicle: VehicleResponse) {
@@ -305,7 +330,7 @@ export function VehiclesPage({ canCreate }: { canCreate: boolean }) {
       ) : null}
       {list.status === 'loading' ? <p className="visually-hidden" role="status">Cargando vehículos…</p> : null}
       <Card as="div" title="Listado de vehículos" titleId="vehicle-list-title" className="vehicle-list"
-        description={list.vehicles.length ? `${list.vehicles.length} registrados · ${active} activos` : undefined}
+        description={list.vehicles.length ? `${list.total} registrados · ${active} activos en esta página` : undefined}
         actions={<Button variant="secondary" size="sm" icon={RefreshCw} disabled={list.status === 'loading'} onClick={() => refreshList()}>
           Actualizar listado
         </Button>}>
@@ -324,6 +349,13 @@ export function VehiclesPage({ canCreate }: { canCreate: boolean }) {
           ) : null}
           {list.vehicles.length > 0 ? <VehicleTable vehicles={list.vehicles} /> : null}
         </div>
+        <nav className="pagination" aria-label="Páginas de vehículos">
+          <Button variant="secondary" size="sm" icon={ChevronLeft} disabled={list.status !== 'ready' || list.page <= 1}
+            onClick={() => changePage(list.page - 1)}>Anterior</Button>
+          <span aria-live="polite">Página {list.page} de {Math.max(1, Math.ceil(list.total / PAGE_SIZE))}</span>
+          <Button variant="secondary" size="sm" icon={ChevronRight} disabled={list.status !== 'ready' || list.page >= Math.max(1, Math.ceil(list.total / PAGE_SIZE))}
+            onClick={() => changePage(list.page + 1)}>Siguiente</Button>
+        </nav>
       </Card>
       {canCreate ? <VehicleForm onCreated={handleCreated} /> : null}
     </section>

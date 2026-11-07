@@ -77,7 +77,7 @@ it('recupera el snapshot al navegar por Inicio y Mi itinerario dentro de App', {
   expect(await screen.findByRole('heading', { name: 'Inicio' })).toBeInTheDocument()
 
   await user.click(screen.getByRole('link', { name: 'Mi itinerario' }))
-  expect(screen.getByTestId('current-path')).toHaveTextContent('/conductor/itinerario')
+  await waitFor(() => expect(screen.getByTestId('current-path')).toHaveTextContent('/conductor/itinerario'))
   expect(await screen.findByText('Pendiente')).toBeInTheDocument()
   await user.click(screen.getByRole('button', { name: 'Marcar como entregado' }))
   expect(await screen.findByText(/esta parada ya tiene un reporte pendiente/i)).toBeInTheDocument()

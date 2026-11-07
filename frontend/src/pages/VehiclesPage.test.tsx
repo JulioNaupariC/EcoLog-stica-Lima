@@ -59,6 +59,35 @@ async function renderReady(canCreate = true) {
 }
 
 describe('VehiclesPage', () => {
+  it('limita la API antigua a 12 filas visibles y permite paginar con teclado', async () => {
+    const vehicles = Array.from({ length: 13 }, (_, index) => ({ ...vehicle, vehiculo_id: `${index}`, placa: `DEMO-${index + 1}` }))
+    listMock.mockResolvedValue(vehicles)
+    await renderReady(false)
+    expect(screen.getAllByRole('row')).toHaveLength(13)
+    expect(screen.queryByText('DEMO-13')).not.toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Anterior' })).toBeDisabled()
+    screen.getByRole('button', { name: 'Siguiente' }).focus()
+    await userEvent.keyboard('{Enter}')
+    expect(await screen.findByText('Página 2 de 2')).toBeInTheDocument()
+    expect(screen.getAllByRole('row')).toHaveLength(2)
+    expect(screen.getByText('DEMO-13')).toBeInTheDocument()
+    expect(listMock).toHaveBeenLastCalledWith(1, 12)
+    expect(listMock).toHaveBeenCalledTimes(1)
+    expect(screen.getByRole('button', { name: 'Siguiente' })).toBeDisabled()
+    await userEvent.click(screen.getByRole('button', { name: 'Anterior' }))
+    expect(await screen.findByText('Página 1 de 2')).toBeInTheDocument()
+  })
+
+  it('consume páginas del servidor y recupera una última página desaparecida', async () => {
+    listMock.mockResolvedValueOnce({ items: [vehicle], page: 1, page_size: 12, total: 13 })
+      .mockResolvedValueOnce({ items: [], page: 2, page_size: 12, total: 1 })
+      .mockResolvedValueOnce({ items: [vehicle], page: 1, page_size: 12, total: 1 })
+    await renderReady(false)
+    await userEvent.click(screen.getByRole('button', { name: 'Siguiente' }))
+    expect(await screen.findByText('Página 1 de 1')).toBeInTheDocument()
+    expect(listMock).toHaveBeenLastCalledWith(1, 12)
+    expect(screen.getByText(vehicle.placa)).toBeInTheDocument()
+  })
   beforeEach(() => {
     listMock.mockReset().mockResolvedValue([])
     createMock.mockReset().mockResolvedValue(vehicle)

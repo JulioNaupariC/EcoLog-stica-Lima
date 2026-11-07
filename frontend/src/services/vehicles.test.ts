@@ -34,6 +34,31 @@ const operations = [
 ] as const
 
 describe('servicio vehicles', () => {
+  it('solicita una página de 12 al backend ECL-109 y conserva sus metadatos', async () => {
+    vi.stubEnv('VITE_API_BASE_URL', 'https://api.example.test/v1')
+    const page = { items: [vehicle], page: 2, page_size: 12, total: 13 }
+    const fetch = respond(page, 200)
+    await expect(listVehicles(2, 12)).resolves.toEqual(page)
+    expect(fetch).toHaveBeenCalledWith('https://api.example.test/v1/vehiculos?page=2&page_size=12', { method: 'GET', credentials: 'include' })
+  })
+
+  it.each([
+    { items: [vehicle], page: 2, page_size: 12, total: 1 },
+    { items: [vehicle], page: 1, page_size: 20, total: 1 },
+    { items: [vehicle], page: 1, page_size: 12, total: 0 },
+    { items: [vehicle], page: 1, page_size: 12, total: -1 },
+    { items: [vehicle], page: 1, page_size: 12, total: 1.5 },
+    { items: Array.from({ length: 13 }, () => vehicle), page: 1, page_size: 12, total: 13 },
+  ])('rechaza metadatos de página incoherentes', async page => {
+    respond(page, 200)
+    await expect(listVehicles(1, 12)).rejects.toMatchObject({ kind: 'unexpected' })
+  })
+
+  it.each([[0, 12], [1.5, 12], [1, 0], [1, 101]])('rechaza parámetros inválidos sin consultar %s/%s', async (page, size) => {
+    const fetch = respond([], 200)
+    await expect(listVehicles(page, size)).rejects.toMatchObject({ kind: 'unexpected' })
+    expect(fetch).not.toHaveBeenCalled()
+  })
   beforeEach(() => {
     vi.stubEnv('VITE_API_BASE_URL', 'https://api.example.test/v1')
   })

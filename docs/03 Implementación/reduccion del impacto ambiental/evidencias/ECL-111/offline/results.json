@@ -1,0 +1,339 @@
+{
+  "ticket": "ECL-76",
+  "executedAt": "2026-11-07T01:15:13.949Z",
+  "timezone": "America/Lima",
+  "commit": "ed2b42804f73e94228a28cd4f8373ea7349b1809",
+  "workingTreeDirty": true,
+  "api": "http://127.0.0.1:8001",
+  "base": "http://127.0.0.1:5174",
+  "mode": "Real local API / PostgreSQL; only first response loss is injected",
+  "browsers": [
+    {
+      "browser": "chrome",
+      "engine": "chromium",
+      "version": "156.0.8078.80",
+      "rounds": [
+        {
+          "round": 1,
+          "scenario": "I12/I13 ruta de borde",
+          "passed": true,
+          "operationId": "56dccc03-b373-4898-bc1b-7ccc96cea4c7",
+          "incidenceId": "070ed5b8-0234-4963-a6c1-f750c7d4edfa",
+          "offlineReload": true,
+          "itineraryPreserved": true,
+          "lostAck": true,
+          "statuses": [
+            201,
+            200
+          ],
+          "replay": 200,
+          "persistedMatches": 1
+        },
+        {
+          "round": 2,
+          "scenario": "I12/I13 ruta de borde",
+          "passed": true,
+          "operationId": "9d6e55aa-6923-44a9-82e7-9477df2b82d5",
+          "incidenceId": "88e44e98-84f7-4688-b04a-bca0735d47ab",
+          "offlineReload": true,
+          "itineraryPreserved": true,
+          "lostAck": false,
+          "statuses": [
+            201
+          ],
+          "replay": 200,
+          "persistedMatches": 1
+        },
+        {
+          "round": 3,
+          "scenario": "I12/I13 ruta de borde",
+          "passed": true,
+          "operationId": "d14cc531-b59a-42b2-8738-5fb6f8797e80",
+          "incidenceId": "c348b0e2-15ee-4c8a-b8a2-37969b1b4aae",
+          "offlineReload": true,
+          "itineraryPreserved": true,
+          "lostAck": false,
+          "statuses": [
+            201
+          ],
+          "replay": 200,
+          "persistedMatches": 1
+        },
+        {
+          "round": 4,
+          "scenario": "I12/I13 ruta de borde",
+          "passed": true,
+          "operationId": "0f2f2c33-eae8-4039-87f6-58cf8a83f648",
+          "incidenceId": "efbb8722-e926-4731-8583-9fe2560a0553",
+          "offlineReload": true,
+          "itineraryPreserved": true,
+          "lostAck": false,
+          "statuses": [
+            201
+          ],
+          "replay": 200,
+          "persistedMatches": 1
+        },
+        {
+          "round": 5,
+          "scenario": "I12/I13 ruta de borde",
+          "passed": true,
+          "operationId": "68779e8e-eb48-4e31-a3ac-e6ad091903c8",
+          "incidenceId": "e606c2f0-ba7f-4c2f-8370-22b9a2b4452e",
+          "offlineReload": true,
+          "itineraryPreserved": true,
+          "lostAck": false,
+          "statuses": [
+            201
+          ],
+          "replay": 200,
+          "persistedMatches": 1
+        },
+        {
+          "round": 6,
+          "scenario": "I12/I13 ruta de borde",
+          "passed": true,
+          "operationId": "f4749c59-7507-4912-90f2-34343b4c5af1",
+          "incidenceId": "292e1fb9-8bc2-4ecf-af57-28ea6f0bb1d2",
+          "offlineReload": true,
+          "itineraryPreserved": true,
+          "lostAck": false,
+          "statuses": [
+            201
+          ],
+          "replay": 200,
+          "persistedMatches": 1
+        },
+        {
+          "round": 7,
+          "scenario": "I12/I13 ruta de borde",
+          "passed": true,
+          "operationId": "c05da81b-0294-4e56-bcc1-c8ad4bb034df",
+          "incidenceId": "4518f8a9-98df-4e9d-8e38-df1d1dac024a",
+          "offlineReload": true,
+          "itineraryPreserved": true,
+          "lostAck": false,
+          "statuses": [
+            201
+          ],
+          "replay": 200,
+          "persistedMatches": 1
+        },
+        {
+          "round": 8,
+          "scenario": "I12/I13 ruta de borde",
+          "passed": true,
+          "operationId": "184ae320-eb34-4d09-b3c2-56db7242d413",
+          "incidenceId": "b5e285e5-e205-437d-8d25-a6e8f85321af",
+          "offlineReload": true,
+          "itineraryPreserved": true,
+          "lostAck": false,
+          "statuses": [
+            201
+          ],
+          "replay": 200,
+          "persistedMatches": 1
+        },
+        {
+          "round": 9,
+          "scenario": "I12/I13 ruta de borde",
+          "passed": true,
+          "operationId": "a69a2666-c7b0-434b-90dc-c56cace6f7f4",
+          "incidenceId": "db72db41-efac-4be1-94fe-b39ad8a67e09",
+          "offlineReload": true,
+          "itineraryPreserved": true,
+          "lostAck": false,
+          "statuses": [
+            201
+          ],
+          "replay": 200,
+          "persistedMatches": 1
+        },
+        {
+          "round": 10,
+          "scenario": "I12/I13 ruta de borde",
+          "passed": true,
+          "operationId": "b5622c10-c5e2-48b9-8ad4-a792dd2bcea8",
+          "incidenceId": "d3cb7e91-cc6d-4b75-9214-9e577f253b09",
+          "offlineReload": true,
+          "itineraryPreserved": true,
+          "lostAck": false,
+          "statuses": [
+            201
+          ],
+          "replay": 200,
+          "persistedMatches": 1
+        }
+      ],
+      "online": {
+        "passed": true,
+        "operationId": "17fe14e4-23f1-49f1-b25b-20cdee058927"
+      },
+      "passed": true
+    },
+    {
+      "browser": "firefox",
+      "engine": "firefox",
+      "version": "159.0",
+      "rounds": [
+        {
+          "round": 1,
+          "scenario": "I12/I13 ruta de borde",
+          "passed": true,
+          "operationId": "389d902b-49bd-4ce2-97e9-2e555552e9e9",
+          "incidenceId": "15043f80-f6ad-44ee-8585-4c0ac9e4c406",
+          "offlineReload": true,
+          "itineraryPreserved": true,
+          "lostAck": true,
+          "statuses": [
+            201,
+            200
+          ],
+          "replay": 200,
+          "persistedMatches": 1
+        },
+        {
+          "round": 2,
+          "scenario": "I12/I13 ruta de borde",
+          "passed": true,
+          "operationId": "097dec2c-520f-4cd0-8c3c-a95d91a1f006",
+          "incidenceId": "b99802fe-1ca9-4555-b1d7-520552603624",
+          "offlineReload": true,
+          "itineraryPreserved": true,
+          "lostAck": false,
+          "statuses": [
+            201
+          ],
+          "replay": 200,
+          "persistedMatches": 1
+        },
+        {
+          "round": 3,
+          "scenario": "I12/I13 ruta de borde",
+          "passed": true,
+          "operationId": "5cba92a6-86f8-43c3-b528-e778e6eda643",
+          "incidenceId": "59ca99f3-a19b-4b6d-aa3a-93c1691680ed",
+          "offlineReload": true,
+          "itineraryPreserved": true,
+          "lostAck": false,
+          "statuses": [
+            201
+          ],
+          "replay": 200,
+          "persistedMatches": 1
+        },
+        {
+          "round": 4,
+          "scenario": "I12/I13 ruta de borde",
+          "passed": true,
+          "operationId": "71243f4b-9d5b-467b-9529-b7075eccfe90",
+          "incidenceId": "16a4784d-d57b-4e03-8007-f1273a73b5b7",
+          "offlineReload": true,
+          "itineraryPreserved": true,
+          "lostAck": false,
+          "statuses": [
+            201
+          ],
+          "replay": 200,
+          "persistedMatches": 1
+        },
+        {
+          "round": 5,
+          "scenario": "I12/I13 ruta de borde",
+          "passed": true,
+          "operationId": "e2781e74-b4b4-4577-a8b4-5ac0dd2d8a04",
+          "incidenceId": "6f914dff-a5fb-44f1-b445-e8d9e259c3a8",
+          "offlineReload": true,
+          "itineraryPreserved": true,
+          "lostAck": false,
+          "statuses": [
+            201
+          ],
+          "replay": 200,
+          "persistedMatches": 1
+        },
+        {
+          "round": 6,
+          "scenario": "I12/I13 ruta de borde",
+          "passed": true,
+          "operationId": "69107a81-9c20-4156-a06e-c9677506c6f8",
+          "incidenceId": "3deb1a4d-3a9a-474b-889f-a446574c944d",
+          "offlineReload": true,
+          "itineraryPreserved": true,
+          "lostAck": false,
+          "statuses": [
+            201
+          ],
+          "replay": 200,
+          "persistedMatches": 1
+        },
+        {
+          "round": 7,
+          "scenario": "I12/I13 ruta de borde",
+          "passed": true,
+          "operationId": "44172ec2-07b8-4085-a6b2-ce02f7ba9da7",
+          "incidenceId": "657bcee2-b89f-4d6e-b82b-93fd86bb489b",
+          "offlineReload": true,
+          "itineraryPreserved": true,
+          "lostAck": false,
+          "statuses": [
+            201
+          ],
+          "replay": 200,
+          "persistedMatches": 1
+        },
+        {
+          "round": 8,
+          "scenario": "I12/I13 ruta de borde",
+          "passed": true,
+          "operationId": "d1d3d2b5-e63b-426e-8012-e0dfdfb15450",
+          "incidenceId": "99934fec-4127-4f1e-a284-038dfae6ee78",
+          "offlineReload": true,
+          "itineraryPreserved": true,
+          "lostAck": false,
+          "statuses": [
+            201
+          ],
+          "replay": 200,
+          "persistedMatches": 1
+        },
+        {
+          "round": 9,
+          "scenario": "I12/I13 ruta de borde",
+          "passed": true,
+          "operationId": "0c116655-3707-4bed-bed6-08bb26beddbe",
+          "incidenceId": "f583a337-97cd-4419-8b8b-173c86fc8b03",
+          "offlineReload": true,
+          "itineraryPreserved": true,
+          "lostAck": false,
+          "statuses": [
+            201
+          ],
+          "replay": 200,
+          "persistedMatches": 1
+        },
+        {
+          "round": 10,
+          "scenario": "I12/I13 ruta de borde",
+          "passed": true,
+          "operationId": "3e1c46e1-c4ed-438f-b069-16d9f6d6a7f6",
+          "incidenceId": "0dfbb80b-5903-4465-aaff-41e81cc63232",
+          "offlineReload": true,
+          "itineraryPreserved": true,
+          "lostAck": false,
+          "statuses": [
+            201
+          ],
+          "replay": 200,
+          "persistedMatches": 1
+        }
+      ],
+      "online": {
+        "passed": true,
+        "operationId": "088d0f9f-059e-487b-b24c-7ac47f6b912e"
+      },
+      "passed": true
+    }
+  ],
+  "passed": true
+}

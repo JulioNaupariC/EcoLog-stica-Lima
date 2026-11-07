@@ -1,0 +1,1619 @@
+Commit ANTES: e09dcd80e32431018d4020bb02c89ffae7505705
+
+ARCHIVO: frontend/src/app/App.tsx
+import { useCallback, useEffect, useState } from 'react'
+import type { ReactNode } from 'react'
+import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom'
+import { ShieldAlert } from 'lucide-react'
+import { HomePage } from '../pages/HomePage'
+import { DriverItineraryPage } from '../pages/DriverItineraryPage'
+import { IncidentCreatePage } from '../pages/IncidentCreatePage'
+import { useIncidentSynchronization } from '../hooks/useIncidentSynchronization'
+import { listIncidents } from '../services/incidentStorage'
+import { LoginPage } from '../pages/LoginPage'
+import { NotFoundPage } from '../pages/NotFoundPage'
+import { OrderCreatePage } from '../pages/OrderCreatePage'
+import { VehiclesPage } from '../pages/VehiclesPage'
+import { DriversPage } from '../pages/DriversPage'
+import { DeliveryPreferencesPage } from '../pages/DeliveryPreferencesPage'
+import { UsersPage } from '../pages/UsersPage'
+import { OperationIncidentsPage } from '../pages/OperationIncidentsPage'
+import { ChangePasswordPage } from '../pages/ChangePasswordPage'
+import { DriverShell, PublicShell, StaffShell } from '../components/layout/AppShell'
+import { Alert, EmptyState, LinkButton, ToastProvider, useToast } from '../components/ui'
+import { canListVehicles, canManageOperations, canManageUsers, ROLE_LABEL } from '../domain/roles'
+import { logout, type LoginResponse } from '../services/auth'
+import { clearItinerary } from '../services/offlineStorage'
+import { listPendingReports } from '../services/reportQueue'
+import { forgetDriver, recallDriver, rememberDriver } from '../services/offlineAccess'
+import { installPasswordChangeGuard } from '../services/passwordChangeGuard'
+
+const CHANGE_PASSWORD_PATH = '/cambiar-contrasena'
+
+function AccessDenied() {
+  return <EmptyState icon={ShieldAlert} title="Acceso denegado" headingLevel={1} titleId="access-denied-title"
+    action={<LinkButton to="/" variant="secondary">Volver al inicio</LinkButton>}>
+    <p role="alert">No tienes permisos para acceder a esta función.</p>
+  </EmptyState>
+}
+
+export function App() {
+  return <ToastProvider><AppRoutes /></ToastProvider>
+}
+
+function AppRoutes() {
+  const [identity, setIdentity] = useState<LoginResponse | null>(recallDriver)
+  // Shown in the top bar only; kept in memory, never stored on the device.
+  const [accountEmail, setAccountEmail] = useState('')
+  const [logoutMessage, setLogoutMessage] = useState('')
+  const [loggingOut, setLoggingOut] = useState(false)
+  const navigate = useNavigate()
+  const location = useLocation()
+  const { notify } = useToast()
+  const createOrdersAllowed = identity !== null && canManageOperations(identity.rol)
+  const vehiclesAllowed = identity !== null && canListVehicles(identity.rol)
+  const mustChangePassword = identity?.debe_cambiar_contrasena === true
+  const signedIn = identity !== null
+  // WCAG 2.4.2: the tab identifies the screen, including denied and public routes.
+  useEffect(() => {
+    const heading = document.querySelector('main h1')?.textContent?.trim()
+    document.title = heading ? `${heading} — EcoLogística Lima` : 'EcoLogística Lima'
+  }, [location.pathname, identity?.rol, mustChangePassword])
+  useIncidentSynchronization(identity?.rol === 'CONDUCTOR' && !mustChangePassword ? identity.usuario_id : undefined)
+
+  function handleLoginSuccess(loggedInIdentity: LoginResponse, email: string) {
+    // A temporary-password session is not remembered as a usable driver tab.
+    if (!loggedInIdentity.debe_cambiar_contrasena) rememberDriver(loggedInIdentity)
+    setIdentity(loggedInIdentity)
+    setAccountEmail(email)
+    setLogoutMessage('')
+    void navigate(loggedInIdentity.debe_cambiar_contrasena ? CHANGE_PASSWORD_PATH : '/', { replace: true })
+  }
+
+  // ECL-77: any API 403 "Cambio de contraseña requerido" locks the app on the change page.
+  useEffect(() => {
+    if (!signedIn) return undefined
+    return installPasswordChangeGuard(() => {
+      forgetDriver()
+      setIdentity(current => current ? { ...current, debe_cambiar_contrasena: true } : current)
+      void navigate(CHANGE_PASSWORD_PATH, { replace: true })
+    })
+  }, [signedIn, navigate])
+
+  function handlePasswordChanged() {
+    if (identity) {
+      const updated: LoginResponse = { usuario_id: identity.usuario_id, rol: identity.rol,
+        ...(identity.expires_at ? { expires_at: identity.expires_at } : {}) }
+      rememberDriver(updated)
+      setIdentity(updated)
+    }
+    void navigate('/', { replace: true })
+    notify('Contraseña actualizada.')
+  }
+
+  const handleSessionExpired = useCallback(() => {
+    forgetDriver()
+    setIdentity(null)
+    setLogoutMessage('Tu sesión ha vencido. Vuelve a iniciar sesión.')
+    void navigate('/login', { replace: true })
+  }, [navigate])
+
+  useEffect(() => {
+    if (!identity?.expires_at) return
+    const remaining = Date.parse(identity.expires_at) - Date.now()
+    const timer = setTimeout(handleSessionExpired, Math.max(0, remaining))
+    return () => clearTimeout(timer)
+  }, [identity, handleSessionExpired])
+
+  async function handleLogout() {
+    if (!identity || loggingOut) return
+    setLogoutMessage('')
+    setLoggingOut(true)
+    try {
+      if (identity.rol === 'CONDUCTOR') {
+        let pendingCount: number | null
+        try {
+          pendingCount = (await listPendingReports(identity.usuario_id)).length +
+            (await listIncidents(identity.usuario_id)).filter(item => !item.acknowledgement).length
+        } catch {
+          pendingCount = null
+        }
+        if (pendingCount === null) {
+          if (!window.confirm(
+            'No se pudo verificar la cola offline. Los reportes locales no se eliminarán. ¿Cerrar sesión?',
+          )) return
+        } else if (pendingCount > 0 && !window.confirm(
+          `Tienes ${pendingCount === 1 ? '1 reporte pendiente' : `${pendingCount} reportes pendientes`}. Se conservarán en este dispositivo y podrás sincronizarlos al volver a iniciar sesión. ¿Cerrar sesión?`,
+        )) {
+          return
+        }
+      }
+      await logout()
+      forgetDriver()
+      setIdentity(null)
+      setAccountEmail('')
+      await navigate('/login', { replace: true })
+      notify('Sesión cerrada.')
+      if (identity.rol === 'CONDUCTOR') {
+        try {
+          await clearItinerary(identity.usuario_id)
+        } catch {
+          setLogoutMessage('La sesión se cerró, pero no se pudo borrar el itinerario guardado en este dispositivo.')
+        }
+      }
+    } catch (error) {
+      setLogoutMessage(
+        error instanceof Error ? error.message : 'No se pudo cerrar la sesión.',
+      )
+    } finally {
+      setLoggingOut(false)
+    }
+  }
+
+  if (identity === null) {
+    return <PublicShell>
+      <Routes>
+        <Route path="/login" element={<LoginPage onLoginSuccess={handleLoginSuccess} notice={logoutMessage} />} />
+        <Route path="*" element={<Navigate to="/login" replace />} />
+      </Routes>
+    </PublicShell>
+  }
+
+  const banner = logoutMessage
+    ? <div className="shell-banner"><Alert tone="danger">{logoutMessage}</Alert></div>
+    : null
+  if (mustChangePassword) {
+    return <PublicShell>
+      {banner}
+      <Routes>
+        <Route path={CHANGE_PASSWORD_PATH} element={<ChangePasswordPage required onChanged={handlePasswordChanged}
+          onSessionExpired={handleSessionExpired} onLogout={() => { void handleLogout() }} />} />
+        <Route path="*" element={<Navigate to={CHANGE_PASSWORD_PATH} replace />} />
+      </Routes>
+    </PublicShell>
+  }
+  const guarded = (allowed: boolean, element: ReactNode) => allowed ? element : <AccessDenied />
+  const shellProps = {
+    role: identity.rol,
+    accountName: accountEmail || ROLE_LABEL[identity.rol],
+    loggingOut,
+    onLogout: () => { void handleLogout() },
+    banner,
+  }
+  const routes = <Routes>
+    <Route path="/" element={<HomePage role={identity.rol} ownerId={identity.usuario_id} />} />
+    <Route path="/login" element={<Navigate to="/" replace />} />
+    <Route path="/pedidos/nuevo" element={guarded(createOrdersAllowed, <OrderCreatePage />)} />
+    <Route path="/operacion/incidencias" element={guarded(createOrdersAllowed,
+      <OperationIncidentsPage key={identity.usuario_id} onSessionExpired={handleSessionExpired} />)} />
+    <Route path="/vehiculos" element={guarded(vehiclesAllowed, <VehiclesPage canCreate={createOrdersAllowed} />)} />
+    <Route path="/conductor/itinerario" element={guarded(identity.rol === 'CONDUCTOR',
+      <DriverItineraryPage key={identity.usuario_id} ownerId={identity.usuario_id} onSessionExpired={handleSessionExpired} />)} />
+    <Route path="/conductor/incidencias/nueva" element={guarded(identity.rol === 'CONDUCTOR',
+      <IncidentCreatePage key={identity.usuario_id} ownerId={identity.usuario_id} />)} />
+    <Route path="/conductores" element={guarded(createOrdersAllowed,
+      <DriversPage key={identity.usuario_id} onSessionExpired={handleSessionExpired} />)} />
+    <Route path="/clientes/preferencias" element={guarded(createOrdersAllowed,
+      <DeliveryPreferencesPage key={identity.usuario_id} onSessionExpired={handleSessionExpired} />)} />
+    <Route path="/usuarios" element={guarded(canManageUsers(identity.rol),
+      <UsersPage key={identity.usuario_id} ownId={identity.usuario_id} onSessionExpired={handleSessionExpired} />)} />
+    <Route path={CHANGE_PASSWORD_PATH} element={<ChangePasswordPage required={false}
+      onChanged={handlePasswordChanged} onSessionExpired={handleSessionExpired} />} />
+    <Route path="*" element={<NotFoundPage />} />
+  </Routes>
+  return identity.rol === 'CONDUCTOR'
+    ? <DriverShell {...shellProps}>{routes}</DriverShell>
+    : <StaffShell {...shellProps}>{routes}</StaffShell>
+}
+
+
+ARCHIVO: frontend/src/pages/VehiclesPage.tsx
+import { useCallback, useEffect, useRef, useState } from 'react'
+import type { FormEvent } from 'react'
+import { Plus, RefreshCw, Truck } from 'lucide-react'
+import { Alert, Badge, Button, Card, DataTable, EmptyState, FormActions, FormSection, PageHeader, Skeleton, StatusBadge } from '../components/ui'
+import type { Column } from '../components/ui'
+import { createVehicle, listVehicles, VehicleServiceError } from '../services/vehicles'
+import type { VehicleCreatePayload, VehicleResponse, VehicleType } from '../services/vehicles'
+
+type VehicleField = keyof VehicleCreatePayload
+type FormValues = Record<VehicleField, string>
+type FieldErrors = Partial<Record<VehicleField, string>>
+
+const INITIAL_VALUES: FormValues = {
+  placa: '',
+  tipo: '',
+  capacidad_kg: '',
+  capacidad_m3: '',
+  rendimiento_km_l: '',
+  factor_co2_kg_km: '',
+  anio_fabricacion: '',
+}
+
+const FIELDS: { name: VehicleField; label: string; hint: string }[] = [
+  { name: 'placa', label: 'Placa', hint: 'Hasta 10 caracteres; se guarda en mayúsculas. Ej.: ABC-123.' },
+  { name: 'tipo', label: 'Tipo', hint: 'Camioneta, furgón o moto.' },
+  { name: 'anio_fabricacion', label: 'Año de fabricación', hint: 'Entre 1980 y 2100.' },
+  { name: 'capacidad_kg', label: 'Capacidad (kg)', hint: 'Carga útil máxima. Ej.: 1200.' },
+  { name: 'capacidad_m3', label: 'Capacidad (m³)', hint: 'Volumen útil. Ej.: 8.50.' },
+  { name: 'rendimiento_km_l', label: 'Rendimiento (km/L)', hint: 'Kilómetros por litro. Ej.: 11.500.' },
+  { name: 'factor_co2_kg_km', label: 'Factor CO₂ (kg/km)', hint: 'Emisión por kilómetro; 0 si es eléctrico.' },
+]
+
+const SECTIONS: { legend: string; description: string; fields: VehicleField[] }[] = [
+  { legend: 'Identificación', description: 'Datos con los que se reconoce la unidad.', fields: ['placa', 'tipo', 'anio_fabricacion'] },
+  { legend: 'Capacidad', description: 'Límites que usará la planificación de rutas.', fields: ['capacidad_kg', 'capacidad_m3'] },
+  { legend: 'Consumo y emisiones', description: 'Base para los indicadores de sostenibilidad.', fields: ['rendimiento_km_l', 'factor_co2_kg_km'] },
+]
+
+const TYPE_LABEL: Record<string, string> = { CAMIONETA: 'Camioneta', FURGON: 'Furgón', MOTO: 'Moto' }
+
+const DECIMAL_FIELDS = [
+  { name: 'capacidad_kg', places: 2, allowZero: false },
+  { name: 'capacidad_m3', places: 2, allowZero: false },
+  { name: 'rendimiento_km_l', places: 3, allowZero: false },
+  { name: 'factor_co2_kg_km', places: 5, allowZero: true },
+] as const
+
+function isVehicleType(value: string): value is VehicleType {
+  return value === 'CAMIONETA' || value === 'FURGON' || value === 'MOTO'
+}
+
+function decimalError(value: string, places: number, allowZero: boolean): string | undefined {
+  if (!value.trim()) return 'Este campo es obligatorio.'
+  if (!/^\d+(?:\.\d+)?$/u.test(value)) {
+    return 'Usa un número sin signo, con punto decimal; por ejemplo, 1.25.'
+  }
+  const [whole, fraction = ''] = value.split('.')
+  // Count on a copy, preserving the original text and avoiding floating point.
+  const integerDigits = whole.replace(/^0+/u, '')
+  const fractionalDigits = fraction.replace(/0+$/u, '')
+  if (!allowZero && !/[1-9]/u.test(value)) return 'El valor debe ser mayor que cero.'
+  if (integerDigits.length > 10 - places || fractionalDigits.length > places) {
+    return `Usa como máximo ${10 - places} dígitos enteros y ${places} decimales significativos.`
+  }
+  return undefined
+}
+
+function validate(values: FormValues): { errors: FieldErrors; payload?: VehicleCreatePayload } {
+  const errors: FieldErrors = {}
+  const plateLength = Array.from(values.placa.trim().toUpperCase()).length
+  if (plateLength === 0) errors.placa = 'La placa es obligatoria.'
+  else if (plateLength > 10) errors.placa = 'La placa no puede superar 10 caracteres al normalizarse.'
+  if (!isVehicleType(values.tipo)) errors.tipo = 'Selecciona un tipo de vehículo válido.'
+  for (const { name, places, allowZero } of DECIMAL_FIELDS) {
+    const error = decimalError(values[name], places, allowZero)
+    if (error) errors[name] = error
+  }
+  const year = Number(values.anio_fabricacion)
+  if (!/^\d{4}$/u.test(values.anio_fabricacion) || year < 1980 || year > 2100) {
+    errors.anio_fabricacion = 'Ingresa un año entero entre 1980 y 2100.'
+  }
+  if (Object.keys(errors).length > 0 || !isVehicleType(values.tipo)) return { errors }
+  return { errors, payload: { ...values, tipo: values.tipo, anio_fabricacion: year } }
+}
+
+function serviceMessage(error: unknown): string {
+  return error instanceof VehicleServiceError ? error.message : 'No se pudo completar la operación.'
+}
+
+function VehicleForm({ onCreated }: { onCreated: (vehicle: VehicleResponse) => void }) {
+  const [values, setValues] = useState<FormValues>(INITIAL_VALUES)
+  const [errors, setErrors] = useState<FieldErrors>({})
+  const [globalError, setGlobalError] = useState('')
+  const [submitting, setSubmitting] = useState(false)
+  const submittingRef = useRef(false)
+  const mountedRef = useRef(false)
+  const formRef = useRef<HTMLFormElement>(null)
+  const errorRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    mountedRef.current = true
+    return () => { mountedRef.current = false }
+  }, [])
+
+  useEffect(() => {
+    if (!globalError || submitting) return
+    const firstInvalid = FIELDS.find(({ name }) => errors[name])
+    const control = firstInvalid && formRef.current?.elements.namedItem(firstInvalid.name)
+    if (control instanceof HTMLElement) control.focus()
+    else errorRef.current?.focus()
+  }, [errors, globalError, submitting])
+
+  function updateValue(field: VehicleField, value: string) {
+    setValues((current) => ({ ...current, [field]: value }))
+    setErrors((current) => ({ ...current, [field]: undefined }))
+    setGlobalError('')
+  }
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+    if (submittingRef.current) return
+    const result = validate(values)
+    setErrors(result.errors)
+    if (!result.payload) {
+      setGlobalError('Revisa los campos indicados antes de registrar el vehículo.')
+      return
+    }
+
+    submittingRef.current = true
+    setSubmitting(true)
+    setGlobalError('')
+    try {
+      const vehicle = await createVehicle(result.payload)
+      if (!mountedRef.current) return
+      setValues(INITIAL_VALUES)
+      setErrors({})
+      onCreated(vehicle)
+    } catch (error) {
+      if (!mountedRef.current) return
+      const nextErrors: FieldErrors = {}
+      if (error instanceof VehicleServiceError) {
+        for (const issue of error.issues) nextErrors[issue.field] = issue.message
+        if (error.kind === 'conflict') nextErrors.placa = error.message
+      }
+      setErrors(nextErrors)
+      setGlobalError(serviceMessage(error))
+    } finally {
+      submittingRef.current = false
+      if (mountedRef.current) setSubmitting(false)
+    }
+  }
+
+  function renderField(name: VehicleField) {
+    const field = FIELDS.find(item => item.name === name)!
+    const id = `vehicle-${name}`
+    const describedBy = [errors[name] ? `${id}-error` : null, `${id}-hint`].filter(Boolean).join(' ')
+    const inputProps = {
+      id,
+      name,
+      required: true,
+      disabled: submitting,
+      value: values[name],
+      'aria-invalid': Boolean(errors[name]),
+      'aria-describedby': describedBy,
+    }
+    return (
+      <div className="form-field" key={name}>
+        <label htmlFor={id}>{field.label}</label>
+        {name === 'tipo' ? (
+          <select {...inputProps} onChange={(event) => updateValue(name, event.target.value)}>
+            <option value="">Selecciona un tipo</option>
+            <option value="CAMIONETA">Camioneta</option>
+            <option value="FURGON">Furgón</option>
+            <option value="MOTO">Moto</option>
+          </select>
+        ) : (
+          <input
+            {...inputProps}
+            type="text"
+            inputMode={name === 'placa' ? 'text' : name === 'anio_fabricacion' ? 'numeric' : 'decimal'}
+            onChange={(event) => updateValue(name, event.target.value)}
+          />
+        )}
+        {errors[name] ? <p className="field-error" id={`${id}-error`}>{errors[name]}</p> : null}
+        <p className="field-hint" id={`${id}-hint`}>{field.hint}</p>
+      </div>
+    )
+  }
+
+  return (
+    <Card title="Registrar vehículo" titleId="vehicle-form-title" className="vehicle-registration">
+      <p id="vehicle-format-help" className="card-description">
+        Todos los campos son obligatorios. Usa punto decimal, sin separadores de miles ni exponentes.
+      </p>
+      {globalError ? (
+        <Alert tone="danger" ref={errorRef} tabIndex={-1}>{globalError}</Alert>
+      ) : null}
+      {submitting ? <p className="field-hint" role="status">Registrando vehículo…</p> : null}
+      <form
+        className="form-stack"
+        aria-labelledby="vehicle-form-title"
+        aria-describedby="vehicle-format-help"
+        aria-busy={submitting}
+        noValidate
+        ref={formRef}
+        onSubmit={(event) => { void handleSubmit(event) }}
+      >
+        {SECTIONS.map(section => (
+          <FormSection key={section.legend} legend={section.legend} description={section.description}>
+            <div className="form-grid">{section.fields.map(renderField)}</div>
+          </FormSection>
+        ))}
+        <FormActions>
+          <Button type="submit" icon={Plus} disabled={submitting}>
+            {submitting ? 'Registrando…' : 'Registrar vehículo'}
+          </Button>
+        </FormActions>
+      </form>
+    </Card>
+  )
+}
+
+function stateBadge(estado: string) {
+  if (estado === 'ACTIVO' || estado === 'INACTIVO') return <StatusBadge status={estado} />
+  // Unknown states are shown verbatim (as text) rather than guessed.
+  return <Badge tone="neutral" icon={null}>{estado}</Badge>
+}
+
+const VEHICLE_COLUMNS: Column<VehicleResponse>[] = [
+  { key: 'placa', header: 'Placa', primary: true, render: vehicle => <strong>{vehicle.placa}</strong> },
+  { key: 'tipo', header: 'Tipo', render: vehicle => TYPE_LABEL[vehicle.tipo] ?? vehicle.tipo },
+  { key: 'kg', header: 'Capacidad (kg)', align: 'end', render: vehicle => vehicle.capacidad_kg },
+  { key: 'm3', header: 'Capacidad (m³)', align: 'end', render: vehicle => vehicle.capacidad_m3 },
+  { key: 'rend', header: 'Rendimiento (km/L)', align: 'end', render: vehicle => vehicle.rendimiento_km_l },
+  { key: 'co2', header: 'Factor (kg CO₂/km)', align: 'end', render: vehicle => vehicle.factor_co2_kg_km },
+  { key: 'anio', header: 'Año', align: 'end', render: vehicle => vehicle.anio_fabricacion },
+  { key: 'estado', header: 'Estado', render: vehicle => stateBadge(vehicle.estado) },
+]
+
+function VehicleTable({ vehicles }: { vehicles: VehicleResponse[] }) {
+  return <DataTable columns={VEHICLE_COLUMNS} rows={vehicles} rowKey={vehicle => vehicle.vehiculo_id}
+    caption="Vehículos registrados, incluidos activos e inactivos"
+    label="Tabla de vehículos, desplazamiento horizontal" />
+}
+
+interface ListState {
+  status: 'loading' | 'ready' | 'error'
+  vehicles: VehicleResponse[]
+  error: string
+}
+
+export function VehiclesPage({ canCreate }: { canCreate: boolean }) {
+  const [list, setList] = useState<ListState>({ status: 'loading', vehicles: [], error: '' })
+  const [createdVehicle, setCreatedVehicle] = useState<VehicleResponse | null>(null)
+  const latestRequest = useRef(0)
+  const listErrorRef = useRef<HTMLDivElement>(null)
+
+  const loadList = useCallback((afterCreate = false) => {
+    const requestId = ++latestRequest.current
+    void listVehicles().then(
+      (vehicles) => {
+        if (requestId !== latestRequest.current) return
+        setList({ status: 'ready', vehicles, error: '' })
+      },
+      (error: unknown) => {
+        if (requestId !== latestRequest.current) return
+        const message = serviceMessage(error)
+        setList((current) => ({
+          ...current,
+          status: 'error',
+          error: afterCreate ? `Vehículo registrado. No se pudo actualizar el listado. ${message}` : message,
+        }))
+      },
+    )
+  }, [])
+
+  useEffect(() => {
+    loadList()
+    // Invalidates earlier GETs, including StrictMode's first mount and unmount.
+    return () => { latestRequest.current += 1 }
+  }, [loadList])
+
+  useEffect(() => {
+    if (list.status === 'error') listErrorRef.current?.focus()
+  }, [list])
+
+  function refreshList(afterCreate = false) {
+    setList((current) => ({ ...current, status: 'loading', error: '' }))
+    loadList(afterCreate)
+  }
+
+  function handleCreated(vehicle: VehicleResponse) {
+    setCreatedVehicle(vehicle)
+    refreshList(true)
+  }
+
+  const active = list.vehicles.filter(vehicle => vehicle.estado === 'ACTIVO').length
+  return (
+    <section className="vehicles-page" aria-labelledby="vehicles-title">
+      <PageHeader titleId="vehicles-title" title="Vehículos" eyebrow="Gestión de flota"
+        breadcrumbs={[{ label: 'Inicio', to: '/' }, { label: 'Vehículos' }]}
+        description="Unidades disponibles para la planificación, con su capacidad y factor de emisión." />
+      {createdVehicle ? (
+        <Alert tone="success" role="status">Vehículo registrado: {createdVehicle.placa}.</Alert>
+      ) : null}
+      {list.status === 'loading' ? <p className="visually-hidden" role="status">Cargando vehículos…</p> : null}
+      <Card as="div" title="Listado de vehículos" titleId="vehicle-list-title" className="vehicle-list"
+        description={list.vehicles.length ? `${list.vehicles.length} registrados · ${active} activos` : undefined}
+        actions={<Button variant="secondary" size="sm" icon={RefreshCw} disabled={list.status === 'loading'} onClick={() => refreshList()}>
+          Actualizar listado
+        </Button>}>
+        <div aria-busy={list.status === 'loading'} className="card-body" role="region" aria-label="Listado de vehículos">
+          {list.status === 'loading' && list.vehicles.length === 0 ? <Skeleton lines={4} /> : null}
+          {list.status === 'error' ? (
+            <Alert tone="danger" ref={listErrorRef} tabIndex={-1}>
+              {list.error}
+              {list.vehicles.length > 0 ? <span> El listado mostrado puede estar desactualizado.</span> : null}
+            </Alert>
+          ) : null}
+          {list.status === 'ready' && list.vehicles.length === 0 ? (
+            <EmptyState icon={Truck} title="Sin vehículos" headingLevel={3}>
+              <p role="status">No hay vehículos registrados.</p>
+            </EmptyState>
+          ) : null}
+          {list.vehicles.length > 0 ? <VehicleTable vehicles={list.vehicles} /> : null}
+        </div>
+      </Card>
+      {canCreate ? <VehicleForm onCreated={handleCreated} /> : null}
+    </section>
+  )
+}
+
+
+ARCHIVO: frontend/src/pages/DriversPage.tsx
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { CalendarClock, ChevronLeft, ChevronRight, Pencil, Plus, RefreshCw, UserRound } from 'lucide-react'
+import { DriverForm } from '../components/DriverForm'
+import { Alert, Button, EmptyState, PageHeader, Skeleton, StatusBadge } from '../components/ui'
+import { DriverServiceError, getDriver, listDrivers } from '../services/drivers'
+import type { DriverDetail, DriverPage, DriverSummary } from '../services/drivers'
+
+const dateFormat = new Intl.DateTimeFormat('es-PE', { timeZone: 'America/Lima', dateStyle: 'short', timeStyle: 'short' })
+function availability(start: string | null, end: string | null): string {
+  return start && end ? dateFormat.format(new Date(start)) + ' — ' + dateFormat.format(new Date(end)) : 'Sin disponibilidad'
+}
+interface ListState { status: 'loading' | 'ready' | 'error'; result: DriverPage | null; error: string }
+type Editor = { mode: 'create' } | { mode: 'edit'; driver: DriverDetail } | null
+
+export function DriversPage({ onSessionExpired }: { onSessionExpired: () => void }) {
+  const [list, setList] = useState<ListState>({ status: 'loading', result: null, error: '' })
+  const [page, setPage] = useState(1)
+  const [editor, setEditor] = useState<Editor>(null)
+  const [opening, setOpening] = useState<string | null>(null)
+  const [detailError, setDetailError] = useState('')
+  const [saved, setSaved] = useState<DriverSummary | null>(null)
+  const [success, setSuccess] = useState('')
+  const [blocked, setBlocked] = useState(false)
+  const requestNumber = useRef(0)
+  const detailNumber = useRef(0)
+  const listHeading = useRef<HTMLHeadingElement>(null)
+  const accessError = useCallback((error: DriverServiceError) => {
+    if (error.kind === 'unauthorized') onSessionExpired()
+    if (error.kind === 'forbidden') {
+      setBlocked(true); setEditor(null); setDetailError(error.message)
+      setList({ status: 'error', result: null, error: error.message })
+    }
+  }, [onSessionExpired])
+  const load = useCallback(async (nextPage: number) => {
+    const number = ++requestNumber.current
+    setPage(nextPage)
+    setList({ status: 'loading', result: null, error: '' })
+    try {
+      const result = await listDrivers(nextPage)
+      if (number === requestNumber.current) setList({ status: 'ready', result, error: '' })
+    } catch (error) {
+      if (number !== requestNumber.current) return
+      if (error instanceof DriverServiceError) accessError(error)
+      setList({ status: 'error', result: null, error: error instanceof DriverServiceError ? error.message : 'No se pudo cargar el listado.' })
+    }
+  }, [accessError])
+  useEffect(() => {
+    const lists = requestNumber
+    const details = detailNumber
+    const number = ++lists.current
+    void listDrivers(1).then(result => {
+      if (number === lists.current) setList({ status: 'ready', result, error: '' })
+    }).catch((error: unknown) => {
+      if (number !== lists.current) return
+      if (error instanceof DriverServiceError) accessError(error)
+      setList({ status: 'error', result: null, error: error instanceof DriverServiceError ? error.message : 'No se pudo cargar el listado.' })
+    })
+    return () => { lists.current++; details.current++ }
+  }, [accessError])
+
+  async function open(id: string) {
+    const number = ++detailNumber.current
+    setOpening(id); setDetailError(''); setEditor(null)
+    try {
+      const driver = await getDriver(id)
+      if (number === detailNumber.current) setEditor({ mode: 'edit', driver })
+    } catch (error) {
+      if (number !== detailNumber.current) return
+      if (error instanceof DriverServiceError) accessError(error)
+      setDetailError(error instanceof DriverServiceError ? error.message : 'No se pudo consultar el perfil.')
+    } finally {
+      if (number === detailNumber.current) setOpening(null)
+    }
+  }
+  function closeEditor() {
+    setEditor(null)
+    listHeading.current?.focus()
+  }
+  function savedDriver(driver: DriverSummary, created: boolean) {
+    setSaved(driver)
+    setSuccess(created ? 'Conductor registrado correctamente.' : 'Conductor actualizado correctamente.')
+    closeEditor()
+    void load(created ? 1 : page)
+  }
+  const totalPages = Math.max(1, Math.ceil((list.result?.total ?? 0) / 10))
+  return <section className="drivers-page" aria-labelledby="drivers-title">
+    <PageHeader titleId="drivers-title" title="Conductores" eyebrow="Gestión operativa"
+      breadcrumbs={[{ label: 'Inicio', to: '/' }, { label: 'Conductores' }]}
+      description="Consulta los perfiles registrados y mantén sus datos y disponibilidad. Horarios de Lima."
+      actions={<Button icon={Plus} disabled={blocked || opening !== null} onClick={() => {
+        setEditor({ mode: 'create' }); setSaved(null); setSuccess(''); setDetailError('')
+      }}>Nuevo conductor</Button>} />
+    {success && saved ? <Alert tone="success" role="status" title={success}
+      actions={<Button variant="secondary" size="sm" disabled={blocked || opening !== null} onClick={() => { void open(saved.conductor_id) }}>Consultar perfil guardado</Button>}>
+      {saved.nombre} · {saved.habilitado_asignacion ? 'Habilitado para asignación' : 'No habilitado para asignación'}
+    </Alert> : null}
+    {editor ? <DriverForm key={editor.mode === 'edit' ? editor.driver.conductor_id : 'create'}
+      driver={editor.mode === 'edit' ? editor.driver : null} onSaved={savedDriver} onCancel={closeEditor} onAccessError={accessError} /> : null}
+    <section className="card driver-list" aria-labelledby="driver-list-title" aria-busy={list.status === 'loading'}>
+      <div className="card-header">
+        <div className="card-heading">
+          <h2 id="driver-list-title" className="card-title" ref={listHeading} tabIndex={-1}>Conductores registrados</h2>
+          {list.status === 'ready' && list.result ? <p className="card-description">
+            {list.result.total} {list.result.total === 1 ? 'conductor registrado' : 'conductores registrados'}
+          </p> : null}
+        </div>
+        <div className="card-actions">
+          <Button variant="secondary" size="sm" icon={RefreshCw} disabled={list.status === 'loading' || blocked} onClick={() => { void load(page) }}>Actualizar listado</Button>
+        </div>
+      </div>
+      {list.status === 'loading' ? <>
+        <p className="field-hint" role="status">Cargando conductores…</p>
+        <div className="entity-grid"><Skeleton variant="card" /><Skeleton variant="card" /></div>
+      </> : null}
+      {list.status === 'error' ? <Alert tone="danger" title="No se pudo cargar el listado."
+        actions={!blocked ? <Button variant="secondary" size="sm" onClick={() => { void load(page) }}>Reintentar carga</Button> : undefined}>
+        {list.error}
+      </Alert> : null}
+      {list.status === 'ready' && list.result ? <>
+        {list.result.items.length === 0 ? <EmptyState icon={UserRound} headingLevel={3}
+          title={list.result.total === 0 ? 'Sin conductores' : 'Página vacía'}>
+          <p role="status">{list.result.total === 0 ? 'Aún no hay conductores registrados. Usa “Nuevo conductor” para comenzar.' : 'No hay conductores en esta página.'}</p>
+        </EmptyState> : null}
+        <ul className="entity-grid">
+          {list.result.items.map(driver => <li key={driver.conductor_id}>
+            <article className="entity-card">
+              <div className="entity-card-head">
+                <h3>{driver.nombre}</h3>
+                <StatusBadge status={driver.estado === 'ACTIVO' ? 'ACTIVO' : 'INACTIVO'} />
+              </div>
+              <StatusBadge status={driver.habilitado_asignacion ? 'HABILITADO' : 'NO_HABILITADO'} />
+              <p className="visually-hidden">{driver.habilitado_asignacion ? 'Habilitado para asignación' : 'No habilitado para asignación'}</p>
+              <dl className="entity-meta">
+                <div><dt><CalendarClock aria-hidden="true" size={16} /> Disponibilidad · Lima</dt>
+                  <dd>{availability(driver.disponible_desde, driver.disponible_hasta)}</dd></div>
+              </dl>
+              <Button variant="secondary" size="sm" icon={Pencil} disabled={blocked || opening !== null}
+                aria-label={'Ver y editar perfil de ' + driver.nombre} onClick={() => { void open(driver.conductor_id) }}>Ver y editar perfil</Button>
+            </article>
+          </li>)}
+        </ul>
+        <nav className="pagination" aria-label="Páginas de conductores">
+          <Button variant="secondary" size="sm" icon={ChevronLeft} disabled={page <= 1} onClick={() => { void load(page - 1) }}>Anterior</Button>
+          <span>Página {page} de {totalPages}</span>
+          <Button variant="secondary" size="sm" icon={ChevronRight} disabled={page >= totalPages} onClick={() => { void load(page + 1) }}>Siguiente</Button>
+        </nav>
+      </> : null}
+    </section>
+    {opening ? <p className="field-hint" role="status">Cargando perfil…</p> : null}
+    {detailError ? <Alert tone="danger">{detailError}</Alert> : null}
+  </section>
+}
+
+
+ARCHIVO: frontend/src/pages/UsersPage.tsx
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { ChevronLeft, ChevronRight, Copy, KeyRound, RefreshCw, Users } from 'lucide-react'
+import { Alert, Badge, Button, DataTable, Dialog, EmptyState, PageHeader, Skeleton, StatusBadge } from '../components/ui'
+import type { Column } from '../components/ui'
+import { ROLE_LABEL } from '../domain/roles'
+import { listUsers, resetPassword, UserServiceError } from '../services/users'
+import type { TemporaryPassword, UserListItem, UserPage } from '../services/users'
+
+const PAGE_SIZE = 20
+const RESET_FAILED = 'No se pudo restablecer. Intenta de nuevo o revisa tu conexión.'
+interface ListState { status: 'loading' | 'ready' | 'error'; result: UserPage | null; error: string }
+type Step =
+  | { kind: 'confirm'; user: UserListItem; busy: boolean; error: string }
+  | { kind: 'show'; user: UserListItem; temporary: TemporaryPassword; copy: '' | 'copied' | 'failed' }
+  | null
+
+function stateBadge(user: UserListItem) {
+  if (user.estado === 'BLOQUEADO') return <Badge tone="warning">Bloqueado</Badge>
+  return <StatusBadge status={user.estado} />
+}
+
+/** ECL-77: Administrator-only account list with the one-time temporary password. */
+export function UsersPage({ ownId, onSessionExpired }: { ownId: string; onSessionExpired: () => void }) {
+  const [list, setList] = useState<ListState>({ status: 'loading', result: null, error: '' })
+  const [page, setPage] = useState(1)
+  const [step, setStep] = useState<Step>(null)
+  const opener = useRef<HTMLButtonElement | null>(null)
+  const cancelButton = useRef<HTMLButtonElement>(null)
+  const doneButton = useRef<HTMLButtonElement>(null)
+  const requestNumber = useRef(0)
+
+  const load = useCallback(async (nextPage: number) => {
+    const number = ++requestNumber.current
+    setPage(nextPage)
+    setList({ status: 'loading', result: null, error: '' })
+    try {
+      const result = await listUsers(nextPage, PAGE_SIZE)
+      if (number === requestNumber.current) setList({ status: 'ready', result, error: '' })
+    } catch (error) {
+      if (number !== requestNumber.current) return
+      if (error instanceof UserServiceError && error.kind === 'unauthorized') onSessionExpired()
+      setList({ status: 'error', result: null,
+        error: error instanceof UserServiceError ? error.message : 'No se pudo cargar el listado.' })
+    }
+  }, [onSessionExpired])
+
+  useEffect(() => {
+    const requests = requestNumber
+    void Promise.resolve().then(() => load(1))
+    return () => { requests.current++ }
+  }, [load])
+
+  async function confirmReset() {
+    if (step?.kind !== 'confirm' || step.busy) return
+    const { user } = step
+    setStep({ ...step, busy: true, error: '' })
+    try {
+      const temporary = await resetPassword(user.usuario_id)
+      setStep({ kind: 'show', user, temporary, copy: '' })
+    } catch (error) {
+      if (error instanceof UserServiceError && error.kind === 'unauthorized') { setStep(null); onSessionExpired(); return }
+      const detail = error instanceof UserServiceError && ['not_found', 'conflict', 'forbidden'].includes(error.kind)
+        ? error.message : RESET_FAILED
+      setStep({ kind: 'confirm', user, busy: false, error: detail })
+    }
+  }
+
+  async function copyTemporary() {
+    if (step?.kind !== 'show') return
+    try {
+      await navigator.clipboard.writeText(step.temporary.contrasena_temporal)
+      setStep({ ...step, copy: 'copied' })
+    } catch {
+      setStep({ ...step, copy: 'failed' })
+    }
+  }
+
+  function finish() {
+    if (step?.kind !== 'show') return
+    const resetId = step.user.usuario_id
+    // The temporary password leaves the component state here and is not kept anywhere.
+    setStep(null)
+    // Mirror the server state in place: reloading would unmount the row and lose focus.
+    setList(current => current.result ? { ...current, result: { ...current.result,
+      items: current.result.items.map(item => item.usuario_id === resetId
+        ? { ...item, debe_cambiar_contrasena: true } : item) } } : current)
+  }
+
+  const columns: Column<UserListItem>[] = [
+    { key: 'email', header: 'Correo', primary: true, render: user => user.email },
+    { key: 'rol', header: 'Rol', render: user => ROLE_LABEL[user.rol] },
+    { key: 'estado', header: 'Estado', render: user => <span className="badge-row">
+      {stateBadge(user)}
+      {user.debe_cambiar_contrasena ? <Badge tone="info" icon={KeyRound}>Debe cambiar contraseña</Badge> : null}
+    </span> },
+    { key: 'acciones', header: 'Acciones', align: 'end', render: user => {
+      const own = user.usuario_id === ownId
+      const inactive = user.estado === 'INACTIVO'
+      return <Button variant="secondary" size="sm" icon={KeyRound} disabled={own || inactive || step !== null}
+        aria-label={`Restablecer contraseña de ${user.email}`}
+        title={own ? 'Usa «Cambiar contraseña» en tu menú de cuenta' : inactive ? 'La cuenta está inactiva' : undefined}
+        onClick={event => { opener.current = event.currentTarget; setStep({ kind: 'confirm', user, busy: false, error: '' }) }}>
+        Restablecer contraseña
+      </Button>
+    } },
+  ]
+  const totalPages = Math.max(1, Math.ceil((list.result?.total ?? 0) / PAGE_SIZE))
+
+  return <section className="users-page" aria-labelledby="users-title">
+    <PageHeader titleId="users-title" title="Usuarios" eyebrow="Administración"
+      breadcrumbs={[{ label: 'Inicio', to: '/' }, { label: 'Usuarios' }]}
+      description="Restablece la contraseña de quien la olvidó. La persona recibirá una contraseña temporal y deberá cambiarla al entrar." />
+    <section className="card" aria-labelledby="user-list-title" aria-busy={list.status === 'loading'}>
+      <div className="card-header">
+        <div className="card-heading">
+          <h2 id="user-list-title" className="card-title">Cuentas registradas</h2>
+          {list.status === 'ready' && list.result ? <p className="card-description">
+            {list.result.total} {list.result.total === 1 ? 'cuenta' : 'cuentas'}
+          </p> : null}
+        </div>
+        <div className="card-actions">
+          <Button variant="secondary" size="sm" icon={RefreshCw} disabled={list.status === 'loading'}
+            onClick={() => { void load(page) }}>Actualizar listado</Button>
+        </div>
+      </div>
+      {list.status === 'loading' ? <>
+        <p className="field-hint" role="status">Cargando cuentas…</p>
+        <Skeleton variant="card" />
+      </> : null}
+      {list.status === 'error' ? <Alert tone="danger" title="No se pudo cargar el listado."
+        actions={<Button variant="secondary" size="sm" onClick={() => { void load(page) }}>Reintentar carga</Button>}>
+        {list.error}
+      </Alert> : null}
+      {list.status === 'ready' && list.result ? <>
+        {list.result.items.length === 0
+          ? <EmptyState icon={Users} headingLevel={3} title="Sin cuentas en esta página">
+            <p role="status">Vuelve a la primera página o actualiza el listado.</p>
+          </EmptyState>
+          : <DataTable columns={columns} rows={list.result.items} rowKey={user => user.usuario_id}
+            caption="Cuentas de usuario con su rol y estado" label="Cuentas registradas" />}
+        <nav className="pagination" aria-label="Páginas de usuarios">
+          <Button variant="secondary" size="sm" icon={ChevronLeft} disabled={page <= 1} onClick={() => { void load(page - 1) }}>Anterior</Button>
+          <span>Página {page} de {totalPages}</span>
+          <Button variant="secondary" size="sm" icon={ChevronRight} disabled={page >= totalPages} onClick={() => { void load(page + 1) }}>Siguiente</Button>
+        </nav>
+      </> : null}
+    </section>
+
+    {step?.kind === 'confirm' ? <Dialog role="alertdialog" title="Restablecer contraseña"
+      returnFocus={opener} initialFocus={cancelButton} onClose={() => { if (!step.busy) setStep(null) }}
+      actions={<>
+        <Button ref={cancelButton} variant="secondary" disabled={step.busy} onClick={() => setStep(null)}>Cancelar</Button>
+        <Button variant="danger" icon={KeyRound} disabled={step.busy} onClick={() => { void confirmReset() }}>
+          {step.busy ? 'Restableciendo…' : 'Restablecer'}
+        </Button>
+      </>}>
+      <p>¿Restablecer la contraseña de <strong>{step.user.email}</strong>? Se cerrarán sus sesiones activas.</p>
+      {step.error ? <Alert tone="danger">{step.error}</Alert> : null}
+    </Dialog> : null}
+
+    {step?.kind === 'show' ? <Dialog title="Contraseña temporal" returnFocus={opener} initialFocus={doneButton}
+      onClose={finish}
+      actions={<Button ref={doneButton} onClick={finish}>Listo</Button>}>
+      <p>Entrégala a <strong>{step.user.email}</strong> por un canal seguro. Al entrar deberá elegir una nueva.</p>
+      <div className="temporary-password">
+        <code className="temporary-password-value" data-testid="temporary-password">{step.temporary.contrasena_temporal}</code>
+        <Button variant="secondary" size="sm" icon={Copy} onClick={() => { void copyTemporary() }}>Copiar</Button>
+      </div>
+      {step.copy === 'copied' ? <p className="field-hint" role="status">Contraseña copiada.</p> : null}
+      {step.copy === 'failed' ? <p className="field-hint" role="status">No se pudo copiar. Selecciona la contraseña y cópiala manualmente.</p> : null}
+      <Alert tone="warning" role="note">No se volverá a mostrar · vence en 24 h</Alert>
+    </Dialog> : null}
+  </section>
+}
+
+
+ARCHIVO: frontend/src/pages/OperationIncidentsPage.tsx
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { AlertTriangle, ChevronLeft, ChevronRight, ClipboardList, ExternalLink, Info, RefreshCw, ShieldAlert } from 'lucide-react'
+import { Alert, Badge, Button, DataTable, EmptyState, PageHeader, Skeleton } from '../components/ui'
+import type { BadgeTone, Column } from '../components/ui'
+import { INCIDENT_TYPES } from '../domain/incident'
+import { IncidentListError, listPendingIncidents } from '../services/incidentList'
+import type { IncidentPage, PendingIncident } from '../services/incidentList'
+
+const PAGE_SIZE = 20
+const limaTime = new Intl.DateTimeFormat('es-PE', {
+  timeZone: 'America/Lima', day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit', hourCycle: 'h23',
+})
+const fullLimaTime = new Intl.DateTimeFormat('es-PE', {
+  timeZone: 'America/Lima', dateStyle: 'full', timeStyle: 'short', hourCycle: 'h23',
+})
+const SEVERITIES = {
+  BAJA: { label: 'Baja', tone: 'info' as BadgeTone, icon: Info },
+  MEDIA: { label: 'Media', tone: 'warning' as BadgeTone, icon: AlertTriangle },
+  ALTA: { label: 'Alta', tone: 'danger' as BadgeTone, icon: ShieldAlert },
+}
+
+function occurrence(value: string) {
+  const parts = limaTime.formatToParts(new Date(value))
+  const part = (type: Intl.DateTimeFormatPartTypes) => parts.find(item => item.type === type)?.value
+  return `${part('day')}/${part('month')} ${part('hour')}:${part('minute')}`
+}
+
+function Observation({ text }: { text: string }) {
+  if (!text) return <span className="field-hint">Sin observación</span>
+  const characters = [...text]
+  if (characters.length <= 100) return <span className="incident-observation">{text}</span>
+  return <div className="incident-observation">
+    <p>{characters.slice(0, 100).join('')}…</p>
+    <details>
+      <summary>Ver observación completa</summary>
+      <p>{text}</p>
+    </details>
+  </div>
+}
+
+function LoadingIncidents() {
+  const [slow, setSlow] = useState(false)
+  useEffect(() => {
+    const timer = window.setTimeout(() => setSlow(true), 1_000)
+    return () => window.clearTimeout(timer)
+  }, [])
+  return <div className="incident-loading">
+    <p className="field-hint" role="status">Cargando incidencias pendientes…</p>
+    {slow ? <Skeleton variant="card" lines={6} /> : null}
+  </div>
+}
+
+const columns: Column<PendingIncident>[] = [
+  { key: 'hora', header: 'Hora (Lima)', render: item => <time dateTime={item.ocurrida_en}>
+    <span aria-hidden="true">{occurrence(item.ocurrida_en)}</span>
+    <span className="visually-hidden">{fullLimaTime.format(new Date(item.ocurrida_en))}, hora de Lima</span>
+  </time> },
+  { key: 'tipo', header: 'Tipo', primary: true, render: item => INCIDENT_TYPES[item.tipo] },
+  { key: 'severidad', header: 'Severidad', render: item => {
+    const severity = SEVERITIES[item.severidad]
+    return <Badge tone={severity.tone} icon={severity.icon}>{severity.label}</Badge>
+  } },
+  { key: 'conductor', header: 'Conductor', render: item => <span>{item.conductor.nombre}</span> },
+  { key: 'ubicacion', header: 'Ubicación', render: item => <div className="incident-location">
+    <span>{item.latitud.toFixed(5)}, {item.longitud.toFixed(5)}</span>
+    <a href={`https://www.openstreetmap.org/?mlat=${item.latitud}&mlon=${item.longitud}#map=17/${item.latitud}/${item.longitud}`}
+      target="_blank" rel="noopener noreferrer" referrerPolicy="no-referrer">
+      Ver en mapa <ExternalLink size={14} aria-hidden="true" />
+      <span className="visually-hidden"> (nueva pestaña)</span>
+    </a>
+  </div> },
+  { key: 'observacion', header: 'Observación', render: item => <Observation text={item.observacion} /> },
+]
+
+type ListState =
+  | { status: 'loading'; page: number }
+  | { status: 'ready'; page: number; result: IncidentPage }
+  | { status: 'error'; page: number; message: string; forbidden: boolean }
+
+/** ECL-75: read-only pending incidents for Administrator and Operator. */
+export function OperationIncidentsPage({ onSessionExpired }: { onSessionExpired: () => void }) {
+  const [list, setList] = useState<ListState>({ status: 'loading', page: 1 })
+  const requests = useRef(0)
+  const controller = useRef<AbortController | null>(null)
+
+  const load = useCallback(async (page: number) => {
+    const number = ++requests.current
+    controller.current?.abort()
+    const current = new AbortController()
+    controller.current = current
+    setList({ status: 'loading', page })
+    try {
+      let result = await listPendingIncidents(page, PAGE_SIZE, current.signal)
+      if (number !== requests.current || current.signal.aborted) return
+      // A concurrent validation can remove the last page. Return to a valid page.
+      const lastPage = Math.max(1, Math.ceil(result.total / PAGE_SIZE))
+      if (page > lastPage) result = await listPendingIncidents(lastPage, PAGE_SIZE, current.signal)
+      if (number === requests.current && !current.signal.aborted) {
+        setList({ status: 'ready', page: result.page, result })
+      }
+    } catch (error) {
+      if (number !== requests.current || current.signal.aborted) return
+      if (error instanceof IncidentListError && error.kind === 'unauthorized') { onSessionExpired(); return }
+      setList({ status: 'error', page,
+        message: error instanceof IncidentListError ? error.message : 'No se pudo cargar el listado. Intenta de nuevo.',
+        forbidden: error instanceof IncidentListError && error.kind === 'forbidden' })
+    }
+  }, [onSessionExpired])
+
+  useEffect(() => {
+    let mounted = true
+    void Promise.resolve().then(() => { if (mounted) void load(1) })
+    const activeRequests = requests
+    const activeController = controller
+    return () => {
+      mounted = false
+      activeRequests.current++
+      activeController.current?.abort()
+    }
+  }, [load])
+
+  const busy = list.status === 'loading'
+  const totalPages = list.status === 'ready' ? Math.max(1, Math.ceil(list.result.total / PAGE_SIZE)) : list.page
+
+  return <section className="incidents-page" aria-labelledby="incidents-title">
+    <PageHeader titleId="incidents-title" title="Incidencias pendientes" eyebrow="Operación"
+      breadcrumbs={[{ label: 'Inicio', to: '/' }, { label: 'Incidencias pendientes' }]}
+      description="Consulta los reportes de los conductores pendientes de validación, del más reciente al más antiguo."
+      actions={<Button variant="secondary" icon={RefreshCw} disabled={busy} onClick={() => { void load(list.page) }}>
+        Actualizar listado
+      </Button>} />
+    <section className="card" aria-labelledby="incident-list-title" aria-busy={busy}>
+      <div className="card-header">
+        <div className="card-heading">
+          <h2 id="incident-list-title" className="card-title">Reportes por revisar</h2>
+          <p className="card-description" role="status">
+            {list.status === 'ready'
+              ? `${list.result.total} ${list.result.total === 1 ? 'incidencia pendiente' : 'incidencias pendientes'} · Hora de Lima (UTC−5)`
+              : 'Los reportes se muestran en hora de Lima (UTC−5).'}
+          </p>
+        </div>
+        <Badge tone="warning">Pendiente de validación</Badge>
+      </div>
+      {busy ? <LoadingIncidents /> : null}
+      {list.status === 'error' ? <Alert tone="danger"
+        title={list.forbidden ? 'Acceso denegado' : 'No se pudo cargar el listado'}
+        actions={<Button variant="secondary" onClick={() => { void load(list.page) }}>Reintentar</Button>}>
+        {list.message}
+      </Alert> : null}
+      {list.status === 'ready' ? <>
+        {list.result.items.length === 0 ? <EmptyState icon={ClipboardList} headingLevel={3}
+          title={list.result.total === 0 ? 'No hay incidencias pendientes de validación' : 'No hay incidencias en esta página'}>
+          <p>Puedes actualizar el listado para consultar nuevos reportes.</p>
+        </EmptyState> : <DataTable columns={columns} rows={list.result.items} rowKey={item => item.incidencia_id}
+          caption="Incidencias pendientes, ordenadas por hora de ocurrencia descendente" label="Incidencias pendientes" />}
+      </> : null}
+      <nav className="pagination" aria-label="Páginas de incidencias" hidden={list.status !== 'ready'}>
+        <Button variant="secondary" size="sm" icon={ChevronLeft} disabled={busy || list.page <= 1}
+          onClick={() => { void load(list.page - 1) }}>Anterior</Button>
+        <span aria-live="polite">Página {list.page} de {totalPages}</span>
+        <Button variant="secondary" size="sm" icon={ChevronRight} disabled={busy || list.page >= totalPages}
+          onClick={() => { void load(list.page + 1) }}>Siguiente</Button>
+      </nav>
+    </section>
+  </section>
+}
+
+
+ARCHIVO: frontend/src/services/vehicles.ts
+import { buildApiUrl } from './api'
+
+export type VehicleType = 'CAMIONETA' | 'FURGON' | 'MOTO'
+
+export interface VehicleCreatePayload {
+  placa: string
+  tipo: VehicleType
+  capacidad_kg: string
+  capacidad_m3: string
+  rendimiento_km_l: string
+  factor_co2_kg_km: string
+  anio_fabricacion: number
+}
+
+export interface VehicleResponse extends VehicleCreatePayload {
+  vehiculo_id: string
+  estado: string
+}
+
+export type VehicleServiceErrorKind =
+  | 'unauthorized'
+  | 'forbidden'
+  | 'conflict'
+  | 'validation'
+  | 'unavailable'
+  | 'network'
+  | 'unexpected'
+
+export interface VehicleValidationIssue {
+  field: keyof VehicleCreatePayload
+  message: string
+}
+
+const ERROR_MESSAGES: Record<VehicleServiceErrorKind, string> = {
+  unauthorized: 'Tu sesión no está disponible o ha vencido.',
+  forbidden: 'No tienes permisos para realizar esta acción.',
+  conflict: 'La placa ya está registrada.',
+  validation: 'Revisa los datos ingresados.',
+  unavailable: 'El servicio no está disponible en este momento.',
+  network: 'No se pudo comunicar con el servicio.',
+  unexpected: 'No se pudo completar la operación.',
+}
+
+const FIELD_MESSAGES: Record<keyof VehicleCreatePayload, string> = {
+  placa: 'Revisa la placa.',
+  tipo: 'Selecciona un tipo de vehículo válido.',
+  capacidad_kg: 'Revisa la capacidad en kg.',
+  capacidad_m3: 'Revisa la capacidad en m³.',
+  rendimiento_km_l: 'Revisa el rendimiento en km/L.',
+  factor_co2_kg_km: 'Revisa el factor CO₂ en kg/km.',
+  anio_fabricacion: 'Revisa el año de fabricación.',
+}
+
+export class VehicleServiceError extends Error {
+  readonly kind: VehicleServiceErrorKind
+  readonly status?: number
+  readonly issues: VehicleValidationIssue[]
+
+  constructor(
+    kind: VehicleServiceErrorKind,
+    options: { status?: number; issues?: VehicleValidationIssue[] } = {},
+  ) {
+    super(ERROR_MESSAGES[kind])
+    this.name = 'VehicleServiceError'
+    this.kind = kind
+    this.status = options.status
+    this.issues = options.issues ?? []
+  }
+}
+
+const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/iu
+// Decimal JSON can include an exponent (for example "0E-5"). Never coerce to Number.
+const DECIMAL_PATTERN = /^[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:e[+-]?\d+)?$/iu
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null && !Array.isArray(value)
+}
+
+function isDecimalString(value: unknown): value is string {
+  return typeof value === 'string' && DECIMAL_PATTERN.test(value)
+}
+
+function vehicleResponse(body: unknown): VehicleResponse {
+  if (
+    !isRecord(body) ||
+    typeof body.vehiculo_id !== 'string' || !UUID_PATTERN.test(body.vehiculo_id) ||
+    typeof body.placa !== 'string' ||
+    (body.tipo !== 'CAMIONETA' && body.tipo !== 'FURGON' && body.tipo !== 'MOTO') ||
+    !isDecimalString(body.capacidad_kg) ||
+    !isDecimalString(body.capacidad_m3) ||
+    !isDecimalString(body.rendimiento_km_l) ||
+    !isDecimalString(body.factor_co2_kg_km) ||
+    typeof body.anio_fabricacion !== 'number' || !Number.isInteger(body.anio_fabricacion) ||
+    typeof body.estado !== 'string'
+  ) {
+    throw new VehicleServiceError('unexpected')
+  }
+  return {
+    vehiculo_id: body.vehiculo_id,
+    placa: body.placa,
+    tipo: body.tipo,
+    capacidad_kg: body.capacidad_kg,
+    capacidad_m3: body.capacidad_m3,
+    rendimiento_km_l: body.rendimiento_km_l,
+    factor_co2_kg_km: body.factor_co2_kg_km,
+    anio_fabricacion: body.anio_fabricacion,
+    estado: body.estado,
+  }
+}
+
+function validationIssues(body: unknown): VehicleValidationIssue[] {
+  if (!isRecord(body) || !Array.isArray(body.detail)) return []
+
+  const fields = new Set<keyof VehicleCreatePayload>()
+  for (const detail of body.detail as unknown[]) {
+    if (!isRecord(detail) || !Array.isArray(detail.loc)) continue
+    const location: unknown[] = detail.loc
+    if (location.length !== 2 || location[0] !== 'body') continue
+    const field = location[1]
+    if (typeof field === 'string' && Object.hasOwn(FIELD_MESSAGES, field)) {
+      fields.add(field as keyof VehicleCreatePayload)
+    }
+  }
+  return [...fields].map((field) => ({ field, message: FIELD_MESSAGES[field] }))
+}
+
+function httpError(status: number, body: unknown, method: 'GET' | 'POST'): VehicleServiceError {
+  if (status === 401) return new VehicleServiceError('unauthorized', { status })
+  if (status === 403) return new VehicleServiceError('forbidden', { status })
+  if (status === 503) return new VehicleServiceError('unavailable', { status })
+  if (method === 'POST' && status === 409) {
+    return new VehicleServiceError('conflict', { status })
+  }
+  if (method === 'POST' && status === 422) {
+    return new VehicleServiceError('validation', { status, issues: validationIssues(body) })
+  }
+  return new VehicleServiceError('unexpected', { status })
+}
+
+async function requestVehicles(method: 'GET' | 'POST', body?: string): Promise<unknown> {
+  let url: string
+  try {
+    url = buildApiUrl('vehiculos')
+  } catch {
+    throw new VehicleServiceError('unexpected')
+  }
+
+  let response: Response
+  try {
+    response = await fetch(url, method === 'GET' ? {
+      method,
+      credentials: 'include',
+    } : {
+      method,
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
+      body,
+    })
+  } catch {
+    throw new VehicleServiceError('network')
+  }
+
+  let result: unknown = null
+  try {
+    result = await response.json()
+  } catch {
+    // HTTP errors still have a useful status even when the body is not JSON.
+  }
+  if (!response.ok) throw httpError(response.status, result, method)
+  if (response.status !== (method === 'GET' ? 200 : 201)) {
+    throw new VehicleServiceError('unexpected', { status: response.status })
+  }
+  return result
+}
+
+export async function listVehicles(): Promise<VehicleResponse[]> {
+  const body = await requestVehicles('GET')
+  if (!Array.isArray(body)) throw new VehicleServiceError('unexpected')
+  return body.map(vehicleResponse)
+}
+
+export async function createVehicle(payload: VehicleCreatePayload): Promise<VehicleResponse> {
+  const body = await requestVehicles('POST', JSON.stringify({
+    placa: payload.placa,
+    tipo: payload.tipo,
+    capacidad_kg: payload.capacidad_kg,
+    capacidad_m3: payload.capacidad_m3,
+    rendimiento_km_l: payload.rendimiento_km_l,
+    factor_co2_kg_km: payload.factor_co2_kg_km,
+    anio_fabricacion: payload.anio_fabricacion,
+  }))
+  return vehicleResponse(body)
+}
+
+
+ARCHIVO: frontend/src/services/drivers.ts
+import { buildApiUrl } from './api'
+
+export interface DriverProfile {
+  nombre: string
+  dni: string
+  licencia_numero: string
+  licencia_vigente_hasta: string
+  experiencia_anios: number
+  telefono: string
+  punto_partida: string
+  disponible_desde: string | null
+  disponible_hasta: string | null
+}
+export interface DriverCreate extends DriverProfile { email: string; password: string }
+export interface DriverListItem {
+  conductor_id: string
+  nombre: string
+  disponible_desde: string | null
+  disponible_hasta: string | null
+  estado: 'ACTIVO' | 'INACTIVO'
+  habilitado_asignacion: boolean
+}
+export interface DriverSummary extends DriverListItem { usuario_id: string }
+export interface DriverDetail extends DriverSummary, DriverProfile {}
+export interface DriverPage { items: DriverListItem[]; page: number; page_size: number; total: number }
+export type DriverField = keyof DriverCreate
+type ErrorKind = 'unauthorized' | 'forbidden' | 'conflict' | 'validation' | 'not_found' | 'network' | 'unavailable' | 'unexpected'
+
+const MESSAGES: Record<ErrorKind, string> = {
+  unauthorized: 'Tu sesión ha vencido. Vuelve a iniciar sesión.',
+  forbidden: 'No tienes permisos para gestionar conductores.',
+  conflict: 'El DNI o el correo ya están registrados. Revisa los datos.',
+  validation: 'Revisa los campos indicados y la disponibilidad.',
+  not_found: 'El conductor ya no está disponible. Actualiza el listado.',
+  network: 'No se pudo comunicar con el servicio.',
+  unavailable: 'El servicio no está disponible. Intenta nuevamente más tarde.',
+  unexpected: 'No se pudo completar la operación.',
+}
+export class DriverServiceError extends Error {
+  constructor(readonly kind: ErrorKind, readonly fields: DriverField[] = []) {
+    super(MESSAGES[kind]); this.name = 'DriverServiceError'
+  }
+}
+const PROFILE_FIELDS = ['nombre', 'dni', 'licencia_numero', 'licencia_vigente_hasta', 'experiencia_anios', 'telefono', 'punto_partida', 'disponible_desde', 'disponible_hasta'] as const
+const CREATE_FIELDS = [...PROFILE_FIELDS, 'email', 'password'] as const
+const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/iu
+function record(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null && !Array.isArray(value)
+}
+function identifier(value: unknown): value is string { return typeof value === 'string' && UUID.test(value) }
+function timestamp(value: unknown): value is string | null {
+  return value === null || (typeof value === 'string' && /(?:Z|[+-]\d{2}:\d{2})$/u.test(value) && Number.isFinite(Date.parse(value)))
+}
+function listItem(value: unknown): DriverListItem {
+  if (!record(value) || !identifier(value.conductor_id) || typeof value.nombre !== 'string' ||
+    !timestamp(value.disponible_desde) || !timestamp(value.disponible_hasta) ||
+    (value.estado !== 'ACTIVO' && value.estado !== 'INACTIVO') || typeof value.habilitado_asignacion !== 'boolean') {
+    throw new DriverServiceError('unexpected')
+  }
+  return { conductor_id: value.conductor_id, nombre: value.nombre, disponible_desde: value.disponible_desde,
+    disponible_hasta: value.disponible_hasta, estado: value.estado, habilitado_asignacion: value.habilitado_asignacion }
+}
+function summary(value: unknown): DriverSummary {
+  const item = listItem(value)
+  if (!record(value) || !identifier(value.usuario_id)) throw new DriverServiceError('unexpected')
+  return { ...item, usuario_id: value.usuario_id }
+}
+function detail(value: unknown): DriverDetail {
+  const item = summary(value)
+  if (!record(value) || typeof value.dni !== 'string' || typeof value.licencia_numero !== 'string' ||
+    typeof value.licencia_vigente_hasta !== 'string' || !/^\d{4}-\d{2}-\d{2}$/u.test(value.licencia_vigente_hasta) ||
+    typeof value.experiencia_anios !== 'number' || !Number.isInteger(value.experiencia_anios) ||
+    typeof value.telefono !== 'string' || typeof value.punto_partida !== 'string') throw new DriverServiceError('unexpected')
+  return { ...item, dni: value.dni, licencia_numero: value.licencia_numero, licencia_vigente_hasta: value.licencia_vigente_hasta,
+    experiencia_anios: value.experiencia_anios, telefono: value.telefono, punto_partida: value.punto_partida }
+}
+function validationFields(body: unknown): DriverField[] {
+  if (!record(body) || !Array.isArray(body.detail)) return []
+  const fields = new Set<DriverField>()
+  for (const issue of body.detail as unknown[]) {
+    if (!record(issue) || !Array.isArray(issue.loc)) continue
+    const loc: unknown[] = issue.loc
+    if (loc[0] === 'body' && typeof loc[1] === 'string' && CREATE_FIELDS.some(field => field === loc[1])) {
+      fields.add(loc[1] as DriverField)
+    }
+  }
+  return [...fields]
+}
+async function request(method: 'GET' | 'POST' | 'PATCH', path: string, payload?: object): Promise<unknown> {
+  let response: Response
+  let url: string
+  try { url = buildApiUrl(path) } catch { throw new DriverServiceError('unexpected') }
+  try {
+    response = await fetch(url, { method, credentials: 'include',
+      ...(payload ? { headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) } : {}) })
+  } catch { throw new DriverServiceError('network') }
+  let body: unknown = null
+  try { body = await response.json() } catch { /* Status still determines the safe message. */ }
+  if (!response.ok) {
+    const kind: ErrorKind = response.status === 401 ? 'unauthorized' : response.status === 403 ? 'forbidden' :
+      response.status === 404 ? 'not_found' : response.status === 409 ? 'conflict' :
+        response.status === 422 ? 'validation' : response.status >= 500 ? 'unavailable' : 'unexpected'
+    throw new DriverServiceError(kind, kind === 'validation' ? validationFields(body) : [])
+  }
+  if (response.status !== (method === 'POST' ? 201 : 200)) throw new DriverServiceError('unexpected')
+  return body
+}
+function checkedId(id: string): string {
+  if (!identifier(id)) throw new DriverServiceError('unexpected')
+  return id
+}
+export async function listDrivers(page = 1, pageSize = 10): Promise<DriverPage> {
+  if (!Number.isInteger(page) || page < 1 || !Number.isInteger(pageSize) || pageSize < 1 || pageSize > 100) {
+    throw new DriverServiceError('unexpected')
+  }
+  const body = await request('GET', 'conductores?page=' + page + '&page_size=' + pageSize)
+  if (!record(body) || body.page !== page || body.page_size !== pageSize || typeof body.total !== 'number' ||
+    !Number.isInteger(body.total) || body.total < 0 || !Array.isArray(body.items) || body.items.length > pageSize) {
+    throw new DriverServiceError('unexpected')
+  }
+  return { items: (body.items as unknown[]).map(listItem), page, page_size: pageSize, total: body.total }
+}
+export async function getDriver(id: string): Promise<DriverDetail> {
+  return detail(await request('GET', 'conductores/' + checkedId(id)))
+}
+export async function createDriver(payload: DriverCreate): Promise<DriverSummary> {
+  const body = Object.fromEntries(CREATE_FIELDS.map(field => [field, payload[field]]))
+  return summary(await request('POST', 'conductores', body))
+}
+export async function updateDriver(id: string, payload: Partial<DriverProfile>): Promise<DriverDetail> {
+  const body = Object.fromEntries(PROFILE_FIELDS.filter(field => Object.hasOwn(payload, field)).map(field => [field, payload[field]]))
+  return detail(await request('PATCH', 'conductores/' + checkedId(id), body))
+}
+
+
+ARCHIVO: frontend/src/services/users.ts
+import { buildApiUrl } from './api'
+import type { AuthRole } from './auth'
+
+/** Exact 403 detail of the API (ECL-77); the backend pins it with a test. */
+export const PASSWORD_CHANGE_REQUIRED_DETAIL = 'Cambio de contraseña requerido'
+export const MIN_PASSWORD_LENGTH = 12
+
+export interface UserListItem {
+  usuario_id: string
+  email: string
+  rol: AuthRole
+  estado: 'ACTIVO' | 'BLOQUEADO' | 'INACTIVO'
+  debe_cambiar_contrasena: boolean
+}
+export interface UserPage { items: UserListItem[]; page: number; page_size: number; total: number }
+export interface TemporaryPassword { contrasena_temporal: string; expira_en: string }
+
+type ErrorKind =
+  | 'unauthorized' | 'forbidden' | 'password_change_required' | 'not_found' | 'conflict'
+  | 'validation' | 'current_invalid' | 'network' | 'unavailable' | 'unexpected'
+
+const MESSAGES: Record<ErrorKind, string> = {
+  unauthorized: 'Tu sesión ha vencido. Vuelve a iniciar sesión.',
+  forbidden: 'Esta función está disponible solo para el Administrador.',
+  password_change_required: 'Antes de continuar, guarda una contraseña nueva.',
+  not_found: 'La cuenta ya no está disponible. Actualiza el listado.',
+  conflict: 'Esta cuenta no admite el restablecimiento. Actualiza el listado o usa «Cambiar contraseña» para tu propia cuenta.',
+  validation: 'La nueva contraseña necesita al menos 12 caracteres y debe ser distinta de la actual.',
+  current_invalid: 'La contraseña actual no coincide. Revísala e intenta de nuevo; tras 3 intentos la cuenta se bloquea 15 minutos.',
+  network: 'No se pudo conectar con el servicio. Revisa tu conexión e intenta de nuevo.',
+  unavailable: 'El servicio no está disponible en este momento. Intenta de nuevo en unos minutos.',
+  unexpected: 'No se pudo completar la operación. Intenta de nuevo.',
+}
+
+export class UserServiceError extends Error {
+  readonly kind: ErrorKind
+  constructor(kind: ErrorKind) {
+    super(MESSAGES[kind])
+    this.name = 'UserServiceError'
+    this.kind = kind
+  }
+}
+
+const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/iu
+const ROLES: readonly AuthRole[] = ['ADMINISTRADOR', 'OPERADOR', 'CONDUCTOR', 'ANALISTA', 'AUDITOR']
+const STATES: readonly UserListItem['estado'][] = ['ACTIVO', 'BLOQUEADO', 'INACTIVO']
+
+function record(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null && !Array.isArray(value)
+}
+
+export function isPasswordChangeRequired(status: number, body: unknown): boolean {
+  return status === 403 && record(body) && body.detail === PASSWORD_CHANGE_REQUIRED_DETAIL
+}
+
+function errorFor(status: number, body: unknown): UserServiceError {
+  if (isPasswordChangeRequired(status, body)) return new UserServiceError('password_change_required')
+  const kind: ErrorKind = status === 401 ? 'unauthorized' : status === 403 ? 'forbidden'
+    : status === 404 ? 'not_found' : status === 409 ? 'conflict' : status === 422 ? 'validation'
+      : status === 400 ? 'current_invalid' : status >= 500 ? 'unavailable' : 'unexpected'
+  return new UserServiceError(kind)
+}
+
+async function request(path: string, init: RequestInit, expected: number): Promise<unknown> {
+  let url: string
+  try { url = buildApiUrl(path) } catch { throw new UserServiceError('unexpected') }
+  let response: Response
+  try {
+    response = await fetch(url, { credentials: 'include', cache: 'no-store', ...init })
+  } catch { throw new UserServiceError('network') }
+  let body: unknown = null
+  if (response.status !== 204) {
+    try { body = await response.json() } catch { /* The status alone selects the message. */ }
+  }
+  if (!response.ok) throw errorFor(response.status, body)
+  if (response.status !== expected) throw new UserServiceError('unexpected')
+  return body
+}
+
+function listItem(value: unknown): UserListItem {
+  if (!record(value) || typeof value.usuario_id !== 'string' || !UUID.test(value.usuario_id) ||
+    typeof value.email !== 'string' || !ROLES.some(role => role === value.rol) ||
+    !STATES.some(state => state === value.estado) || typeof value.debe_cambiar_contrasena !== 'boolean') {
+    throw new UserServiceError('unexpected')
+  }
+  return {
+    usuario_id: value.usuario_id, email: value.email, rol: value.rol as AuthRole,
+    estado: value.estado as UserListItem['estado'], debe_cambiar_contrasena: value.debe_cambiar_contrasena,
+  }
+}
+
+export async function listUsers(page = 1, pageSize = 20): Promise<UserPage> {
+  if (!Number.isInteger(page) || page < 1 || !Number.isInteger(pageSize) || pageSize < 1 || pageSize > 100) {
+    throw new UserServiceError('unexpected')
+  }
+  const body = await request(`usuarios?page=${page}&page_size=${pageSize}`, { method: 'GET' }, 200)
+  if (!record(body) || body.page !== page || body.page_size !== pageSize || typeof body.total !== 'number' ||
+    !Number.isInteger(body.total) || body.total < 0 || !Array.isArray(body.items) || body.items.length > pageSize) {
+    throw new UserServiceError('unexpected')
+  }
+  return { items: body.items.map(listItem), page, page_size: pageSize, total: body.total }
+}
+
+export async function resetPassword(userId: string): Promise<TemporaryPassword> {
+  if (!UUID.test(userId)) throw new UserServiceError('unexpected')
+  const body = await request(`usuarios/${userId}/restablecer-contrasena`, { method: 'POST' }, 200)
+  if (!record(body) || typeof body.contrasena_temporal !== 'string' || body.contrasena_temporal.length < 12 ||
+    typeof body.expira_en !== 'string' || !Number.isFinite(Date.parse(body.expira_en))) {
+    throw new UserServiceError('unexpected')
+  }
+  return { contrasena_temporal: body.contrasena_temporal, expira_en: body.expira_en }
+}
+
+export async function changePassword(current: string, next: string): Promise<void> {
+  await request('cambiar-contrasena', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ contrasena_actual: current, contrasena_nueva: next }),
+  }, 204)
+}
+
+
+ARCHIVO: frontend/src/services/incidentList.ts
+import { INCIDENT_SEVERITIES, INCIDENT_TYPES, validLocation } from '../domain/incident'
+import { validUuid } from '../types/driverReport'
+import { buildApiUrl } from './api'
+
+export interface PendingIncident {
+  incidencia_id: string
+  tipo: keyof typeof INCIDENT_TYPES
+  severidad: keyof typeof INCIDENT_SEVERITIES
+  ocurrida_en: string
+  registrada_en: string
+  conductor: { conductor_id: string; nombre: string }
+  latitud: number
+  longitud: number
+  observacion: string
+  estado: 'PENDIENTE_VALIDACION'
+}
+
+export interface IncidentPage {
+  items: PendingIncident[]
+  page: number
+  page_size: number
+  total: number
+}
+
+type ErrorKind = 'unauthorized' | 'forbidden' | 'network' | 'unavailable' | 'unexpected'
+const MESSAGES: Record<ErrorKind, string> = {
+  unauthorized: 'Tu sesión ha vencido. Vuelve a iniciar sesión.',
+  forbidden: 'Solo Administrador y Operador pueden consultar las incidencias pendientes.',
+  network: 'No se pudo conectar con el servicio. Revisa tu conexión e intenta de nuevo.',
+  unavailable: 'El servicio no está disponible en este momento. Intenta de nuevo en unos minutos.',
+  unexpected: 'No se pudo cargar el listado. Intenta de nuevo.',
+}
+
+export class IncidentListError extends Error {
+  constructor(readonly kind: ErrorKind) {
+    super(MESSAGES[kind])
+    this.name = 'IncidentListError'
+  }
+}
+
+function record(value: unknown): value is Record<string, unknown> {
+  return value !== null && typeof value === 'object' && !Array.isArray(value)
+}
+
+function zonedDate(value: unknown): value is string {
+  return typeof value === 'string' && /(?:Z|[+-]\d{2}:\d{2})$/u.test(value) && Number.isFinite(Date.parse(value))
+}
+
+/** Project only the approved list fields; never retain extra driver information. */
+function incident(value: unknown): PendingIncident {
+  if (!record(value) || !validUuid(value.incidencia_id) ||
+    typeof value.tipo !== 'string' || !Object.hasOwn(INCIDENT_TYPES, value.tipo) ||
+    typeof value.severidad !== 'string' || !Object.hasOwn(INCIDENT_SEVERITIES, value.severidad) ||
+    !zonedDate(value.ocurrida_en) || !zonedDate(value.registrada_en) ||
+    !record(value.conductor) || !validUuid(value.conductor.conductor_id) ||
+    typeof value.conductor.nombre !== 'string' || !value.conductor.nombre.trim() ||
+    typeof value.latitud !== 'number' || typeof value.longitud !== 'number' ||
+    !validLocation({ latitud: value.latitud, longitud: value.longitud }) ||
+    typeof value.observacion !== 'string' || [...value.observacion].length > 500 ||
+    value.estado !== 'PENDIENTE_VALIDACION') throw new IncidentListError('unexpected')
+  return {
+    incidencia_id: value.incidencia_id,
+    tipo: value.tipo as PendingIncident['tipo'], severidad: value.severidad as PendingIncident['severidad'],
+    ocurrida_en: value.ocurrida_en, registrada_en: value.registrada_en,
+    conductor: { conductor_id: value.conductor.conductor_id, nombre: value.conductor.nombre },
+    latitud: value.latitud, longitud: value.longitud, observacion: value.observacion, estado: value.estado,
+  }
+}
+
+/** ECL-73 / RN-022: server pagination, newest occurrence first, ID ascending on ties. */
+export async function listPendingIncidents(page = 1, pageSize = 20, signal?: AbortSignal): Promise<IncidentPage> {
+  if (!Number.isInteger(page) || page < 1 || !Number.isInteger(pageSize) || pageSize < 1 || pageSize > 100) {
+    throw new IncidentListError('unexpected')
+  }
+  let url: string
+  try {
+    url = buildApiUrl(`incidencias?estado=PENDIENTE_VALIDACION&page=${page}&page_size=${pageSize}`)
+  } catch { throw new IncidentListError('unexpected') }
+  let response: Response
+  try {
+    const timeout = AbortSignal.timeout(15_000)
+    response = await fetch(url, {
+      credentials: 'include', cache: 'no-store', signal: signal ? AbortSignal.any([signal, timeout]) : timeout,
+    })
+  } catch (error) {
+    if (signal?.aborted) throw error
+    throw new IncidentListError('network')
+  }
+  if (!response.ok) {
+    throw new IncidentListError(response.status === 401 ? 'unauthorized'
+      : response.status === 403 ? 'forbidden' : response.status >= 500 ? 'unavailable' : 'unexpected')
+  }
+  if (response.status !== 200) throw new IncidentListError('unexpected')
+  let body: unknown
+  try { body = await response.json() } catch { throw new IncidentListError('unexpected') }
+  if (!record(body) || body.page !== page || body.page_size !== pageSize ||
+    typeof body.total !== 'number' || !Number.isSafeInteger(body.total) || body.total < 0 ||
+    !Array.isArray(body.items) || body.items.length > pageSize || body.items.length > body.total) {
+    throw new IncidentListError('unexpected')
+  }
+  const items = body.items.map(incident).sort((a, b) =>
+    Date.parse(b.ocurrida_en) - Date.parse(a.ocurrida_en) || a.incidencia_id.localeCompare(b.incidencia_id))
+  return { items, page, page_size: pageSize, total: body.total }
+}
+
+
+ARCHIVO: frontend/scripts/build-offline.mjs
+import { readdir, readFile, writeFile } from 'node:fs/promises'
+import { createHash } from 'node:crypto'
+import { resolve } from 'node:path'
+const root = resolve('dist')
+// Self-hosted fonts (woff2) are precached so the driver PWA keeps its typography offline.
+const files = ['index.html', ...(await readdir(resolve(root, 'assets'))).filter(name => /\.(js|css|woff2)$/u.test(name)).map(name => `assets/${name}`)]
+const hash = createHash('sha256')
+for (const file of files) hash.update(await readFile(resolve(root, file)))
+const version = hash.digest('hex')
+await writeFile(resolve(root, 'offline-shell.json'), JSON.stringify({ version, files }))
+const worker = await readFile(resolve(root, 'sw.js'), 'utf8')
+await writeFile(resolve(root, 'sw.js'), worker.replace('__SHELL_VERSION__', version))

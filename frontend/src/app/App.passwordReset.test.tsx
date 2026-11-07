@@ -60,7 +60,7 @@ beforeEach(() => {
   loginMock.mockReset()
   logoutMock.mockReset().mockResolvedValue()
   changeMock.mockReset().mockResolvedValue()
-  listUsersMock.mockReset().mockResolvedValue({ items: [], page: 1, page_size: 20, total: 0 })
+  listUsersMock.mockReset().mockResolvedValue({ items: [], page: 1, page_size: 12, total: 0 })
   sessionStorage.clear()
 })
 afterEach(() => { vi.unstubAllEnvs(); vi.unstubAllGlobals() })
@@ -79,7 +79,7 @@ it('login con temporal redirige al cambio obligatorio y bloquea las demás rutas
   expect(screen.getByTestId('path')).toHaveTextContent(/^\/$/u)
   expect(await screen.findByText('Contraseña actualizada.')).toBeInTheDocument()
   await user.click(screen.getByRole('button', { name: 'Ir a /vehiculos' }))
-  expect(screen.getByTestId('path')).toHaveTextContent('/vehiculos')
+  await waitFor(() => expect(screen.getByTestId('path')).toHaveTextContent('/vehiculos'))
 }, 15_000)
 
 it('cualquier 403 «Cambio de contraseña requerido» del API fuerza el cambio', async () => {
@@ -142,7 +142,7 @@ it('el Administrador ve Usuarios en el menú y el cambio voluntario en su cuenta
   await screen.findByRole('heading', { name: 'Inicio' })
   await user.click(screen.getByRole('link', { name: 'Usuarios' }))
   expect(await screen.findByRole('heading', { name: 'Usuarios', level: 1 })).toBeInTheDocument()
-  expect(listUsersMock).toHaveBeenCalledWith(1, 20)
+  expect(listUsersMock).toHaveBeenCalledWith(1, 12)
 
   await user.click(screen.getByRole('button', { name: /^Cuenta:/u }))
   await user.click(screen.getByRole('link', { name: 'Cambiar contraseña' }))

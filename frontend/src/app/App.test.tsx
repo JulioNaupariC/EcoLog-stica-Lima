@@ -176,7 +176,7 @@ describe('App', () => {
     renderAt('/login', ['/ruta-inexistente', '/login'])
     const user = await signIn('OPERADOR')
     await user.click(screen.getByRole('button', { name: 'Atrás' }))
-    expect(screen.getByRole('heading', { name: 'Página no encontrada' })).toBeInTheDocument()
+    expect(await screen.findByRole('heading', { name: 'Página no encontrada' })).toBeInTheDocument()
     expect(screen.getByRole('link', { name: 'Volver al inicio' })).toHaveAttribute('href', '/')
     await user.click(screen.getByRole('link', { name: 'Volver al inicio' }))
     expect(screen.getByRole('heading', { name: 'Inicio' })).toBeInTheDocument()
@@ -209,7 +209,7 @@ describe('App', () => {
     const user = await signIn('CONDUCTOR')
     expect(screen.getByRole('link', { name: 'Mi itinerario' })).toHaveAttribute('href', '/conductor/itinerario')
     await user.click(screen.getByRole('link', { name: 'Mi itinerario' }))
-    expect(screen.getByRole('heading', { name: 'Mi itinerario' })).toBeInTheDocument()
+    expect(await screen.findByRole('heading', { name: 'Mi itinerario' })).toBeInTheDocument()
     await user.click(screen.getByRole('link', { name: 'EcoLogística Lima' }))
     await user.click(screen.getByRole('button', { name: 'Abrir ruta de itinerario' }))
     // No API in this test: the real itinerary fails to load and the page offers a retry.
@@ -245,7 +245,7 @@ describe('App', () => {
     expect(accountButton('Operador')).toBeInTheDocument()
     await user.click(screen.getByRole('button', { name: 'Atrás' }))
     expect(screen.getByTestId('path')).toHaveTextContent('/ruta-inexistente')
-    expect(screen.getByRole('heading', { name: 'Página no encontrada' })).toBeInTheDocument()
+    expect(await screen.findByRole('heading', { name: 'Página no encontrada' })).toBeInTheDocument()
   })
 
   it.each<AuthRole>(['ADMINISTRADOR', 'OPERADOR'])(
@@ -256,7 +256,7 @@ describe('App', () => {
       expect(accountButton(ROLE_LABEL[role])).toBeInTheDocument()
       expect(screen.getByRole('link', { name: 'Registrar pedido' })).toHaveAttribute('href', '/pedidos/nuevo')
       await user.click(screen.getByRole('link', { name: 'Registrar pedido' }))
-      expect(screen.getByRole('heading', { name: 'Registrar pedido' })).toBeInTheDocument()
+      expect(await screen.findByRole('heading', { name: 'Registrar pedido' })).toBeInTheDocument()
       expect(screen.getByRole('button', { name: 'Registrar pedido' })).toBeInTheDocument()
     },
   )

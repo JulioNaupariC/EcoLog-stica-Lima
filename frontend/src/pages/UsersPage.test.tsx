@@ -19,7 +19,7 @@ const page: UserPage = {
     { usuario_id: OPERATOR_ID, email: 'operador.demo@example.test', rol: 'OPERADOR', estado: 'ACTIVO', debe_cambiar_contrasena: false },
     { usuario_id: '223e4567-e89b-12d3-a456-426614174000', email: 'auditor.demo@example.test', rol: 'AUDITOR', estado: 'INACTIVO', debe_cambiar_contrasena: true },
   ],
-  page: 1, page_size: 20, total: 3,
+  page: 1, page_size: 12, total: 3,
 }
 
 async function ready() {
@@ -146,11 +146,11 @@ it('si el listado falla, ofrece reintentar; y pagina', async () => {
   render(<UsersPage ownId={ADMIN_ID} onSessionExpired={vi.fn()} />)
   const user = userEvent.setup()
   expect(await screen.findByRole('alert')).toHaveTextContent('Intenta de nuevo en unos minutos')
-  listMock.mockResolvedValue({ ...page, total: 45 })
+  listMock.mockResolvedValue({ ...page, total: 25 })
   await user.click(screen.getByRole('button', { name: 'Reintentar carga' }))
   expect(await screen.findByText('Página 1 de 3')).toBeInTheDocument()
-  listMock.mockResolvedValue({ ...page, items: [], page: 2, total: 45 })
+  listMock.mockResolvedValue({ ...page, items: [], page: 2, total: 25 })
   await user.click(screen.getByRole('button', { name: 'Siguiente' }))
   expect(await screen.findByText('Sin cuentas en esta página')).toBeInTheDocument()
-  expect(listMock).toHaveBeenLastCalledWith(2, 20)
+  expect(listMock).toHaveBeenLastCalledWith(2, 12)
 })
