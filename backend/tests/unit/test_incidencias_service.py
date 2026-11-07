@@ -24,19 +24,25 @@ from app.core.incidencias import (
 )
 from app.models.auditoria import Auditoria
 from app.models.incidencia import Incidencia
-from app.repositories.auditoria import DetalleIncidenciaRegistrada, Evento, Registro
+from app.repositories.auditoria import (
+    AuditStorageError,
+    DetalleIncidenciaRegistrada,
+    Evento,
+    Registro,
+)
 from app.repositories.incidencias import (
     IncidenciaDuplicateOperation,
     IncidenciaRow,
     IncidenciaStorageError,
     StoredIncidencia,
 )
-from app.schemas.incidencia import IncidenciaCreate
+from app.schemas.incidencia import IncidenciaCreate, IncidenciaResolver
 from app.services import incidencias as module
 from app.services.incidencias import (
     LIMA,
     IncidenciaConflicto,
     IncidenciaInvalida,
+    IncidenciaNoEncontrada,
     IncidenciaParadaAjena,
     IncidenciaService,
     IncidenciaSinConductor,
@@ -57,6 +63,67 @@ FIXTURE = {
     "longitud": -77.0428,
     "observacion": "Llanta pinchada: reporte de prueba",
 }
+
+
+@pytest.mark.parametrize(
+    "action,state", [("VALIDAR", "VALIDADA"), ("DESCARTAR", "DESCARTADA")]
+)
+def test_resolver_persiste_actor_reloj_motivo_y_auditoria_sin_texto(
+    fakes, action, state
+):
+    row = Incidencia(incidencia_id=uuid4(), estado="PENDIENTE_VALIDACION")
+    fakes.repository.lock_for_resolution.return_value = row
+    result = fakes.service.resolver(
+        row.incidencia_id,
+        USER,
+        IncidenciaResolver(
+            accion=action,
+            motivo="Texto privado" + "😀" * 280,
+        ),
+    )
+    assert result.estado == row.estado == state
+    assert result.resuelta_por == row.resuelta_por == USER
+    assert result.resuelta_en == row.resuelta_en == T0
+    assert row.motivo.startswith("Texto privado")
+    [audit] = fakes.audit_rows
+    assert audit.evento is Evento.INCIDENCIA_RESUELTA
+    assert audit.usuario_id == USER and audit.entidad_id == row.incidencia_id
+    assert audit.detalle.model_dump() == {"estado": state, "con_motivo": True}
+
+
+@pytest.mark.parametrize("state", ["VALIDADA", "DESCARTADA"])
+def test_resolver_segunda_decision_es_conflicto_sin_auditar(fakes, state):
+    row = Incidencia(incidencia_id=uuid4(), estado=state)
+    fakes.repository.lock_for_resolution.return_value = row
+    with pytest.raises(IncidenciaConflicto):
+        fakes.service.resolver(
+            row.incidencia_id, USER, IncidenciaResolver(accion="VALIDAR")
+        )
+    assert row.estado == state
+    assert not fakes.audit_rows
+
+
+def test_resolver_inexistente(fakes):
+    fakes.repository.lock_for_resolution.return_value = None
+    with pytest.raises(IncidenciaNoEncontrada):
+        fakes.service.resolver(uuid4(), USER, IncidenciaResolver(accion="VALIDAR"))
+    assert not fakes.audit_rows
+
+
+def test_resolver_fallo_de_auditoria_aborta_transaccion(monkeypatch):
+    factory = MagicMock()
+    row = Incidencia(incidencia_id=uuid4(), estado="PENDIENTE_VALIDACION")
+    repository = Mock()
+    repository.lock_for_resolution.return_value = row
+    monkeypatch.setattr(module, "IncidenciaRepository", lambda session: repository)
+    audit = Mock()
+    audit.insert.side_effect = AuditStorageError("private")
+    monkeypatch.setattr(module, "AuditoriaRepository", lambda session: audit)
+    with pytest.raises(IncidenciaUnavailable, match="Servicio no disponible"):
+        IncidenciaService(factory).resolver(
+            uuid4(), USER, IncidenciaResolver(accion="DESCARTAR")
+        )
+    assert factory.begin.return_value.__exit__.call_args.args[0] is AuditStorageError
 
 
 def payload(**changes) -> IncidenciaCreate:

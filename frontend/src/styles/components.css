@@ -5,6 +5,8 @@
 .incident-choice svg { flex-shrink: 0; }
 .incident-reports { display: grid; gap: var(--space-3); }
 .incident-page textarea { width: 100%; resize: vertical; }
+.incident-resolution-actions { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.incident-resolution-form textarea { width: 100%; min-height: 96px; resize: vertical; }
 
 /* ---------- Botones (guía ST-029: 48 px, radio 12 px) ---------- */
 .btn {

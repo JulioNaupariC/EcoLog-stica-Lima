@@ -218,7 +218,7 @@ Cada letra corresponde a un permiso distinto; D siempre es lógico.
 | optimizaciones.ejecutar / rutas.reoptimizar | — | Sí | — | — | — |
 | rutas.consultar | Sí | Sí | Asignada/jornada | Agregado | Anonimizado |
 | rutas.actualizar_estado | — | Sí | Asignada/jornada | — | — |
-| incidencias | R | CRU | CR propias | R agregado | R anonimizado |
+| incidencias | RU (U: resolución ECL-98) | CRU | CR propias | R agregado | R anonimizado |
 | indicadores.consultar | Sí | Sí | Propio | Sí | Sí |
 | reportes.consultar / reportes.descargar | Sí | Sí | Propio | Sí | Anonimizado |
 | compensacion.consultar | — | — | — | Sí | — |
@@ -232,7 +232,8 @@ RF-006 define generación mediante optimización. No existe comodín de Administ
 Interpretación restrictiva de la contradicción documental: aunque algunas celdas
 conceden D al Operador, la regla complementaria exige Administrador. Se deniega D
 al Operador y no se añade desactivación de incidencias a ningún rol porque la
-matriz solo concede R al Administrador. El Auditor no recibe DNI/contacto ni una
+matriz original solo concedía R al Administrador; ECL-98 añade U exclusivamente
+para validar o descartar. El Auditor no recibe DNI/contacto ni una
 excepción de acceso a datos personales; RNF-004 exige su protección.
 
 ### Contrato de uso independiente de HTTP
@@ -789,6 +790,20 @@ en `tests/unit/test_reset_password.py` y
 `tests/integration/test_reset_password_script.py`.
 
 ## Incidencias (ECL-73)
+
+ECL-98 agrega `PATCH /incidencias/{incidencia_id}` para Administrador y Operador.
+Recibe `{"accion":"VALIDAR"}` o `{"accion":"DESCARTAR","motivo":"texto"}`;
+el motivo es opcional, admite hasta 300 puntos de código Unicode y no admite
+`null`. Devuelve `incidencia_id`, `estado` (`VALIDADA` o `DESCARTADA`),
+`resuelta_por` y `resuelta_en`. Respuestas: 401 sin sesión, 403 para otros roles,
+404 si no existe, 409 si ya fue resuelta, 422 por entrada inválida y 503 por
+fallo de persistencia/auditoría. Los contratos se publican en `/openapi.json`.
+La migración `0014_resolver_incidencias` añade actor, fecha y motivo; bloquea
+el downgrade si hay resoluciones o su auditoría. El bloqueo de fila serializa
+las decisiones y la transacción incluye `INCIDENCIA_RESUELTA`, con solo estado
+y bandera de motivo en el detalle. No dispara reoptimización ni bloqueos viales.
+
+Reproducción y criterios: [ECL-98](<../docs/03 Implementación/Sprint 04/ECL-98 resolucion incidencias.md>).
 
 ST-040, subtarea de US-012 (ECL-18). El conductor registra incidencias de su
 jornada y el Administrador o el Operador consultan las pendientes de validación.

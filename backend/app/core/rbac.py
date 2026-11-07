@@ -107,6 +107,7 @@ MATRIZ_RBAC = MappingProxyType(
                     Permiso.OPTIMIZACIONES_CONSULTAR,
                     Permiso.RUTAS_CONSULTAR,
                     Permiso.INCIDENCIAS_CONSULTAR,
+                    Permiso.INCIDENCIAS_ACTUALIZAR,
                     Permiso.INDICADORES_CONSULTAR,
                     Permiso.REPORTES_CONSULTAR,
                     Permiso.REPORTES_DESCARGAR,

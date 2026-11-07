@@ -1,5 +1,18 @@
 # Frontend de EcoLogística Lima
 
+## ECL-98: resolver incidencias desde Operación
+
+La lista de pendientes ofrece Validar y Descartar con un diálogo propio,
+motivo opcional de hasta 300 caracteres Unicode y confirmación explícita.
+El diálogo admite teclado, Escape para cancelar, foco contenido y retorno del
+foco; al confirmar se bloquea el envío duplicado. El resultado se anuncia y
+se recarga la página actual, ajustándola si desaparece la última página.
+Un 409 informa de la resolución concurrente y actualiza el listado; los errores
+de red/servidor conservan el diálogo y advierten que hay que actualizar antes
+de reintentar. Un 401 devuelve el control al manejo de sesión existente.
+
+Contrato y validaciones: [ECL-98](<../docs/03 Implementación/Sprint 04/ECL-98 resolucion incidencias.md>).
+
 ## ST-032: itinerario offline y sincronización
 
 Validación y reproducción: [VALIDACION_ST032.md](<../docs/03 Implementación/Sprint 02/validaciones/VALIDACION_ST032.md>).

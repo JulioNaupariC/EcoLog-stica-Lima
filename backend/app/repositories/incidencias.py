@@ -62,6 +62,14 @@ class IncidenciaRepository:
     def __init__(self, session: Session) -> None:
         self._session = session
 
+    def lock_for_resolution(self, incidencia_id: UUID) -> Incidencia | None:
+        """Serialize decisions until the caller commits both state and audit."""
+        return self._session.scalar(
+            select(Incidencia)
+            .where(Incidencia.incidencia_id == incidencia_id)
+            .with_for_update()
+        )
+
     def conductor_id_for(self, usuario_id: UUID) -> UUID | None:
         try:
             return self._session.scalar(

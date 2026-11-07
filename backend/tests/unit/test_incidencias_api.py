@@ -22,6 +22,7 @@ from app.schemas.incidencia import (
     IncidenciaListItem,
     IncidenciaPage,
     IncidenciaRegistrada,
+    IncidenciaResuelta,
 )
 from app.services.autenticacion import AuthenticatedSession
 from app.services.autorizacion import AutorizacionService
@@ -29,6 +30,7 @@ from app.services.incidencias import (
     LIMA,
     IncidenciaConflicto,
     IncidenciaInvalida,
+    IncidenciaNoEncontrada,
     IncidenciaParadaAjena,
     IncidenciaSinConductor,
     IncidenciaUnavailable,
@@ -51,6 +53,88 @@ ACK = IncidenciaRegistrada(
     estado=EstadoIncidencia.PENDIENTE_VALIDACION,
     registrada_en=datetime(2026, 10, 27, 9, 16, 2, tzinfo=LIMA),
 )
+
+
+@pytest.mark.parametrize("role", [Rol.ADMINISTRADOR, Rol.OPERADOR])
+@pytest.mark.parametrize(
+    "action,state", [("VALIDAR", "VALIDADA"), ("DESCARTAR", "DESCARTADA")]
+)
+def test_resolver_con_actor_autenticado(role, action, state):
+    with client_for(role) as ctx:
+        ctx.service.resolver.return_value = IncidenciaResuelta(
+            incidencia_id=ACK.incidencia_id,
+            estado=state,
+            resuelta_por=ctx.identity.usuario_id,
+            resuelta_en=ACK.registrada_en,
+        )
+        response = ctx.client.patch(
+            f"/incidencias/{ACK.incidencia_id}",
+            json={"accion": action, "motivo": "Revisado"},
+        )
+        assert response.status_code == 200
+        assert response.json()["estado"] == state
+        assert response.json()["resuelta_por"] == str(ctx.identity.usuario_id)
+        assert ctx.service.resolver.call_args.args[1] == ctx.identity.usuario_id
+        assert decisions(ctx.audit)[0].detalle.permiso is Permiso.INCIDENCIAS_ACTUALIZAR
+
+
+@pytest.mark.parametrize("role", [Rol.CONDUCTOR, Rol.ANALISTA, Rol.AUDITOR])
+def test_resolver_denegado_antes_del_servicio(role):
+    with client_for(role) as ctx:
+        response = ctx.client.patch(
+            f"/incidencias/{uuid4()}", json={"accion": "VALIDAR"}
+        )
+        assert response.status_code == 403
+        ctx.service.resolver.assert_not_called()
+
+
+@pytest.mark.parametrize(
+    "failure,code",
+    [
+        (IncidenciaConflicto("private"), 409),
+        (IncidenciaNoEncontrada("private"), 404),
+        (IncidenciaUnavailable("private"), 503),
+    ],
+)
+def test_resolver_errores_seguros(failure, code):
+    with client_for(Rol.OPERADOR) as ctx:
+        ctx.service.resolver.side_effect = failure
+        response = ctx.client.patch(
+            f"/incidencias/{uuid4()}", json={"accion": "VALIDAR"}
+        )
+        assert response.status_code == code
+        assert "private" not in response.text
+
+
+@pytest.mark.parametrize(
+    "payload",
+    [
+        {"accion": "OTRA"},
+        {"accion": "VALIDAR", "motivo": "x" * 301},
+        {"accion": "VALIDAR", "resuelta_por": str(uuid4())},
+        {"accion": "VALIDAR", "motivo": None},
+    ],
+)
+def test_resolver_entrada_invalida_sanitizada(payload):
+    with client_for(Rol.OPERADOR) as ctx:
+        response = ctx.client.patch(f"/incidencias/{uuid4()}", json=payload)
+        assert response.status_code == 422
+        assert "input" not in response.text
+        ctx.service.resolver.assert_not_called()
+
+
+def test_resolver_openapi():
+    schema = create_app(Settings(database_url=None)).openapi()
+    operation = schema["paths"]["/incidencias/{incidencia_id}"]["patch"]
+    assert {"200", "401", "403", "404", "409", "422", "503"} <= operation[
+        "responses"
+    ].keys()
+    assert (
+        schema["components"]["schemas"]["IncidenciaResolver"]["properties"]["motivo"][
+            "maxLength"
+        ]
+        == 300
+    )
 
 
 @contextmanager

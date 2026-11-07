@@ -27,10 +27,13 @@ from app.schemas.incidencia import (
     IncidenciaCreate,
     IncidenciaPage,
     IncidenciaRegistrada,
+    IncidenciaResolver,
+    IncidenciaResuelta,
 )
 from app.services.incidencias import (
     IncidenciaConflicto,
     IncidenciaInvalida,
+    IncidenciaNoEncontrada,
     IncidenciaParadaAjena,
     IncidenciaService,
     IncidenciaSinConductor,
@@ -151,3 +154,35 @@ def list_incidents(
         raise HTTPException(
             status.HTTP_503_SERVICE_UNAVAILABLE, "Servicio no disponible"
         ) from None
+
+
+@router.patch(
+    "/{incidencia_id}",
+    response_model=IncidenciaResuelta,
+    responses={
+        404: {"description": "Incidencia no encontrada"},
+        409: {"description": "La incidencia ya fue resuelta"},
+        **_ERRORS,
+    },
+)
+def resolve_incident(
+    incidencia_id: UUID,
+    payload: IncidenciaResolver,
+    identity: Annotated[
+        Identidad,
+        Depends(
+            require_permission(
+                Permiso.INCIDENCIAS_ACTUALIZAR, roles={Rol.ADMINISTRADOR, Rol.OPERADOR}
+            )
+        ),
+    ],
+    service: Annotated[IncidenciaService, Depends(get_incident_service)],
+) -> IncidenciaResuelta:
+    try:
+        return service.resolver(incidencia_id, identity.usuario_id, payload)
+    except IncidenciaNoEncontrada:
+        raise HTTPException(404, "Incidencia no encontrada") from None
+    except IncidenciaConflicto:
+        raise HTTPException(409, "La incidencia ya fue resuelta") from None
+    except IncidenciaUnavailable:
+        raise HTTPException(503, "Servicio no disponible") from None
