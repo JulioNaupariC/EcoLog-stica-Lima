@@ -126,7 +126,29 @@ def test_savings_percentages_and_zero_baseline():
         20.0,
         20.0,
     )
-    assert Comparacion(Metricas(0, 0, 0), Metricas(0, 0, 0)).ahorro_distancia_pct == 0
+    # BDD US-006 v1.0.0: a zero baseline is "No calculable", never 0 %.
+    cero = Comparacion(Metricas(0, 0, 0), Metricas(0, 0, 0))
+    assert (
+        cero.ahorro_distancia_pct,
+        cero.ahorro_co2_pct,
+        cero.ahorro_combustible_pct,
+    ) == (None, None, None)
+
+
+def test_savings_are_exact_and_keep_the_negative_sign():
+    """RNF-011: no intermediate rounding; |error| <= 0.01 against the hand value."""
+    # Fixture of the BDD: 10/12 L, 20/24 kg CO2 -> 16.666... % before display.
+    c = Comparacion(Metricas(50, 20, 10), Metricas(60, 24, 12))
+    assert c.ahorro_combustible_pct == pytest.approx(100 / 6, abs=1e-12)
+    assert abs(c.ahorro_co2_pct - 16.6667) <= 0.01
+    assert c.ahorro_co2_pct != round(c.ahorro_co2_pct, 1)
+    peor = Comparacion(Metricas(250, 50, 25), Metricas(100, 25, 10))
+    assert peor.ahorro_distancia_pct == pytest.approx(-150.0)
+
+
+def test_totals_are_not_rounded():
+    tramos = [Metricas(0.0004, 0.0004, 0.0004)] * 3
+    assert sumar(tramos).distancia_km == pytest.approx(0.0012, abs=1e-15)
 
 
 # --- solver: golden, happy, unhappy and edge routes ------------------------

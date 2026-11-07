@@ -1023,6 +1023,13 @@ registro. Cada vehículo los lleva hasta que el siguiente no cabe, sin mirar las
 ventanas. El ahorro se calcula sobre los mismos pedidos que atendió el
 optimizador (Visión: «comparación sobre el mismo conjunto de pedidos»).
 
+**Precisión del ahorro (BDD de US-006 v1.0.0, decisiones 4 y 7; RNF-011):**
+
+- Totales y porcentajes se calculan sin redondeos intermedios; el redondeo es solo de presentación.
+- Con base secuencial 0, el ahorro es `null` («No calculable») y nunca un 0 % inventado.
+- Un ahorro negativo conserva su signo. El esquema de la API acepta negativos sin piso y como máximo 100 %. `Resumen` exige que cada porcentaje sea `null` exactamente cuando su base es 0.
+- Las cifras de `evidencias/ECL-93/` se midieron antes de este cambio y conservan el redondeo de entonces.
+
 Medición reproducible del spike (desde `backend/`):
 
 ```powershell

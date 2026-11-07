@@ -137,19 +137,27 @@ class Comparacion:
     secuencial: Metricas
 
     @staticmethod
-    def _ahorro(base: float, nuevo: float) -> float:
-        return round((base - nuevo) / base * 100, 1) if base > 0 else 0.0
+    def _ahorro(base: float, nuevo: float) -> float | None:
+        """BDD US-006 v1.0.0 (decisiones 4 y 7, RNF-011).
+
+        Exact value, never rounded here: rounding is for presentation only.
+        A zero baseline gives ``None`` ("No calculable"), never an invented 0 %.
+        A worse optimized route keeps its negative sign.
+        """
+        if base == 0:
+            return None
+        return (base - nuevo) / base * 100
 
     @property
-    def ahorro_distancia_pct(self) -> float:
+    def ahorro_distancia_pct(self) -> float | None:
         return self._ahorro(self.secuencial.distancia_km, self.optimizada.distancia_km)
 
     @property
-    def ahorro_co2_pct(self) -> float:
+    def ahorro_co2_pct(self) -> float | None:
         return self._ahorro(self.secuencial.co2_kg, self.optimizada.co2_kg)
 
     @property
-    def ahorro_combustible_pct(self) -> float:
+    def ahorro_combustible_pct(self) -> float | None:
         return self._ahorro(
             self.secuencial.combustible_l, self.optimizada.combustible_l
         )

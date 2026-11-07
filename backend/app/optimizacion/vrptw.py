@@ -274,7 +274,7 @@ class _Modelo:
                     regreso_min=regreso,
                     peso_kg=round(sum(p.peso_kg for p in cargados), 2),
                     volumen_m3=round(sum(p.volumen_m3 for p in cargados), 3),
-                    metricas=metricas_vehiculo(round(km, 3), vehiculo),
+                    metricas=metricas_vehiculo(km, vehiculo),
                     descansos=self._descanso(solucion, v, salida, regreso),
                 )
             )
