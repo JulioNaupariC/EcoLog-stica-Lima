@@ -51,7 +51,6 @@ ABSOLUTE_SESSION_LIFETIME = timedelta(hours=12)
 class SessionExtension:
     expira_en: datetime
     max_expira_en: datetime
-    max_age: int
 
 
 @dataclass(frozen=True, repr=False)
@@ -295,9 +294,7 @@ class AutenticacionService:
                         detalle=DetalleAcceso(resultado=ResultadoAcceso.RENOVACION),
                     )
                 )
-            return SessionExtension(
-                expires, maximum, int((expires - current).total_seconds())
-            )
+            return SessionExtension(expires, maximum)
         except (SessionStorageError, SQLAlchemyError, AuditStorageError):
             raise AuthenticationUnavailable("Authentication unavailable") from None
 

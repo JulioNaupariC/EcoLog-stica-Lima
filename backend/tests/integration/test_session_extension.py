@@ -73,14 +73,15 @@ def test_real_http_cookie_ten_extensions_clipping_limit_and_expiration(
         )
         assert response.status_code == 200
         assert response.json()["max_expires_at"] == "2026-11-08T00:00:00Z"
+        assert "Max-Age=43200" in response.headers["set-cookie"]
         token = client.cookies.get(COOKIE_NAME)
         for index in range(1, 13):
             clock["now"] = NOW + timedelta(minutes=58 * index)
             response = client.post("/sesion/extender")
             assert response.status_code == 200
+            assert "set-cookie" not in response.headers
             assert client.cookies.get(COOKIE_NAME) == token
         assert response.json()["expires_at"] == "2026-11-08T00:00:00Z"
-        assert "Max-Age=1440" in response.headers["set-cookie"]
         assert client.post("/sesion/extender").status_code == 409
         clock["now"] = NOW + timedelta(hours=12)
         assert client.post("/sesion/extender").status_code == 401

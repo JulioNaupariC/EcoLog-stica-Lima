@@ -1195,7 +1195,7 @@ ECL-108 en ECL-115. Este cambio no publica cifras propias.
 
 ## Renovación de sesión — ECL-83
 
-Login devuelve expires_at y max_expires_at a todos los roles. POST /sesion/extender conserva cookie y token; renueva por SESSION_TTL_MINUTES (60 minutos), limitado a creado_en + 12 horas. Respuestas 401: sesión inválida; 409: expiración ya en el tope; 503: almacenamiento no disponible. Cookie HttpOnly, SameSite=Strict, Secure en producción; max_age restante y Cache-Control: no-store. La auditoría SESION_EXTENDIDA y el cambio de expiración son atómicos. Renovar conserva la restricción de cambio obligatorio de contraseña.
+Login devuelve expires_at y max_expires_at a todos los roles. POST /sesion/extender conserva cookie y token; renueva por SESSION_TTL_MINUTES (60 minutos), limitado a creado_en + 12 horas. Respuestas 401: sesión inválida; 409: expiración ya en el tope; 503: almacenamiento no disponible. La cookie (HttpOnly, SameSite=Strict, Secure en producción) se emite solo en el login con Max-Age de 12 horas y no se reemite al renovar: la vigencia real la decide sesion.expira_en en el servidor. Login y renovación responden con Cache-Control: no-store. La auditoría SESION_EXTENDIDA y el cambio de expiración son atómicos. Renovar conserva la restricción de cambio obligatorio de contraseña.
 
 La migración 0015_sesion_extendida amplía la restricción de auditoría. Su downgrade elimina los eventos SESION_EXTENDIDA antes de restaurarla: requiere reversión autorizada por la pérdida de esos registros.
 

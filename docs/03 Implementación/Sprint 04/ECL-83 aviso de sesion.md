@@ -4,7 +4,7 @@ Validación local: 07/11/2026. Contrato confirmado por Antony a través de Gianc
 
 ## Contrato
 
-Login entrega `expires_at` y `max_expires_at` para todos los roles. `POST /sesion/extender` conserva cookie y token; calcula `min(ahora + SESSION_TTL_MINUTES, creado_en + 12 h)`, con TTL actual de 60 minutos. Devuelve ambos plazos y Set-Cookie con el tiempo restante, HttpOnly, SameSite=Strict y Secure en producción. Login y renovación usan Cache-Control: no-store. Origin, cuando está presente, debe estar permitido por CORS.
+Login entrega `expires_at` y `max_expires_at` para todos los roles. `POST /sesion/extender` conserva cookie y token; calcula `min(ahora + SESSION_TTL_MINUTES, creado_en + 12 h)`, con TTL actual de 60 minutos. Devuelve ambos plazos sin `Set-Cookie`: la cookie (HttpOnly, SameSite=Strict, Secure en producción) se emite solo en el login con Max-Age de 12 h y la vigencia real la decide `sesion.expira_en` en el servidor. Así el token leído de la cookie nunca se vuelve a escribir (alertas de CodeQL de la revisión de Antony). Login y renovación usan Cache-Control: no-store. Origin, cuando está presente, debe estar permitido por CORS.
 
 Sesiones inexistentes, vencidas o revocadas reciben 401. Una sesión válida cuya expiración ya alcanza el tope recibe 409: «La sesión alcanzó su duración máxima; vuelve a iniciar sesión». Fallos de almacenamiento reciben 503 sin detalles internos. No hay contador ni nueva columna. Renovar no elimina la obligación de cambiar contraseña ni habilita acceso offline en ese estado.
 

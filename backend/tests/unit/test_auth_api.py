@@ -52,6 +52,8 @@ def test_login_contract_and_cookie(environment, secure):
     cookie = response.headers["set-cookie"]
     assert "HttpOnly" in cookie and "SameSite=strict" in cookie
     assert ("Secure" in cookie) is secure
+    # ECL-83: the cookie lives up to the absolute 12 h limit; the server decides.
+    assert "Max-Age=43200" in cookie
 
 
 def test_driver_login_exposes_expiration_without_session_token():

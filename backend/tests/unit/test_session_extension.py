@@ -70,7 +70,6 @@ def test_extension_uses_clock_and_audits_in_business_transaction(extension_servi
     result = service.extend(authenticated, now=NOW)
     assert result.expira_en == NOW + timedelta(minutes=60)
     assert result.max_expira_en == found.creado_en + timedelta(hours=12)
-    assert result.max_age == 3600
     repository.extend.assert_called_once_with(found.sesion_id, result.expira_en)
     event = audit.insert.call_args.args[0]
     assert event.evento is Evento.SESION_EXTENDIDA
@@ -83,7 +82,6 @@ def test_clipping_then_conflict_before_expiration(extension_service):
     repository.lock_for_extension.return_value = replace(found, creado_en=created)
     result = service.extend(authenticated, now=NOW)
     assert result.expira_en == created + timedelta(hours=12)
-    assert result.max_age == 900
     repository.lock_for_extension.return_value = replace(
         found, creado_en=created, expira_en=result.expira_en
     )
@@ -139,15 +137,13 @@ def test_audit_failure_aborts_transaction(extension_service):
     assert context.__exit__.call_args.args[0] is AuditStorageError
 
 
-@pytest.mark.parametrize(
-    "environment,secure", [("development", False), ("production", True)]
-)
-def test_http_extension_keeps_token_and_correct_cookie(environment, secure):
-    app = create_app(Settings(app_env=environment, database_url=None))
+def test_http_extension_moves_only_the_server_expiration():
+    """ECL-83 review: the token read from the cookie is never written back."""
+    app = create_app(Settings(database_url=None))
     service = Mock()
     auth = AuthenticatedSession(uuid4(), Identidad(uuid4(), Rol.OPERADOR, "ACTIVO"))
     service.extend.return_value = SessionExtension(
-        NOW + timedelta(minutes=15), NOW + timedelta(minutes=15), 900
+        NOW + timedelta(minutes=15), NOW + timedelta(minutes=15)
     )
     app.dependency_overrides[get_authentication_service] = lambda: service
     app.dependency_overrides[get_current_session] = lambda: auth
@@ -160,11 +156,9 @@ def test_http_extension_keeps_token_and_correct_cookie(environment, secure):
         "max_expires_at": "2026-11-07T12:15:00Z",
     }
     assert response.headers["cache-control"] == "no-store"
-    cookie = response.headers["set-cookie"]
-    assert "S" * 43 in cookie and "Max-Age=900" in cookie
-    assert "HttpOnly" in cookie and "SameSite=strict" in cookie and "Path=/" in cookie
-    assert ("Secure" in cookie) is secure
+    assert "set-cookie" not in response.headers
     assert "S" * 43 not in response.text
+    service.extend.assert_called_once_with(auth)
 
 
 @pytest.mark.parametrize(
@@ -193,22 +187,6 @@ def test_http_denials_have_no_new_cookie(error, status):
             response.json()["detail"]
             == "La sesión alcanzó su duración máxima; vuelve a iniciar sesión"
         )
-
-
-@pytest.mark.parametrize("token", ["short", "S" * 44, "S" * 42 + ";"])
-def test_extension_rejects_noncanonical_cookie(token):
-    app = create_app(Settings(database_url=None))
-    service = Mock()
-    app.dependency_overrides[get_authentication_service] = lambda: service
-    app.dependency_overrides[get_current_session] = lambda: AuthenticatedSession(
-        uuid4(), Identidad(uuid4(), Rol.AUDITOR, "ACTIVO")
-    )
-    with TestClient(app) as client:
-        client.cookies.set(COOKIE_NAME, token)
-        response = client.post("/sesion/extender")
-    assert response.status_code == 401
-    assert "set-cookie" not in response.headers
-    service.extend.assert_not_called()
 
 
 def test_no_cookie_and_untrusted_origin():
