@@ -58,7 +58,9 @@ function decimalError(value: string, places: number, allowZero: boolean): string
   const [whole, fraction = ''] = value.split('.')
   // Count on a copy, preserving the original text and avoiding floating point.
   const integerDigits = whole.replace(/^0+/u, '')
-  const fractionalDigits = fraction.replace(/0+$/u, '')
+  let fractionEnd = fraction.length
+  while (fractionEnd > 0 && fraction[fractionEnd - 1] === '0') fractionEnd -= 1
+  const fractionalDigits = fraction.slice(0, fractionEnd)
   if (!allowZero && !/[1-9]/u.test(value)) return 'El valor debe ser mayor que cero.'
   if (integerDigits.length > 10 - places || fractionalDigits.length > places) {
     return `Usa como máximo ${10 - places} dígitos enteros y ${places} decimales significativos.`

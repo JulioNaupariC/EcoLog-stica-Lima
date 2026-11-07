@@ -30,6 +30,7 @@ No representan resultados ejecutados ni documentos aprobados.
 - [Plantilla de Revisión y demostración](PLANTILLA_REVISION_SPRINT4_ECL99.md)
 - [ECL-98 — Resolución de incidencias: contrato, concurrencia y validaciones](<ECL-98 resolucion incidencias.md>)
 - [ECL-14 — Mapa operativo, lista accesible y límites de tráfico](<ECL-14 mapa rutas.md>)
+- [ECL-87 — Code smells del frontend y validación de accesibilidad](<ECL-87 code smells frontend.md>)
 
 ### Entregables y documentación existentes
 

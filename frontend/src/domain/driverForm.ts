@@ -18,6 +18,18 @@ export function valuesFromDriver(driver: DriverDetail): DriverValues {
     disponible_desde: limaInput(driver.disponible_desde), disponible_hasta: limaInput(driver.disponible_hasta),
     email: '', password: '' }
 }
+
+/** Same format as the former email regex, with bounded, linear scans. */
+function validDriverEmail(email: string): boolean {
+  if (Array.from(email).length > 255 || /\s/u.test(email)) return false
+  const at = email.indexOf('@')
+  if (at <= 0 || at !== email.lastIndexOf('@')) return false
+  const domain = email.slice(at + 1)
+  // The first domain character and the suffix may themselves be dots.
+  const dot = domain.indexOf('.', 1)
+  return dot > 0 && dot < domain.length - 1
+}
+
 export function validateDriver(values: DriverValues, editing: boolean, clearAvailability: boolean): {
   errors: DriverErrors; profile?: DriverProfile; create?: DriverCreate
 } {
@@ -56,7 +68,7 @@ export function validateDriver(values: DriverValues, editing: boolean, clearAvai
   }
   const email = values.email.trim()
   if (!editing) {
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/u.test(email) || Array.from(email).length > 255) errors.email = 'Ingresa un correo electrónico válido.'
+    if (!validDriverEmail(email)) errors.email = 'Ingresa un correo electrónico válido.'
     if (!values.password || Array.from(values.password).length > 1024) errors.password = 'Ingresa una contraseña inicial de 1 a 1024 caracteres.'
   }
   if (Object.keys(errors).length) return { errors }
