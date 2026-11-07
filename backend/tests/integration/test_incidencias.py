@@ -10,7 +10,7 @@ import json
 import threading
 from concurrent.futures import ThreadPoolExecutor
 from datetime import date, datetime, timedelta, timezone
-from uuid import uuid1, uuid4
+from uuid import UUID, uuid1, uuid4
 from zoneinfo import ZoneInfo
 
 import pytest
@@ -31,14 +31,20 @@ from app.core.incidencias import (
 from app.db.session import session_factory
 from app.main import create_app
 from app.models import Auditoria, Conductor, Incidencia, Usuario
-from app.repositories.auditoria import Evento
+from app.repositories.auditoria import AuditStorageError, Evento
 from app.repositories.incidencias import IncidenciaRepository
 from app.repositories.usuarios import UsuarioRepository
 from app.schemas.conductor import ConductorCreate
+from app.schemas.incidencia import IncidenciaResolver
 from app.services import incidencias as incident_service
 from app.services.conductores import ConductorService
 from app.services.credenciales import CredentialService
 from app.services.driver_reports import DriverReportService
+from app.services.incidencias import (
+    IncidenciaConflicto,
+    IncidenciaService,
+    IncidenciaUnavailable,
+)
 
 pytestmark = pytest.mark.integration
 
@@ -176,6 +182,108 @@ def incident_audits(factory):
 def assert_nothing_stored(factory):
     assert incidents(factory) == []
     assert incident_audits(factory) == []
+
+
+def resolution_audits(factory):
+    with factory() as session:
+        return list(
+            session.scalars(
+                select(Auditoria).where(
+                    Auditoria.accion == Evento.INCIDENCIA_RESUELTA.value
+                )
+            )
+        )
+
+
+@pytest.mark.parametrize(
+    "action,state", [("VALIDAR", "VALIDADA"), ("DESCARTAR", "DESCARTADA")]
+)
+def test_ECL98_resolver_http_persiste_y_sale_del_listado(
+    setup, migration_database, action, state
+):
+    with client_for(setup["url"]) as driver:
+        login(driver, DRIVER_A)
+        incident_id = post(driver, body()).json()["incidencia_id"]
+    with client_for(setup["url"]) as operator:
+        login(operator, "operador-inc@example.test")
+        response = operator.patch(
+            f"/incidencias/{incident_id}",
+            json={
+                "accion": action,
+                "motivo": "Motivo privado" + "😀" * 280,
+            },
+        )
+        assert response.status_code == 200
+        assert response.json()["estado"] == state
+        assert operator.get("/incidencias").json()["total"] == 0
+        assert (
+            operator.patch(
+                f"/incidencias/{incident_id}", json={"accion": action}
+            ).status_code
+            == 409
+        )
+    [row] = incidents(setup["factory"])
+    assert str(row.resuelta_por) == response.json()["resuelta_por"]
+    assert row.resuelta_en == T0
+    assert row.motivo.startswith("Motivo privado")
+    [audit] = resolution_audits(setup["factory"])
+    assert audit.usuario_id == row.resuelta_por
+    assert audit.entidad == "incidencia"
+    assert audit.detalle == {"estado": state, "con_motivo": True}
+    _engine, config = migration_database
+    with pytest.raises(IntegrityError, match="resolutions require manual treatment"):
+        command.downgrade(config, "0013_incidencias")
+    assert incidents(setup["factory"])[0].estado == state
+
+
+def test_ECL98_dos_operadores_una_decision_y_un_conflicto(setup):
+    factory = setup["factory"]
+    with client_for(setup["url"]) as driver:
+        login(driver, DRIVER_A)
+        incident_id = post(driver, body()).json()["incidencia_id"]
+    actor = create_user(factory, "segundo-operador@example.test", "OPERADOR")
+    other = create_user(factory, "tercer-operador@example.test", "OPERADOR")
+    start = threading.Barrier(2)
+
+    def resolve(user, action):
+        start.wait(timeout=10)
+        try:
+            return IncidenciaService(factory).resolver(
+                UUID(incident_id), user, IncidenciaResolver(accion=action)
+            )
+        except IncidenciaConflicto:
+            return None
+
+    with ThreadPoolExecutor(max_workers=2) as executor:
+        first = executor.submit(resolve, actor, "VALIDAR")
+        second = executor.submit(resolve, other, "DESCARTAR")
+        results = [first.result(timeout=15), second.result(timeout=15)]
+    assert sum(result is None for result in results) == 1
+    winner = next(result for result in results if result is not None)
+    [row] = incidents(factory)
+    assert row.estado == winner.estado
+    assert row.resuelta_por == winner.resuelta_por
+    assert len(resolution_audits(factory)) == 1
+
+
+def test_ECL98_fallo_auditoria_revierte_estado(setup, monkeypatch):
+    with client_for(setup["url"]) as driver:
+        login(driver, DRIVER_A)
+        incident_id = post(driver, body()).json()["incidencia_id"]
+    actor = create_user(setup["factory"], "operador-rollback@example.test", "OPERADOR")
+
+    def fail(self, registro):
+        raise AuditStorageError("private")
+
+    monkeypatch.setattr(incident_service.AuditoriaRepository, "insert", fail)
+    with pytest.raises(IncidenciaUnavailable):
+        IncidenciaService(setup["factory"]).resolver(
+            UUID(incident_id), actor, IncidenciaResolver(accion="VALIDAR")
+        )
+    [row] = incidents(setup["factory"])
+    assert row.estado == "PENDIENTE_VALIDACION"
+    assert row.resuelta_por is None and row.resuelta_en is None
+    assert not resolution_audits(setup["factory"])
 
 
 # --- Ruta dorada --------------------------------------------------------------
@@ -747,7 +855,9 @@ def test_I16_mismo_uuid_de_otro_conductor_es_independiente(setup):
 
 def test_0013_upgrade_downgrade_upgrade_una_sola_cabeza(migration_database):
     engine, config = migration_database
-    assert ScriptDirectory.from_config(config).get_heads() == ["0013_incidencias"]
+    assert ScriptDirectory.from_config(config).get_heads() == [
+        "0014_resolver_incidencias"
+    ]
     command.upgrade(config, "0013_incidencias")
     with engine.connect() as connection:
         constraints = dict(

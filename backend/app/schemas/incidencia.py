@@ -1,7 +1,7 @@
 """ECL-73 incident contracts, aligned with the approved ECL-72 BDD (PR #63)."""
 
 from datetime import datetime
-from typing import Annotated
+from typing import Annotated, Literal
 from uuid import UUID
 
 from pydantic import (
@@ -79,3 +79,17 @@ class IncidenciaPage(BaseModel):
     page: int = Field(ge=1)
     page_size: int = Field(ge=1, le=PAGE_SIZE_MAX)
     total: int = Field(ge=0)
+
+
+class IncidenciaResolver(BaseModel):
+    model_config = ConfigDict(extra="forbid", hide_input_in_errors=True)
+
+    accion: Literal["VALIDAR", "DESCARTAR"]
+    motivo: str = Field(default="", max_length=300)
+
+
+class IncidenciaResuelta(BaseModel):
+    incidencia_id: UUID
+    estado: Literal["VALIDADA", "DESCARTADA"]
+    resuelta_por: UUID
+    resuelta_en: AwareDatetime

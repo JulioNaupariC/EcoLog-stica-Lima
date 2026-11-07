@@ -1,10 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { AlertTriangle, ChevronLeft, ChevronRight, ClipboardList, ExternalLink, Info, RefreshCw, ShieldAlert } from 'lucide-react'
-import { Alert, Badge, Button, DataTable, EmptyState, PageHeader, Skeleton } from '../components/ui'
+import { Alert, Badge, Button, DataTable, Dialog, EmptyState, PageHeader, Skeleton } from '../components/ui'
 import type { BadgeTone, Column } from '../components/ui'
 import { INCIDENT_TYPES } from '../domain/incident'
 import { IncidentListError, listPendingIncidents } from '../services/incidentList'
 import type { IncidentPage, PendingIncident } from '../services/incidentList'
+import { IncidentResolutionError, resolveIncident } from '../services/incidentResolution'
+import type { IncidentAction } from '../services/incidentResolution'
 
 const PAGE_SIZE = 12
 const limaTime = new Intl.DateTimeFormat('es-PE', {
@@ -77,11 +79,19 @@ type ListState =
   | { status: 'ready'; page: number; result: IncidentPage }
   | { status: 'error'; page: number; message: string; forbidden: boolean }
 
-/** ECL-75: read-only pending incidents for Administrator and Operator. */
+/** ECL-75/ECL-98: review pending incidents for Administrator and Operator. */
 export function OperationIncidentsPage({ onSessionExpired }: { onSessionExpired: () => void }) {
   const [list, setList] = useState<ListState>({ status: 'loading', page: 1 })
   const requests = useRef(0)
   const controller = useRef<AbortController | null>(null)
+  const [decision, setDecision] = useState<{ item: PendingIncident; action: IncidentAction } | null>(null)
+  const [reason, setReason] = useState('')
+  const [saving, setSaving] = useState(false)
+  const savingRef = useRef(false)
+  const [notice, setNotice] = useState('')
+  const [decisionError, setDecisionError] = useState('')
+  const resultFocus = useRef<HTMLParagraphElement>(null)
+  const mounted = useRef(true)
 
   const load = useCallback(async (page: number) => {
     const number = ++requests.current
@@ -108,16 +118,54 @@ export function OperationIncidentsPage({ onSessionExpired }: { onSessionExpired:
   }, [onSessionExpired])
 
   useEffect(() => {
-    let mounted = true
-    void Promise.resolve().then(() => { if (mounted) void load(1) })
+    mounted.current = true
+    let active = true
+    void Promise.resolve().then(() => { if (active) void load(1) })
     const activeRequests = requests
     const activeController = controller
     return () => {
-      mounted = false
+      mounted.current = false
+      active = false
       activeRequests.current++
       activeController.current?.abort()
     }
   }, [load])
+
+  async function confirmDecision() {
+    if (!decision || savingRef.current) return
+    savingRef.current = true
+    setSaving(true)
+    setDecisionError('')
+    try {
+      await resolveIncident(decision.item.incidencia_id, decision.action, reason)
+      if (!mounted.current) return
+      setNotice(decision.action === 'VALIDAR' ? 'Incidencia validada.' : 'Incidencia descartada.')
+    } catch (error) {
+      if (!mounted.current) return
+      if (error instanceof IncidentResolutionError && error.kind === 'unauthorized') { onSessionExpired(); return }
+      if (!(error instanceof IncidentResolutionError) || error.kind !== 'conflict') {
+        setDecisionError(error instanceof IncidentResolutionError ? error.message : 'No se pudo resolver la incidencia.')
+        return
+      }
+      setNotice(error.message)
+    } finally {
+      savingRef.current = false
+      if (mounted.current) setSaving(false)
+    }
+    setDecision(null)
+    await load(list.page)
+    if (mounted.current) resultFocus.current?.focus()
+  }
+
+  const reviewColumns: Column<PendingIncident>[] = [...columns, {
+    key: 'acciones', header: 'Acciones', render: item => <div className="incident-resolution-actions">
+      {(['VALIDAR', 'DESCARTAR'] as const).map(action => <Button key={action} size="sm" variant="secondary"
+        aria-label={`${action === 'VALIDAR' ? 'Validar' : 'Descartar'} incidencia ${item.incidencia_id}`}
+        onClick={() => { setDecision({ item, action }); setReason(''); setDecisionError(''); setNotice('') }}>
+        {action === 'VALIDAR' ? 'Validar' : 'Descartar'}<span className="visually-hidden"> incidencia {item.incidencia_id}</span>
+      </Button>)}
+    </div>,
+  }]
 
   const busy = list.status === 'loading'
   const totalPages = list.status === 'ready' ? Math.max(1, Math.ceil(list.result.total / PAGE_SIZE)) : list.page
@@ -129,6 +177,24 @@ export function OperationIncidentsPage({ onSessionExpired }: { onSessionExpired:
       actions={<Button variant="secondary" icon={RefreshCw} disabled={busy} onClick={() => { void load(list.page) }}>
         Actualizar listado
       </Button>} />
+    <p ref={resultFocus} role="status" tabIndex={-1}>{notice}</p>
+    {decision ? <Dialog title={decision.action === 'VALIDAR' ? 'Validar incidencia' : 'Descartar incidencia'}
+      onClose={() => { if (!savingRef.current) setDecision(null) }}
+      actions={<>
+        <Button variant="secondary" disabled={saving} onClick={() => setDecision(null)}>Cancelar</Button>
+        <Button disabled={saving || [...reason].length > 300} onClick={() => { void confirmDecision() }}>
+          {saving ? 'Guardando…' : 'Confirmar decisión'}
+        </Button>
+      </>}>
+      <p>Confirma la decisión sobre el reporte de {INCIDENT_TYPES[decision.item.tipo]}. No se puede resolver de nuevo.</p>
+      <div className="incident-resolution-form">
+      <label htmlFor="incident-reason">Motivo (opcional, máximo 300 caracteres)</label>
+      <textarea id="incident-reason" value={reason} disabled={saving} aria-describedby="incident-reason-count"
+        onChange={event => setReason(event.target.value)} />
+      <p id="incident-reason-count">{[...reason].length}/300 caracteres</p>
+      </div>
+      {decisionError ? <p role="alert">{decisionError}</p> : null}
+    </Dialog> : null}
     <section className="card" aria-labelledby="incident-list-title" aria-busy={busy}>
       <div className="card-header">
         <div className="card-heading">
@@ -151,7 +217,7 @@ export function OperationIncidentsPage({ onSessionExpired }: { onSessionExpired:
         {list.result.items.length === 0 ? <EmptyState icon={ClipboardList} headingLevel={3}
           title={list.result.total === 0 ? 'No hay incidencias pendientes de validación' : 'No hay incidencias en esta página'}>
           <p>Puedes actualizar el listado para consultar nuevos reportes.</p>
-        </EmptyState> : <DataTable columns={columns} rows={list.result.items} rowKey={item => item.incidencia_id}
+        </EmptyState> : <DataTable columns={reviewColumns} rows={list.result.items} rowKey={item => item.incidencia_id}
           caption="Incidencias pendientes, ordenadas por hora de ocurrencia descendente" label="Incidencias pendientes" />}
       </> : null}
       <nav className="pagination" aria-label="Páginas de incidencias" hidden={list.status !== 'ready'}>

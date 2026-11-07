@@ -27,6 +27,7 @@ class Evento(str, Enum):
     CONTRASENA_RESTABLECIDA = "CONTRASENA_RESTABLECIDA"
     CONTRASENA_CAMBIADA = "CONTRASENA_CAMBIADA"
     INCIDENCIA_REGISTRADA = "INCIDENCIA_REGISTRADA"
+    INCIDENCIA_RESUELTA = "INCIDENCIA_RESUELTA"
 
 
 class ResultadoAcceso(str, Enum):
@@ -157,6 +158,18 @@ class DetalleIncidenciaRegistrada(BaseModel):
     con_observacion: bool
 
 
+class DetalleIncidenciaResuelta(BaseModel):
+    model_config = ConfigDict(
+        frozen=True,
+        extra="forbid",
+        strict=True,
+        hide_input_in_errors=True,
+        revalidate_instances="always",
+    )
+    estado: Literal["VALIDADA", "DESCARTADA"]
+    con_motivo: bool
+
+
 class Registro(BaseModel):
     model_config = ConfigDict(
         frozen=True,
@@ -177,6 +190,7 @@ class Registro(BaseModel):
         | DetalleConductorActualizado
         | DetalleContrasena
         | DetalleIncidenciaRegistrada
+        | DetalleIncidenciaResuelta
     )
 
     @model_validator(mode="after")
@@ -197,6 +211,9 @@ class Registro(BaseModel):
             Evento.CONTRASENA_CAMBIADA,
         )
         incident = self.evento is Evento.INCIDENCIA_REGISTRADA
+        resolution = self.evento is Evento.INCIDENCIA_RESUELTA
+        if resolution != isinstance(self.detalle, DetalleIncidenciaResuelta):
+            raise ValueError("Invalid audit event")
         if authorization != isinstance(self.detalle, Detalle):
             raise ValueError("Invalid audit event")
         if access != isinstance(self.detalle, DetalleAcceso):
@@ -231,7 +248,9 @@ class Registro(BaseModel):
             raise ValueError("Invalid driver audit event")
         elif password and (self.usuario_id is None or self.entidad_id is None):
             raise ValueError("Invalid password audit event")
-        elif incident and (self.usuario_id is None or self.entidad_id is None):
+        elif (incident or resolution) and (
+            self.usuario_id is None or self.entidad_id is None
+        ):
             raise ValueError("Invalid incident audit event")
         return self
 
@@ -270,7 +289,10 @@ class AuditoriaRepository:
             Evento.CONDUCTOR_ACTUALIZADO,
         ):
             entidad = "conductor"
-        elif registro.evento is Evento.INCIDENCIA_REGISTRADA:
+        elif registro.evento in (
+            Evento.INCIDENCIA_REGISTRADA,
+            Evento.INCIDENCIA_RESUELTA,
+        ):
             entidad = "incidencia"
         else:
             entidad = "autorizacion"

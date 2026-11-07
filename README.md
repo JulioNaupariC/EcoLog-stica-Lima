@@ -423,6 +423,7 @@ Los siguientes comentarios reservan enlaces para entregas futuras.
 
 - [Convenciones y glosario ECL-99](<docs/03 Implementación/Sprint 04/CONVENCIONES_Y_GLOSARIO_ECL99.md>)
 - [Plantilla de Revisión y demostración ECL-99](<docs/03 Implementación/Sprint 04/PLANTILLA_REVISION_SPRINT4_ECL99.md>)
+- [ECL-98 — Resolución de incidencias: contrato, concurrencia y validaciones](<docs/03 Implementación/Sprint 04/ECL-98 resolucion incidencias.md>)
 
 #### Estado de cierre del Sprint 4
 

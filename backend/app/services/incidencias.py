@@ -19,6 +19,7 @@ from app.repositories.auditoria import (
     AuditoriaRepository,
     AuditStorageError,
     DetalleIncidenciaRegistrada,
+    DetalleIncidenciaResuelta,
     Evento,
     Registro,
 )
@@ -34,6 +35,8 @@ from app.schemas.incidencia import (
     IncidenciaListItem,
     IncidenciaPage,
     IncidenciaRegistrada,
+    IncidenciaResolver,
+    IncidenciaResuelta,
 )
 
 LIMA = ZoneInfo("America/Lima")
@@ -73,6 +76,10 @@ class IncidenciaUnavailable(RuntimeError):
     """Sanitized persistence or audit failure."""
 
 
+class IncidenciaNoEncontrada(LookupError):
+    """Incident does not exist."""
+
+
 def _ack(stored: StoredIncidencia) -> IncidenciaRegistrada:
     return IncidenciaRegistrada(
         incidencia_id=stored.incidencia_id,
@@ -98,6 +105,39 @@ def _equivalent(stored: StoredIncidencia, payload: IncidenciaCreate) -> bool:
 class IncidenciaService:
     def __init__(self, factory: sessionmaker[Session]) -> None:
         self._factory = factory
+
+    def resolver(
+        self, incidencia_id: UUID, usuario_id: UUID, payload: IncidenciaResolver
+    ) -> IncidenciaResuelta:
+        try:
+            with self._factory.begin() as session:
+                row = IncidenciaRepository(session).lock_for_resolution(incidencia_id)
+                if row is None:
+                    raise IncidenciaNoEncontrada()
+                if row.estado != EstadoIncidencia.PENDIENTE_VALIDACION.value:
+                    raise IncidenciaConflicto()
+                row.estado = "VALIDADA" if payload.accion == "VALIDAR" else "DESCARTADA"
+                row.resuelta_por = usuario_id
+                row.resuelta_en = utc_now()
+                row.motivo = payload.motivo
+                AuditoriaRepository(session).insert(
+                    Registro(
+                        usuario_id=usuario_id,
+                        entidad_id=incidencia_id,
+                        evento=Evento.INCIDENCIA_RESUELTA,
+                        detalle=DetalleIncidenciaResuelta(
+                            estado=row.estado, con_motivo=bool(payload.motivo)
+                        ),
+                    )
+                )
+                return IncidenciaResuelta(
+                    incidencia_id=incidencia_id,
+                    estado=row.estado,
+                    resuelta_por=usuario_id,
+                    resuelta_en=row.resuelta_en,
+                )
+        except (IncidenciaStorageError, AuditStorageError, SQLAlchemyError):
+            raise IncidenciaUnavailable("Servicio no disponible") from None
 
     def registrar(
         self,

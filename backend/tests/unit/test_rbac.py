@@ -98,6 +98,7 @@ def test_complete_rbac_matrix_matches_approved_grants():
             Permiso.OPTIMIZACIONES_CONSULTAR: Alcance.GENERAL,
             Permiso.RUTAS_CONSULTAR: Alcance.GENERAL,
             Permiso.INCIDENCIAS_CONSULTAR: Alcance.GENERAL,
+            Permiso.INCIDENCIAS_ACTUALIZAR: Alcance.GENERAL,
             Permiso.INDICADORES_CONSULTAR: Alcance.GENERAL,
             Permiso.REPORTES_CONSULTAR: Alcance.GENERAL,
             Permiso.REPORTES_DESCARGAR: Alcance.GENERAL,
