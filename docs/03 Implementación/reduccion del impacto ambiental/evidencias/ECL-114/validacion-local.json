@@ -1,0 +1,171 @@
+{
+  "ticket": "ECL-114",
+  "purpose": "Local LHCI smoke test, not the ECL-115 AFTER campaign",
+  "baseline_commit": "e09dcd80e32431018d4020bb02c89ffae7505705",
+  "implementation_base_commit": "0461107184a59cc9a44c6f0c907618d7f703650a",
+  "application_tree": "6e94623366e58a258b185f664057860539cb05ce",
+  "route": "/login",
+  "staticDistDir": "frontend/dist",
+  "numberOfRuns": 3,
+  "aggregationMethod": "median",
+  "runs": [
+    {
+      "source": "lhr-1794078486853.json",
+      "sha256": "94774cc6bb32cfdda1517f134271e3342225ab1d75bb76c23fae7b677baa8420",
+      "fetchTime": "2026-11-07T19:07:57.926Z",
+      "lighthouseVersion": "12.6.1",
+      "hostUserAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+      "performance": 1,
+      "first-contentful-paint": 632.449,
+      "largest-contentful-paint": 672.449,
+      "total-blocking-time": 0,
+      "cumulative-layout-shift": 5.301965677261186e-06,
+      "total-byte-weight": 425312
+    },
+    {
+      "source": "lhr-1794078502277.json",
+      "sha256": "d2189806ac8177a0f197da5a82c22862f9b6e7f00193afdf4b18041f82d3ced1",
+      "fetchTime": "2026-11-07T19:08:13.155Z",
+      "lighthouseVersion": "12.6.1",
+      "hostUserAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+      "performance": 1,
+      "first-contentful-paint": 634.1667,
+      "largest-contentful-paint": 674.1667,
+      "total-blocking-time": 0,
+      "cumulative-layout-shift": 5.301965677261186e-06,
+      "total-byte-weight": 425312
+    },
+    {
+      "source": "lhr-1794078517807.json",
+      "sha256": "20077249cac638acdb38aea82fcdb42eb57e8591a1e59353294a26e7c894fca9",
+      "fetchTime": "2026-11-07T19:08:29.063Z",
+      "lighthouseVersion": "12.6.1",
+      "hostUserAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36",
+      "performance": 1,
+      "first-contentful-paint": 616.0703,
+      "largest-contentful-paint": 656.0703,
+      "total-blocking-time": 0,
+      "cumulative-layout-shift": 5.301965677261186e-06,
+      "total-byte-weight": 425312
+    }
+  ],
+  "medians": {
+    "performance": 1,
+    "first-contentful-paint": 632.449,
+    "largest-contentful-paint": 672.449,
+    "total-blocking-time": 0,
+    "cumulative-layout-shift": 5.301965677261186e-06,
+    "total-byte-weight": 425312
+  },
+  "reports": {
+    "http://localhost:62916/login": "https://storage.googleapis.com/lighthouse-infrastructure.appspot.com/reports/1794078522397-9875.report.html"
+  },
+  "assertions": [
+    {
+      "name": "minScore",
+      "expected": 0.9,
+      "actual": 1,
+      "values": [
+        1,
+        1,
+        1
+      ],
+      "operator": ">=",
+      "passed": true,
+      "auditProperty": "performance",
+      "auditId": "categories",
+      "level": "error",
+      "url": "http://localhost:62916/login"
+    },
+    {
+      "name": "maxNumericValue",
+      "expected": 1000,
+      "actual": 632.449,
+      "values": [
+        632.449,
+        634.1667,
+        616.0703
+      ],
+      "operator": "<=",
+      "passed": true,
+      "auditId": "first-contentful-paint",
+      "level": "error",
+      "url": "http://localhost:62916/login",
+      "auditTitle": "First Contentful Paint",
+      "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/performance/first-contentful-paint/"
+    },
+    {
+      "name": "maxNumericValue",
+      "expected": 1400,
+      "actual": 672.449,
+      "values": [
+        672.449,
+        674.1667,
+        656.0703
+      ],
+      "operator": "<=",
+      "passed": true,
+      "auditId": "largest-contentful-paint",
+      "level": "error",
+      "url": "http://localhost:62916/login",
+      "auditTitle": "Largest Contentful Paint",
+      "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/performance/lighthouse-largest-contentful-paint/"
+    },
+    {
+      "name": "maxNumericValue",
+      "expected": 85,
+      "actual": 0,
+      "values": [
+        0,
+        0,
+        0
+      ],
+      "operator": "<=",
+      "passed": true,
+      "auditId": "total-blocking-time",
+      "level": "error",
+      "url": "http://localhost:62916/login",
+      "auditTitle": "Total Blocking Time",
+      "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/performance/lighthouse-total-blocking-time/"
+    },
+    {
+      "name": "maxNumericValue",
+      "expected": 0.02,
+      "actual": 5.301965677261186e-06,
+      "values": [
+        5.301965677261186e-06,
+        5.301965677261186e-06,
+        5.301965677261186e-06
+      ],
+      "operator": "<=",
+      "passed": true,
+      "auditId": "cumulative-layout-shift",
+      "level": "error",
+      "url": "http://localhost:62916/login",
+      "auditTitle": "Cumulative Layout Shift",
+      "auditDocumentationLink": "https://web.dev/articles/cls"
+    },
+    {
+      "name": "maxNumericValue",
+      "expected": 1100000,
+      "actual": 425312,
+      "values": [
+        425312,
+        425312,
+        425312
+      ],
+      "operator": "<=",
+      "passed": true,
+      "auditId": "total-byte-weight",
+      "level": "error",
+      "url": "http://localhost:62916/login",
+      "auditTitle": "Avoids enormous network payloads",
+      "auditDocumentationLink": "https://developer.chrome.com/docs/lighthouse/performance/total-byte-weight/"
+    }
+  ],
+  "negative_assertion_check": {
+    "temporary_fcp_threshold_ms": 0,
+    "expected_exit_code": 1,
+    "observed_exit_code": 1
+  }
+}
