@@ -19,7 +19,7 @@ const driver: DriverDetail = {
   disponible_desde: '2099-10-09T13:15:00.123456Z', disponible_hasta: '2099-10-09T22:15:00Z',
   estado: 'ACTIVO', habilitado_asignacion: true,
 }
-const result: DriverPage = { items: [driver], page: 1, page_size: 10, total: 1 }
+const result: DriverPage = { items: [driver], page: 1, page_size: 12, total: 1 }
 const fields = {
   nombre: 'Rosa Prueba', dni: '01234567', licencia_numero: 'LIC-01', licencia_vigente_hasta: '2099-12-31',
   experiencia_anios: '2', telefono: '+51987654321', punto_partida: 'Base Lima',
@@ -125,12 +125,12 @@ it('informa error de carga y permite reintentar', async () => {
   expect(await screen.findByRole('heading', { name: 'Rosa Prueba' })).toBeInTheDocument()
 })
 it('pagina y actualiza desde el backend', async () => {
-  listMock.mockResolvedValue({ ...result, total: 11 })
+  listMock.mockResolvedValue({ ...result, total: 13 })
   const { user } = await ready()
-  listMock.mockResolvedValueOnce({ ...result, page: 2, total: 11 })
+  listMock.mockResolvedValueOnce({ ...result, page: 2, total: 13 })
   await user.click(screen.getByRole('button', { name: 'Siguiente' }))
   expect(await screen.findByText('Página 2 de 2')).toBeInTheDocument()
-  expect(listMock).toHaveBeenLastCalledWith(2)
+  expect(listMock).toHaveBeenLastCalledWith(2, 12)
   await user.click(screen.getByRole('button', { name: 'Anterior' }))
   expect(await screen.findByText('Página 1 de 2')).toBeInTheDocument()
   await user.click(screen.getByRole('button', { name: 'Actualizar listado' }))
@@ -187,7 +187,7 @@ it('maneja errores inesperados sin mostrar detalles privados', async () => {
 it('representa un perfil inactivo sin franja y páginas sin registros', async () => {
   const inactive = { ...driver, estado: 'INACTIVO' as const, habilitado_asignacion: false,
     disponible_desde: null, disponible_hasta: null }
-  listMock.mockResolvedValueOnce({ ...result, total: 11, items: [inactive] })
+  listMock.mockResolvedValueOnce({ ...result, total: 13, items: [inactive] })
   const { user } = await ready()
   expect(screen.getByText('Inactivo')).toBeInTheDocument()
   expect(screen.getByText('Sin disponibilidad')).toBeInTheDocument()
@@ -199,7 +199,7 @@ it('representa un perfil inactivo sin franja y páginas sin registros', async ()
   fireEvent.submit(screen.getByRole('form', { name: 'Editar conductor' }))
   expect(await screen.findByRole('alert')).toHaveTextContent('Revisa los campos indicados')
   await user.click(screen.getByRole('button', { name: 'Cancelar' }))
-  listMock.mockResolvedValueOnce({ ...result, page: 2, total: 11, items: [] })
+  listMock.mockResolvedValueOnce({ ...result, page: 2, total: 13, items: [] })
   await user.click(screen.getByRole('button', { name: 'Siguiente' }))
   expect(await screen.findByText('No hay conductores en esta página.')).toBeInTheDocument()
 })

@@ -22,7 +22,7 @@ async function signIn(role: AuthRole) {
   await screen.findByRole('heading', { name: 'Inicio' })
 }
 beforeEach(() => {
-  vi.mocked(listDrivers).mockReset().mockResolvedValue({ items: [], page: 1, page_size: 10, total: 0 })
+  vi.mocked(listDrivers).mockReset().mockResolvedValue({ items: [], page: 1, page_size: 12, total: 0 })
   vi.mocked(logout).mockResolvedValue()
 })
 it('redirige acceso anónimo al login', async () => {

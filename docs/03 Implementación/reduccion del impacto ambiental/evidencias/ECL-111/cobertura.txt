@@ -1,0 +1,112 @@
+
+> ecologistica-lima-frontend@0.1.0 test
+> vitest run --coverage --maxWorkers=2
+
+
+ RUN  v5.0.5 C:/Users/JOSE GAMER/Desktop/TALLER DE PROYECTOS 2/Trabajos/Semana 12/EcoLog-stica-Lima/frontend
+      Coverage enabled with v8
+
+
+ Test Files  51 passed (51)
+      Tests  746 passed (746)
+   Start at  20:27:38
+   Duration  101.56s (tests 65%, environment 25%, setup 6%, import 2%, worker 1%)
+
+Environment  jsdom was created 51 times · 48.79s total, 25% of tracked time
+             create it once per worker with pool: 'vmThreads' (keeps per-file isolation) or isolate: false (shares it across files)
+             learn more: https://vitest.dev/guide/improving-performance#test-environments
+
+ % Coverage report from v8
+-------------------|---------|----------|---------|---------|-------------------
+File               | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s
+-------------------|---------|----------|---------|---------|-------------------
+All files          |   95.41 |    92.95 |   94.75 |   97.66 |
+ app               |   92.74 |    80.35 |   92.68 |   93.68 |
+  App.tsx          |   92.74 |    80.35 |   92.68 |   93.68 | ...30-132,149-153
+ components        |   95.42 |    92.02 |   93.75 |   97.73 |
+  ...tCombobox.tsx |   97.36 |    86.95 |     100 |     100 | ...39,146-159,165
+  ...sProposal.tsx |   94.44 |       92 |     100 |     100 | 38,78
+  ...ionStatus.tsx |     100 |      100 |     100 |     100 |
+  ...encesForm.tsx |     100 |    95.34 |     100 |     100 | 67,88
+  DriverForm.tsx   |   90.27 |    96.05 |   81.81 |   92.98 | 51-53,107
+  FormField.tsx    |     100 |      100 |     100 |     100 |
+  ...portPanel.tsx |   92.85 |    91.22 |   93.33 |   95.74 | 62,98
+ components/layout |   95.09 |    95.12 |   91.42 |    97.5 |
+  AccountMenu.tsx  |     100 |    83.33 |     100 |     100 | 17,40
+  AppShell.tsx     |   93.24 |    97.14 |   86.95 |   96.55 | 133,165
+ components/ui     |   97.97 |    90.24 |     100 |     100 |
+  Alert.tsx        |     100 |     90.9 |     100 |     100 | 25
+  Badge.tsx        |     100 |      100 |     100 |     100 |
+  Button.tsx       |     100 |      100 |     100 |     100 |
+  Card.tsx         |     100 |    80.95 |     100 |     100 | 17,20-22
+  DataTable.tsx    |     100 |      100 |     100 |     100 |
+  Dialog.tsx       |   94.44 |    85.71 |     100 |     100 | 27-30,36
+  EmptyState.tsx   |     100 |     90.9 |     100 |     100 | 16
+  Form.tsx         |     100 |      100 |     100 |     100 |
+  PageHeader.tsx   |     100 |       90 |     100 |     100 | 25,34
+  Skeleton.tsx     |     100 |      100 |     100 |     100 |
+  StatCard.tsx     |     100 |      100 |     100 |     100 |
+  Toast.tsx        |     100 |    66.66 |     100 |     100 | 42
+  cx.ts            |     100 |      100 |     100 |     100 |
+  index.ts         |       0 |        0 |       0 |       0 |
+  toastContext.ts  |     100 |      100 |     100 |     100 |
+ data              |     100 |      100 |     100 |     100 |
+  ...rItinerary.ts |     100 |      100 |     100 |     100 |
+ domain            |     100 |    99.21 |     100 |     100 |
+  ...rencesForm.ts |     100 |      100 |     100 |     100 |
+  driverForm.ts    |     100 |      100 |     100 |     100 |
+  ...rItinerary.ts |     100 |       50 |     100 |     100 | 45
+  incident.ts      |     100 |      100 |     100 |     100 |
+  passwordForm.ts  |     100 |      100 |     100 |     100 |
+  roles.ts         |     100 |      100 |     100 |     100 |
+ hooks             |    94.3 |    81.48 |   93.75 |   97.89 |
+  ...ronization.ts |     100 |      100 |    87.5 |     100 |
+  ...lineStatus.ts |     100 |       50 |     100 |     100 | 7
+  ...ronization.ts |    92.3 |    76.47 |     100 |     100 | 24,31-34,39-52,68
+  useTheme.ts      |   89.47 |     87.5 |      80 |   88.23 | 12,24
+ pages             |   94.56 |    90.03 |   94.96 |    96.8 |
+  ...swordPage.tsx |   98.11 |    97.82 |     100 |     100 | 48
+  ...encesPage.tsx |     100 |    95.83 |     100 |     100 | 62,92
+  ...eraryPage.tsx |   88.23 |     82.3 |   93.75 |   91.83 | ...10,158-159,190
+  DriversPage.tsx  |   97.61 |    90.21 |     100 |     100 | 41-53,67-69,73,96
+  HomePage.tsx     |   97.22 |    94.28 |     100 |     100 | 20-23,69
+  ...reatePage.tsx |   87.83 |    78.43 |   85.41 |   91.96 | ...82,138,163,179
+  LoginPage.tsx    |     100 |      100 |     100 |     100 |
+  NotFoundPage.tsx |     100 |      100 |     100 |     100 |
+  ...dentsPage.tsx |   98.63 |     92.3 |     100 |     100 | 94,98,112,152
+  ...reatePage.tsx |   91.11 |    88.42 |   88.88 |   93.38 | ...94,222-224,229
+  UsersPage.tsx    |   91.02 |     86.3 |      92 |   96.82 | 142,152
+  VehiclesPage.tsx |   99.41 |    98.46 |     100 |     100 | 232,275
+ services          |   95.99 |    97.18 |   94.36 |   98.52 |
+  api.ts           |     100 |      100 |     100 |     100 |
+  auth.ts          |   98.14 |    93.75 |     100 |   98.11 | 166
+  clients.ts       |   97.43 |      100 |     100 |     100 |
+  ...references.ts |     100 |      100 |     100 |     100 |
+  ...rItinerary.ts |    92.3 |    94.44 |     100 |    92.3 | 51,64,108
+  drivers.ts       |     100 |      100 |     100 |     100 |
+  incidentList.ts  |     100 |      100 |     100 |     100 |
+  ...entStorage.ts |   96.29 |      100 |    92.3 |     100 |
+  incidentSync.ts  |   97.14 |    96.96 |     100 |     100 | 29
+  incidents.ts     |     100 |      100 |     100 |     100 |
+  indicators.ts    |     100 |      100 |     100 |     100 |
+  offlineAccess.ts |     100 |      100 |     100 |     100 |
+  offlineShell.ts  |     100 |      100 |     100 |     100 |
+  ...ineStorage.ts |   88.77 |    91.46 |   85.71 |   96.15 | 129-131
+  orders.ts        |     100 |    97.22 |     100 |     100 | 109
+  ...hangeGuard.ts |     100 |      100 |     100 |     100 |
+  reportQueue.ts   |   87.69 |    81.57 |   85.71 |      96 | 38,71,158-159
+  reportSync.ts    |   96.42 |       90 |     100 |     100 | 24
+  users.ts         |     100 |      100 |     100 |     100 |
+  vehicles.ts      |     100 |      100 |     100 |     100 |
+ test              |     100 |      100 |     100 |     100 |
+  ...ntFixtures.ts |     100 |      100 |     100 |     100 |
+ types             |     100 |      100 |     100 |     100 |
+  driverReport.ts  |     100 |      100 |     100 |     100 |
+-------------------|---------|----------|---------|---------|-------------------
+
+=============================== Coverage summary ===============================
+Statements   : 95.41% ( 2725/2856 )
+Branches     : 92.95% ( 2282/2455 )
+Functions    : 94.75% ( 705/744 )
+Lines        : 97.66% ( 2258/2312 )
+================================================================================
