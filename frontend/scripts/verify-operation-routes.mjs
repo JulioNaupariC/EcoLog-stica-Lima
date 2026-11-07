@@ -121,7 +121,7 @@ try {
   await page.keyboard.press('Enter')
   assert(await page.getByRole('heading', { name: 'Secuencia de paradas', exact: true }).evaluate(e => e === document.activeElement))
   await page.keyboard.press('Tab')
-  assert(await page.locator('.route-stop-list > li').first().evaluate(e => e === document.activeElement))
+  assert(await page.getByRole('button', { name: 'Ver parada 1 en mapa', exact: true }).evaluate(e => e === document.activeElement))
   await context.route('https://tile.openstreetmap.org/**', route => route.abort())
   await page.getByRole('button', { name: 'Ocultar mapa', exact: true }).click()
   await page.getByRole('button', { name: 'Mostrar mapa', exact: true }).click()

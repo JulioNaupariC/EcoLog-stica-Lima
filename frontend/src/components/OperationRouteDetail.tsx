@@ -59,7 +59,7 @@ export function OperationRouteDetail({ route, detail }: { route: OperationRoute;
     </Suspense></div> : null}
     <section aria-labelledby="route-stop-list" className="route-stop-section">
       <h3 id="route-stop-list" tabIndex={-1}>Secuencia de paradas</h3>
-      <ol className="route-stop-list">{route.paradas.map(stop => <li key={stop.parada_id} tabIndex={0}>
+      <ol className="route-stop-list">{route.paradas.map(stop => <li key={stop.parada_id}>
         <h4>Parada {stop.secuencia}</h4><p>Pedido: <span className="route-id">{stop.pedido_id}</span></p>
         <p>Ubicación: {stop.latitud.toFixed(5)}, {stop.longitud.toFixed(5)} (latitud, longitud).</p>
         <dl>

@@ -21,7 +21,7 @@ it('M01: mapa y alternativa accesible usan misma ruta, orden y ETA con teclado',
   const user = userEvent.setup(); show(); await routeHeading()
   expect(await screen.findByTestId('route-map')).toHaveAttribute('data-sequences', '1,2,3,4,5,6,7')
   const stops = screen.getByRole('heading', { name: 'Secuencia de paradas' }).parentElement!
-  expect(within(stops).getAllByRole('listitem').filter(e => e.hasAttribute('tabindex'))).toHaveLength(7)
+  expect(within(stops).getAllByRole('button', { name: /^Ver parada \d+ en mapa$/u })).toHaveLength(7)
   expect(within(stops).getByRole('heading', { name: 'Parada 1' })).toBeInTheDocument()
   expect(within(stops).getAllByText(/ETA estimada \(Lima\)/)).toHaveLength(7)
   expect(screen.getByText(/ETA del plan, estimación calculada/)).toHaveTextContent('No representa atención real')

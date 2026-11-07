@@ -107,7 +107,7 @@ function route(value: unknown): OperationRoute {
     const p = array(point); ensure(p.length === 2); return [coordinate(p[0], 180), coordinate(p[1], 90)]
   })
   ensure(coordinates.length >= 2)
-  const paradas = array(r.paradas).map(stop)
+  const paradas = array(r.paradas).map((value, index) => stop(value, index))
   ensure(paradas.length > 0); unique(paradas.map(s => s.parada_id)); unique(paradas.map(s => s.pedido_id))
   const salida = instant(r.salida), regreso = instant(r.regreso)
   ensure(Date.parse(salida) <= Date.parse(regreso))

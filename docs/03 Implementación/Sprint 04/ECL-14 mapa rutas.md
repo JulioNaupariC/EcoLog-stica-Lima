@@ -67,7 +67,7 @@ visible **© OpenStreetMap contributors** y enlace a copyright. Se respeta la
 caché del navegador; no hay descarga masiva ni precarga offline de teselas.
 
 La lista ordenada es una alternativa completa: no exige abrir un marcador para
-consultar ETA, ventana, estado, ubicación o alertas. Sus elementos admiten foco
+consultar ETA, ventana, estado, ubicación o alertas. Sus controles nativos admiten foco
 y cada parada tiene un botón «Ver parada N en mapa» que abre su detalle y lleva
 el foco al mapa. Los números del mapa son indicadores; las acciones de selección
 se ofrecen en la lista con objetivos amplios para evitar controles solapados.
@@ -96,8 +96,8 @@ flujo de sesión; 403 y 404 no se confunden con ausencia de optimizaciones.
 
 Las pruebas de dominio, servicio HTTP, página, mapa y navegación cubren M01–M06.
 La suite final pasó **836 pruebas en 57 archivos** con dos workers, sin cambiar
-los umbrales: líneas **97,84 %**, ramas **93,11 %**, funciones **95,27 %** y
-sentencias **95,71 %**. Typecheck, lint y build también pasaron. El dominio y
+los umbrales: líneas **97,92 %**, ramas **93,18 %**, funciones **95,39 %** y
+sentencias **95,84 %**. Typecheck, lint y build también pasaron. El dominio y
 el adaptador HTTP nuevos alcanzaron 100 % en las cuatro medidas de cobertura.
 
 | Escenario | Comprobación |
@@ -128,12 +128,17 @@ revisión humana; no se cuentan como aprobaciones manuales.
 
 Evidencia nueva, sin sobrescribir archivos anteriores:
 
-- [Resultados finales y versiones de navegador](validaciones/evidencias/ECL-14/run-20261107-final/results.json)
-- [Metadatos y hashes SHA-256 de las fuentes probadas](validaciones/evidencias/ECL-14/run-20261107-final/run-start.json)
-- [Lighthouse claro](validaciones/evidencias/ECL-14/run-20261107-final/lighthouse-light.json) · [Lighthouse oscuro](validaciones/evidencias/ECL-14/run-20261107-final/lighthouse-dark.json)
-- [Chrome 1280 claro](validaciones/evidencias/ECL-14/run-20261107-final/chrome-light-1280.png) · [Chrome 360 claro](validaciones/evidencias/ECL-14/run-20261107-final/chrome-light-360.png)
-- [Chrome 1280 oscuro](validaciones/evidencias/ECL-14/run-20261107-final/chrome-dark-1280.png) · [Chrome 360 oscuro](validaciones/evidencias/ECL-14/run-20261107-final/chrome-dark-360.png)
-- [Firefox 1280](validaciones/evidencias/ECL-14/run-20261107-final/firefox-light-1280.png) · [Firefox 360](validaciones/evidencias/ECL-14/run-20261107-final/firefox-light-360.png)
+- [Resultados finales y versiones de navegador](validaciones/evidencias/ECL-14/run-20261107-sonar/results.json)
+- [Metadatos y hashes SHA-256 de las fuentes probadas](validaciones/evidencias/ECL-14/run-20261107-sonar/run-start.json)
+- [Lighthouse claro](validaciones/evidencias/ECL-14/run-20261107-sonar/lighthouse-light.json) · [Lighthouse oscuro](validaciones/evidencias/ECL-14/run-20261107-sonar/lighthouse-dark.json)
+- [Chrome 1280 claro](validaciones/evidencias/ECL-14/run-20261107-sonar/chrome-light-1280.png) · [Chrome 360 claro](validaciones/evidencias/ECL-14/run-20261107-sonar/chrome-light-360.png)
+- [Chrome 1280 oscuro](validaciones/evidencias/ECL-14/run-20261107-sonar/chrome-dark-1280.png) · [Chrome 360 oscuro](validaciones/evidencias/ECL-14/run-20261107-sonar/chrome-dark-360.png)
+- [Firefox 1280](validaciones/evidencias/ECL-14/run-20261107-sonar/firefox-light-1280.png) · [Firefox 360](validaciones/evidencias/ECL-14/run-20261107-sonar/firefox-light-360.png)
+
+Esta ejecución incorpora la corrección de los hallazgos Sonar S6845 y S7727:
+el foco por Tab recorre botones nativos de cada parada y el validador usa un
+callback explícito que recibe valor e índice. La ejecución anterior se conserva
+intacta en `run-20261107-final/`; no se alteraron sus archivos históricos.
 
 Las comprobaciones automáticas no equivalen a una sesión humana con lector de
 pantalla. Los resultados incompletos de axe se conservan para revisión, al igual

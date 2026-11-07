@@ -1,0 +1,28 @@
+{
+  "violations": [],
+  "incomplete": [
+    {
+      "id": "color-contrast",
+      "targets": [
+        [
+          "div[title=\"Parada 1\"]"
+        ]
+      ]
+    },
+    {
+      "id": "label-content-name-mismatch",
+      "targets": [
+        [
+          ".account-trigger"
+        ],
+        [
+          ".leaflet-control-zoom-in"
+        ],
+        [
+          ".leaflet-control-zoom-out"
+        ]
+      ]
+    }
+  ],
+  "passes": 28
+}
