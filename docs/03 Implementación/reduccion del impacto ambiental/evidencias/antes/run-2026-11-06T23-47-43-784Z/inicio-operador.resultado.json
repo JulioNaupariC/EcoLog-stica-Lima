@@ -1,0 +1,9 @@
+{
+  "name": "inicio-operador",
+  "path": "/",
+  "role": "OPERADOR",
+  "rounds": [],
+  "attemptedAt": "2026-11-06T23:48:29.256Z",
+  "status": "ERROR",
+  "reason": "Timed out after waiting 30000ms"
+}

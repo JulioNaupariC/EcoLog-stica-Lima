@@ -1,0 +1,9 @@
+{
+  "name": "vehiculos-operador",
+  "path": "/vehiculos",
+  "role": "OPERADOR",
+  "rounds": [],
+  "attemptedAt": "2026-11-06T23:51:06.428Z",
+  "status": "ERROR",
+  "reason": "Waiting failed: 30000ms exceeded"
+}

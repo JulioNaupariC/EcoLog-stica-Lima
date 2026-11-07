@@ -1,0 +1,9 @@
+{
+  "name": "vehiculos-operador",
+  "path": "/vehiculos",
+  "role": "OPERADOR",
+  "rounds": [],
+  "attemptedAt": "2026-11-06T23:49:01.133Z",
+  "status": "ERROR",
+  "reason": "Timed out after waiting 30000ms"
+}

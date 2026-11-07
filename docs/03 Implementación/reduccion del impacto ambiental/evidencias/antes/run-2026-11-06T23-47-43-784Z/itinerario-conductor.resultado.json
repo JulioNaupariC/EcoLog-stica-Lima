@@ -1,0 +1,9 @@
+{
+  "name": "itinerario-conductor",
+  "path": "/conductor/itinerario",
+  "role": "CONDUCTOR",
+  "rounds": [],
+  "attemptedAt": "2026-11-06T23:49:33.228Z",
+  "status": "ERROR",
+  "reason": "Timed out after waiting 30000ms"
+}

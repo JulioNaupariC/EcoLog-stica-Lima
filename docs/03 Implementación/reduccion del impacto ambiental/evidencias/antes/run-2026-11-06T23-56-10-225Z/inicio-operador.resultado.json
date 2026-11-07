@@ -1,0 +1,9 @@
+{
+  "name": "inicio-operador",
+  "path": "/",
+  "role": "OPERADOR",
+  "rounds": [],
+  "attemptedAt": "2026-11-06T23:56:11.062Z",
+  "status": "NO_MEDIBLE",
+  "reason": "Tras recarga completa, / redirige a /login. Identidad de Operador solo en memoria; no se inyecta identidad ni se modifica código base."
+}
