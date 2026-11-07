@@ -1,0 +1,38 @@
+{
+  "ticket": "ECL-90",
+  "base_main": "7733be8ed0fbe23bdfabfd3e9bd7cf017c6ea9be",
+  "captured_at_utc": "2026-11-07T00:27:41.088422+00:00",
+  "timezone": "America/Lima",
+  "machine_owner": "Jose Delgadillo",
+  "os": "Windows 11 Home Single Language 10.0.26300",
+  "cpu": "Intel Core i9-14900HX",
+  "ram_gib_visible": 15.73,
+  "powershell": "5.1",
+  "docker_engine": "29.9.2",
+  "test_python": "3.12.10",
+  "app_project": "ecologistica-lima-ecl108",
+  "test_project": "ecologistica-lima-ecl90",
+  "test_database": "ecologistica_ecl90_test",
+  "test_database_preparation": "createdb with template_postgis in a new isolated project",
+  "integration_command": "python -m pytest tests/integration -q --junitxml=/results/integration.xml -p no:cacheprovider",
+  "junit": {
+    "name": "pytest",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "tests": "250",
+    "time": "118.702",
+    "timestamp": "2026-11-07T00:22:57.810734+00:00",
+    "hostname": "1106fe5dd452"
+  },
+  "preflight_expected_exit": 1,
+  "preflight_reason": "8000 and 5173 occupied by existing local demo; no services stopped",
+  "checker_tests_exit": 0,
+  "artifacts_sha256": {
+    "app.json": "313813a13f6fa116d171ca7c47379e3d6a0905e42cc8a28858781c2ee1c4f355",
+    "login-operador.png": "368cc48be2abab8396f9d52f2d736b54925d14a62b539336c9df5654060ce57c",
+    "integration.xml": "79583550f1a341ec23028f4ea5a0001114409583a22a0998143f1233b6493748",
+    "verificacion.txt": "1c1b9be8d75d58c90c5035dfb5d56f80862023b1537f6d432512a5fc8cdb409c"
+  },
+  "diagnostic_log_normalization": "Trailing spaces from Format-Table removed before first commit; content unchanged."
+}

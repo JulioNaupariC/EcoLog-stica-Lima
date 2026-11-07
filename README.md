@@ -148,6 +148,44 @@ cambiar código hay que repetir `docker compose --env-file .env build` y levanta
 de nuevo los servicios. Las instrucciones de arranque sin Docker siguen en
 [`backend/README.md`](backend/README.md) y [`frontend/README.md`](frontend/README.md).
 
+## Problemas frecuentes del entorno local — ECL-90
+
+Ejecutar desde la raíz del clon, antes de levantar una segunda instancia:
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy RemoteSigned -File scripts/verificar_entorno.ps1
+```
+
+El verificador devuelve **0** si encuentra Docker/Compose, un motor Linux accesible,
+`.env` y los puertos disponibles; devuelve **1** si alguna comprobación falla.
+Solo comprueba la existencia de `.env`, sin leerlo. No configura credenciales,
+no arranca servicios ni acredita login o integración. Si la app ya está levantada,
+es normal que marque los puertos como ocupados: revisar su propietario antes de
+intentar otro arranque.
+
+| Síntoma | Causa o diagnóstico | Resolución / comando |
+|---|---|---|
+| `docker` no se reconoce | Docker no está instalado o su CLI no está en PATH | Comprobar `Get-Command docker`; instalar Docker Desktop según su guía oficial y abrir otra consola. No basta con instalar solo el cliente. |
+| `failed to connect ... dockerDesktopLinuxEngine` | Docker Desktop está cerrado, el motor aún no inició o el contexto es incorrecto | Iniciar Docker Desktop desde Inicio; comprobar `docker context ls` y `docker info --format '{{.OSType}}'`. Continuar cuando el último devuelva `linux`; cambiar a contenedores Linux desde Docker Desktop si corresponde. |
+| Compose no existe o es v1 | Falta el complemento Compose v2 | Comprobar `docker compose version --short` y actualizar Docker Desktop. Usar `docker compose`, conforme al arranque del proyecto. |
+| Fallo del backend WSL | WSL sin preparar, desactualizado o virtualización deshabilitada | Diagnosticar con `wsl --status`, `wsl --version` y `wsl --list --verbose`. Si corresponde, `wsl --update`; en un equipo nuevo, preparar WSL 2 según Microsoft y reiniciar cuando lo solicite. No reiniciar WSL mientras haya cargas activas. |
+| Puerto 8000 o 5173 ocupado | Otra app o un clon anterior ya publica ese puerto | Comprobar `Get-NetTCPConnection -State Listen -LocalPort 8000,5173` y `docker ps --format '{{.Names}} {{.Ports}}'`. Reutilizar la instancia correcta o detener solo los servicios propios identificados. No ejecutar `taskkill` indiscriminadamente. |
+| Otro clon usa el nombre Compose del README | Compose agrupa recursos por nombre de proyecto, no solo por carpeta | Revisar `docker compose ls --all`. Para una instancia nueva aislada añadir `-p ecologistica-lima-ecl90` a **todos** sus comandos Compose; también necesita puertos libres. No reutilizar ni borrar volúmenes de otro clon. |
+| `.env` ausente | La configuración privada no viaja por Git | Ejecutar el bloque condicional de copia de `.env.example` del arranque anterior y completar los valores en un editor local. Validar con `docker compose --env-file .env config --quiet`, sin imprimir configuración expandida. |
+| Configuración válida pero BD rechaza la conexión | URL/credenciales no coinciden, uso de `localhost` dentro de Docker o credenciales cambiadas sobre un volumen existente | Revisar privadamente `DATABASE_URL`: en Compose el host es `db:5432`; codificar caracteres reservados. Ejecutar `docker compose --env-file .env run --rm --no-deps backend python -m app.db.check`. Usar las credenciales originales del volumen o una base nueva aislada, sin borrar datos. |
+| `python` abre Microsoft Store o no existe | Alias de Windows o Python ausente | Comprobar `py -0p`; si Python 3.12 está instalado, usar `py -3.12` y el ejecutable de `.venv`. La ruta Docker de la guía ECL-90 permite ejecutar integración sin Python en el host. |
+| «La ejecución de scripts está deshabilitada» | Política de ejecución de PowerShell | Comprobar `Get-ExecutionPolicy -List`; para estos scripts locales revisados, usar la invocación con `-ExecutionPolicy RemoteSigned` mostrada arriba, limitada al proceso. Si hay una directiva organizativa, solicitar la alternativa autorizada; no cambiarla globalmente. |
+| Falta `pytest` en el contenedor de la API | La imagen de ejecución instala `requirements.lock`, no las dependencias de pruebas | Usar la imagen temporal con `requirements-dev.lock` de la guía ECL-90, o instalar esas dependencias en el `.venv` del backend. La imagen API tampoco copia `tests/`. |
+| `TEST_DATABASE_URL is required` / esquema no vacío | Falta una base exclusiva de pruebas o se está apuntando a desarrollo/demo | Seguir la integración aislada de ECL-90: base vacía con sufijo `_test`, distinta de desarrollo. No sustituirla por la demo ni aplicar sus downgrades a datos de trabajo. |
+| Build/procesos terminan por falta de memoria | RAM insuficiente o límites de Docker/WSL | Comprobar `docker stats --no-stream` y los recursos de Docker Desktop; cerrar cargas prescindibles propias y revisar los requisitos del proveedor. No se midió un fallo de memoria en los equipos del grupo. |
+
+[Guía, evidencia local y tabla A11 para Frank](<docs/03 Implementación/Sprint 04/guias/GUIA_ENTORNO_LOCAL_ECL90.md>).
+Los casos observados y los diagnósticos preventivos se distinguen en esa guía.
+Las indicaciones de Docker, WSL y PowerShell se contrastaron con las guías de
+[Docker Desktop para Windows](https://docs.docker.com/desktop/setup/install/windows-install/),
+[comandos WSL de Microsoft](https://learn.microsoft.com/en-us/windows/wsl/basic-commands)
+y [políticas de ejecución de PowerShell](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_execution_policies).
+
 ## Fase 01: Inicio y línea base
 
 - [Selección del enfoque del proyecto V_1_0_0](<docs/01 Inicio/01. Selección del enfoque del proyecto V_1_0_0.md>)  

@@ -14,4 +14,8 @@ El índice se añadió después de capturar las evidencias de ECL-108. Los regis
 históricos conservan la observación de que todavía no existía durante la medición;
 el enlace de navegación queda incorporado aquí sin editar esas evidencias.
 
+## Entorno local y acciones de retrospectiva
+
+- [ECL-90 / A11 — Guía, verificaciones y tabla de resultados para Frank](<guias/GUIA_ENTORNO_LOCAL_ECL90.md>)
+
 [← Volver al README principal](../../../README.md)
