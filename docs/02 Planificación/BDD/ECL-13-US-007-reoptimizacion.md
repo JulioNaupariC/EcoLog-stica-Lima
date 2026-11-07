@@ -6,7 +6,7 @@
 
 | Metadato | Valor |
 |---|---|
-| Versión | 0.1.0 |
+| Versión | 0.1.1 |
 | Fecha | 06/11/2026, America/Lima |
 | Autor | Frank Roy Yupanqui Acevedo — @FrankRoyYA |
 | Ticket / historia | [ECL-97](https://continental-team-il84x39k.atlassian.net/browse/ECL-97) / [ECL-13, US-007](https://continental-team-il84x39k.atlassian.net/browse/ECL-13) |
@@ -171,13 +171,17 @@ compatibilidad de una extensión aún no implementada.
 
 ## Cambios al contrato provisional
 
-| Propuesta pendiente de aprobación | Motivo / impacto |
-|---|---|
-| Endpoint de recálculo, evento y version_plan | ST-045 actual no define US-007. Requiere contrato/OpenAPI y fixtures propios antes de UI. |
-| Vínculo a origen y control de versión | Evita sobrescribir progreso y publicar propuestas obsoletas; requiere modelo persistente y conflicto 409. |
-| Permiso rutas.reoptimizar de Operador | Sigue matriz vigente; no reutiliza por suposición el permiso de optimizar del prompt. |
-| Reintento por evento/versión | Evita dobles recálculos tras pérdida de respuesta; alcance y código deben ratificarse. |
-| Presupuesto P95 y recursos remanentes | RNF-002 y RN-005 se verifican sobre contexto ya ejecutado, no jornada nueva. |
+Posición técnica de Antony del 06/11/2026, 19:18 (America/Lima), en su
+[comentario de backend](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/91#pullrequestreview-5808785030).
+Es una propuesta para Julio; no ratifica decisiones ni modifica las reglas.
+
+| Propuesta pendiente de aprobación | Motivo / impacto | Posición técnica (backend) |
+|---|---|---|
+| Endpoint de recálculo, evento y version_plan | ST-045 actual no define US-007. Requiere contrato/OpenAPI y fixtures propios antes de UI. | Sin propuesta específica para el endpoint de extensión; US-007 sigue pendiente de Julio. |
+| Vínculo a origen y control de versión | Evita sobrescribir progreso y publicar propuestas obsoletas; requiere modelo persistente y conflicto 409. | Sin precisión específica en el comentario. |
+| Permiso rutas.reoptimizar de Operador | Sigue matriz vigente; no reutiliza por suposición el permiso de optimizar del prompt. | Propone mantener la matriz vigente; no formula una ampliación para reoptimización. |
+| Reintento por evento/versión | Evita dobles recálculos tras pérdida de respuesta; alcance y código deben ratificarse. | Sin precisión específica en el comentario. |
+| Presupuesto P95 y recursos remanentes | RNF-002 y RN-005 se verifican sobre contexto ya ejecutado, no jornada nueva. | Sobre RN-005, propone implementar en ST-047 la distinción de conducción, servicio y espera; no concreta medición RNF-002. |
 
 ## Aprobación y entrega
 
@@ -188,5 +192,7 @@ a Ready for Review; mientras siga BORRADOR no desbloquea US-007.
 | Versión | Fecha | Cambio |
 |---|---|---|
 | 0.1.0 | 06/11/2026 | Extensión candidata, reglas y escenarios X01–X07. |
+| 0.1.1 | 06/11/2026 | Incorpora la propuesta técnica de backend y navegación del Sprint 4; reglas sin cambios y aprobación de Julio pendiente. |
 
+[Índice del Sprint 4](<../../03 Implementación/Sprint 04/README.md>) ·
 [← Volver al README principal](../../../README.md)

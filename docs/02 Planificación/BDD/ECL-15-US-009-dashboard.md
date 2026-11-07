@@ -5,7 +5,7 @@
 
 | Metadato | Valor |
 |---|---|
-| Versión | 0.1.0 |
+| Versión | 0.1.1 |
 | Fecha | 06/11/2026, America/Lima |
 | Autor | Frank Roy Yupanqui Acevedo — @FrankRoyYA |
 | Ticket / historia | [ECL-97](https://continental-team-il84x39k.atlassian.net/browse/ECL-97) / [ECL-15, US-009](https://continental-team-il84x39k.atlassian.net/browse/ECL-15) |
@@ -181,13 +181,17 @@ y EN_CURSO que no deben contarse. Son expectativas, no resultados ejecutados.
 
 ## Cambios al contrato provisional
 
-| Decisión pendiente | Impacto para ST-045 y modelo |
-|---|---|
-| Auditor autorizado en agregado | ST-045/matriz lo permiten; el prompt no lo lista. Se propone conservarlo sin datos personales; ratificar. |
-| Cierre explícito y cerrada_en | Ausente en modelo/contrato actual; necesario para filtro por cierre y definición verificable. Ratificar estados terminales y responsable, sin implementar endpoint de cierre aquí. |
-| Definición de pct y cumplimiento | Precisar que pct compara distancia agregada y que cumplimiento usa resultados reales, incluidos NO_ATENDIDA en denominador. No inferirlo de ETA. |
-| Null con datos y porcentajes negativos | El esquema actual obliga todos los indicadores con con_datos true y acota pct a [-100,100]. Debe admitir denominador cero en porcentajes y empeoramiento mayor al 100 %. |
-| Equivalente ambiental nullable | RF-009 lo exige, falta en ST-045. Propuesta de objeto con unidad, factor, fuente y versión; sin configuración no inventar valor. |
+Posición técnica de Antony del 06/11/2026, 19:18 (America/Lima), en su
+[comentario de backend](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/91#pullrequestreview-5808785030).
+Es una propuesta para Julio; no ratifica decisiones ni modifica las reglas.
+
+| Decisión pendiente | Impacto para ST-045 y modelo | Posición técnica (backend) |
+|---|---|---|
+| Auditor autorizado en agregado | ST-045/matriz lo permiten; el prompt no lo lista. Se propone conservarlo sin datos personales; ratificar. | Propone mantener la matriz vigente, pero no concreta una decisión sobre Auditor en dashboard; decide Julio. |
+| Cierre explícito y cerrada_en | Ausente en modelo/contrato actual; necesario para filtro por cierre y definición verificable. Ratificar estados terminales y responsable, sin implementar endpoint de cierre aquí. | Sin precisión específica en el comentario; pendiente de decisión de Julio. |
+| Definición de pct y cumplimiento | Precisar que pct compara distancia agregada y que cumplimiento usa resultados reales, incluidos NO_ATENDIDA en denominador. No inferirlo de ETA. | No concreta la magnitud de pct ni el denominador de cumplimiento; decide Julio. |
+| Null con datos y porcentajes negativos | El esquema actual obliga todos los indicadores con con_datos true y acota pct a [-100,100]. Debe admitir denominador cero en porcentajes y empeoramiento mayor al 100 %. | Indica que puede ajustar ST-045 con pct nulo y negativos en este sprint. |
+| Equivalente ambiental nullable | RF-009 lo exige, falta en ST-045. Propuesta de objeto con unidad, factor, fuente y versión; sin configuración no inventar valor. | Sin precisión específica en el comentario; pendiente de decisión de Julio. |
 
 ## Aprobación y entrega
 
@@ -198,5 +202,7 @@ Ready for Review. No se modifican requisitos, permisos ni fixtures para aprobar 
 | Versión | Fecha | Cambio |
 |---|---|---|
 | 0.1.0 | 06/11/2026 | Escenarios D01–D08, cierre, métricas, null, periodo y decisiones de contrato. |
+| 0.1.1 | 06/11/2026 | Incorpora la propuesta técnica de backend y navegación del Sprint 4; reglas sin cambios y aprobación de Julio pendiente. |
 
+[Índice del Sprint 4](<../../03 Implementación/Sprint 04/README.md>) ·
 [← Volver al README principal](../../../README.md)

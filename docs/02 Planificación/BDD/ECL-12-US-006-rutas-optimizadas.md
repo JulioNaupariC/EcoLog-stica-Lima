@@ -7,7 +7,7 @@
 
 | Metadato | Valor |
 |---|---|
-| Versión | 0.1.0 |
+| Versión | 0.1.1 |
 | Fecha | 06/11/2026, America/Lima |
 | Autor | Frank Roy Yupanqui Acevedo — @FrankRoyYA |
 | Ticket | [ECL-97](https://continental-team-il84x39k.atlassian.net/browse/ECL-97), 3 SP para las cuatro BDD |
@@ -29,9 +29,10 @@
   o ST-045, la sección de cambios pide decisión expresa; no se adapta el RF al código.
 
 Alcance: reglas, escenarios y trazabilidad. No implementa endpoints, worker,
-migraciones, UI ni modifica fixtures. El spike y ST-045 preceden a esta BDD:
-no se retrofecha A4 ni se los presenta como implementación funcional aprobada.
-El índice Sprint 04 y su glosario (ECL-99) aún no existen en `main e09dcd8`.
+migraciones, UI ni modifica fixtures. El spike ECL-93 y el contrato simulado ST-045
+ya están integrados en main mediante #88 y #89; no se retrofecha A4 ni se los
+presenta como implementación funcional aprobada de US-006. El índice Sprint 04
+ya existe tras #90; el glosario sigue a cargo de ECL-99.
 Estas BDD se mantienen en Planificación, como exige el ticket.
 
 ## Reglas de negocio y contrato candidato
@@ -277,14 +278,18 @@ Son flujos observables de UI/API de US-006/008/009, no mediciones ya realizadas.
 
 ## Cambios al contrato provisional
 
-| Decisión pendiente de Julio | Diferencia / impacto para ST-045 y dependientes |
-|---|---|
-| RBAC (R11) | El prompt propone Administrador/Operador y `rutas.optimizar`; matriz/ST-045 solo Operador y `optimizaciones.ejecutar`. No cambiar matriz desde esta BDD. Mantener consultas agregadas de Analista/Auditor según matriz; resolver detalle por rol explícitamente. |
-| Estructura de métricas | ST-045 ya agrupa `resumen.optimizada` y `ruta.metricas`, añade `simulado`, timestamps, carga y descansos. Se propone conservar esa estructura publicada en lugar de campos planos del prompt, sin cambiar las cuatro magnitudes exigidas. |
-| Motivos adicionales | Proponer JORNADA_INVIABLE y RESTRICCION_VIAL para RN-005/RN-009, ausentes del enum actual. ST-045 debe ajustar OpenAPI y fixtures tras ratificación. |
-| Porcentajes | Admitir null con base cero y negativos sin truncar; el límite actual [-100,100] rechaza empeoramientos mayores al 100 %. Propuesta: límite superior 100, sin piso fijo para ahorro negativo. |
-| Tiempo y precisión | Ratificar medición end-to-end además de duracion_s, ETA inclusiva de inicio de servicio, reglas de clasificación y conversión del precio por galón. |
-| Jornada | El spike cuenta servicio/espera como conducción, una simplificación técnica; esta BDD distingue los conceptos de RN-005. No se modifica RN-005 para acomodar el spike. |
+Posición técnica de Antony del 06/11/2026, 19:18 (America/Lima), en su
+[comentario de backend](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/91#pullrequestreview-5808785030).
+Es una propuesta para Julio; no ratifica decisiones ni modifica las reglas.
+
+| Decisión pendiente de Julio | Diferencia / impacto para ST-045 y dependientes | Posición técnica (backend) |
+|---|---|---|
+| RBAC (R11) | El prompt propone Administrador/Operador y `rutas.optimizar`; matriz/ST-045 solo Operador y `optimizaciones.ejecutar`. No cambiar matriz desde esta BDD. Mantener consultas agregadas de Analista/Auditor según matriz; resolver detalle por rol explícitamente. | Antony propone mantener la matriz vigente: solo el Operador optimiza, como en #89. |
+| Estructura de métricas | ST-045 ya agrupa `resumen.optimizada` y `ruta.metricas`, añade `simulado`, timestamps, carga y descansos. Se propone conservar esa estructura publicada en lugar de campos planos del prompt, sin cambiar las cuatro magnitudes exigidas. | Acuerdo técnico general con las propuestas; no formula una decisión específica sobre la estructura. |
+| Motivos adicionales | Proponer JORNADA_INVIABLE y RESTRICCION_VIAL para RN-005/RN-009, ausentes del enum actual. ST-045 debe ajustar OpenAPI y fixtures tras ratificación. | Propone incorporar JORNADA_INVIABLE en este sprint y diferir RESTRICCION_VIAL hasta que exista el registro de bloqueos. |
+| Porcentajes | Admitir null con base cero y negativos sin truncar; el límite actual [-100,100] rechaza empeoramientos mayores al 100 %. Propuesta: límite superior 100, sin piso fijo para ahorro negativo. | Indica que puede ajustar ST-045 con pct nulo y negativos en este sprint. |
+| Tiempo y precisión | Ratificar medición end-to-end además de duracion_s, ETA inclusiva de inicio de servicio, reglas de clasificación y conversión del precio por galón. | Sin precisión específica en el comentario; pendiente de decisión de Julio. |
+| Jornada | El spike cuenta servicio/espera como conducción, una simplificación técnica; esta BDD distingue los conceptos de RN-005. No se modifica RN-005 para acomodar el spike. | Indica que el spike cuenta servicio y espera como conducción y es más estricto: puede dejar pedidos sin asignar. Propone implementar la distinción de la BDD en ST-047. |
 
 ## Aprobación y entrega
 
@@ -297,8 +302,10 @@ la política del repositorio. No se comunica al equipo ni se modifica Jira desde
 | Versión | Fecha | Cambio |
 |---|---|---|
 | 0.1.0 | 06/11/2026 | Borrador ECL-97: reglas, contrato candidato, escenarios R01–R11 y decisiones para ratificación. |
+| 0.1.1 | 06/11/2026 | Incorpora la propuesta técnica de backend y navegación del Sprint 4; reglas sin cambios y aprobación de Julio pendiente. |
 
 [Mapa US-008](ECL-14-US-008-mapa.md) · [Dashboard US-009](ECL-15-US-009-dashboard.md) ·
 [Reoptimización US-007](ECL-13-US-007-reoptimizacion.md)
 
+[Índice del Sprint 4](<../../03 Implementación/Sprint 04/README.md>) ·
 [← Volver al README principal](../../../README.md)

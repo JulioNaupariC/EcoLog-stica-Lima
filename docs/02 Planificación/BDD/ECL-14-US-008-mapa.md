@@ -5,7 +5,7 @@
 
 | Metadato | Valor |
 |---|---|
-| Versión | 0.1.0 |
+| Versión | 0.1.1 |
 | Fecha | 06/11/2026, America/Lima |
 | Autor | Frank Roy Yupanqui Acevedo — @FrankRoyYA |
 | Ticket / historia | [ECL-97](https://continental-team-il84x39k.atlassian.net/browse/ECL-97) / [ECL-14, US-008](https://continental-team-il84x39k.atlassian.net/browse/ECL-14) |
@@ -145,11 +145,15 @@ en T0 y fallo en T1 > T0; probar también caché vacía. No son hechos observado
 
 ## Cambios al contrato provisional
 
-| Propuesta para Julio | Impacto |
-|---|---|
-| Añadir trafico, tramos y alertas | El contrato actual solo tiene geometría, paradas y ETA; no permite probar fuente, hora, congestión, degradación ni alertas. Ajustar ST-045, fixtures y UI tras ratificación. |
-| Contrato de detalle y privacidad | Mantener solo Administrador/Operador en detalle; otras proyecciones conservan su matriz. Ratificar junto a R11, sin conceder acceso general al Conductor. |
-| Lista equivalente y estados | Hace verificable accesibilidad y degradación sin inventar otro endpoint. `simulado` del contrato publicado se conserva visible. |
+Posición técnica de Antony del 06/11/2026, 19:18 (America/Lima), en su
+[comentario de backend](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/91#pullrequestreview-5808785030).
+Es una propuesta para Julio; no ratifica decisiones ni modifica las reglas.
+
+| Propuesta para Julio | Impacto | Posición técnica (backend) |
+|---|---|---|
+| Añadir trafico, tramos y alertas | El contrato actual solo tiene geometría, paradas y ETA; no permite probar fuente, hora, congestión, degradación ni alertas. Ajustar ST-045, fixtures y UI tras ratificación. | Propone trafico con estado SIN_DATOS por defecto: el MVP no tiene proveedor de tráfico y las distancias son Haversine. No concreta alertas/tramos; RESTRICCION_VIAL lo propone para cuando exista registro de bloqueos. |
+| Contrato de detalle y privacidad | Mantener solo Administrador/Operador en detalle; otras proyecciones conservan su matriz. Ratificar junto a R11, sin conceder acceso general al Conductor. | Propone mantener la matriz vigente; concreta que solo Operador optimiza. El alcance del detalle queda a decisión de Julio. |
+| Lista equivalente y estados | Hace verificable accesibilidad y degradación sin inventar otro endpoint. `simulado` del contrato publicado se conserva visible. | Sin precisión específica sobre lista accesible; acuerdo técnico general con las propuestas. |
 
 ## Aprobación y entrega
 
@@ -160,5 +164,7 @@ historia. Publicar los cambios de contrato antes de implementar sus consumidores
 | Versión | Fecha | Cambio |
 |---|---|---|
 | 0.1.0 | 06/11/2026 | Escenarios M01–M06, alternativa accesible y propuesta de tráfico degradado. |
+| 0.1.1 | 06/11/2026 | Incorpora la propuesta técnica de backend y navegación del Sprint 4; reglas sin cambios y aprobación de Julio pendiente. |
 
+[Índice del Sprint 4](<../../03 Implementación/Sprint 04/README.md>) ·
 [← Volver al README principal](../../../README.md)
