@@ -1176,4 +1176,71 @@ Reglas de seguridad:
 Las cifras ANTES/DESPUÉS de bytes transferidos se miden con el protocolo de
 ECL-108 en ECL-115. Este cambio no publica cifras propias.
 
+## Green IT: energía y CO₂e con SWDM v4 — ECL-116
+
+`scripts/swdm_v4.py` convierte los bytes medidos en ECL-108 (ANTES) y ECL-115
+(DESPUÉS) en kWh y g CO₂e por visita, con su proyección anual. Es la fuente de
+los números de energía y emisiones del informe 01 (ECL-117).
+
+### Modelo y fuentes (consultadas el 06/11/2026)
+
+| Parámetro | Valor | Fuente |
+|---|---|---|
+| Energía operacional (kWh/GB) | centro de datos 0,055 · red 0,059 · dispositivo 0,080 | [SWDM v4](https://sustainablewebdesign.org/estimating-digital-emissions/) |
+| Energía incorporada (kWh/GB) | centro de datos 0,012 · red 0,013 · dispositivo 0,081 | SWDM v4 |
+| Total | 0,300 kWh/GB | Suma de los seis segmentos |
+| Intensidad global | 494 g CO₂e/kWh | SWDM v4 (Ember, World) |
+| Intensidad Perú (análisis adicional) | 263,27 g CO₂e/kWh, solo segmentos operacionales | Ember, dato `PER` incluido en CO2.js 0.19.0 |
+| Sensibilidad Perú | 173 g CO₂e/kWh | Electricity Maps 2025 (`PE`), incluido en CO2.js 0.19.0 |
+| Calificación | A+ ≤ 0,040 · A ≤ 0,079 · B ≤ 0,145 · C ≤ 0,209 · D ≤ 0,278 · E ≤ 0,359 · F mayor (g/visita) | SWDM v4 en CO2.js 0.19.0 |
+
+- **No se usan** los coeficientes de v3 del ejemplo del docente (0,81 kWh/GB y
+  442 g/kWh).
+- **1 GB = 10⁹ bytes** (decimal), como SWDM v4 y CO2.js.
+- Los bytes son el total *Transferred* de una carga completa con la caché
+  deshabilitada (mediana de 3 corridas).
+- **Fórmula por visita:**
+  `[(OPDC × (1 − verde) + EMDC) + (OPN + EMN) + (OPUD + EMUD)] × (nuevos + recurrentes × (1 − caché))`.
+  Cada término es GB × kWh/GB × g/kWh. Por defecto se toma el caso
+  conservador: toda visita es nueva, sin hosting verde.
+- **Verificación cruzada:** las pruebas comparan cada resultado con
+  [CO2.js 0.19.0](https://www.npmjs.com/package/@tgwf/co2) (The Green Web
+  Foundation) con precisión 10⁻⁹. Esto incluye la red de Perú, el hosting
+  verde y las visitas recurrentes.
+- **Factor oficial del SEIN:** no se encontró en una fuente oficial de COES o
+  MINEM. Por eso no se usa; el valor de Perú se presenta como análisis
+  adicional y no reemplaza al global.
+
+### Supuesto de la proyección anual
+
+**4 500 visitas al año** = 15 vehículos (escenario de RNF-001) × 1 carga de
+itinerario por jornada × 300 jornadas. Es un supuesto de escala, no un dato de
+DistriRápido; se cambia con `--visitas-anuales`.
+
+### Resultados ANTES (ECL-108)
+
+| Página | Bytes | kWh/visita | g CO₂e/visita | g CO₂e Perú | Calificación | kWh/año | kg CO₂e/año |
+|---|---:|---:|---:|---:|:-:|---:|---:|
+| `/login` | 11 434 626 | 0,003430 | 1,6946 | 1,1828 | F | 15,437 | 7,626 |
+| `/conductor/itinerario` | 11 438 644 | 0,003432 | 1,6952 | 1,1832 | F | 15,442 | 7,628 |
+
+- `/` y `/vehiculos` con Operador quedaron como NM en ECL-108; el script no
+  las cuenta como cero.
+- **Referencia:** la meta de 1,1 MB de la rúbrica equivale a 0,163 g CO₂e por
+  visita (calificación C).
+
+### Reproducción
+
+Desde `backend/`:
+
+```powershell
+python scripts/swdm_v4.py                       # ANTES de ECL-108
+python scripts/swdm_v4.py --despues "<carpeta de ECL-115>/resultados.json"
+python scripts/swdm_v4.py --bytes 1100000 --json
+python -m pytest tests/unit/test_swdm_v4.py -q
+```
+
+Con `--despues`, el script calcula la reducción por página. Solo compara las
+páginas medidas en las dos campañas.
+
 [← Volver al README principal](../README.md)
