@@ -26,6 +26,7 @@ const DriversPage = lazy(() => import('../pages/DriversPage').then(module => ({ 
 const DeliveryPreferencesPage = lazy(() => import('../pages/DeliveryPreferencesPage').then(module => ({ default: module.DeliveryPreferencesPage })))
 const UsersPage = lazy(() => import('../pages/UsersPage').then(module => ({ default: module.UsersPage })))
 const OperationIncidentsPage = lazy(() => import('../pages/OperationIncidentsPage').then(module => ({ default: module.OperationIncidentsPage })))
+const OperationRoutesPage = lazy(() => import('../pages/OperationRoutesPage').then(module => ({ default: module.OperationRoutesPage })))
 const ChangePasswordPage = lazy(() => import('../pages/ChangePasswordPage').then(module => ({ default: module.ChangePasswordPage })))
 
 // Commit the title effect with the resolved page, rather than the loading fallback.
@@ -194,6 +195,8 @@ function AppRoutes() {
     <Route path="/pedidos/nuevo" element={guarded(createOrdersAllowed, <OrderCreatePage />)} />
     <Route path="/operacion/incidencias" element={guarded(createOrdersAllowed,
       <OperationIncidentsPage key={identity.usuario_id} onSessionExpired={handleSessionExpired} />)} />
+    <Route path="/operacion/rutas" element={guarded(createOrdersAllowed,
+      <OperationRoutesPage key={identity.usuario_id} onSessionExpired={handleSessionExpired} />)} />
     <Route path="/vehiculos" element={guarded(vehiclesAllowed, <VehiclesPage canCreate={createOrdersAllowed} />)} />
     <Route path="/conductor/itinerario" element={guarded(identity.rol === 'CONDUCTOR',
       <DriverItineraryPage key={identity.usuario_id} ownerId={identity.usuario_id} onSessionExpired={handleSessionExpired} />)} />

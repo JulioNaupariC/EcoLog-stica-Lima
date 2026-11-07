@@ -29,6 +29,7 @@ No representan resultados ejecutados ni documentos aprobados.
 - [Convenciones y glosario ECL-99](CONVENCIONES_Y_GLOSARIO_ECL99.md)
 - [Plantilla de Revisión y demostración](PLANTILLA_REVISION_SPRINT4_ECL99.md)
 - [ECL-98 — Resolución de incidencias: contrato, concurrencia y validaciones](<ECL-98 resolucion incidencias.md>)
+- [ECL-14 — Mapa operativo, lista accesible y límites de tráfico](<ECL-14 mapa rutas.md>)
 
 ### Entregables y documentación existentes
 
