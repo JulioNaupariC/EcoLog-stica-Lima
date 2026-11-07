@@ -75,3 +75,16 @@ class VehicleResponse(BaseModel):
     factor_co2_kg_km: Decimal
     anio_fabricacion: int
     estado: str
+
+
+VEHICLE_PAGE_SIZE_DEFAULT = 12
+VEHICLE_PAGE_SIZE_MAX = 100
+
+
+class VehiclePage(BaseModel):
+    """ECL-109 (Green IT): vehicles are listed in pages of 12 by default."""
+
+    items: list[VehicleResponse]
+    page: int
+    page_size: int
+    total: int

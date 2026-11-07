@@ -108,5 +108,5 @@ def test_ruta_de_borde_comodines_literales_y_sin_coincidencias(clientes_app):
         beyond = client.get("/clientes", params={"page": 99})
     assert names(literal) == ["Comercial 50% Demo"]
     assert underscore.json()["total"] == 0
-    assert none.json() == {"items": [], "page": 1, "page_size": 20, "total": 0}
+    assert none.json() == {"items": [], "page": 1, "page_size": 12, "total": 0}
     assert beyond.json()["items"] == [] and beyond.json()["total"] == len(NAMES)

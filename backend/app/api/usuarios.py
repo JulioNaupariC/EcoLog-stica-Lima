@@ -46,7 +46,7 @@ def list_usuarios(
     ],
     service: Annotated[RestablecimientoService, Depends(get_password_reset_service)],
     page: Annotated[int, Query(ge=1)] = 1,
-    page_size: Annotated[int, Query(ge=1, le=100)] = 20,
+    page_size: Annotated[int, Query(ge=1, le=100)] = 12,  # ECL-109 (Green IT)
 ) -> UsuarioPage:
     try:
         result = service.listar(page, page_size)

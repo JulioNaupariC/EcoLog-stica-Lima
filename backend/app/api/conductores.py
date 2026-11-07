@@ -75,7 +75,7 @@ def list_conductores(
     ],
     service: Annotated[ConductorService, Depends(get_conductor_service)],
     page: Annotated[int, Query(ge=1)] = 1,
-    page_size: Annotated[int, Query(ge=1, le=100)] = 20,
+    page_size: Annotated[int, Query(ge=1, le=100)] = 12,  # ECL-109 (Green IT)
 ) -> ConductorPage:
     return _translate(lambda: service.list_page(page, page_size))
 

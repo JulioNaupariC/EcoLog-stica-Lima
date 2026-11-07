@@ -1081,6 +1081,69 @@ y RN-012 (S/ 1.20 por km). La versión de parámetros es `SIMULADO-2026-11` hast
 EN-008. El periodo del dashboard repite 12 jornadas iguales a la de ejemplo. No
 contiene datos de personas reales.
 
+## Green IT: consultas y paginación — ECL-109
+
+Optimización de la Inspección 4 (W3C WSG 3.1, GSF «eficiencia energética»):
+menos filas y columnas leídas por petición y menos bytes enviados al navegador.
+
+### Cambios
+
+- **`GET /vehiculos` paginado.** Antes devolvía la flota completa como lista;
+  ahora devuelve `{items, page, page_size, total}` con `page` (≥ 1) y
+  `page_size` (1–100, **12 por defecto**), ordenado por placa. El repositorio
+  lee solo las columnas de la respuesta como filas planas (`.mappings()`) más
+  un `count`, sin cargar entidades ORM.
+- **Listado de conductores con proyección mínima.** Antes cargaba la entidad
+  `Conductor` completa (DNI, teléfono, número de licencia) y la cuenta
+  `Usuario`; ahora selecciona 8 columnas: las del ítem y las que necesita la
+  elegibilidad (`cuenta_rol`, `cuenta_estado`). DNI, teléfono, número de
+  licencia, correo y hash de contraseña ya no salen de la base en el listado.
+- **12 filas por página por defecto** en `/usuarios`, `/conductores`,
+  `/clientes` e `/incidencias` (antes 20). Los máximos no cambian (100; 50 en
+  clientes). El frontend ya envía `page_size` explícito en esas pantallas.
+- **Frontend.** `listVehicles()` pide `vehiculos?page=1&page_size=100` y lee
+  `items`; la paginación visible de 12 filas llega con ECL-111.
+
+### Antes y después (`GET /vehiculos`)
+
+```python
+# ANTES (main 8d29926): toda la flota, entidades ORM completas
+@router.get("", response_model=list[VehicleResponse])
+def list_vehicles(...) -> list[VehicleResponse]:
+    return [VehicleResponse.model_validate(row) for row in _translate(service.list_all)]
+
+def list_all(self) -> list[Vehiculo]:
+    return list(self._session.scalars(select(Vehiculo).order_by(Vehiculo.placa)).all())
+```
+
+```python
+# DESPUÉS (ECL-109): una página de filas planas y un count
+@router.get("", response_model=VehiclePage)
+def list_vehicles(..., page: int = Query(1, ge=1),
+                  page_size: int = Query(12, ge=1, le=100)) -> VehiclePage:
+    return _translate(lambda: service.list_page(page, page_size))
+
+query = (select(*LIST_COLUMNS).order_by(Vehiculo.placa, Vehiculo.vehiculo_id)
+         .offset((page - 1) * page_size).limit(page_size))
+```
+
+**Cálculo de tamaño** (sintético, no es la medición DESPUÉS de ECL-115): con
+la flota de 50 vehículos de `loadtest/campaign.py`, el JSON pasa de 11 691 B
+(lista completa) a 2 878 B (primera página de 12), un 75,4 % menos antes de
+GZip (ECL-110). La medición real del DESPUÉS es ECL-115.
+
+### Pruebas
+
+- `tests/unit/test_vehiculo_{api,service,repository}.py`: sobre de página,
+  12 por defecto, 422 en `page=0`/`page_size=0`/`page_size=101`, columnas
+  seleccionadas, `LIMIT 12 OFFSET 24` en la página 3.
+- `tests/unit/test_paginacion_por_defecto.py`: los cinco listados publican
+  `page_size` 12 por defecto en el contrato OpenAPI.
+- `tests/unit/test_conductor_service.py`: el listado no selecciona DNI,
+  teléfono, licencia, correo ni hash.
+- `tests/integration/test_vehiculo_crud.py`: página 1 y página 2 vacía con
+  PostgreSQL real.
+
 ## Green IT: energía y CO₂e con SWDM v4 — ECL-116
 
 `scripts/swdm_v4.py` convierte los bytes medidos en ECL-108 (ANTES) y ECL-115

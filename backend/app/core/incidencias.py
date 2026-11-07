@@ -39,7 +39,7 @@ OBSERVACION_MAX = 500
 # Inclusive phone-clock skew (I05, I14). No maximum age: the offline queue
 # may deliver old reports (ratified by Julio in PR #63).
 OCURRIDA_MAX_FUTURO = timedelta(minutes=5)
-PAGE_SIZE_DEFAULT = 20
+PAGE_SIZE_DEFAULT = 12  # ECL-109 (Green IT): 12 rows per page
 PAGE_SIZE_MAX = 100
 # The only state the operational list accepts (I15).
 ESTADO_LISTADO = EstadoIncidencia.PENDIENTE_VALIDACION
