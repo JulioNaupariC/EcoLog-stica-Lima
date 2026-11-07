@@ -1,21 +1,10 @@
-import { useCallback, useEffect, useState } from 'react'
+import { lazy, Suspense, useCallback, useEffect, useState } from 'react'
 import type { ReactNode } from 'react'
 import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 import { ShieldAlert } from 'lucide-react'
-import { HomePage } from '../pages/HomePage'
-import { DriverItineraryPage } from '../pages/DriverItineraryPage'
-import { IncidentCreatePage } from '../pages/IncidentCreatePage'
 import { useIncidentSynchronization } from '../hooks/useIncidentSynchronization'
 import { listIncidents } from '../services/incidentStorage'
 import { LoginPage } from '../pages/LoginPage'
-import { NotFoundPage } from '../pages/NotFoundPage'
-import { OrderCreatePage } from '../pages/OrderCreatePage'
-import { VehiclesPage } from '../pages/VehiclesPage'
-import { DriversPage } from '../pages/DriversPage'
-import { DeliveryPreferencesPage } from '../pages/DeliveryPreferencesPage'
-import { UsersPage } from '../pages/UsersPage'
-import { OperationIncidentsPage } from '../pages/OperationIncidentsPage'
-import { ChangePasswordPage } from '../pages/ChangePasswordPage'
 import { DriverShell, PublicShell, StaffShell } from '../components/layout/AppShell'
 import { Alert, EmptyState, LinkButton, ToastProvider, useToast } from '../components/ui'
 import { canListVehicles, canManageOperations, canManageUsers, ROLE_LABEL } from '../domain/roles'
@@ -26,6 +15,34 @@ import { forgetDriver, recallDriver, rememberDriver } from '../services/offlineA
 import { installPasswordChangeGuard } from '../services/passwordChangeGuard'
 
 const CHANGE_PASSWORD_PATH = '/cambiar-contrasena'
+
+const HomePage = lazy(() => import('../pages/HomePage').then(module => ({ default: module.HomePage })))
+const DriverItineraryPage = lazy(() => import('../pages/DriverItineraryPage').then(module => ({ default: module.DriverItineraryPage })))
+const IncidentCreatePage = lazy(() => import('../pages/IncidentCreatePage').then(module => ({ default: module.IncidentCreatePage })))
+const NotFoundPage = lazy(() => import('../pages/NotFoundPage').then(module => ({ default: module.NotFoundPage })))
+const OrderCreatePage = lazy(() => import('../pages/OrderCreatePage').then(module => ({ default: module.OrderCreatePage })))
+const VehiclesPage = lazy(() => import('../pages/VehiclesPage').then(module => ({ default: module.VehiclesPage })))
+const DriversPage = lazy(() => import('../pages/DriversPage').then(module => ({ default: module.DriversPage })))
+const DeliveryPreferencesPage = lazy(() => import('../pages/DeliveryPreferencesPage').then(module => ({ default: module.DeliveryPreferencesPage })))
+const UsersPage = lazy(() => import('../pages/UsersPage').then(module => ({ default: module.UsersPage })))
+const OperationIncidentsPage = lazy(() => import('../pages/OperationIncidentsPage').then(module => ({ default: module.OperationIncidentsPage })))
+const ChangePasswordPage = lazy(() => import('../pages/ChangePasswordPage').then(module => ({ default: module.ChangePasswordPage })))
+
+// Commit the title effect with the resolved page, rather than the loading fallback.
+function PageTitle() {
+  const location = useLocation()
+  useEffect(() => {
+    const heading = document.querySelector('main h1')?.textContent?.trim()
+    document.title = heading ? `${heading} — EcoLogística Lima` : 'EcoLogística Lima'
+  }, [location.pathname])
+  return null
+}
+
+function PageContent({ children }: { children: ReactNode }) {
+  return <Suspense fallback={<p className="field-hint" role="status" aria-live="polite">Cargando página…</p>}>
+    <PageTitle />{children}
+  </Suspense>
+}
 
 function AccessDenied() {
   return <EmptyState icon={ShieldAlert} title="Acceso denegado" headingLevel={1} titleId="access-denied-title"
@@ -45,17 +62,11 @@ function AppRoutes() {
   const [logoutMessage, setLogoutMessage] = useState('')
   const [loggingOut, setLoggingOut] = useState(false)
   const navigate = useNavigate()
-  const location = useLocation()
   const { notify } = useToast()
   const createOrdersAllowed = identity !== null && canManageOperations(identity.rol)
   const vehiclesAllowed = identity !== null && canListVehicles(identity.rol)
   const mustChangePassword = identity?.debe_cambiar_contrasena === true
   const signedIn = identity !== null
-  // WCAG 2.4.2: the tab identifies the screen, including denied and public routes.
-  useEffect(() => {
-    const heading = document.querySelector('main h1')?.textContent?.trim()
-    document.title = heading ? `${heading} — EcoLogística Lima` : 'EcoLogística Lima'
-  }, [location.pathname, identity?.rol, mustChangePassword])
   useIncidentSynchronization(identity?.rol === 'CONDUCTOR' && !mustChangePassword ? identity.usuario_id : undefined)
 
   function handleLoginSuccess(loggedInIdentity: LoginResponse, email: string) {
@@ -149,10 +160,10 @@ function AppRoutes() {
 
   if (identity === null) {
     return <PublicShell>
-      <Routes>
+      <PageContent><Routes>
         <Route path="/login" element={<LoginPage onLoginSuccess={handleLoginSuccess} notice={logoutMessage} />} />
         <Route path="*" element={<Navigate to="/login" replace />} />
-      </Routes>
+      </Routes></PageContent>
     </PublicShell>
   }
 
@@ -162,11 +173,11 @@ function AppRoutes() {
   if (mustChangePassword) {
     return <PublicShell>
       {banner}
-      <Routes>
+      <PageContent><Routes>
         <Route path={CHANGE_PASSWORD_PATH} element={<ChangePasswordPage required onChanged={handlePasswordChanged}
           onSessionExpired={handleSessionExpired} onLogout={() => { void handleLogout() }} />} />
         <Route path="*" element={<Navigate to={CHANGE_PASSWORD_PATH} replace />} />
-      </Routes>
+      </Routes></PageContent>
     </PublicShell>
   }
   const guarded = (allowed: boolean, element: ReactNode) => allowed ? element : <AccessDenied />
@@ -199,6 +210,6 @@ function AppRoutes() {
     <Route path="*" element={<NotFoundPage />} />
   </Routes>
   return identity.rol === 'CONDUCTOR'
-    ? <DriverShell {...shellProps}>{routes}</DriverShell>
-    : <StaffShell {...shellProps}>{routes}</StaffShell>
+    ? <DriverShell {...shellProps}><PageContent>{routes}</PageContent></DriverShell>
+    : <StaffShell {...shellProps}><PageContent>{routes}</PageContent></StaffShell>
 }

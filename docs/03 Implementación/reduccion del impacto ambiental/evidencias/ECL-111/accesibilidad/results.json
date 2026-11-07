@@ -1,0 +1,44 @@
+{
+  "at": "2026-11-07T01:18:44.587Z",
+  "baselineCommit": "e09dcd80e32431018d4020bb02c89ffae7505705",
+  "mode": "production preview for both phases; supplementary accessibility baseline, not historical performance",
+  "pages": [
+    {
+      "phase": "antes",
+      "page": "/login",
+      "scores": [
+        100,
+        100,
+        100
+      ]
+    },
+    {
+      "phase": "antes",
+      "page": "/conductor/itinerario",
+      "scores": [
+        100,
+        100,
+        100
+      ]
+    },
+    {
+      "phase": "despues",
+      "page": "/login",
+      "scores": [
+        100,
+        100,
+        100
+      ]
+    },
+    {
+      "phase": "despues",
+      "page": "/conductor/itinerario",
+      "scores": [
+        100,
+        100,
+        100
+      ]
+    }
+  ],
+  "passed": true
+}
