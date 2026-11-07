@@ -18,4 +18,8 @@ el enlace de navegación queda incorporado aquí sin editar esas evidencias.
 
 - [ECL-90 / A11 — Guía, verificaciones y tabla de resultados para Frank](<guias/GUIA_ENTORNO_LOCAL_ECL90.md>)
 
+## Especificaciones BDD
+
+- ECL-97 — Borradores pendientes de ratificación de Julio: [US-006 — Rutas optimizadas](<../../02 Planificación/BDD/ECL-12-US-006-rutas-optimizadas.md>), [US-008 — Mapa](<../../02 Planificación/BDD/ECL-14-US-008-mapa.md>), [US-009 — Dashboard](<../../02 Planificación/BDD/ECL-15-US-009-dashboard.md>) y [US-007 — Reoptimización (extensión)](<../../02 Planificación/BDD/ECL-13-US-007-reoptimizacion.md>).
+
 [← Volver al README principal](../../../README.md)
