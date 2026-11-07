@@ -6,6 +6,7 @@ import { DriverServiceError, getDriver, listDrivers } from '../services/drivers'
 import type { DriverDetail, DriverPage, DriverSummary } from '../services/drivers'
 
 const dateFormat = new Intl.DateTimeFormat('es-PE', { timeZone: 'America/Lima', dateStyle: 'short', timeStyle: 'short' })
+const PAGE_SIZE = 12
 function availability(start: string | null, end: string | null): string {
   return start && end ? dateFormat.format(new Date(start)) + ' — ' + dateFormat.format(new Date(end)) : 'Sin disponibilidad'
 }
@@ -36,7 +37,7 @@ export function DriversPage({ onSessionExpired }: { onSessionExpired: () => void
     setPage(nextPage)
     setList({ status: 'loading', result: null, error: '' })
     try {
-      const result = await listDrivers(nextPage)
+      const result = await listDrivers(nextPage, PAGE_SIZE)
       if (number === requestNumber.current) setList({ status: 'ready', result, error: '' })
     } catch (error) {
       if (number !== requestNumber.current) return
@@ -48,7 +49,7 @@ export function DriversPage({ onSessionExpired }: { onSessionExpired: () => void
     const lists = requestNumber
     const details = detailNumber
     const number = ++lists.current
-    void listDrivers(1).then(result => {
+    void listDrivers(1, PAGE_SIZE).then(result => {
       if (number === lists.current) setList({ status: 'ready', result, error: '' })
     }).catch((error: unknown) => {
       if (number !== lists.current) return
@@ -82,7 +83,7 @@ export function DriversPage({ onSessionExpired }: { onSessionExpired: () => void
     closeEditor()
     void load(created ? 1 : page)
   }
-  const totalPages = Math.max(1, Math.ceil((list.result?.total ?? 0) / 10))
+  const totalPages = Math.max(1, Math.ceil((list.result?.total ?? 0) / PAGE_SIZE))
   return <section className="drivers-page" aria-labelledby="drivers-title">
     <PageHeader titleId="drivers-title" title="Conductores" eyebrow="Gestión operativa"
       breadcrumbs={[{ label: 'Inicio', to: '/' }, { label: 'Conductores' }]}
@@ -141,7 +142,7 @@ export function DriversPage({ onSessionExpired }: { onSessionExpired: () => void
         </ul>
         <nav className="pagination" aria-label="Páginas de conductores">
           <Button variant="secondary" size="sm" icon={ChevronLeft} disabled={page <= 1} onClick={() => { void load(page - 1) }}>Anterior</Button>
-          <span>Página {page} de {totalPages}</span>
+          <span aria-live="polite">Página {page} de {totalPages}</span>
           <Button variant="secondary" size="sm" icon={ChevronRight} disabled={page >= totalPages} onClick={() => { void load(page + 1) }}>Siguiente</Button>
         </nav>
       </> : null}

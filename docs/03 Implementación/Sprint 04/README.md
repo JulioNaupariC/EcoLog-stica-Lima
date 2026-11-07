@@ -14,6 +14,8 @@ El índice se añadió después de capturar las evidencias de ECL-108. Los regis
 históricos conservan la observación de que todavía no existía durante la medición;
 el enlace de navegación queda incorporado aquí sin editar esas evidencias.
 
+- [ECL-111 — React.lazy, listados de 12 y verificación offline](<../reduccion del impacto ambiental/ECL-111 React lazy y paginacion V_1_0_0.md>)
+
 ## Entorno local y acciones de retrospectiva
 
 - [ECL-90 / A11 — Guía, verificaciones y tabla de resultados para Frank](<guias/GUIA_ENTORNO_LOCAL_ECL90.md>)
