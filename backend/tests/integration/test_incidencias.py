@@ -243,7 +243,7 @@ def test_I02_operacion_consulta_pendientes_ordenados_y_paginados(setup, email):
             operation.get("/incidencias", params={"page": n, "page_size": 2}).json()
             for n in (1, 2)
         ]
-    assert (full["page"], full["page_size"], full["total"]) == (1, 20, 4)
+    assert (full["page"], full["page_size"], full["total"]) == (1, 12, 4)
     items = full["items"]
     instants = [datetime.fromisoformat(item["ocurrida_en"]) for item in items]
     assert instants == sorted(instants, reverse=True)

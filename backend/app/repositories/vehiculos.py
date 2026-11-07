@@ -2,11 +2,24 @@
 
 from uuid import UUID
 
-from sqlalchemy import select
+from sqlalchemy import RowMapping, func, select
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 from sqlalchemy.orm import Session
 
 from app.models.vehiculo import Vehiculo
+
+# Columns of the listing (the fields of ``VehicleResponse``), read as plain rows.
+LIST_COLUMNS = (
+    Vehiculo.vehiculo_id,
+    Vehiculo.placa,
+    Vehiculo.tipo,
+    Vehiculo.capacidad_kg,
+    Vehiculo.capacidad_m3,
+    Vehiculo.rendimiento_km_l,
+    Vehiculo.factor_co2_kg_km,
+    Vehiculo.anio_fabricacion,
+    Vehiculo.estado,
+)
 
 
 class VehicleStorageError(RuntimeError):
@@ -51,11 +64,22 @@ class VehiculoRepository:
         except SQLAlchemyError:
             raise VehicleStorageError("Vehicle storage unavailable") from None
 
-    def list_all(self) -> list[Vehiculo]:
+    def list_page(self, page: int, page_size: int) -> tuple[list[RowMapping], int]:
+        """Return one page of vehicles as plain rows ordered by plate.
+
+        Green IT (ECL-109): before, the whole fleet was loaded as ORM
+        entities on every request; now only one page is read, as rows with
+        the columns of the response, plus one ``count``.
+        """
         try:
-            return list(
-                self._session.scalars(select(Vehiculo).order_by(Vehiculo.placa)).all()
+            total = self._session.scalar(select(func.count()).select_from(Vehiculo))
+            query = (
+                select(*LIST_COLUMNS)
+                .order_by(Vehiculo.placa, Vehiculo.vehiculo_id)
+                .offset((page - 1) * page_size)
+                .limit(page_size)
             )
+            return list(self._session.execute(query).mappings()), total or 0
         except SQLAlchemyError:
             raise VehicleStorageError("Vehicle storage unavailable") from None
 

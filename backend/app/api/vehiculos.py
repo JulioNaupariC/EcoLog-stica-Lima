@@ -3,12 +3,19 @@
 from typing import Annotated
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, HTTPException, Request, Response, status
+from fastapi import APIRouter, Depends, HTTPException, Query, Request, Response, status
 
 from app.api.dependencies import require_permission
 from app.api.validation import SanitizedRoute
 from app.core.rbac import Identidad, Permiso
-from app.schemas.vehiculo import VehicleCreate, VehicleResponse, VehicleUpdate
+from app.schemas.vehiculo import (
+    VEHICLE_PAGE_SIZE_DEFAULT,
+    VEHICLE_PAGE_SIZE_MAX,
+    VehicleCreate,
+    VehiclePage,
+    VehicleResponse,
+    VehicleUpdate,
+)
 from app.services.vehiculos import (
     VehicleDuplicatePlate,
     VehicleInactive,
@@ -60,14 +67,19 @@ def create_vehicle(
     return VehicleResponse.model_validate(_translate(lambda: service.create(payload)))
 
 
-@router.get("", response_model=list[VehicleResponse])
+@router.get("", response_model=VehiclePage)
 def list_vehicles(
     service: Annotated[VehiculoService, Depends(get_vehicle_service)],
     _identity: Annotated[
         Identidad, Depends(require_permission(Permiso.VEHICULOS_CONSULTAR))
     ],
-) -> list[VehicleResponse]:
-    return [VehicleResponse.model_validate(row) for row in _translate(service.list_all)]
+    page: Annotated[int, Query(ge=1)] = 1,
+    page_size: Annotated[
+        int, Query(ge=1, le=VEHICLE_PAGE_SIZE_MAX)
+    ] = VEHICLE_PAGE_SIZE_DEFAULT,
+) -> VehiclePage:
+    """ECL-109 (Green IT): one page of vehicles (12 by default) ordered by plate."""
+    return _translate(lambda: service.list_page(page, page_size))
 
 
 @router.get("/{vehicle_id}", response_model=VehicleResponse)

@@ -137,10 +137,14 @@ function httpError(status: number, body: unknown, method: 'GET' | 'POST'): Vehic
   return new VehicleServiceError('unexpected', { status })
 }
 
+// ECL-109: GET /vehiculos is paginated (12 rows by default). Until ECL-111 adds
+// the page controls, the list asks for the first 100 vehicles in one page.
+export const VEHICLE_LIST_PAGE_SIZE = 100
+
 async function requestVehicles(method: 'GET' | 'POST', body?: string): Promise<unknown> {
   let url: string
   try {
-    url = buildApiUrl('vehiculos')
+    url = buildApiUrl(method === 'GET' ? `vehiculos?page=1&page_size=${VEHICLE_LIST_PAGE_SIZE}` : 'vehiculos')
   } catch {
     throw new VehicleServiceError('unexpected')
   }
@@ -175,8 +179,10 @@ async function requestVehicles(method: 'GET' | 'POST', body?: string): Promise<u
 
 export async function listVehicles(): Promise<VehicleResponse[]> {
   const body = await requestVehicles('GET')
-  if (!Array.isArray(body)) throw new VehicleServiceError('unexpected')
-  return body.map(vehicleResponse)
+  if (typeof body !== 'object' || body === null || !('items' in body) || !Array.isArray(body.items)) {
+    throw new VehicleServiceError('unexpected')
+  }
+  return (body.items as unknown[]).map(vehicleResponse)
 }
 
 export async function createVehicle(payload: VehicleCreatePayload): Promise<VehicleResponse> {

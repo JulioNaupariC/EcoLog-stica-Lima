@@ -12,6 +12,7 @@ from app.core.config import Settings
 from app.core.rbac import Identidad, Rol
 from app.main import create_app
 from app.models.vehiculo import Vehiculo
+from app.schemas.vehiculo import VehiclePage, VehicleResponse
 from app.services.autenticacion import AuthenticatedSession
 from app.services.autorizacion import AutorizacionService
 from app.services.vehiculos import (
@@ -33,6 +34,15 @@ def vehicle():
         factor_co2_kg_km=Decimal("0.30000"),
         anio_fabricacion=2024,
         estado="ACTIVO",
+    )
+
+
+def page_of(*rows, page=1, page_size=12, total=None):
+    return VehiclePage(
+        items=[VehicleResponse.model_validate(row) for row in rows],
+        page=page,
+        page_size=page_size,
+        total=len(rows) if total is None else total,
     )
 
 
@@ -65,7 +75,7 @@ def test_admin_http_contracts_and_normalization():
     for client, service in client_for():
         row = vehicle()
         service.create.return_value = row
-        service.list_all.return_value = [row]
+        service.list_page.return_value = page_of(row)
         service.get.return_value = row
         service.update.return_value = row
         assert client.post("/vehiculos", json=payload()).status_code == 201
@@ -113,7 +123,7 @@ def test_vehicle_rbac(role, method, expected):
     for client, service in client_for(role):
         row = vehicle()
         service.create.return_value = row
-        service.list_all.return_value = [row]
+        service.list_page.return_value = page_of(row)
         if method == "post":
             response = client.post("/vehiculos", json=payload())
         elif method == "delete":
@@ -137,3 +147,41 @@ def test_vehicle_service_dependency_is_unavailable_without_database():
         with pytest.raises(HTTPException) as error:
             get_vehicle_service(Mock(app=client.app))
     assert error.value.status_code == 503
+
+
+def test_list_is_paginated_with_twelve_rows_by_default():
+    """ECL-109: GET /vehiculos returns one page, not the whole fleet."""
+    for client, service in client_for():
+        row = vehicle()
+        service.list_page.return_value = page_of(row, total=30)
+        response = client.get("/vehiculos")
+        assert response.status_code == 200
+        body = response.json()
+        assert set(body) == {"items", "page", "page_size", "total"}
+        assert body["items"][0]["placa"] == "ABC123"
+        assert body["total"] == 30
+        service.list_page.assert_called_once_with(1, 12)
+
+
+def test_list_forwards_the_requested_page():
+    for client, service in client_for():
+        service.list_page.return_value = page_of(page=3, page_size=50, total=120)
+        response = client.get("/vehiculos?page=3&page_size=50")
+        assert response.status_code == 200
+        assert response.json()["items"] == []
+        service.list_page.assert_called_once_with(3, 50)
+
+
+@pytest.mark.parametrize("query", ["page=0", "page_size=0", "page_size=101", "page=x"])
+def test_list_rejects_invalid_pagination(query):
+    for client, service in client_for():
+        assert client.get(f"/vehiculos?{query}").status_code == 422
+        service.list_page.assert_not_called()
+
+
+def test_list_storage_failure_is_sanitized():
+    for client, service in client_for():
+        service.list_page.side_effect = VehicleUnavailable("private SQL")
+        response = client.get("/vehiculos")
+        assert response.status_code == 503
+        assert "private SQL" not in response.text

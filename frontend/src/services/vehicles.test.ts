@@ -22,6 +22,10 @@ function jsonResponse(body: unknown, status: number): Response {
   return new Response(JSON.stringify(body), { status, headers: { 'Content-Type': 'application/json' } })
 }
 
+function page(items: unknown[], total = items.length) {
+  return { items, page: 1, page_size: 100, total }
+}
+
 function respond(body: unknown, status: number) {
   const fetchMock = vi.fn().mockResolvedValue(jsonResponse(body, status))
   vi.stubGlobal('fetch', fetchMock)
@@ -29,7 +33,7 @@ function respond(body: unknown, status: number) {
 }
 
 const operations = [
-  { name: 'GET', call: () => listVehicles(), success: 200, response: [vehicle] },
+  { name: 'GET', call: () => listVehicles(), success: 200, response: page([vehicle]) },
   { name: 'POST', call: () => createVehicle(payload), success: 201, response: vehicle },
 ] as const
 
@@ -43,20 +47,20 @@ describe('servicio vehicles', () => {
     vi.unstubAllGlobals()
   })
 
-  it('GET usa URL base, credenciales, sin headers ni body; conserva orden e inactivos', async () => {
+  it('GET pide una página de 100 con URL base y credenciales; conserva orden e inactivos', async () => {
     const rows = [
       { ...vehicle, placa: 'ZZZ-123', estado: 'INACTIVO' },
       { ...vehicle, vehiculo_id: '223e4567-e89b-12d3-a456-426614174000' },
     ]
-    const fetchMock = respond(rows, 200)
+    const fetchMock = respond(page(rows, 2), 200)
     await expect(listVehicles()).resolves.toEqual(rows)
-    expect(fetchMock).toHaveBeenCalledExactlyOnceWith('https://api.example.test/v1/vehiculos', {
+    expect(fetchMock).toHaveBeenCalledExactlyOnceWith('https://api.example.test/v1/vehiculos?page=1&page_size=100', {
       method: 'GET', credentials: 'include',
     })
   })
 
-  it('GET acepta lista vacía', async () => {
-    respond([], 200)
+  it('GET acepta página vacía', async () => {
+    respond(page([]), 200)
     await expect(listVehicles()).resolves.toEqual([])
   })
 
@@ -78,7 +82,7 @@ describe('servicio vehicles', () => {
     await expect(createVehicle({ ...payload, tipo })).resolves.toEqual(expected)
   })
 
-  it.each([null, {}, { vehicles: [] }, 'vehicles', [vehicle, null]])('GET rechaza lista o elemento inválido: %j', async (body) => {
+  it.each([null, {}, { vehicles: [] }, 'vehicles', [vehicle], { items: null }, page([vehicle, null])])('GET rechaza página o elemento inválido: %j', async (body) => {
     respond(body, 200)
     await expect(listVehicles()).rejects.toBeInstanceOf(VehicleServiceError)
   })
@@ -100,7 +104,7 @@ describe('servicio vehicles', () => {
 
   describe.each(operations)('$name', ({ name, call, success, response }) => {
     it.each(invalidRows)('rechaza vehículo incompatible: %j', async (body) => {
-      respond(name === 'GET' ? [body] : body, success)
+      respond(name === 'GET' ? page([body]) : body, success)
       await expect(call()).rejects.toMatchObject({ kind: 'unexpected' })
     })
 

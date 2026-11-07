@@ -73,7 +73,7 @@ def list_clientes(
         ),
     ] = None,
     page: Annotated[int, Query(ge=1)] = 1,
-    page_size: Annotated[int, Query(ge=1, le=50)] = 20,
+    page_size: Annotated[int, Query(ge=1, le=50)] = 12,  # ECL-109 (Green IT)
 ) -> ClientePage:
     response.headers["Cache-Control"] = "no-store"
     try:

@@ -56,7 +56,7 @@ def test_ruta_dorada_operador_busca_por_nombre_con_proyeccion_minima():
     assert result.status_code == 200
     assert result.headers["cache-control"] == "no-store"
     assert set(result.json()["items"][0]) == {"cliente_id", "nombre"}
-    service.search.assert_called_once_with("bodega", 1, 20)
+    service.search.assert_called_once_with("bodega", 1, 12)
 
 
 @pytest.mark.parametrize("role", list(Rol))
@@ -67,7 +67,7 @@ def test_ruta_feliz_y_permisos_por_rol(role):
         result = client.get("/clientes")
     if role in {Rol.ADMINISTRADOR, Rol.OPERADOR}:
         assert result.status_code == 200
-        service.search.assert_called_once_with(None, 1, 20)
+        service.search.assert_called_once_with(None, 1, 12)
     else:
         assert result.status_code == 403
         service.search.assert_not_called()

@@ -122,7 +122,20 @@ def test_read_page_and_update_validate_resulting_profile():
     session.get.return_value = account(row.usuario_id)
     assert service.get(row.conductor_id).habilitado_asignacion
     session.scalar.return_value = 1
-    session.execute.return_value = [(row, account(row.usuario_id))]
+    # ECL-109: the page reads plain rows with only the listed columns.
+    cuenta = account(row.usuario_id)
+    session.execute.return_value.mappings.return_value = [
+        {
+            "conductor_id": row.conductor_id,
+            "nombre": row.nombre,
+            "disponible_desde": row.disponible_desde,
+            "disponible_hasta": row.disponible_hasta,
+            "estado": row.estado,
+            "licencia_vigente_hasta": row.licencia_vigente_hasta,
+            "cuenta_rol": cuenta.rol,
+            "cuenta_estado": cuenta.estado,
+        }
+    ]
     session.get.reset_mock()
     result = service.list_page(1, 20)
     assert result.total == 1
@@ -210,11 +223,15 @@ def test_repository_orders_paginates_and_locks():
     repository.get(uuid4(), lock=True)
     assert "FOR UPDATE" in str(session.scalar.call_args.args[0])
     session.scalar.return_value = 0
-    session.execute.return_value = []
+    session.execute.return_value.mappings.return_value = []
     assert repository.list_page(2, 10) == ([], 0)
     statement = str(session.execute.call_args.args[0])
     assert "ORDER BY conductor.conductor_id" in statement and "OFFSET" in statement
     assert "LEFT OUTER JOIN usuario" in statement
+    # ECL-109 (Green IT): only the listed columns; never personal or secret ones.
+    selected = statement.split("FROM")[0]
+    for column in ("dni", "telefono", "licencia_numero", "password_hash", "email"):
+        assert column not in selected
 
 
 def test_license_is_valid_through_its_final_local_day():

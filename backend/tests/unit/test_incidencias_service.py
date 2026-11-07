@@ -124,7 +124,7 @@ def test_catalogos_y_limites_salen_de_un_solo_modulo():
     assert constants.SEVERIDADES == ("BAJA", "MEDIA", "ALTA")
     assert (OBSERVACION_MAX, OCURRIDA_MAX_FUTURO) == (500, timedelta(minutes=5))
     assert not hasattr(constants, "OCURRIDA_MAX_ANTIGUEDAD")
-    assert (constants.PAGE_SIZE_DEFAULT, constants.PAGE_SIZE_MAX) == (20, 100)
+    assert (constants.PAGE_SIZE_DEFAULT, constants.PAGE_SIZE_MAX) == (12, 100)
     table = Incidencia.__table__
     checks = {
         c.name: str(c.sqltext)
