@@ -17,6 +17,7 @@ históricos conservan la observación de que todavía no existía durante la med
 el enlace de navegación queda incorporado aquí sin editar esas evidencias.
 
 - [ECL-111 — React.lazy, listados de 12 y verificación offline](<../reduccion del impacto ambiental/ECL-111 React lazy y paginacion V_1_0_0.md>)
+- [ECL-113 - Build de produccion con Gzip y cache](<ECL-113 build produccion.md>)
 
 ## Entorno local y acciones de retrospectiva
 
