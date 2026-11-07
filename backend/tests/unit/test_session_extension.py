@@ -152,7 +152,7 @@ def test_http_extension_keeps_token_and_correct_cookie(environment, secure):
     app.dependency_overrides[get_authentication_service] = lambda: service
     app.dependency_overrides[get_current_session] = lambda: auth
     with TestClient(app, base_url="https://testserver") as client:
-        client.cookies.set(COOKIE_NAME, "synthetic-opaque-token")
+        client.cookies.set(COOKIE_NAME, "S" * 43)
         response = client.post("/sesion/extender")
     assert response.status_code == 200
     assert response.json() == {
@@ -161,10 +161,10 @@ def test_http_extension_keeps_token_and_correct_cookie(environment, secure):
     }
     assert response.headers["cache-control"] == "no-store"
     cookie = response.headers["set-cookie"]
-    assert "synthetic-opaque-token" in cookie and "Max-Age=900" in cookie
+    assert "S" * 43 in cookie and "Max-Age=900" in cookie
     assert "HttpOnly" in cookie and "SameSite=strict" in cookie and "Path=/" in cookie
     assert ("Secure" in cookie) is secure
-    assert "synthetic-opaque-token" not in response.text
+    assert "S" * 43 not in response.text
 
 
 @pytest.mark.parametrize(
@@ -184,6 +184,7 @@ def test_http_denials_have_no_new_cookie(error, status):
         uuid4(), Identidad(uuid4(), Rol.AUDITOR, "ACTIVO")
     )
     with TestClient(app) as client:
+        client.cookies.set(COOKIE_NAME, "S" * 43)
         response = client.post("/sesion/extender")
     assert response.status_code == status
     assert "set-cookie" not in response.headers
@@ -192,6 +193,22 @@ def test_http_denials_have_no_new_cookie(error, status):
             response.json()["detail"]
             == "La sesión alcanzó su duración máxima; vuelve a iniciar sesión"
         )
+
+
+@pytest.mark.parametrize("token", ["short", "S" * 44, "S" * 42 + ";"])
+def test_extension_rejects_noncanonical_cookie(token):
+    app = create_app(Settings(database_url=None))
+    service = Mock()
+    app.dependency_overrides[get_authentication_service] = lambda: service
+    app.dependency_overrides[get_current_session] = lambda: AuthenticatedSession(
+        uuid4(), Identidad(uuid4(), Rol.AUDITOR, "ACTIVO")
+    )
+    with TestClient(app) as client:
+        client.cookies.set(COOKIE_NAME, token)
+        response = client.post("/sesion/extender")
+    assert response.status_code == 401
+    assert "set-cookie" not in response.headers
+    service.extend.assert_not_called()
 
 
 def test_no_cookie_and_untrusted_origin():

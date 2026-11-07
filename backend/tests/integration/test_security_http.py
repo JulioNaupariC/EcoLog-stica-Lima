@@ -107,10 +107,16 @@ def test_us001_scenario_1_valid_access_and_login_audit(security_database):
         token = client.cookies.get(COOKIE_NAME)
         assert token
         assert token not in login_response.text
-        assert login_response.json() == {
+        metadata = login_response.json()
+        expires = datetime.fromisoformat(metadata["expires_at"])
+        maximum = datetime.fromisoformat(metadata["max_expires_at"])
+        assert maximum - expires == timedelta(hours=11)
+        assert metadata == {
             "usuario_id": str(identity.usuario_id),
             "rol": "ADMINISTRADOR",
             "debe_cambiar_contrasena": False,
+            "expires_at": metadata["expires_at"],
+            "max_expires_at": metadata["max_expires_at"],
         }
         cookie = login_response.headers["set-cookie"]
         assert "HttpOnly" in cookie
