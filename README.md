@@ -397,7 +397,45 @@ sprint; las tres ramas de cierre están protegidas contra cambios y borrado.
 | `sprint-3` | Sprint 3 — Calidad y Seguridad (PR #59–#85), con el registro de la Review y la carpeta de cada sprint | `cf4bb2c` (03/11/2026) |
 | `main` | Rama de integración | — |
 
-### Sprint 4 — Green IT
+### Sprint 4 — Green IT y documentación
+
+#### Entregables del Sprint 4
+
+[Índice del Sprint 4](<docs/03 Implementación/Sprint 04/README.md>)
+
+Los siguientes comentarios reservan enlaces para entregas futuras.
+
+<!-- ECL-100 Revisión -->
+
+<!-- ECL-101 Retrospectiva -->
+
+<!-- ECL-102 Calidad y OWASP -->
+
+<!-- ECL-103 WCAG -->
+
+<!-- ECL-104 Matriz final -->
+
+<!-- ECL-26 Casos de referencia -->
+
+<!-- ECL-105 Guía de demo -->
+
+#### Documentación técnica del Sprint 4
+
+- [Convenciones y glosario ECL-99](<docs/03 Implementación/Sprint 04/CONVENCIONES_Y_GLOSARIO_ECL99.md>)
+- [Plantilla de Revisión y demostración ECL-99](<docs/03 Implementación/Sprint 04/PLANTILLA_REVISION_SPRINT4_ECL99.md>)
+
+#### Estado de cierre del Sprint 4
+
+| Indicador | Estado |
+|---|---|
+| Velocidad y SP finalizados | Pendientes de verificar en Jira |
+| Revisión y demostración | Pendientes de registrar |
+| Retrospectiva | Pendiente |
+| Calidad y seguridad | Pendiente de consolidación |
+| Rama de cierre | Pendiente |
+
+#### Green IT
+
 
 [Índice de entregables del Sprint 4](<docs/03 Implementación/Sprint 04/README.md>)
 
