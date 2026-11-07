@@ -3,6 +3,34 @@
 Este índice incorpora los enlaces de ECL-108. La planificación y el glosario
 del sprint corresponden a ECL-99 y no se definen en este ticket.
 
+## Índice
+
+### Entregables previstos
+
+Los siguientes comentarios reservan espacios para informes futuros.
+No representan resultados ejecutados ni documentos aprobados.
+
+<!-- ECL-100 Revisión -->
+
+<!-- ECL-101 Retrospectiva -->
+
+<!-- ECL-102 Calidad y OWASP -->
+
+<!-- ECL-103 WCAG -->
+
+<!-- ECL-104 Matriz final -->
+
+<!-- ECL-26 Casos de referencia -->
+
+<!-- ECL-105 Guía de demo -->
+
+### Documentación técnica
+
+- [Convenciones y glosario ECL-99](CONVENCIONES_Y_GLOSARIO_ECL99.md)
+- [Plantilla de Revisión y demostración](PLANTILLA_REVISION_SPRINT4_ECL99.md)
+
+### Entregables y documentación existentes
+
 ## Green IT
 
 - [ECL-118 — Informe 02: estándares de ingeniería de software y guía de desarrollo verde (borrador)](<../reduccion del impacto ambiental/02 Estandares Ingeniería de software V_1_0_0.md>)
