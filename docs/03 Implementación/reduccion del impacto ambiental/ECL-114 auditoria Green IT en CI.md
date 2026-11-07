@@ -34,7 +34,8 @@ git show e09dcd80e32431018d4020bb02c89ffae7505705:frontend/package.json
 
 DESPUÉS: `.github/workflows/green-audit.yml` y `frontend/lighthouserc.json`.
 El código de aplicación y los checks existentes se conservan. El nuevo job
-ejecuta `npm ci`, `npm run build` y `npx --no-install lhci autorun`. Se instala
+ejecuta `npm ci`, `npm run build` y
+`npx --no-install lhci autorun --failOnUploadFailure`. Se instala
 `@lhci/cli` **0.15.1** como dependencia de desarrollo exacta y con lockfile;
 incluye Lighthouse 12.6.1 y es compatible con Node 22.18.0 del proyecto.
 LHCI 0.16.0 exige Node >=22.19.0; no se cambió Node para incorporar la herramienta.
@@ -131,7 +132,7 @@ npm.cmd ci
 npm.cmd run typecheck
 npm.cmd run lint
 npm.cmd run build
-npx.cmd --no-install lhci autorun
+npx.cmd --no-install lhci autorun --failOnUploadFailure
 1..3 | ForEach-Object { npx.cmd --no-install vitest run src/app; if ($LASTEXITCODE -ne 0) { throw 'Fallaron las pruebas' } }
 npm.cmd run test:coverage -- --maxWorkers=2
 ```

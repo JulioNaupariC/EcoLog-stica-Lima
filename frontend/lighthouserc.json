@@ -25,9 +25,6 @@
     },
     "upload": {
       "target": "temporary-public-storage"
-    },
-    "autorun": {
-      "failOnUploadFailure": true
     }
   }
 }

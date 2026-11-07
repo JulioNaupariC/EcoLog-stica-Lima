@@ -44,7 +44,7 @@ jobs:
       # Authenticated pages are measured manually in ECL-108 and ECL-115.
       # Keep this check optional until DESPUES meets the rubric; do not hide failures.
       - name: Audit public login (three desktop runs)
-        run: npx --no-install lhci autorun
+        run: npx --no-install lhci autorun --failOnUploadFailure
 
       - name: Publish report links in job summary
         if: always()
