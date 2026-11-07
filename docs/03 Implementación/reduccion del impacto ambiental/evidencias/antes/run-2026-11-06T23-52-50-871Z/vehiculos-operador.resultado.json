@@ -1,0 +1,9 @@
+{
+  "name": "vehiculos-operador",
+  "path": "/vehiculos",
+  "role": "OPERADOR",
+  "rounds": [],
+  "attemptedAt": "2026-11-06T23:52:51.561Z",
+  "status": "ERROR",
+  "reason": "Cannot read properties of null (reading 'click')"
+}
