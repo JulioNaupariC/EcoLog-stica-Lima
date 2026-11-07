@@ -5,6 +5,8 @@ del sprint corresponden a ECL-99 y no se definen en este ticket.
 
 ## Green IT
 
+- [ECL-118 — Informe 02: estándares de ingeniería de software y guía de desarrollo verde (borrador)](<../reduccion del impacto ambiental/02 Estandares Ingeniería de software V_1_0_0.md>)
+
 Las evidencias se conservan en `reduccion del impacto ambiental/`, fuera de esta
 carpeta, conforme a la ubicación exigida por la rúbrica.
 
