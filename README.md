@@ -357,6 +357,8 @@ sprint; las tres ramas de cierre están protegidas contra cambios y borrado.
 
 ### Sprint 4 — Green IT
 
+[Índice de entregables del Sprint 4](<docs/03 Implementación/Sprint 04/README.md>)
+
 - [ECL-108 — Línea base ANTES: resultados y medianas](<docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-50-12-524Z/README.md>) · [Protocolo y preparación inicial](<docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/README.md>)
 
 ## Fase 04: Contribución

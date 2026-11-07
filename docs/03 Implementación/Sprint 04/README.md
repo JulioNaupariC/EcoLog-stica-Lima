@@ -1,0 +1,17 @@
+# Sprint 4 — Índice de entregables
+
+Este índice incorpora los enlaces de ECL-108. La planificación y el glosario
+del sprint corresponden a ECL-99 y no se definen en este ticket.
+
+## Green IT
+
+Las evidencias se conservan en `reduccion del impacto ambiental/`, fuera de esta
+carpeta, conforme a la ubicación exigida por la rúbrica.
+
+- [ECL-108 — Línea base ANTES: resultados, medianas y limitaciones](<../reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-50-12-524Z/README.md>) · [Protocolo y preparación inicial](<../reduccion del impacto ambiental/evidencias/antes/README.md>)
+
+El índice se añadió después de capturar las evidencias de ECL-108. Los registros
+históricos conservan la observación de que todavía no existía durante la medición;
+el enlace de navegación queda incorporado aquí sin editar esas evidencias.
+
+[← Volver al README principal](../../../README.md)
