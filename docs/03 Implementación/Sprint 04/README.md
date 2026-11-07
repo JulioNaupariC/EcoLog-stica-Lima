@@ -50,6 +50,7 @@ el enlace de navegación queda incorporado aquí sin editar esas evidencias.
 - [ECL-111 — React.lazy, listados de 12 y verificación offline](<../reduccion del impacto ambiental/ECL-111 React lazy y paginacion V_1_0_0.md>)
 - [ECL-113 - Build de produccion con Gzip y cache](<ECL-113 build produccion.md>)
 - [ECL-114 — Lighthouse CI y corrección de pruebas diferidas](<../reduccion del impacto ambiental/ECL-114 auditoria Green IT en CI.md>)
+- [ECL-112 — Fuentes, recursos estáticos, SVG y análisis del bundle](<../reduccion del impacto ambiental/ECL-112 recursos estaticos V_1_0_0.md>)
 
 ## Entorno local y acciones de retrospectiva
 

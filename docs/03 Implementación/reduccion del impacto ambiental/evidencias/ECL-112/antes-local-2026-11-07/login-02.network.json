@@ -1,0 +1,416 @@
+{
+  "requests": 58,
+  "transferredBytes": 10760850,
+  "failures": 0,
+  "cacheDisabled": true,
+  "resources": [
+    {
+      "path": "/login",
+      "type": "document",
+      "transferredBytes": 927,
+      "decodedBytes": 674,
+      "status": 200
+    },
+    {
+      "path": "/@vite/client",
+      "type": "script",
+      "transferredBytes": 224157,
+      "decodedBytes": 223864,
+      "status": 200
+    },
+    {
+      "path": "/src/main.tsx",
+      "type": "script",
+      "transferredBytes": 3501,
+      "decodedBytes": 3211,
+      "status": 200
+    },
+    {
+      "path": "/@react-refresh",
+      "type": "script",
+      "transferredBytes": 112187,
+      "decodedBytes": 111894,
+      "status": 200
+    },
+    {
+      "path": "/node_modules/.vite/deps/react.js",
+      "type": "script",
+      "transferredBytes": 1061,
+      "decodedBytes": 755,
+      "status": 200
+    },
+    {
+      "path": "/node_modules/.vite/deps/react-dom_client.js",
+      "type": "script",
+      "transferredBytes": 3132485,
+      "decodedBytes": 3132172,
+      "status": 200
+    },
+    {
+      "path": "/node_modules/.vite/deps/react-router-dom.js",
+      "type": "script",
+      "transferredBytes": 1429906,
+      "decodedBytes": 1429593,
+      "status": 200
+    },
+    {
+      "path": "/src/app/App.tsx",
+      "type": "script",
+      "transferredBytes": 46539,
+      "decodedBytes": 46247,
+      "status": 200
+    },
+    {
+      "path": "/src/styles/tokens.css",
+      "type": "script",
+      "transferredBytes": 8043,
+      "decodedBytes": 7752,
+      "status": 200
+    },
+    {
+      "path": "/src/styles/base.css",
+      "type": "script",
+      "transferredBytes": 4893,
+      "decodedBytes": 4602,
+      "status": 200
+    },
+    {
+      "path": "/src/styles/layout.css",
+      "type": "script",
+      "transferredBytes": 14399,
+      "decodedBytes": 14107,
+      "status": 200
+    },
+    {
+      "path": "/src/styles/components.css",
+      "type": "script",
+      "transferredBytes": 43496,
+      "decodedBytes": 43204,
+      "status": 200
+    },
+    {
+      "path": "/src/hooks/useTheme.ts",
+      "type": "script",
+      "transferredBytes": 4271,
+      "decodedBytes": 3981,
+      "status": 200
+    },
+    {
+      "path": "/src/services/offlineShell.ts",
+      "type": "script",
+      "transferredBytes": 1466,
+      "decodedBytes": 1176,
+      "status": 200
+    },
+    {
+      "path": "/node_modules/.vite/deps/react_jsx-dev-runtime.js",
+      "type": "script",
+      "transferredBytes": 36034,
+      "decodedBytes": 35724,
+      "status": 200
+    },
+    {
+      "path": "/node_modules/vite/dist/client/env.mjs",
+      "type": "script",
+      "transferredBytes": 3768,
+      "decodedBytes": 3478,
+      "status": 200
+    },
+    {
+      "path": "/node_modules/.vite/deps/react-D1GydzQs.js",
+      "type": "script",
+      "transferredBytes": 135589,
+      "decodedBytes": 135278,
+      "status": 200
+    },
+    {
+      "path": "/node_modules/.vite/deps/lucide-react.js",
+      "type": "script",
+      "transferredBytes": 5082681,
+      "decodedBytes": 5082367,
+      "status": 200
+    },
+    {
+      "path": "/src/hooks/useIncidentSynchronization.ts",
+      "type": "script",
+      "transferredBytes": 5298,
+      "decodedBytes": 5008,
+      "status": 200
+    },
+    {
+      "path": "/src/services/incidentStorage.ts",
+      "type": "script",
+      "transferredBytes": 12048,
+      "decodedBytes": 11757,
+      "status": 200
+    },
+    {
+      "path": "/src/pages/LoginPage.tsx",
+      "type": "script",
+      "transferredBytes": 30726,
+      "decodedBytes": 30434,
+      "status": 200
+    },
+    {
+      "path": "/src/components/layout/AppShell.tsx",
+      "type": "script",
+      "transferredBytes": 42929,
+      "decodedBytes": 42637,
+      "status": 200
+    },
+    {
+      "path": "/src/components/ui/index.ts",
+      "type": "script",
+      "transferredBytes": 3025,
+      "decodedBytes": 2735,
+      "status": 200
+    },
+    {
+      "path": "/src/domain/roles.ts",
+      "type": "script",
+      "transferredBytes": 3184,
+      "decodedBytes": 2894,
+      "status": 200
+    },
+    {
+      "path": "/src/services/auth.ts",
+      "type": "script",
+      "transferredBytes": 14988,
+      "decodedBytes": 14697,
+      "status": 200
+    },
+    {
+      "path": "/src/services/offlineStorage.ts",
+      "type": "script",
+      "transferredBytes": 20606,
+      "decodedBytes": 20314,
+      "status": 200
+    },
+    {
+      "path": "/src/services/reportQueue.ts",
+      "type": "script",
+      "transferredBytes": 20954,
+      "decodedBytes": 20662,
+      "status": 200
+    },
+    {
+      "path": "/src/services/offlineAccess.ts",
+      "type": "script",
+      "transferredBytes": 5149,
+      "decodedBytes": 4859,
+      "status": 200
+    },
+    {
+      "path": "/src/services/passwordChangeGuard.ts",
+      "type": "script",
+      "transferredBytes": 5214,
+      "decodedBytes": 4924,
+      "status": 200
+    },
+    {
+      "path": "/",
+      "type": "websocket",
+      "transferredBytes": 0,
+      "decodedBytes": 0,
+      "status": 101
+    },
+    {
+      "path": "/node_modules/.vite/deps/rolldown-runtime-SbdDWaPq.js",
+      "type": "script",
+      "transferredBytes": 8109,
+      "decodedBytes": 7801,
+      "status": 200
+    },
+    {
+      "path": "/node_modules/.vite/deps/react-dom-LMQvPuLb.js",
+      "type": "script",
+      "transferredBytes": 51241,
+      "decodedBytes": 50931,
+      "status": 200
+    },
+    {
+      "path": "/src/types/driverReport.ts",
+      "type": "script",
+      "transferredBytes": 3884,
+      "decodedBytes": 3594,
+      "status": 200
+    },
+    {
+      "path": "/src/services/incidentSync.ts",
+      "type": "script",
+      "transferredBytes": 7203,
+      "decodedBytes": 6913,
+      "status": 200
+    },
+    {
+      "path": "/src/components/ui/Alert.tsx",
+      "type": "script",
+      "transferredBytes": 6287,
+      "decodedBytes": 5997,
+      "status": 200
+    },
+    {
+      "path": "/src/components/ui/Badge.tsx",
+      "type": "script",
+      "transferredBytes": 7889,
+      "decodedBytes": 7599,
+      "status": 200
+    },
+    {
+      "path": "/src/components/ui/Button.tsx",
+      "type": "script",
+      "transferredBytes": 7779,
+      "decodedBytes": 7489,
+      "status": 200
+    },
+    {
+      "path": "/src/components/ui/Card.tsx",
+      "type": "script",
+      "transferredBytes": 5746,
+      "decodedBytes": 5456,
+      "status": 200
+    },
+    {
+      "path": "/src/components/ui/cx.ts",
+      "type": "script",
+      "transferredBytes": 886,
+      "decodedBytes": 598,
+      "status": 200
+    },
+    {
+      "path": "/src/components/ui/DataTable.tsx",
+      "type": "script",
+      "transferredBytes": 12829,
+      "decodedBytes": 12537,
+      "status": 200
+    },
+    {
+      "path": "/src/components/ui/Dialog.tsx",
+      "type": "script",
+      "transferredBytes": 10620,
+      "decodedBytes": 10328,
+      "status": 200
+    },
+    {
+      "path": "/src/components/ui/EmptyState.tsx",
+      "type": "script",
+      "transferredBytes": 5210,
+      "decodedBytes": 4920,
+      "status": 200
+    },
+    {
+      "path": "/src/components/ui/Form.tsx",
+      "type": "script",
+      "transferredBytes": 5169,
+      "decodedBytes": 4879,
+      "status": 200
+    },
+    {
+      "path": "/src/components/ui/PageHeader.tsx",
+      "type": "script",
+      "transferredBytes": 9150,
+      "decodedBytes": 8859,
+      "status": 200
+    },
+    {
+      "path": "/src/components/ui/Skeleton.tsx",
+      "type": "script",
+      "transferredBytes": 3672,
+      "decodedBytes": 3382,
+      "status": 200
+    },
+    {
+      "path": "/src/components/ui/StatCard.tsx",
+      "type": "script",
+      "transferredBytes": 5295,
+      "decodedBytes": 5005,
+      "status": 200
+    },
+    {
+      "path": "/src/components/ui/Toast.tsx",
+      "type": "script",
+      "transferredBytes": 10013,
+      "decodedBytes": 9722,
+      "status": 200
+    },
+    {
+      "path": "/src/components/ui/toastContext.ts",
+      "type": "script",
+      "transferredBytes": 1583,
+      "decodedBytes": 1293,
+      "status": 200
+    },
+    {
+      "path": "/src/components/ClientCombobox.tsx",
+      "type": "script",
+      "transferredBytes": 27466,
+      "decodedBytes": 27174,
+      "status": 200
+    },
+    {
+      "path": "/src/services/api.ts",
+      "type": "script",
+      "transferredBytes": 5866,
+      "decodedBytes": 5576,
+      "status": 200
+    },
+    {
+      "path": "/src/components/layout/AccountMenu.tsx",
+      "type": "script",
+      "transferredBytes": 17312,
+      "decodedBytes": 17020,
+      "status": 200
+    },
+    {
+      "path": "/src/services/users.ts",
+      "type": "script",
+      "transferredBytes": 17340,
+      "decodedBytes": 17048,
+      "status": 200
+    },
+    {
+      "path": "/src/services/driverItinerary.ts",
+      "type": "script",
+      "transferredBytes": 14881,
+      "decodedBytes": 14589,
+      "status": 200
+    },
+    {
+      "path": "/src/services/incidents.ts",
+      "type": "script",
+      "transferredBytes": 6195,
+      "decodedBytes": 5905,
+      "status": 200
+    },
+    {
+      "path": "/node_modules/.vite/deps/react-dom.js",
+      "type": "script",
+      "transferredBytes": 1113,
+      "decodedBytes": 807,
+      "status": 200
+    },
+    {
+      "path": "/src/services/clients.ts",
+      "type": "script",
+      "transferredBytes": 9869,
+      "decodedBytes": 9579,
+      "status": 200
+    },
+    {
+      "path": "/node_modules/@fontsource-variable/inter/files/inter-latin-wght-normal.woff2",
+      "type": "font",
+      "transferredBytes": 48576,
+      "decodedBytes": 48256,
+      "status": 200
+    },
+    {
+      "path": "/favicon.ico",
+      "type": "other",
+      "transferredBytes": 143,
+      "decodedBytes": 0,
+      "status": 404
+    }
+  ],
+  "observedMs": 2041.9920999999995,
+  "finalUrl": "http://127.0.0.1:5173/login"
+}

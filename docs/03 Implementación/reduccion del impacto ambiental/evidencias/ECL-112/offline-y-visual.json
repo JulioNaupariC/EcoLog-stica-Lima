@@ -1,0 +1,59 @@
+{
+  "ticket": "ECL-112",
+  "startedAt": "2026-11-07T21:35:29.285Z",
+  "chrome": "Chrome/157.0.8103.38",
+  "scope": "Production public login, rendered Spanish and offline shell; not authenticated driver E2E",
+  "builds": [
+    {
+      "label": "antes",
+      "manifestVersion": "b838a04cd9a5d3dbde6dfef25ee73daf7b320d426514817ff67ba61864b2b517",
+      "precacheFiles": 32,
+      "precacheBodyBytes": 817671,
+      "fontFiles": [
+        {
+          "path": "/assets/inter-latin-ext-wght-normal-DO1Apj_S.woff2",
+          "bytes": 85068
+        },
+        {
+          "path": "/assets/inter-latin-wght-normal-Dx4kXJAl.woff2",
+          "bytes": 48256
+        }
+      ],
+      "spanishFonts": [
+        {
+          "familyName": "Inter",
+          "postScriptName": "Inter",
+          "isCustomFont": true,
+          "glyphCount": 16
+        }
+      ],
+      "offlineShellLoaded": true,
+      "screenshotSha256": "6ffb0354c930e607b13b4f0f7069e443050fc79b3c7bcb0e8f76469f27ea7b5d"
+    },
+    {
+      "label": "despues",
+      "manifestVersion": "3d8ad17f847c0c1dba3475b8f331397b5e87da5d132b8ff52f2d2f74ce4bf94c",
+      "precacheFiles": 31,
+      "precacheBodyBytes": 732243,
+      "fontFiles": [
+        {
+          "path": "/assets/inter-latin-wght-normal-Dx4kXJAl.woff2",
+          "bytes": 48256
+        }
+      ],
+      "spanishFonts": [
+        {
+          "familyName": "Inter",
+          "postScriptName": "Inter",
+          "isCustomFont": true,
+          "glyphCount": 16
+        }
+      ],
+      "offlineShellLoaded": true,
+      "screenshotSha256": "6ffb0354c930e607b13b4f0f7069e443050fc79b3c7bcb0e8f76469f27ea7b5d"
+    }
+  ],
+  "publicLoginScreenshotsIdentical": true,
+  "precacheBytesSaved": 85428,
+  "precacheRequestsSaved": 1
+}

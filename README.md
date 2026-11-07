@@ -447,6 +447,7 @@ Los siguientes comentarios reservan enlaces para entregas futuras.
 - [ECL-111 — React.lazy, listados de 12 y verificación offline](<docs/03 Implementación/reduccion del impacto ambiental/ECL-111 React lazy y paginacion V_1_0_0.md>)
 - [ECL-113 - Build de produccion con Gzip y cache](<docs/03 Implementación/Sprint 04/ECL-113 build produccion.md>)
 - [ECL-114 — Lighthouse CI y corrección de pruebas diferidas](<docs/03 Implementación/reduccion del impacto ambiental/ECL-114 auditoria Green IT en CI.md>)
+- [ECL-112 — Fuentes, recursos estáticos, SVG y análisis del bundle](<docs/03 Implementación/reduccion del impacto ambiental/ECL-112 recursos estaticos V_1_0_0.md>)
 
 ## Fase 04: Contribución
 
