@@ -14,4 +14,8 @@ El índice se añadió después de capturar las evidencias de ECL-108. Los regis
 históricos conservan la observación de que todavía no existía durante la medición;
 el enlace de navegación queda incorporado aquí sin editar esas evidencias.
 
+## Especificaciones BDD
+
+- ECL-97 — Borradores pendientes de ratificación de Julio: [US-006 — Rutas optimizadas](<../../02 Planificación/BDD/ECL-12-US-006-rutas-optimizadas.md>), [US-008 — Mapa](<../../02 Planificación/BDD/ECL-14-US-008-mapa.md>), [US-009 — Dashboard](<../../02 Planificación/BDD/ECL-15-US-009-dashboard.md>) y [US-007 — Reoptimización (extensión)](<../../02 Planificación/BDD/ECL-13-US-007-reoptimizacion.md>).
+
 [← Volver al README principal](../../../README.md)
