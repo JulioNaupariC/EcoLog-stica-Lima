@@ -944,7 +944,7 @@ Julio. **I03 no está cubierto por completo.**
 - **Vínculo con el conductor y la ruta:** la incidencia se vincula siempre al
   conductor. Sin parada no tiene ruta (ratificado por Julio). `ruta_id` llegará,
   nullable, con el modelo de rutas; ver
-  [Base de datos V_1_1_0](<../docs/01 Inicio/11. Base de datos V_1_1_0.md>).
+  [Base de datos V_1_2_0](<../docs/01 Inicio/11. Base de datos V_1_2_0.md>).
 - **Downgrade protegido:** se niega mientras existan incidencias o su
   auditoría.
 
@@ -1190,6 +1190,28 @@ Reglas de seguridad:
 
 Las cifras ANTES/DESPUÉS de bytes transferidos se miden con el protocolo de
 ECL-108 en ECL-115. Este cambio no publica cifras propias.
+
+## Modelo de rutas — ECL-95 / ST-046
+
+Persistencia de la optimización de US-006 (migración `0016_modelo_rutas`).
+Catálogos en `app/core/rutas.py`, modelos en `app/models/ruta.py`; detalle en el
+[documento 11 V_1_2_0](<../docs/01 Inicio/11. Base de datos V_1_2_0.md>).
+
+| Tabla | Qué guarda | Reglas en base de datos |
+|---|---|---|
+| `optimizacion` | Cada ejecución: quién, fecha de operación, estado, tiempos, `parametros_version`, referencia secuencial e `instantanea` (flota, pedidos, depósito y matriz usados). | Solo los estados finales tienen `finalizada_en`; solo FALLIDA tiene `error`; COMPLETADA exige `parametros_version`. |
+| `ruta` | Ruta de un vehículo en una fecha (`fecha_operacion` + `conductor_id` = jornada), métricas, trazado `GEOGRAPHY(LINESTRING,4326)` y descansos. | Una por vehículo y por conductor en cada optimización; sin conductor exige `motivo_sin_conductor` (ECL-79); métricas ≥ 0. |
+| `parada_ruta` | Pedidos en orden con ETA y estado. | Un pedido una sola vez por optimización; secuencia única por ruta; FK compuesta (ruta, optimización). |
+| `pedido_no_asignado` | Pedido que quedó fuera y su motivo (RN-009). | Motivo del catálogo, con `JORNADA_INVIABLE` (decisión 5 de la BDD). |
+
+- **Métricas:** van en `DOUBLE PRECISION`, sin redondeo intermedio (RNF-011).
+- **Incidencias:** `incidencia.ruta_id` es nullable; las existentes quedan en `null`.
+- **Jornada de una asignación (ECL-82):** `driver_stop_assignment.parada_ruta_id` (opcional y único) le da a la asignación su ruta y su jornada. `RutaRepository.jornada_de_asignacion(stop_id)` devuelve ruta, conductor y fecha, o `None` para las asignaciones del Sprint 3.
+- **Downgrade:** se niega si ya hay optimizaciones, porque son historial operativo, igual que en 0013.
+
+Pruebas: `tests/unit/test_ruta_repository.py` y
+`tests/integration/test_modelo_rutas.py` (27 casos contra PostGIS: ida y vuelta
+de la migración, restricciones, métricas exactas, trazado y jornada).
 
 [← Volver al README principal](../README.md)
 

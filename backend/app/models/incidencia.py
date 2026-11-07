@@ -62,6 +62,10 @@ class Incidencia(Base):
             ondelete="RESTRICT",
         )
     )
+    # ECL-95: nullable route, as document 11 foresaw once the route model exists.
+    ruta_id: Mapped[UUID | None] = mapped_column(
+        ForeignKey("ruta.ruta_id", name="fk_incidencia_ruta", ondelete="RESTRICT")
+    )
     operation_id: Mapped[UUID] = mapped_column()
     tipo: Mapped[str] = mapped_column(String(20))
     severidad: Mapped[str] = mapped_column(String(10))
