@@ -1,15 +1,16 @@
 # ECL-97 / ECL-15 — Reglas y BDD de US-009: dashboard
 
-> **Estado: BORRADOR.** Requiere aprobación de Julio antes de implementar
-> indicadores o UI de esta historia (A4). No contiene resultados ejecutados.
+> **Estado: APROBADO — BDD v1.0.0 (07/11/2026).** Ratificación expresa de
+> Julio para los criterios de aceptación de US-009; no contiene resultados
+> de pruebas ejecutadas ni indicadores ambientales reales.
 
 | Metadato | Valor |
 |---|---|
-| Versión | 0.1.1 |
+| Versión | 1.0.0 |
 | Fecha | 06/11/2026, America/Lima |
 | Autor | Frank Roy Yupanqui Acevedo — @FrankRoyYA |
 | Ticket / historia | [ECL-97](https://continental-team-il84x39k.atlassian.net/browse/ECL-97) / [ECL-15, US-009](https://continental-team-il84x39k.atlassian.net/browse/ECL-15) |
-| Revisor | Julio Armando Naupari Camarena — @JulioNaupariC; pendiente |
+| Ratificación de negocio | Julio Armando Naupari Camarena — @JulioNaupariC; 07/11/2026 |
 | Dependencia | US-006, parámetros versionados y contrato ST-045; dashboard de Giancarlo |
 
 ## Fuentes y alcance
@@ -31,8 +32,8 @@ matriz de permisos ni declara rutas efectivamente recorridas a partir de ETA.
 
 `GET /indicadores/sostenibilidad?desde=YYYY-MM-DD&hasta=YYYY-MM-DD` requiere
 sesión. Administrador, Operador y Analista están en el contrato de Frank;
-la matriz y ST-045 incluyen además al Auditor en lectura agregada. Se propone
-conservar Auditor sin datos personales; **Julio debe ratificar esta diferencia**.
+la matriz y ST-045 incluyen además al Auditor en lectura agregada. Se ratifica conservar Auditor con acceso exclusivamente agregado, sin datos
+personales, de acuerdo con la matriz.
 Conductor 403, sin sesión 401. No se entregan conductores, ubicaciones,
 pedidos individuales ni geometrías en este agregado; auditoría sin datos personales.
 
@@ -193,16 +194,47 @@ Es una propuesta para Julio; no ratifica decisiones ni modifica las reglas.
 | Null con datos y porcentajes negativos | El esquema actual obliga todos los indicadores con con_datos true y acota pct a [-100,100]. Debe admitir denominador cero en porcentajes y empeoramiento mayor al 100 %. | Indica que puede ajustar ST-045 con pct nulo y negativos en este sprint. |
 | Equivalente ambiental nullable | RF-009 lo exige, falta en ST-045. Propuesta de objeto con unidad, factor, fuente y versión; sin configuración no inventar valor. | Sin precisión específica en el comentario; pendiente de decisión de Julio. |
 
+## Ratificación de Julio — 07/11/2026
+
+Julio ratifica las reglas y escenarios D01–D08 de US-009 con las precisiones:
+
+- Acceso a agregados: Administrador, Operador, Analista y Auditor autorizado,
+  sin datos personales; Conductor no autorizado al agregado.
+- Ruta cerrada: transición persistida autorizada por Operador, `cerrada_en`
+  y todas las paradas terminales; una optimización COMPLETADA o una ETA
+  alcanzada no cierran la ruta. La ampliación de modelo/contrato sigue pendiente.
+- Periodos: extremos diarios inclusivos de Lima implementados con límite
+  superior exclusivo al inicio del día siguiente, basado en `cerrada_en`.
+- Ahorros: comparar sumas agregadas con igual cobertura; porcentaje de
+  distancia desde sumas, no promedio de porcentajes. Denominador cero =>
+  `null`; valores negativos permitidos sin truncamiento artificial.
+- Cumplimiento de ventanas: paradas `ATENDIDA` dentro de ventana frente a
+  todas las terminales; `NO_ATENDIDA` cuenta en denominador y no es éxito.
+  Solo tiempos reales `atendida_en`, nunca ETA de planificación.
+- Equivalente ambiental: solo presentar cifra cuando haya proyecto registrado,
+  factor vigente, unidad, fuente y versión. Si falta, «No disponible», nunca
+  crédito ambiental certificado inventado.
+- Sin datos frente a cero: distinguir ausencia de información de un cero
+  real. Preservar parámetros históricos y las pruebas de exactitud.
+- RNF-012: mantener la propuesta comprobable de límite JSON sin comprimir
+  de 250 000 bytes para validación; distinguir del tamaño transferido. Se
+  verifica en implementación, no se presenta como medición ya realizada.
+
+La aprobación de la BDD no acredita rutas cerradas reales, mediciones de
+carbono ni cumplimiento de rendimiento; esas verificaciones corresponden
+a los tickets implementadores y sus evidencias.
+
 ## Aprobación y entrega
 
-Julio debe ratificar las decisiones antes de cambiar a APROBADO. Registrar
-fecha/versión y revisión reales; solicitar auditoría independiente antes de
-Ready for Review. No se modifican requisitos, permisos ni fixtures para aprobar este borrador.
+Ratificación de negocio registrada el 07/11/2026; la auditoría técnica
+independiente, los checks, revisión de Frank y merge se verifican en el PR.
+No se modifican requisitos, permisos ni fixtures mediante esta BDD.
 
 | Versión | Fecha | Cambio |
 |---|---|---|
 | 0.1.0 | 06/11/2026 | Escenarios D01–D08, cierre, métricas, null, periodo y decisiones de contrato. |
 | 0.1.1 | 06/11/2026 | Incorpora la propuesta técnica de backend y navegación del Sprint 4; reglas sin cambios y aprobación de Julio pendiente. |
+| 1.0.0 | 07/11/2026 | Ratificación expresa de acceso, cierre, periodos, agregados, equivalentes ambientales y valores nulos; implementación pendiente. |
 
 [Índice del Sprint 4](<../../03 Implementación/Sprint 04/README.md>) ·
 [← Volver al README principal](../../../README.md)

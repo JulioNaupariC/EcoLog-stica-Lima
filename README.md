@@ -222,7 +222,7 @@ y [políticas de ejecución de PowerShell](https://learn.microsoft.com/en-us/pow
 
 ### Especificaciones BDD del Sprint 4
 
-- ECL-97 — Borradores para ratificación de Julio antes de implementar: [ECL-12 / US-006 — Rutas optimizadas](<docs/02 Planificación/BDD/ECL-12-US-006-rutas-optimizadas.md>), [ECL-14 / US-008 — Mapa operativo](<docs/02 Planificación/BDD/ECL-14-US-008-mapa.md>), [ECL-15 / US-009 — Dashboard](<docs/02 Planificación/BDD/ECL-15-US-009-dashboard.md>) y [ECL-13 / US-007 — Reoptimización (extensión)](<docs/02 Planificación/BDD/ECL-13-US-007-reoptimizacion.md>).
+- ECL-97 — BDD US-006, US-008 y US-009 ratificadas (v1.0.0); US-007 permanece como borrador de extensión: [ECL-12 / US-006 — Rutas optimizadas](<docs/02 Planificación/BDD/ECL-12-US-006-rutas-optimizadas.md>), [ECL-14 / US-008 — Mapa operativo](<docs/02 Planificación/BDD/ECL-14-US-008-mapa.md>), [ECL-15 / US-009 — Dashboard](<docs/02 Planificación/BDD/ECL-15-US-009-dashboard.md>) y [ECL-13 / US-007 — Reoptimización (extensión)](<docs/02 Planificación/BDD/ECL-13-US-007-reoptimizacion.md>).
 
 ### Estado de Jira — fotografía de planificación inicial
 

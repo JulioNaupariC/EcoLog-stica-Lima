@@ -1,18 +1,18 @@
 # ECL-97 / ECL-12 — Reglas y BDD de US-006: rutas optimizadas
 
-> **Estado: BORRADOR.** Requiere ratificación de Julio antes de la implementación
-> dependiente (acción A4). Define resultados esperados y pruebas previstas;
-> no acredita ejecución ni aprobación. Las precisiones propuestas no modifican
-> los requisitos aprobados.
+> **Estado: APROBADO — BDD v1.0.0 (07/11/2026).** Ratificación expresa de Julio
+> para US-006, sujeta a revisión técnica y merge del PR. Contiene criterios de
+> aceptación y pruebas previstas; no acredita implementación ni pruebas ejecutadas.
+> Los cambios de contrato se implementan en tickets dependientes.
 
 | Metadato | Valor |
 |---|---|
-| Versión | 0.1.1 |
+| Versión | 1.0.0 |
 | Fecha | 06/11/2026, America/Lima |
 | Autor | Frank Roy Yupanqui Acevedo — @FrankRoyYA |
 | Ticket | [ECL-97](https://continental-team-il84x39k.atlassian.net/browse/ECL-97), 3 SP para las cuatro BDD |
 | Historia | [ECL-12 / US-006](https://continental-team-il84x39k.atlassian.net/browse/ECL-12) |
-| Revisor y aprobación | Julio Armando Naupari Camarena — @JulioNaupariC; pendiente |
+| Ratificación de negocio | Julio Armando Naupari Camarena — @JulioNaupariC; aprobó el 07/11/2026 |
 | Dependientes | Modelo y optimizador de Antony; mapa de José; dashboard de Giancarlo |
 
 ## Fuentes y alcance
@@ -43,8 +43,8 @@ Estas BDD se mantienen en Planificación, como exige el ticket.
   para `POST /optimizaciones`, permiso candidato `rutas.optimizar`;
   Analista, Conductor y Auditor reciben 403. Sin sesión, 401.
   La matriz vigente solo concede `optimizaciones.ejecutar` al Operador:
-  **la habilitación del Administrador requiere ratificación expresa y control
-  de cambios de permisos antes de aprobar esta BDD** (R11).
+  **se ratifica que solo el Operador ejecuta optimizaciones; no se amplía
+  el permiso al Administrador** (R11).
 - `fecha_operacion` es una fecha ISO válida. Listas omitidas seleccionan todos
   los pedidos PENDIENTE de la fecha y vehículos ACTIVO elegibles. Propuesta:
   omitir o enviar `null` equivale; `[]`, UUID inválidos, duplicados y campos
@@ -83,8 +83,9 @@ Estas BDD se mantienen en Planificación, como exige el ticket.
 
 RN-007 habla de penalización por tardanza y RF-006 exige ventanas factibles.
 Para este contrato las ventanas permanecen duras: no se ofrece entrega tardía
-como factible. El peso por omisión/prioridad y el tratamiento de tardanza fuera
-de esta solución requieren ratificación; no se afirma que ambos sean equivalentes.
+como factible. La prioridad modifica la penalización por pedido omitido, nunca
+autoriza violar una ventana. La penalización por tardanza de RN-007 queda fuera
+del criterio de factibilidad de este MVP; su tratamiento futuro exige cambio formal.
 
 Una ruta con `conductor: null` y
 `motivo_sin_conductor: SIN_CONDUCTOR_ELEGIBLE` es propuesta sin asignación humana
@@ -291,18 +292,66 @@ Es una propuesta para Julio; no ratifica decisiones ni modifica las reglas.
 | Tiempo y precisión | Ratificar medición end-to-end además de duracion_s, ETA inclusiva de inicio de servicio, reglas de clasificación y conversión del precio por galón. | Sin precisión específica en el comentario; pendiente de decisión de Julio. |
 | Jornada | El spike cuenta servicio/espera como conducción, una simplificación técnica; esta BDD distingue los conceptos de RN-005. No se modifica RN-005 para acomodar el spike. | Indica que el spike cuenta servicio y espera como conducción y es más estricto: puede dejar pedidos sin asignar. Propone implementar la distinción de la BDD en ST-047. |
 
+## Ratificación de Julio — 07/11/2026
+
+**Decisión de negocio:** Julio Armando Naupari Camarena (@JulioNaupariC)
+ratifica US-006 y sus escenarios R01–R11 conforme a las siguientes precisiones.
+El registro refleja decisiones expresas; las pruebas, el motor, los cambios de
+OpenAPI y la auditoría independiente continúan pendientes del equipo implementador.
+
+1. **R11 y consultas:** únicamente Operador puede ejecutar
+   `POST /optimizaciones` mediante `optimizaciones.ejecutar`; Administrador
+   no ejecuta. Administrador y Operador consultan detalle operativo autorizado;
+   Analista y Auditor solo información agregada/autorizada y sin datos
+   personales; el Conductor solo su ruta asignada por las proyecciones propias,
+   nunca el endpoint de detalle general. Sin sesión 401 y rol no autorizado 403.
+   Se respeta la matriz vigente; no se amplían permisos por analogía.
+2. **Ventanas y prioridad:** las ventanas de entrega son restricciones duras,
+   con ETA de inicio de servicio inclusiva; la prioridad solo pesa en la
+   penalización por pedido omitido. No se consideran tardanzas como entregas
+   factibles dentro de US-006.
+3. **Selección y 422:** omisión o `null` de listas selecciona automáticamente;
+   `[]`, UUID inválidos/duplicados, IDs no elegibles y campos extra son 422.
+   Entre 1 y 150 pedidos y entre 1 y 15 vehículos; no truncar silenciosamente.
+4. **Contrato y métricas:** conservar `resumen.optimizada`, `ruta.metricas`,
+   `parametros_version` y las cuatro magnitudes publicadas en ST-045, y
+   separar datos sintéticos de medidos. Los ahorros con base cero son `null`;
+   se permiten valores negativos sin límite inferior artificial.
+5. **No asignación:** incorporar `JORNADA_INVIABLE` cuando esté verificada su
+   causa; diferir `RESTRICCION_VIAL` hasta existir un registro de bloqueos.
+   Priorizar diagnóstico verificable de ubicación, capacidad, ventana,
+   recursos y jornada; no atribuir inviabilidad al agotarse el tiempo del solver.
+6. **Tiempo y jornada:** validar 30 ejecuciones end-to-end con P95 <= 45 s
+   (rango más próximo, posición 29), hasta resultado persistido consultable;
+   distinguir espera, servicio, descanso y conducción acumulada (4 h continuas,
+   1 h de descanso previo, 8 h acumuladas). Diferencias entre el spike y RN-005
+   se resolverán en ST-047, sin modificar silenciosamente RN-005.
+7. **Comparaciones y precisión:** misma cobertura de pedidos para secuencial y
+   optimizada, aclarando que la referencia secuencial puede ser no factible;
+   20 cálculos independientes, diferencia absoluta <= 0,01 y sin redondeos
+   intermedios. El ahorro porcentual agregado no se inventa si su base es cero.
+8. **Combustible:** almacenar valor, unidad, fuente y vigencia del precio por
+   galón; convertir a litros solo con un factor documentado y versionado.
+   No se aprueba ningún número ni factor sin fuente verificable.
+
+**Puntos de implementación pendientes, no evidencias:** adaptar esquema y
+fixtures de ST-045 a estas decisiones, validar la conversión con fuentes,
+implementar las nuevas causas de forma consistente, y realizar campañas de
+pruebas/medición. No se afirma que los endpoints finales ya estén implementados.
+
 ## Aprobación y entrega
 
-Julio debe resolver las decisiones anteriores y aprobar esta historia con fecha,
-versión y enlace a revisión reales. Solo entonces se cambia BORRADOR a APROBADO
-y se entrega a implementadores; cualquier cambio posterior requiere revisión
-del nuevo commit. La auditoría independiente precede a Ready for Review según
-la política del repositorio. No se comunica al equipo ni se modifica Jira desde este documento.
+La decisión de negocio de Julio quedó registrada el 07/11/2026; la revisión
+de Frank, la auditoría independiente, los checks y el merge se verifican en el
+PR de ratificación. La integración de esta BDD habilita el inicio de ST-046;
+no acredita implementación, medición o validación de laboratorio. No se
+modifica Jira mediante este documento.
 
 | Versión | Fecha | Cambio |
 |---|---|---|
 | 0.1.0 | 06/11/2026 | Borrador ECL-97: reglas, contrato candidato, escenarios R01–R11 y decisiones para ratificación. |
 | 0.1.1 | 06/11/2026 | Incorpora la propuesta técnica de backend y navegación del Sprint 4; reglas sin cambios y aprobación de Julio pendiente. |
+| 1.0.0 | 07/11/2026 | Ratificación expresa de US-006: permisos, límites, ventanas, métricas, jornada, precisión y trazabilidad; implementación pendiente. |
 
 [Mapa US-008](ECL-14-US-008-mapa.md) · [Dashboard US-009](ECL-15-US-009-dashboard.md) ·
 [Reoptimización US-007](ECL-13-US-007-reoptimizacion.md)
