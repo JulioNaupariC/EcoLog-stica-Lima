@@ -33,7 +33,7 @@ def get_current_session(
     request: Request,
     service: Annotated[AutenticacionService, Depends(get_authentication_service)],
 ) -> AuthenticatedSession:
-    """Valid session even with a pending password change (logout, change only)."""
+    """Valid session even with a pending password change (logout, change, extend only)."""
     token = request.cookies.get(COOKIE_NAME)
     if not token:
         raise HTTPException(status.HTTP_401_UNAUTHORIZED, "No autenticado")

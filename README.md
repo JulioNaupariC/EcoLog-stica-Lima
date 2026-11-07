@@ -488,3 +488,5 @@ Frontend:
 - [ECL-58](frontend/evidencias/ECL-58/README.md)
 - [ECL-58 — reprueba offline con el rediseño (13/10/2026)](frontend/evidencias/ECL-58/retest-20261013/README.md)
 - [ECL-22 — rediseño UI/UX, capturas antes/después y accesibilidad](frontend/evidencias/ECL-22-rediseno/README.md)
+
+- [ECL-83 — Aviso y renovación de sesión](<docs/03 Implementación/Sprint 04/ECL-83 aviso de sesion.md>)

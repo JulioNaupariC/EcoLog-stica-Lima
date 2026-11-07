@@ -26,6 +26,8 @@ No representan resultados ejecutados ni documentos aprobados.
 
 ### Documentación técnica
 
+- [ECL-83 — Aviso y renovación de sesión](<ECL-83 aviso de sesion.md>)
+
 - [Convenciones y glosario ECL-99](CONVENCIONES_Y_GLOSARIO_ECL99.md)
 - [Plantilla de Revisión y demostración](PLANTILLA_REVISION_SPRINT4_ECL99.md)
 - [ECL-98 — Resolución de incidencias: contrato, concurrencia y validaciones](<ECL-98 resolucion incidencias.md>)

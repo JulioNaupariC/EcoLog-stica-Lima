@@ -20,6 +20,7 @@ class Evento(str, Enum):
     LOGIN_FALLIDO = "LOGIN_FALLIDO"
     CUENTA_BLOQUEADA = "CUENTA_BLOQUEADA"
     SESION_CERRADA = "SESION_CERRADA"
+    SESION_EXTENDIDA = "SESION_EXTENDIDA"
     VEHICULO_PARAMETROS_ACTUALIZADOS = "VEHICULO_PARAMETROS_ACTUALIZADOS"
     VEHICULO_DESACTIVADO = "VEHICULO_DESACTIVADO"
     CONDUCTOR_REGISTRADO = "CONDUCTOR_REGISTRADO"
@@ -35,6 +36,7 @@ class ResultadoAcceso(str, Enum):
     CREDENCIALES_INVALIDAS = "CREDENCIALES_INVALIDAS"
     LIMITE_INTENTOS = "LIMITE_INTENTOS"
     CIERRE = "CIERRE"
+    RENOVACION = "RENOVACION"
 
 
 class Detalle(BaseModel):
@@ -201,6 +203,7 @@ class Registro(BaseModel):
             Evento.LOGIN_FALLIDO,
             Evento.CUENTA_BLOQUEADA,
             Evento.SESION_CERRADA,
+            Evento.SESION_EXTENDIDA,
         )
         parameter_update = self.evento is Evento.VEHICULO_PARAMETROS_ACTUALIZADOS
         deactivation = self.evento is Evento.VEHICULO_DESACTIVADO
@@ -270,7 +273,11 @@ class AuditoriaRepository:
         )
         if permiso:
             entidad = permiso.value.split(".")[0]
-        elif registro.evento in (Evento.LOGIN_EXITOSO, Evento.SESION_CERRADA):
+        elif registro.evento in (
+            Evento.LOGIN_EXITOSO,
+            Evento.SESION_CERRADA,
+            Evento.SESION_EXTENDIDA,
+        ):
             entidad = "sesion"
         elif registro.evento in (
             Evento.LOGIN_FALLIDO,

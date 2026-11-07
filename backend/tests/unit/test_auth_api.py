@@ -41,6 +41,12 @@ def test_login_contract_and_cookie(environment, secure):
         "usuario_id": str(identity.usuario_id),
         "rol": "OPERADOR",
         "debe_cambiar_contrasena": False,
+        "expires_at": service.login.return_value.expira_en.isoformat().replace(
+            "+00:00", "Z"
+        ),
+        "max_expires_at": service.login.return_value.expira_en.isoformat().replace(
+            "+00:00", "Z"
+        ),
     }
     assert "clear-session-token" not in response.text
     cookie = response.headers["set-cookie"]

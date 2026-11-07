@@ -1,0 +1,10 @@
+{
+  "ticket": "ECL-83",
+  "scope": "Real SessionExpiryNotice and auth client in an isolated harness; HTTP responses simulated, no business credentials",
+  "executedAt": "2026-11-07T22:29:02.608Z",
+  "chrome": "Chrome/157.0.8103.38",
+  "checks": [
+    "Accessible alertdialog name, initial focus, inert background, Tab/Shift+Tab loop, Escape/focus return and Enter/Space renewal passed",
+    "409 limit message/save action, 360px dark layout, network failure without local extension, expiration on resumed tab passed"
+  ]
+}
