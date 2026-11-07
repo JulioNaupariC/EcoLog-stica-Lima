@@ -1,0 +1,391 @@
+{
+  "at": "2026-11-07T01:17:17.784Z",
+  "timezone": "America/Lima",
+  "api": "http://127.0.0.1:8001",
+  "base": "http://127.0.0.1:5174",
+  "checks": [
+    {
+      "role": "ADMINISTRADOR",
+      "path": "/",
+      "expected": "Inicio",
+      "passed": true
+    },
+    {
+      "role": "ADMINISTRADOR",
+      "path": "/vehiculos",
+      "expected": "Vehículos",
+      "passed": true
+    },
+    {
+      "role": "ADMINISTRADOR",
+      "path": "/conductores",
+      "expected": "Conductores",
+      "passed": true
+    },
+    {
+      "role": "ADMINISTRADOR",
+      "path": "/usuarios",
+      "expected": "Usuarios",
+      "passed": true
+    },
+    {
+      "role": "ADMINISTRADOR",
+      "path": "/operacion/incidencias",
+      "expected": "Incidencias pendientes",
+      "passed": true
+    },
+    {
+      "role": "ADMINISTRADOR",
+      "path": "/pedidos/nuevo",
+      "expected": "Registrar pedido",
+      "passed": true
+    },
+    {
+      "role": "ADMINISTRADOR",
+      "path": "/clientes/preferencias",
+      "expected": "Preferencias de entrega",
+      "passed": true
+    },
+    {
+      "role": "ADMINISTRADOR",
+      "path": "/conductor/itinerario",
+      "expected": "Acceso denegado",
+      "passed": true
+    },
+    {
+      "role": "ADMINISTRADOR",
+      "path": "/conductor/incidencias/nueva",
+      "expected": "Acceso denegado",
+      "passed": true
+    },
+    {
+      "role": "ADMINISTRADOR",
+      "path": "/cambiar-contrasena",
+      "expected": "Cambiar contraseña",
+      "passed": true
+    },
+    {
+      "role": "ADMINISTRADOR",
+      "path": "/ruta-inexistente",
+      "expected": "Página no encontrada",
+      "passed": true
+    },
+    {
+      "role": "OPERADOR",
+      "path": "/",
+      "expected": "Inicio",
+      "passed": true
+    },
+    {
+      "role": "OPERADOR",
+      "path": "/vehiculos",
+      "expected": "Vehículos",
+      "passed": true
+    },
+    {
+      "role": "OPERADOR",
+      "path": "/conductores",
+      "expected": "Conductores",
+      "passed": true
+    },
+    {
+      "role": "OPERADOR",
+      "path": "/usuarios",
+      "expected": "Acceso denegado",
+      "passed": true
+    },
+    {
+      "role": "OPERADOR",
+      "path": "/operacion/incidencias",
+      "expected": "Incidencias pendientes",
+      "passed": true
+    },
+    {
+      "role": "OPERADOR",
+      "path": "/pedidos/nuevo",
+      "expected": "Registrar pedido",
+      "passed": true
+    },
+    {
+      "role": "OPERADOR",
+      "path": "/clientes/preferencias",
+      "expected": "Preferencias de entrega",
+      "passed": true
+    },
+    {
+      "role": "OPERADOR",
+      "path": "/conductor/itinerario",
+      "expected": "Acceso denegado",
+      "passed": true
+    },
+    {
+      "role": "OPERADOR",
+      "path": "/conductor/incidencias/nueva",
+      "expected": "Acceso denegado",
+      "passed": true
+    },
+    {
+      "role": "OPERADOR",
+      "path": "/cambiar-contrasena",
+      "expected": "Cambiar contraseña",
+      "passed": true
+    },
+    {
+      "role": "OPERADOR",
+      "path": "/ruta-inexistente",
+      "expected": "Página no encontrada",
+      "passed": true
+    },
+    {
+      "role": "CONDUCTOR",
+      "path": "/",
+      "expected": "Inicio",
+      "passed": true
+    },
+    {
+      "role": "CONDUCTOR",
+      "path": "/vehiculos",
+      "expected": "Acceso denegado",
+      "passed": true
+    },
+    {
+      "role": "CONDUCTOR",
+      "path": "/conductores",
+      "expected": "Acceso denegado",
+      "passed": true
+    },
+    {
+      "role": "CONDUCTOR",
+      "path": "/usuarios",
+      "expected": "Acceso denegado",
+      "passed": true
+    },
+    {
+      "role": "CONDUCTOR",
+      "path": "/operacion/incidencias",
+      "expected": "Acceso denegado",
+      "passed": true
+    },
+    {
+      "role": "CONDUCTOR",
+      "path": "/pedidos/nuevo",
+      "expected": "Acceso denegado",
+      "passed": true
+    },
+    {
+      "role": "CONDUCTOR",
+      "path": "/clientes/preferencias",
+      "expected": "Acceso denegado",
+      "passed": true
+    },
+    {
+      "role": "CONDUCTOR",
+      "path": "/conductor/itinerario",
+      "expected": "Mi itinerario",
+      "passed": true
+    },
+    {
+      "role": "CONDUCTOR",
+      "path": "/conductor/incidencias/nueva",
+      "expected": "Reportar incidencia",
+      "passed": true
+    },
+    {
+      "role": "CONDUCTOR",
+      "path": "/cambiar-contrasena",
+      "expected": "Cambiar contraseña",
+      "passed": true
+    },
+    {
+      "role": "CONDUCTOR",
+      "path": "/ruta-inexistente",
+      "expected": "Página no encontrada",
+      "passed": true
+    },
+    {
+      "role": "ANALISTA",
+      "path": "/",
+      "expected": "Inicio",
+      "passed": true
+    },
+    {
+      "role": "ANALISTA",
+      "path": "/vehiculos",
+      "expected": "Acceso denegado",
+      "passed": true
+    },
+    {
+      "role": "ANALISTA",
+      "path": "/conductores",
+      "expected": "Acceso denegado",
+      "passed": true
+    },
+    {
+      "role": "ANALISTA",
+      "path": "/usuarios",
+      "expected": "Acceso denegado",
+      "passed": true
+    },
+    {
+      "role": "ANALISTA",
+      "path": "/operacion/incidencias",
+      "expected": "Acceso denegado",
+      "passed": true
+    },
+    {
+      "role": "ANALISTA",
+      "path": "/pedidos/nuevo",
+      "expected": "Acceso denegado",
+      "passed": true
+    },
+    {
+      "role": "ANALISTA",
+      "path": "/clientes/preferencias",
+      "expected": "Acceso denegado",
+      "passed": true
+    },
+    {
+      "role": "ANALISTA",
+      "path": "/conductor/itinerario",
+      "expected": "Acceso denegado",
+      "passed": true
+    },
+    {
+      "role": "ANALISTA",
+      "path": "/conductor/incidencias/nueva",
+      "expected": "Acceso denegado",
+      "passed": true
+    },
+    {
+      "role": "ANALISTA",
+      "path": "/cambiar-contrasena",
+      "expected": "Cambiar contraseña",
+      "passed": true
+    },
+    {
+      "role": "ANALISTA",
+      "path": "/ruta-inexistente",
+      "expected": "Página no encontrada",
+      "passed": true
+    },
+    {
+      "role": "AUDITOR",
+      "path": "/",
+      "expected": "Inicio",
+      "passed": true
+    },
+    {
+      "role": "AUDITOR",
+      "path": "/vehiculos",
+      "expected": "Vehículos",
+      "passed": true
+    },
+    {
+      "role": "AUDITOR",
+      "path": "/conductores",
+      "expected": "Acceso denegado",
+      "passed": true
+    },
+    {
+      "role": "AUDITOR",
+      "path": "/usuarios",
+      "expected": "Acceso denegado",
+      "passed": true
+    },
+    {
+      "role": "AUDITOR",
+      "path": "/operacion/incidencias",
+      "expected": "Acceso denegado",
+      "passed": true
+    },
+    {
+      "role": "AUDITOR",
+      "path": "/pedidos/nuevo",
+      "expected": "Acceso denegado",
+      "passed": true
+    },
+    {
+      "role": "AUDITOR",
+      "path": "/clientes/preferencias",
+      "expected": "Acceso denegado",
+      "passed": true
+    },
+    {
+      "role": "AUDITOR",
+      "path": "/conductor/itinerario",
+      "expected": "Acceso denegado",
+      "passed": true
+    },
+    {
+      "role": "AUDITOR",
+      "path": "/conductor/incidencias/nueva",
+      "expected": "Acceso denegado",
+      "passed": true
+    },
+    {
+      "role": "AUDITOR",
+      "path": "/cambiar-contrasena",
+      "expected": "Cambiar contraseña",
+      "passed": true
+    },
+    {
+      "role": "AUDITOR",
+      "path": "/ruta-inexistente",
+      "expected": "Página no encontrada",
+      "passed": true
+    }
+  ],
+  "pageSizes": [
+    {
+      "role": "ADMINISTRADOR",
+      "path": "/vehiculos",
+      "page": "1",
+      "pageSize": 12
+    },
+    {
+      "role": "ADMINISTRADOR",
+      "path": "/conductores",
+      "page": "1",
+      "pageSize": 12
+    },
+    {
+      "role": "ADMINISTRADOR",
+      "path": "/usuarios",
+      "page": "1",
+      "pageSize": 12
+    },
+    {
+      "role": "ADMINISTRADOR",
+      "path": "/incidencias",
+      "page": "1",
+      "pageSize": 12
+    },
+    {
+      "role": "OPERADOR",
+      "path": "/vehiculos",
+      "page": "1",
+      "pageSize": 12
+    },
+    {
+      "role": "OPERADOR",
+      "path": "/conductores",
+      "page": "1",
+      "pageSize": 12
+    },
+    {
+      "role": "OPERADOR",
+      "path": "/incidencias",
+      "page": "1",
+      "pageSize": 12
+    },
+    {
+      "role": "AUDITOR",
+      "path": "/vehiculos",
+      "page": "1",
+      "pageSize": 12
+    }
+  ],
+  "offlineUnvisited": true,
+  "passed": true,
+  "shellVersion": "2436c7debdb1705a08ec1a752d6381c690a0f91b6d6390f485b961b285b99dec"
+}

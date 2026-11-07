@@ -403,6 +403,7 @@ sprint; las tres ramas de cierre están protegidas contra cambios y borrado.
 
 - [ECL-118 — Informe 02: estándares de ingeniería de software y guía de desarrollo verde (borrador)](<docs/03 Implementación/reduccion del impacto ambiental/02 Estandares Ingeniería de software V_1_0_0.md>)
 - [ECL-108 — Línea base ANTES: resultados y medianas](<docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-50-12-524Z/README.md>) · [Protocolo y preparación inicial](<docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/README.md>)
+- [ECL-111 — React.lazy, listados de 12 y verificación offline](<docs/03 Implementación/reduccion del impacto ambiental/ECL-111 React lazy y paginacion V_1_0_0.md>)
 
 ## Fase 04: Contribución
 

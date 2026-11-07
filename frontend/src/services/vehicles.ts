@@ -17,6 +17,13 @@ export interface VehicleResponse extends VehicleCreatePayload {
   estado: string
 }
 
+export interface VehiclePage {
+  items: VehicleResponse[]
+  page: number
+  page_size: number
+  total: number
+}
+
 export type VehicleServiceErrorKind =
   | 'unauthorized'
   | 'forbidden'
@@ -137,14 +144,10 @@ function httpError(status: number, body: unknown, method: 'GET' | 'POST'): Vehic
   return new VehicleServiceError('unexpected', { status })
 }
 
-// ECL-109: GET /vehiculos is paginated (12 rows by default). Until ECL-111 adds
-// the page controls, the list asks for the first 100 vehicles in one page.
-export const VEHICLE_LIST_PAGE_SIZE = 100
-
-async function requestVehicles(method: 'GET' | 'POST', body?: string): Promise<unknown> {
+async function requestVehicles(method: 'GET' | 'POST', body?: string, page?: number, pageSize = 12): Promise<unknown> {
   let url: string
   try {
-    url = buildApiUrl(method === 'GET' ? `vehiculos?page=1&page_size=${VEHICLE_LIST_PAGE_SIZE}` : 'vehiculos')
+    url = buildApiUrl(page === undefined ? 'vehiculos' : `vehiculos?page=${page}&page_size=${pageSize}`)
   } catch {
     throw new VehicleServiceError('unexpected')
   }
@@ -177,12 +180,20 @@ async function requestVehicles(method: 'GET' | 'POST', body?: string): Promise<u
   return result
 }
 
-export async function listVehicles(): Promise<VehicleResponse[]> {
-  const body = await requestVehicles('GET')
-  if (typeof body !== 'object' || body === null || !('items' in body) || !Array.isArray(body.items)) {
+export async function listVehicles(page?: number, pageSize = 12): Promise<VehicleResponse[] | VehiclePage> {
+  if (page !== undefined && (!Number.isInteger(page) || page < 1 ||
+    !Number.isInteger(pageSize) || pageSize < 1 || pageSize > 100)) {
     throw new VehicleServiceError('unexpected')
   }
-  return (body.items as unknown[]).map(vehicleResponse)
+  const body = await requestVehicles('GET', undefined, page, pageSize)
+  // ECL-109 is deployed separately: accept its page envelope and the current array.
+  if (Array.isArray(body)) return body.map(vehicleResponse)
+  if (!isRecord(body) || body.page !== page || body.page_size !== pageSize ||
+    !Number.isInteger(body.total) || typeof body.total !== 'number' || body.total < 0 ||
+    !Array.isArray(body.items) || body.items.length > pageSize || body.items.length > body.total) {
+    throw new VehicleServiceError('unexpected')
+  }
+  return { items: body.items.map(vehicleResponse), page: body.page as number, page_size: pageSize, total: body.total }
 }
 
 export async function createVehicle(payload: VehicleCreatePayload): Promise<VehicleResponse> {

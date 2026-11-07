@@ -6,7 +6,7 @@ import { INCIDENT_TYPES } from '../domain/incident'
 import { IncidentListError, listPendingIncidents } from '../services/incidentList'
 import type { IncidentPage, PendingIncident } from '../services/incidentList'
 
-const PAGE_SIZE = 20
+const PAGE_SIZE = 12
 const limaTime = new Intl.DateTimeFormat('es-PE', {
   timeZone: 'America/Lima', day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit', hourCycle: 'h23',
 })

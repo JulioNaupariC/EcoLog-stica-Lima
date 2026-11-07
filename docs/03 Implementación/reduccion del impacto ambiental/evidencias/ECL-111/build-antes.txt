@@ -1,0 +1,16 @@
+
+> ecologistica-lima-frontend@0.1.0 build
+> tsc -b && vite build && node scripts/build-offline.mjs
+
+vite v8.3.5 building client environment for production...
+transforming...
+✓ 1962 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                                           0.51 kB │ gzip:   0.31 kB
+dist/assets/inter-latin-wght-normal-Dx4kXJAl.woff2       48.25 kB
+dist/assets/inter-latin-ext-wght-normal-DO1Apj_S.woff2   85.06 kB
+dist/assets/index-IpPBMCzL.css                           45.26 kB │ gzip:   8.20 kB
+dist/assets/index-BzzMgOFa.js                           436.20 kB │ gzip: 130.87 kB
+
+✓ built in 436ms

@@ -6,7 +6,7 @@ import { ROLE_LABEL } from '../domain/roles'
 import { listUsers, resetPassword, UserServiceError } from '../services/users'
 import type { TemporaryPassword, UserListItem, UserPage } from '../services/users'
 
-const PAGE_SIZE = 20
+const PAGE_SIZE = 12
 const RESET_FAILED = 'No se pudo restablecer. Intenta de nuevo o revisa tu conexión.'
 interface ListState { status: 'loading' | 'ready' | 'error'; result: UserPage | null; error: string }
 type Step =
@@ -140,7 +140,7 @@ export function UsersPage({ ownId, onSessionExpired }: { ownId: string; onSessio
             caption="Cuentas de usuario con su rol y estado" label="Cuentas registradas" />}
         <nav className="pagination" aria-label="Páginas de usuarios">
           <Button variant="secondary" size="sm" icon={ChevronLeft} disabled={page <= 1} onClick={() => { void load(page - 1) }}>Anterior</Button>
-          <span>Página {page} de {totalPages}</span>
+          <span aria-live="polite">Página {page} de {totalPages}</span>
           <Button variant="secondary" size="sm" icon={ChevronRight} disabled={page >= totalPages} onClick={() => { void load(page + 1) }}>Siguiente</Button>
         </nav>
       </> : null}

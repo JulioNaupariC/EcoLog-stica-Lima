@@ -1,0 +1,44 @@
+{
+  "compression": "Independent measurement: node:zlib.gzipSync defaults; not Vite reporter gzip figures.",
+  "unit": "bytes",
+  "antes": {
+    "initial_js": [
+      {
+        "file": "/assets/index-BzzMgOFa.js",
+        "bytes": 436200,
+        "gzip_bytes": 129680,
+        "sha256": "342a6a2fedf9766416dd63d6b094129b0a83ccd732584986e017bfa33c1e4d30"
+      }
+    ],
+    "initial_bytes": 436200,
+    "initial_gzip_bytes": 129680,
+    "all_js_bytes": 436200
+  },
+  "despues": {
+    "initial_js": [
+      {
+        "file": "/assets/index-LGE6ye2f.js",
+        "bytes": 253648,
+        "gzip_bytes": 78853,
+        "sha256": "14b241f96f69e883886b202d710dbaf8ce7bef5f94365ea9ab28a1278643bb9f"
+      },
+      {
+        "file": "/assets/ui-Cu0PYahC.js",
+        "bytes": 70876,
+        "gzip_bytes": 24506,
+        "sha256": "b5280e5a8623878c233b10bac81a8a907e76882f517331187f53940828a2bfb8"
+      },
+      {
+        "file": "/assets/offlineStorage-B5RfBy3L.js",
+        "bytes": 3159,
+        "gzip_bytes": 1229,
+        "sha256": "0d6031adb85400efbc24b4256cc0beeb814f04f561ff4174e23914f50826cdc0"
+      }
+    ],
+    "initial_bytes": 327683,
+    "initial_gzip_bytes": 104588,
+    "all_js_bytes": 446139
+  },
+  "initial_reduction_percent": 24.87780834479596,
+  "gzip_reduction_percent": 19.349167180752623
+}
