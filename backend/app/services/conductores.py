@@ -1,10 +1,11 @@
 """Atomic driver/account registration and validated profile updates."""
 
-from datetime import datetime
+from datetime import date, datetime
 from uuid import UUID
 from zoneinfo import ZoneInfo
 
 from pydantic import ValidationError
+from sqlalchemy import RowMapping
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 from sqlalchemy.orm import Session, sessionmaker
 
@@ -61,17 +62,34 @@ def _translate_integrity(error: IntegrityError) -> None:
     raise ConductorUnavailable("Servicio no disponible") from None
 
 
-def _response(driver: Conductor, account: Usuario | None) -> ConductorResponse:
+def _eligible(
+    estado: str,
+    cuenta_rol: str | None,
+    cuenta_estado: str | None,
+    licencia_vigente_hasta: date,
+    disponible_desde: datetime | None,
+    disponible_hasta: datetime | None,
+) -> bool:
     now = datetime.now(LIMA)
-    eligible = bool(
-        driver.estado == "ACTIVO"
-        and account is not None
-        and account.rol == "CONDUCTOR"
-        and account.estado == "ACTIVO"
-        and driver.licencia_vigente_hasta >= now.date()
-        and driver.disponible_desde is not None
-        and driver.disponible_hasta is not None
-        and driver.disponible_hasta > now
+    return bool(
+        estado == "ACTIVO"
+        and cuenta_rol == "CONDUCTOR"
+        and cuenta_estado == "ACTIVO"
+        and licencia_vigente_hasta >= now.date()
+        and disponible_desde is not None
+        and disponible_hasta is not None
+        and disponible_hasta > now
+    )
+
+
+def _response(driver: Conductor, account: Usuario | None) -> ConductorResponse:
+    eligible = _eligible(
+        driver.estado,
+        account.rol if account is not None else None,
+        account.estado if account is not None else None,
+        driver.licencia_vigente_hasta,
+        driver.disponible_desde,
+        driver.disponible_hasta,
     )
     return ConductorResponse(
         conductor_id=driver.conductor_id,
@@ -79,6 +97,24 @@ def _response(driver: Conductor, account: Usuario | None) -> ConductorResponse:
         estado=driver.estado,
         habilitado_asignacion=eligible,
         **{field: getattr(driver, field) for field in PROFILE_FIELDS},
+    )
+
+
+def _list_item(row: RowMapping) -> ConductorListItem:
+    return ConductorListItem(
+        conductor_id=row["conductor_id"],
+        nombre=row["nombre"],
+        disponible_desde=row["disponible_desde"],
+        disponible_hasta=row["disponible_hasta"],
+        estado=row["estado"],
+        habilitado_asignacion=_eligible(
+            row["estado"],
+            row["cuenta_rol"],
+            row["cuenta_estado"],
+            row["licencia_vigente_hasta"],
+            row["disponible_desde"],
+            row["disponible_hasta"],
+        ),
     )
 
 
@@ -136,12 +172,7 @@ class ConductorService:
         try:
             with self._factory() as session:
                 rows, total = ConductorRepository(session).list_page(page, page_size)
-                items = [
-                    ConductorListItem.model_validate(
-                        _response(driver, account).model_dump()
-                    )
-                    for driver, account in rows
-                ]
+                items = [_list_item(row) for row in rows]
                 return ConductorPage(
                     items=items, page=page, page_size=page_size, total=total
                 )

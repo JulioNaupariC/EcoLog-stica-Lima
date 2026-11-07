@@ -19,7 +19,12 @@ from app.repositories.vehiculos import (
     VehicleStorageError,
     VehiculoRepository,
 )
-from app.schemas.vehiculo import VehicleCreate, VehicleUpdate
+from app.schemas.vehiculo import (
+    VehicleCreate,
+    VehiclePage,
+    VehicleResponse,
+    VehicleUpdate,
+)
 
 
 class VehicleNotFound(LookupError):
@@ -53,10 +58,16 @@ class VehiculoService:
         except (VehicleStorageError, SQLAlchemyError):
             raise VehicleUnavailable("Vehicle service unavailable") from None
 
-    def list_all(self) -> list[Vehiculo]:
+    def list_page(self, page: int, page_size: int) -> VehiclePage:
         try:
             with self._factory() as session:
-                return VehiculoRepository(session).list_all()
+                rows, total = VehiculoRepository(session).list_page(page, page_size)
+                return VehiclePage(
+                    items=[VehicleResponse.model_validate(dict(row)) for row in rows],
+                    page=page,
+                    page_size=page_size,
+                    total=total,
+                )
         except (VehicleStorageError, SQLAlchemyError):
             raise VehicleUnavailable("Vehicle service unavailable") from None
 

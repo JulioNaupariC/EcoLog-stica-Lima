@@ -95,10 +95,33 @@ def test_get_and_list(monkeypatch):
     service, _, _, read_session, repository, _ = service_mocks(monkeypatch)
     row = vehicle()
     repository.get.return_value = row
-    repository.list_all.return_value = [row]
+    repository.list_page.return_value = ([listing_row(row)], 25)
     assert service.get(row.vehiculo_id) is row
-    assert service.list_all() == [row]
+    page = service.list_page(2, 12)
+    assert page.page == 2
+    assert page.page_size == 12
+    assert page.total == 25
+    assert [item.placa for item in page.items] == [row.placa]
+    repository.list_page.assert_called_once_with(2, 12)
     assert module.VehiculoRepository.call_args_list[0].args == (read_session,)
+
+
+def listing_row(row):
+    """A plain row like the one ``VehiculoRepository.list_page`` returns."""
+    return {
+        column: getattr(row, column)
+        for column in (
+            "vehiculo_id",
+            "placa",
+            "tipo",
+            "capacidad_kg",
+            "capacidad_m3",
+            "rendimiento_km_l",
+            "factor_co2_kg_km",
+            "anio_fabricacion",
+            "estado",
+        )
+    }
 
 
 def test_get_not_found(monkeypatch):
@@ -108,12 +131,15 @@ def test_get_not_found(monkeypatch):
         service.get(uuid4())
 
 
-@pytest.mark.parametrize("method", ["get", "list_all"])
+@pytest.mark.parametrize("method", ["get", "list_page"])
 def test_read_storage_failures_are_sanitized(monkeypatch, method):
     service, _, _, _, repository, _ = service_mocks(monkeypatch)
     getattr(repository, method).side_effect = VehicleStorageError("private")
     with pytest.raises(VehicleUnavailable, match="^Vehicle service unavailable$"):
-        getattr(service, method)(uuid4()) if method == "get" else service.list_all()
+        if method == "get":
+            service.get(uuid4())
+        else:
+            service.list_page(1, 12)
 
 
 def test_patch_normal_same_value_and_parameter_audit(monkeypatch):

@@ -133,7 +133,10 @@ def test_real_crud_normalization_duplicate_and_not_found(migration_database):
     vehicle = service.create(payload())
     assert vehicle.placa == "ABC-123"
     assert service.get(vehicle.vehiculo_id).vehiculo_id == vehicle.vehiculo_id
-    assert [row.vehiculo_id for row in service.list_all()] == [vehicle.vehiculo_id]
+    page = service.list_page(1, 12)
+    assert [row.vehiculo_id for row in page.items] == [vehicle.vehiculo_id]
+    assert (page.page, page.page_size, page.total) == (1, 12, 1)
+    assert service.list_page(2, 12).items == []
     with pytest.raises(VehicleDuplicatePlate):
         service.create(payload())
     with pytest.raises(VehicleNotFound):
