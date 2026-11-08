@@ -1,0 +1,60 @@
+{
+  "at": "2026-11-08T06:54:57.446Z",
+  "scenario": "diagnostic-headless-only-not-a-measurement-round",
+  "rows": [
+    {
+      "url": "http://127.0.0.1:5173/assets/jsx-runtime-de8dDx6i.js",
+      "status": 200,
+      "acceptEncoding": "gzip, deflate, br, zstd",
+      "contentEncoding": "identity",
+      "cacheControl": "public, max-age=31536000, immutable",
+      "contentLength": null,
+      "server": "nginx/1.31.6"
+    },
+    {
+      "url": "http://127.0.0.1:5173/assets/ui-hUq3HJvZ.js",
+      "status": 200,
+      "acceptEncoding": "gzip, deflate, br, zstd",
+      "contentEncoding": "identity",
+      "cacheControl": "public, max-age=31536000, immutable",
+      "contentLength": null,
+      "server": "nginx/1.31.6"
+    },
+    {
+      "url": "http://127.0.0.1:5173/assets/offlineStorage-B5RfBy3L.js",
+      "status": 200,
+      "acceptEncoding": "gzip, deflate, br, zstd",
+      "contentEncoding": "identity",
+      "cacheControl": "public, max-age=31536000, immutable",
+      "contentLength": null,
+      "server": "nginx/1.31.6"
+    },
+    {
+      "url": "http://127.0.0.1:5173/assets/index-DweF_pge.css",
+      "status": 200,
+      "acceptEncoding": "gzip, deflate, br, zstd",
+      "contentEncoding": "identity",
+      "cacheControl": "public, max-age=31536000, immutable",
+      "contentLength": null,
+      "server": "nginx/1.31.6"
+    },
+    {
+      "url": "http://127.0.0.1:5173/assets/index-aV8WfNbn.js",
+      "status": 200,
+      "acceptEncoding": "gzip, deflate, br, zstd",
+      "contentEncoding": "identity",
+      "cacheControl": "public, max-age=31536000, immutable",
+      "contentLength": null,
+      "server": "nginx/1.31.6"
+    },
+    {
+      "url": "http://127.0.0.1:5173/assets/inter-latin-wght-normal-Dx4kXJAl.woff2",
+      "status": 200,
+      "acceptEncoding": "gzip, deflate, br, zstd",
+      "contentEncoding": "identity",
+      "cacheControl": "public, max-age=31536000, immutable",
+      "contentLength": "48256",
+      "server": "nginx/1.31.6"
+    }
+  ]
+}

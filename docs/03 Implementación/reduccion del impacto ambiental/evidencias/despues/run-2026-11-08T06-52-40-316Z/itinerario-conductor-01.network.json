@@ -1,0 +1,16 @@
+{
+  "requests": 14,
+  "transferredBytes": 459748,
+  "cacheDisabled": true,
+  "failures": 0,
+  "serviceWorker": {
+    "controlled": false,
+    "registrations": 1,
+    "cacheStorageNames": [
+      "ecologistica-shell-42d0c9463b174799fd24f2ca6821fb4ce7d6f29bf4bccef785f437141a071c31"
+    ]
+  },
+  "bypassServiceWorker": true,
+  "observedMs": 2173.626000000004,
+  "finalUrl": "http://127.0.0.1:5173/conductor/itinerario"
+}

@@ -1,0 +1,339 @@
+{
+  "baseline": "antes\\run-2026-11-06T23-50-12-524Z",
+  "principal": "run-2026-11-08T06-50-38-119Z",
+  "sin_service_worker": "run-2026-11-08T06-52-40-316Z",
+  "pages": {
+    "login": {
+      "path": "/login",
+      "antes": {
+        "Performance /100": 55.00000000000001,
+        "FCP ms": 5653.690600000002,
+        "LCP ms": 10743.535900000003,
+        "TBT ms": 0,
+        "CLS": 5.294924554183814e-06,
+        "Transferido bytes": 11434626,
+        "Peticiones": 88
+      },
+      "principal": {
+        "Performance /100": 100,
+        "FCP ms": 25.83816909790039,
+        "LCP ms": 29.897302627563477,
+        "TBT ms": 0,
+        "CLS": 5.294924554183814e-06,
+        "Transferido bytes": 1020,
+        "Peticiones": 8
+      },
+      "sin_sw": {
+        "Performance /100": 100,
+        "FCP ms": 652.922,
+        "LCP ms": 652.922,
+        "TBT ms": 0,
+        "CLS": 5.294924554183814e-06,
+        "Transferido bytes": 433643,
+        "Peticiones": 8
+      },
+      "deltas_principal": {
+        "Performance /100": {
+          "antes": 55.00000000000001,
+          "despues": 100,
+          "delta": 44.99999999999999,
+          "porcentaje": 81.81818181818178
+        },
+        "FCP ms": {
+          "antes": 5653.690600000002,
+          "despues": 25.83816909790039,
+          "delta": -5627.852430902101,
+          "porcentaje": -99.5429857958994
+        },
+        "LCP ms": {
+          "antes": 10743.535900000003,
+          "despues": 29.897302627563477,
+          "delta": -10713.63859737244,
+          "porcentaje": -99.72171822288448
+        },
+        "TBT ms": {
+          "antes": 0,
+          "despues": 0,
+          "delta": 0,
+          "porcentaje": null
+        },
+        "CLS": {
+          "antes": 5.294924554183814e-06,
+          "despues": 5.294924554183814e-06,
+          "delta": 0.0,
+          "porcentaje": 0.0
+        },
+        "Transferido bytes": {
+          "antes": 11434626,
+          "despues": 1020,
+          "delta": -11433606,
+          "porcentaje": -99.9910797257383
+        },
+        "Peticiones": {
+          "antes": 88,
+          "despues": 8,
+          "delta": -80,
+          "porcentaje": -90.9090909090909
+        }
+      },
+      "deltas_sin_sw": {
+        "Performance /100": {
+          "antes": 55.00000000000001,
+          "despues": 100,
+          "delta": 44.99999999999999,
+          "porcentaje": 81.81818181818178
+        },
+        "FCP ms": {
+          "antes": 5653.690600000002,
+          "despues": 652.922,
+          "delta": -5000.768600000001,
+          "porcentaje": -88.45140199217835
+        },
+        "LCP ms": {
+          "antes": 10743.535900000003,
+          "despues": 652.922,
+          "delta": -10090.613900000002,
+          "porcentaje": -93.92265259708398
+        },
+        "TBT ms": {
+          "antes": 0,
+          "despues": 0,
+          "delta": 0,
+          "porcentaje": null
+        },
+        "CLS": {
+          "antes": 5.294924554183814e-06,
+          "despues": 5.294924554183814e-06,
+          "delta": 0.0,
+          "porcentaje": 0.0
+        },
+        "Transferido bytes": {
+          "antes": 11434626,
+          "despues": 433643,
+          "delta": -11000983,
+          "porcentaje": -96.2076328513062
+        },
+        "Peticiones": {
+          "antes": 88,
+          "despues": 8,
+          "delta": -80,
+          "porcentaje": -90.9090909090909
+        }
+      }
+    },
+    "inicio-operador": {
+      "path": "/",
+      "antes": null,
+      "principal": null,
+      "sin_sw": null,
+      "deltas_principal": {},
+      "deltas_sin_sw": {}
+    },
+    "vehiculos-operador": {
+      "path": "/vehiculos",
+      "antes": null,
+      "principal": null,
+      "sin_sw": null,
+      "deltas_principal": {},
+      "deltas_sin_sw": {}
+    },
+    "itinerario-conductor": {
+      "path": "/conductor/itinerario",
+      "antes": {
+        "Performance /100": 55.00000000000001,
+        "FCP ms": 5677.3550000000005,
+        "LCP ms": 10911.032500000001,
+        "TBT ms": 0,
+        "CLS": 0.01968817905404876,
+        "Transferido bytes": 11438644,
+        "Peticiones": 90
+      },
+      "principal": {
+        "Performance /100": 100,
+        "FCP ms": 38.09445571899414,
+        "LCP ms": 194.09803862915038,
+        "TBT ms": 0,
+        "CLS": 0.01968817905404876,
+        "Transferido bytes": 3103,
+        "Peticiones": 14
+      },
+      "sin_sw": {
+        "Performance /100": 99.0,
+        "FCP ms": 722.0605,
+        "LCP ms": 902.4847,
+        "TBT ms": 0,
+        "CLS": 0.01968817905404876,
+        "Transferido bytes": 459748,
+        "Peticiones": 14
+      },
+      "deltas_principal": {
+        "Performance /100": {
+          "antes": 55.00000000000001,
+          "despues": 100,
+          "delta": 44.99999999999999,
+          "porcentaje": 81.81818181818178
+        },
+        "FCP ms": {
+          "antes": 5677.3550000000005,
+          "despues": 38.09445571899414,
+          "delta": -5639.260544281006,
+          "porcentaje": -99.32901050367656
+        },
+        "LCP ms": {
+          "antes": 10911.032500000001,
+          "despues": 194.09803862915038,
+          "delta": -10716.93446137085,
+          "porcentaje": -98.2210845891152
+        },
+        "TBT ms": {
+          "antes": 0,
+          "despues": 0,
+          "delta": 0,
+          "porcentaje": null
+        },
+        "CLS": {
+          "antes": 0.01968817905404876,
+          "despues": 0.01968817905404876,
+          "delta": 0.0,
+          "porcentaje": 0.0
+        },
+        "Transferido bytes": {
+          "antes": 11438644,
+          "despues": 3103,
+          "delta": -11435541,
+          "porcentaje": -99.97287265868226
+        },
+        "Peticiones": {
+          "antes": 90,
+          "despues": 14,
+          "delta": -76,
+          "porcentaje": -84.44444444444444
+        }
+      },
+      "deltas_sin_sw": {
+        "Performance /100": {
+          "antes": 55.00000000000001,
+          "despues": 99.0,
+          "delta": 43.99999999999999,
+          "porcentaje": 79.99999999999999
+        },
+        "FCP ms": {
+          "antes": 5677.3550000000005,
+          "despues": 722.0605,
+          "delta": -4955.2945,
+          "porcentaje": -87.28174475614084
+        },
+        "LCP ms": {
+          "antes": 10911.032500000001,
+          "despues": 902.4847,
+          "delta": -10008.5478,
+          "porcentaje": -91.72869570317931
+        },
+        "TBT ms": {
+          "antes": 0,
+          "despues": 0,
+          "delta": 0,
+          "porcentaje": null
+        },
+        "CLS": {
+          "antes": 0.01968817905404876,
+          "despues": 0.01968817905404876,
+          "delta": 0.0,
+          "porcentaje": 0.0
+        },
+        "Transferido bytes": {
+          "antes": 11438644,
+          "despues": 459748,
+          "delta": -10978896,
+          "porcentaje": -95.98074736830694
+        },
+        "Peticiones": {
+          "antes": 90,
+          "despues": 14,
+          "delta": -76,
+          "porcentaje": -84.44444444444444
+        }
+      }
+    }
+  },
+  "api": {
+    "/vehiculos": {
+      "Media ms": {
+        "antes": 7.460594999999984,
+        "despues": 9.900850000000014,
+        "delta": 2.4402550000000307,
+        "porcentaje": 32.708584234903995
+      },
+      "Media bytes cuerpo": {
+        "antes": 1183,
+        "despues": 1227,
+        "delta": 44,
+        "porcentaje": 3.7193575655114115
+      },
+      "Min bytes": {
+        "antes": 1183,
+        "despues": 1227,
+        "delta": 44,
+        "porcentaje": 3.7193575655114115
+      },
+      "Max bytes": {
+        "antes": 1183,
+        "despues": 1227,
+        "delta": 44,
+        "porcentaje": 3.7193575655114115
+      }
+    },
+    "/conductores?page=1": {
+      "Media ms": {
+        "antes": 8.092359999999996,
+        "despues": 9.694749999999976,
+        "delta": 1.6023899999999802,
+        "porcentaje": 19.80126934540704
+      },
+      "Media bytes cuerpo": {
+        "antes": 951,
+        "despues": 951,
+        "delta": 0,
+        "porcentaje": 0.0
+      },
+      "Min bytes": {
+        "antes": 951,
+        "despues": 951,
+        "delta": 0,
+        "porcentaje": 0.0
+      },
+      "Max bytes": {
+        "antes": 951,
+        "despues": 951,
+        "delta": 0,
+        "porcentaje": 0.0
+      }
+    },
+    "/incidencias?page=1": {
+      "Media ms": {
+        "antes": 8.127395000000002,
+        "despues": 8.252519999999937,
+        "delta": 0.12512499999993487,
+        "porcentaje": 1.5395461891532876
+      },
+      "Media bytes cuerpo": {
+        "antes": 1255,
+        "despues": 1255,
+        "delta": 0,
+        "porcentaje": 0.0
+      },
+      "Min bytes": {
+        "antes": 1255,
+        "despues": 1255,
+        "delta": 0,
+        "porcentaje": 0.0
+      },
+      "Max bytes": {
+        "antes": 1255,
+        "despues": 1255,
+        "delta": 0,
+        "porcentaje": 0.0
+      }
+    }
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "name": "vehiculos-operador",
+  "path": "/vehiculos",
+  "role": "OPERADOR",
+  "rounds": [],
+  "attemptedAt": "2026-11-08T06:51:12.527Z",
+  "status": "NO_MEDIBLE",
+  "reason": "Tras recarga completa, /vehiculos redirige a /login. Identidad de Operador solo en memoria; no se inyecta identidad ni se modifica identidad de la aplicación."
+}
