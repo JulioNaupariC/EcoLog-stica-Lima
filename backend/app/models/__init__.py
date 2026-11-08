@@ -7,6 +7,7 @@ from app.models.driver_report import DriverReport
 from app.models.driver_stop_assignment import DriverStopAssignment
 from app.models.incidencia import Incidencia
 from app.models.pedido import Pedido
+from app.models.ruta import Optimizacion, ParadaRuta, PedidoNoAsignado, Ruta
 from app.models.sesion import Sesion
 from app.models.usuario import Usuario
 from app.models.vehiculo import Vehiculo
@@ -18,7 +19,11 @@ __all__ = [
     "DriverReport",
     "DriverStopAssignment",
     "Incidencia",
+    "Optimizacion",
+    "ParadaRuta",
     "Pedido",
+    "PedidoNoAsignado",
+    "Ruta",
     "Sesion",
     "Usuario",
     "Vehiculo",

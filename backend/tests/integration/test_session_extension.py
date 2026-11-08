@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta, timezone
 
 import pytest
+from alembic.script import ScriptDirectory
 from fastapi.testclient import TestClient
 from sqlalchemy import delete, select, text
 
@@ -153,7 +154,8 @@ def test_migration_round_trip_removes_only_extension_events(extension_database):
     service.extend(
         service.resolve(login.token, now=NOW), now=NOW + timedelta(minutes=30)
     )
-    command.downgrade(config, "-1")
+    # Explicit target: later revisions (0016+) sit above 0015 and go down first.
+    command.downgrade(config, "0014_resolver_incidencias")
     with engine.connect() as connection:
         assert (
             connection.scalar(
@@ -175,5 +177,5 @@ def test_migration_round_trip_removes_only_extension_events(extension_database):
     with engine.connect() as connection:
         assert (
             connection.scalar(text("SELECT version_num FROM alembic_version"))
-            == "0015_sesion_extendida"
+            == ScriptDirectory.from_config(config).get_current_head()
         )

@@ -20,7 +20,7 @@
 - [RF-006 y RF-001](<../../01 Inicio/06. Requisitos funcionales V_1_1_0.md>).
 - [RN-002 a RN-013 y gestión de parámetros](<../../01 Inicio/09. Reglas de negocio V_1_1_0.md>).
 - [RNF-001, RNF-003, RNF-004, RNF-009 y RNF-011](<../../01 Inicio/07. Requisitos no funcionales V_1_2_0.md>).
-- [Modelo objetivo: optimizacion, ruta, parada_ruta y parametro](<../../01 Inicio/11. Base de datos V_1_1_0.md>).
+- [Modelo objetivo: optimizacion, ruta, parada_ruta y parametro](<../../01 Inicio/11. Base de datos V_1_2_0.md>).
 - [Matriz de roles aprobada](<../../01 Inicio/08. Usuarios V_1_0_0.md>),
   [contrato ST-045](../../../backend/README.md#api-de-rutas-contrato-con-datos-simulados--ecl-94--st-045),
   [esquemas provisionales](../../../backend/app/schemas/rutas.py) y
