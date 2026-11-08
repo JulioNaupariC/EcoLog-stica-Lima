@@ -29,6 +29,7 @@ from app.repositories.incidencias import (
     IncidenciaStorageError,
     StoredIncidencia,
 )
+from app.repositories.rutas import RutaRepository, RutaStorageError
 from app.schemas.incidencia import (
     ConductorResumen,
     IncidenciaCreate,
@@ -52,7 +53,7 @@ class IncidenciaSinConductor(PermissionError):
 
 
 class IncidenciaParadaAjena(PermissionError):
-    """The stop exists but belongs to another driver (generic 403, I10)."""
+    """The stop is outside the driver's itinerary or reporting day (403)."""
 
 
 class IncidenciaInvalida(ValueError):
@@ -162,6 +163,17 @@ class IncidenciaService:
                         raise IncidenciaConflicto("Operation ID conflict")
                     return _ack(stored), False
                 self._validate_new(repository, usuario_id, payload, current)
+                if payload.parada_id is not None:
+                    jornada = RutaRepository(session).jornada_de_asignacion(
+                        payload.parada_id
+                    )
+                    if (
+                        jornada is None
+                        or jornada.conductor_id != conductor_id
+                        or jornada.fecha_operacion
+                        != payload.ocurrida_en.astimezone(LIMA).date()
+                    ):
+                        raise IncidenciaParadaAjena("Stop outside reporting day")
                 incidencia = repository.add(
                     Incidencia(
                         conductor_id=conductor_id,
@@ -201,7 +213,12 @@ class IncidenciaService:
         except IncidenciaDuplicateOperation:
             # I13: a concurrent first send won the race; never answer 5xx.
             return self._concurrent_retry(usuario_id, payload), False
-        except (IncidenciaStorageError, AuditStorageError, SQLAlchemyError):
+        except (
+            IncidenciaStorageError,
+            RutaStorageError,
+            AuditStorageError,
+            SQLAlchemyError,
+        ):
             raise IncidenciaUnavailable("Servicio no disponible") from None
 
     def listar(

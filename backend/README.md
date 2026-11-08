@@ -916,20 +916,25 @@ endpoint `POST /conductor/incidencias` admite **solo el rol Conductor**, mediant
 - **Auditoría:** la denegación se registra como `AUTORIZACION_DENEGADA` con
   motivo `SIN_PERMISO`.
 
-### Jornada de la parada (I03): pendiente
+### Jornada de la parada (I03) — ECL-82
 
-La BDD pide que la parada sea del itinerario **y de la jornada** del reporte. El
-modelo actual no permite comprobar la jornada de forma confiable:
+Para una incidencia nueva con `parada_id`, se comprueba la propiedad de la
+asignación y se consulta su ruta mediante `RutaRepository.jornada_de_asignacion`.
+La ruta debe pertenecer al perfil del conductor autenticado y su
+`fecha_operacion` debe coincidir con `ocurrida_en` convertido a `America/Lima`.
+No se infiere jornada desde `assigned_at`, la ventana del pedido ni la fecha
+de recepción; se admiten reportes antiguos de la jornada correspondiente.
 
-- no existe una entidad de jornada ni de ruta;
-- el itinerario (`driver_stop_assignment`) no tiene fecha;
-- `pedido_id` es opcional;
-- la ventana de un pedido puede cruzar la medianoche de Lima.
+Parada propia de otra jornada, ruta de otro conductor o asignación antigua sin
+ruta vinculada reciben el mismo `403 {"detail":"Acceso denegado"}`, sin alta.
+Parada inexistente conserva 422; sin parada se conserva el alta válida.
+El replay equivalente de una operación almacenada devuelve su acuse original
+con 200 **antes** de consultar la parada o su jornada; contenido distinto
+conserva 409. Esto preserva la idempotencia de la cola offline.
 
-Hoy solo se valida que la parada exista y sea del conductor. La comprobación de
-jornada se aplaza a [ECL-82](https://continental-team-il84x39k.atlassian.net/browse/ECL-82)
-(falta el modelo de rutas); el aplazamiento está pendiente de ratificación de
-Julio. **I03 no está cubierto por completo.**
+No hay migraciones nuevas: se utiliza el vínculo persistido por ST-046.
+La [validación US-012 v1.1.0 del Sprint 4](<../docs/03 Implementación/Sprint 04/VALIDACION_US012_ECL82_V_1_1_0.md>)
+actualiza la cobertura de I03 y conserva la evidencia histórica del Sprint 3.
 
 ### Migración 0013
 
@@ -953,9 +958,12 @@ Julio. **I03 no está cubierto por completo.**
 ### Datos de demostración
 
 `scripts/seed_demo.py` agrega 3 incidencias ficticias de `conductor.demo`,
-pendientes de validación: avería, tráfico y clima en Lima, la primera asociada
-a su parada 1. Su `operation_id` es determinista: se deriva con `uuid5` y se
-marca como versión 4, así que volver a sembrar no las duplica.
+pendientes de validación: avería, tráfico y clima en Lima. Las altas nuevas
+se crean sin parada porque estas asignaciones demo todavía no tienen ruta
+planificada. Al repetir una siembra anterior se conserva la referencia de
+parada ya almacenada, sin revalidar jornada ni cambiar el payload del replay.
+Su `operation_id` es determinista: se deriva con `uuid5` y se marca como
+versión 4, así que volver a sembrar no las duplica.
 
 ## Endurecimiento HTTP — ECL-84 (OWASP A02/A10)
 

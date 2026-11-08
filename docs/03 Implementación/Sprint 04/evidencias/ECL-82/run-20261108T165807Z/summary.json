@@ -1,0 +1,51 @@
+{
+  "ticket": "ECL-82",
+  "baseline": "8a9f25d21012c7ba34dcf1a7f18ce30880bcb637",
+  "working_tree_dirty": true,
+  "recorded_at_utc": "2026-11-08T16:58:07.510419+00:00",
+  "timezone": "America/Lima",
+  "python": "3.12.10",
+  "unit": {
+    "name": "pytest",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "2",
+    "tests": "1179",
+    "time": "196.892",
+    "timestamp": "2026-11-08T16:54:25.267334+00:00",
+    "hostname": "8c4314fc2d49"
+  },
+  "focused_unit": {
+    "name": "pytest",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "tests": "171",
+    "time": "13.901",
+    "timestamp": "2026-11-08T16:57:28.820019+00:00",
+    "hostname": "636940c2d5af"
+  },
+  "integration": {
+    "name": "pytest",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "tests": "91",
+    "time": "134.542",
+    "timestamp": "2026-11-08T16:54:55.272817+00:00",
+    "hostname": "7f721b75b096"
+  },
+  "coverage": {
+    "line_rate": "0.9527",
+    "lines_covered": "4456",
+    "lines_valid": "4677",
+    "changed_modules": {
+      "api/incidencias.py": "0.9815",
+      "services/incidencias.py": "1"
+    }
+  },
+  "frontend_offline": {
+    "tests": 19,
+    "failures": 0
+  }
+}

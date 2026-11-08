@@ -145,7 +145,28 @@ def test_ruta_dorada_incidencias_demo_pendientes_y_auditadas(demo_factory):
         )
     assert {row.estado for row in rows} == {"PENDIENTE_VALIDACION"}
     assert {row.conductor_id for row in rows} == {driver.conductor_id}
-    assert [row.parada_id for row in rows if row.parada_id] != []
-    assert all(row.parada_id in stops for row in rows if row.parada_id)
+    assert len(stops) == 5
+    assert all(row.parada_id is None for row in rows)  # No planned demo routes.
     assert all(row.ocurrida_en < NOW for row in rows)
     assert audited == 3
+
+
+def test_ECL82_seed_reenvia_incidencia_legacy_con_parada_sin_ruta(demo_factory):
+    seed(demo_factory, PASSWORDS, now=NOW)
+    with demo_factory.begin() as session:
+        driver = session.scalar(
+            select(Conductor).where(Conductor.nombre == DRIVERS[0].nombre)
+        )
+        stop = session.scalar(
+            select(DriverStopAssignment).where(
+                DriverStopAssignment.owner_id == driver.usuario_id
+            )
+        )
+        incident = session.scalar(select(Incidencia))
+        incident.parada_id = stop.stop_id  # Simulate an already stored Sprint 3 alta.
+        incident_id, stop_id = incident.incidencia_id, stop.stop_id
+    summary = seed(demo_factory, PASSWORDS, now=NOW)
+    assert summary.existing["incidencias"] == 3
+    assert summary.created.get("incidencias", 0) == 0
+    with demo_factory() as session:
+        assert session.get(Incidencia, incident_id).parada_id == stop_id
