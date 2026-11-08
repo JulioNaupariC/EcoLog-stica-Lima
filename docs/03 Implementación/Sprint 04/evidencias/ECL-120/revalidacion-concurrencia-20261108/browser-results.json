@@ -1,0 +1,122 @@
+{
+  "status": "passed",
+  "date": "2026-11-08T23:39:40.935Z",
+  "source": "SPA real, HTTP sintético interceptado; la prueba real de BD se registra separadamente",
+  "sourceHashes": {
+    "frontend/src/components/RouteExecution.tsx": "72ccd08ebf3e8de7eec9cee35ec54880e269cff1d4f5e48f6993b68ef85df2d6",
+    "frontend/src/components/StopOutcomeForm.tsx": "42b9914dda01fb0256371a3eb8dd678455a22f48a48ebdd313a1f652763421e3",
+    "frontend/src/services/routeOutcomes.ts": "36f6f5440e8d0f54e9db321b954edf8e43593086f01e6cb0c3d18f8d0ef455fa",
+    "frontend/src/pages/OperationRoutesPage.tsx": "a87d2859f1b69bcf4b42fcf88a176d65a1fd6bb4ed06476be5f67989a041f6b5",
+    "frontend/src/styles/routeExecution.css": "8d8f558fd39817ceaaf876beeeab9059473d9e771889eb251a1b7432e4a30e37"
+  },
+  "records": [
+    {
+      "browser": "chrome",
+      "version": "Chrome/157.0.8103.38",
+      "theme": "light",
+      "width": 1280,
+      "scroll": 1280,
+      "axeViolations": 0,
+      "axeIncomplete": 1
+    },
+    {
+      "browser": "chrome",
+      "version": "Chrome/157.0.8103.38",
+      "theme": "light",
+      "width": 360,
+      "scroll": 360,
+      "axeViolations": 0,
+      "axeIncomplete": 1
+    },
+    {
+      "browser": "chrome",
+      "theme": "light",
+      "lighthouseMode": "snapshot",
+      "accessibility": 1,
+      "failed": []
+    },
+    {
+      "browser": "chrome",
+      "version": "Chrome/157.0.8103.38",
+      "theme": "dark",
+      "width": 1280,
+      "scroll": 1280,
+      "axeViolations": 0,
+      "axeIncomplete": 1
+    },
+    {
+      "browser": "chrome",
+      "version": "Chrome/157.0.8103.38",
+      "theme": "dark",
+      "width": 360,
+      "scroll": 360,
+      "axeViolations": 0,
+      "axeIncomplete": 1
+    },
+    {
+      "browser": "chrome",
+      "theme": "dark",
+      "lighthouseMode": "snapshot",
+      "accessibility": 1,
+      "failed": []
+    },
+    {
+      "browser": "chrome",
+      "keyboard": true,
+      "timeValidationNoRequest": true,
+      "server422Focus": true,
+      "service503BlocksUntilRefresh": true,
+      "conflict409Refresh": true,
+      "closedRouteReadOnly": true,
+      "administratorReadOnly": true,
+      "nativeConfirmationUsed": false
+    },
+    {
+      "browser": "firefox",
+      "version": "firefox/159.0.1",
+      "theme": "light",
+      "width": 1280,
+      "scroll": 1280,
+      "axeViolations": 0,
+      "axeIncomplete": 1
+    },
+    {
+      "browser": "firefox",
+      "version": "firefox/159.0.1",
+      "theme": "light",
+      "width": 360,
+      "scroll": 360,
+      "axeViolations": 0,
+      "axeIncomplete": 1
+    },
+    {
+      "browser": "firefox",
+      "version": "firefox/159.0.1",
+      "theme": "dark",
+      "width": 1280,
+      "scroll": 1280,
+      "axeViolations": 0,
+      "axeIncomplete": 1
+    },
+    {
+      "browser": "firefox",
+      "version": "firefox/159.0.1",
+      "theme": "dark",
+      "width": 360,
+      "scroll": 360,
+      "axeViolations": 0,
+      "axeIncomplete": 1
+    },
+    {
+      "browser": "firefox",
+      "keyboard": true,
+      "timeValidationNoRequest": true,
+      "server422Focus": true,
+      "service503BlocksUntilRefresh": true,
+      "conflict409Refresh": true,
+      "closedRouteReadOnly": true,
+      "administratorReadOnly": true,
+      "nativeConfirmationUsed": false
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "status": "passed",
+  "date": "2026-11-08T23:40:19.828Z",
+  "browser": "Chrome/157.0.8103.38",
+  "source": "UI real, API FastAPI real, PostgreSQL/PostGIS aislado con seed sintético; no usa la base demo del usuario",
+  "sourceHashes": {
+    "frontend/src/components/RouteExecution.tsx": "72ccd08ebf3e8de7eec9cee35ec54880e269cff1d4f5e48f6993b68ef85df2d6",
+    "frontend/src/components/StopOutcomeForm.tsx": "42b9914dda01fb0256371a3eb8dd678455a22f48a48ebdd313a1f652763421e3",
+    "frontend/src/services/routeOutcomes.ts": "36f6f5440e8d0f54e9db321b954edf8e43593086f01e6cb0c3d18f8d0ef455fa",
+    "frontend/src/pages/OperationRoutesPage.tsx": "a87d2859f1b69bcf4b42fcf88a176d65a1fd6bb4ed06476be5f67989a041f6b5"
+  },
+  "checks": [
+    {
+      "name": "UI registra resultados persistidos",
+      "attended": 1,
+      "notAttended": 12
+    },
+    {
+      "name": "GET confirma cierre, parada real, reintento idempotente y dashboard sin simular",
+      "routeState": "CERRADA",
+      "stopStates": [
+        "ATENDIDA",
+        "NO_ATENDIDA",
+        "NO_ATENDIDA",
+        "NO_ATENDIDA",
+        "NO_ATENDIDA",
+        "NO_ATENDIDA",
+        "NO_ATENDIDA",
+        "NO_ATENDIDA",
+        "NO_ATENDIDA",
+        "NO_ATENDIDA",
+        "NO_ATENDIDA",
+        "NO_ATENDIDA",
+        "NO_ATENDIDA"
+      ],
+      "repeatedCloseStatus": 200,
+      "closedAt": "2026-11-08T18:40:19.107004-05:00",
+      "attended": 1,
+      "notAttended": 12,
+      "withData": true,
+      "simulated": false,
+      "routes": 1,
+      "versions": [
+        "REFERENCIA-RN-2026-11"
+      ],
+      "utf8Bytes": 495
+    }
+  ]
+}
