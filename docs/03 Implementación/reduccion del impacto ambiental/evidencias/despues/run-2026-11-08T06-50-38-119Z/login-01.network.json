@@ -1,0 +1,8 @@
+{
+  "requests": 8,
+  "transferredBytes": 1020,
+  "cacheDisabled": true,
+  "failures": 0,
+  "observedMs": 2029.6367999999993,
+  "finalUrl": "http://127.0.0.1:5173/login"
+}

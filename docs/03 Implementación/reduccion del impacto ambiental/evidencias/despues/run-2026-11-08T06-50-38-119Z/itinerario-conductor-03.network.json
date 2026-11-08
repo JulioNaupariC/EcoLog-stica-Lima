@@ -1,0 +1,8 @@
+{
+  "requests": 14,
+  "transferredBytes": 3103,
+  "cacheDisabled": true,
+  "failures": 0,
+  "observedMs": 2138.514599999995,
+  "finalUrl": "http://127.0.0.1:5173/conductor/itinerario"
+}
