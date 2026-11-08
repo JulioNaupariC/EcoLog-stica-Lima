@@ -122,6 +122,34 @@ def test_baseline_evidence_is_read_from_ecl108():
     assert pages == {"/login": 11_434_626, "/conductor/itinerario": 11_438_644}
 
 
+def test_after_evidence_is_the_first_load_campaign_of_ecl115():
+    antes = swdm.bytes_por_pagina(json.loads(swdm.ANTES_RESULTADOS.read_text("utf-8")))
+    despues = swdm.bytes_por_pagina(
+        json.loads(swdm.DESPUES_RESULTADOS.read_text("utf-8"))
+    )
+    assert despues == {"/login": 433_643, "/conductor/itinerario": 459_748}
+    report = swdm.calcular(antes, despues, swdm.VISITAS_ANUALES_SUPUESTAS)
+    login = report["paginas"]["/login"]
+    itinerario = report["paginas"]["/conductor/itinerario"]
+    assert login["reduccion_pct"] == pytest.approx(96.2076, abs=1e-3)
+    assert itinerario["reduccion_pct"] == pytest.approx(95.9807, abs=1e-3)
+    assert login["despues"]["rating"] == itinerario["despues"]["rating"] == "A"
+
+
+def test_service_worker_reload_is_a_repeat_visit_not_a_first_load():
+    recarga = swdm.bytes_por_pagina(
+        json.loads(swdm.DESPUES_RECARGA_SW.read_text("utf-8"))
+    )
+    assert recarga == {"/login": 1_020, "/conductor/itinerario": 3_103}
+
+
+def test_cli_uses_the_ecl115_first_load_by_default(capsys):
+    assert swdm.main(["--despues"]) == 0
+    salida = capsys.readouterr().out
+    assert "/login | DESPUES | 433643" in salida
+    assert "/login | reducción | 96.2 %" in salida
+
+
 def test_report_compares_antes_and_despues():
     report = swdm.calcular({"/login": 2_000_000}, {"/login": 500_000}, 100)
     row = report["paginas"]["/login"]

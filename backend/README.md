@@ -1261,6 +1261,31 @@ DistriRápido; se cambia con `--visitas-anuales`.
 - **Referencia:** la meta de 1,1 MB de la rúbrica equivale a 0,163 g CO₂e por
   visita (calificación C).
 
+### Resultados DESPUÉS (ECL-115) y reducción
+
+Se usa la **campaña suplementaria** de ECL-115 (`run-2026-11-08T06-52-40-316Z`),
+que omite el service worker. Es una carga completa con la caché deshabilitada,
+igual que ANTES.
+
+| Página | Bytes | kWh/visita | g CO₂e/visita | g CO₂e Perú | Calificación | kWh/año | kg CO₂e/año | Reducción |
+|---|---:|---:|---:|---:|:-:|---:|---:|---:|
+| `/login` | 433 643 | 0,000130 | 0,0643 | 0,0449 | A | 0,585 | 0,289 | 96,2 % |
+| `/conductor/itinerario` | 459 748 | 0,000138 | 0,0681 | 0,0476 | A | 0,621 | 0,307 | 96,0 % |
+
+- Las dos páginas bajan de F a A y quedan por debajo de la meta de 1,1 MB de la
+  rúbrica. En la proyección conservadora, el itinerario pasa de 7,628 a
+  0,307 kg CO₂e al año con 4 500 visitas.
+- **Recarga con caché offline:** la campaña principal de ECL-115 mide recargas
+  con el service worker ya instalado (1 020 y 3 103 bytes, unos 0,0002 y
+  0,0005 g por visita). Es una visita recurrente, no una primera carga. No se
+  usa para la reducción porque daría un 100 % que no es comparable.
+- **Límites de la comparación:**
+  - ANTES se midió con el servidor de desarrollo de Vite y DESPUÉS con el
+    build de producción de ECL-113. La mayor parte de la reducción viene de ese
+    cambio de modo de servicio. No se atribuye a cada optimización por separado.
+  - Son estimaciones del modelo SWDM v4 a partir de bytes transferidos, no
+    consumo eléctrico medido.
+  - `/` y `/vehiculos` siguen como NM en ECL-115 y no se comparan.
 
 ### Reproducción
 
@@ -1268,7 +1293,8 @@ Desde `backend/`:
 
 ```powershell
 python scripts/swdm_v4.py                       # ANTES de ECL-108
-python scripts/swdm_v4.py --despues "<carpeta de ECL-115>/resultados.json"
+python scripts/swdm_v4.py --despues            # ECL-115 sin service worker
+python scripts/swdm_v4.py --despues "<otra campaña>/resultados.json"
 python scripts/swdm_v4.py --bytes 1100000 --json
 python -m pytest tests/unit/test_swdm_v4.py -q
 ```

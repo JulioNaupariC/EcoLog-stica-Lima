@@ -22,6 +22,7 @@ Units: 1 GB = 10^9 bytes (decimal), as SWDM v4 and CO2.js use. Bytes are the
 Usage, from ``backend/``::
 
     python scripts/swdm_v4.py
+    python scripts/swdm_v4.py --despues      # ECL-115, first load (no SW)
     python scripts/swdm_v4.py --despues "<ruta>/resultados.json"
     python scripts/swdm_v4.py --bytes 1100000 --visitas-anuales 10000
 """
@@ -73,6 +74,16 @@ EVIDENCIAS = (
 )
 ANTES_RESULTADOS = (
     EVIDENCIAS / "antes" / "run-2026-11-06T23-50-12-524Z" / "resultados.json"
+)
+# ECL-115 has two campaigns. The supplementary one bypasses the service worker,
+# so it is a full first load with the cache disabled, comparable with ANTES.
+# The main one reloads with the offline cache already installed: a repeat
+# visit, not a first load, so it is not used for the reduction.
+DESPUES_RESULTADOS = (
+    EVIDENCIAS / "despues" / "run-2026-11-08T06-52-40-316Z" / "resultados.json"
+)
+DESPUES_RECARGA_SW = (
+    EVIDENCIAS / "despues" / "run-2026-11-08T06-50-38-119Z" / "resultados.json"
 )
 
 
@@ -234,7 +245,13 @@ def _formato(report: dict) -> str:
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--antes", type=Path, default=ANTES_RESULTADOS)
-    parser.add_argument("--despues", type=Path)
+    parser.add_argument(
+        "--despues",
+        type=Path,
+        nargs="?",
+        const=DESPUES_RESULTADOS,
+        help="campaña DESPUÉS; sin ruta usa la de ECL-115 sin service worker",
+    )
     parser.add_argument("--bytes", type=int, help="calcular un tamaño suelto")
     parser.add_argument(
         "--visitas-anuales", type=int, default=VISITAS_ANUALES_SUPUESTAS
