@@ -427,6 +427,7 @@ Los siguientes comentarios reservan enlaces para entregas futuras.
 - [ECL-14 — Mapa operativo, lista accesible y límites de tráfico](<docs/03 Implementación/Sprint 04/ECL-14 mapa rutas.md>)
 - [ECL-87 — Code smells del frontend y validación de accesibilidad](<docs/03 Implementación/Sprint 04/ECL-87 code smells frontend.md>)
 - [ECL-96 — Servicio de optimización y endpoints de rutas (ST-047)](<docs/03 Implementación/Sprint 04/ECL-96 servicio de optimizacion.md>)
+- [ECL-21 — Benchmark de extremo a extremo de RNF-001 (EN-003)](<docs/03 Implementación/Sprint 04/ECL-21 benchmark RNF-001.md>)
 
 #### Estado de cierre del Sprint 4
 

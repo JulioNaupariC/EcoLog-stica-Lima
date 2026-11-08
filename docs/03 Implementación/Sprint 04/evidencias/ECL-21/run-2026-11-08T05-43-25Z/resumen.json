@@ -1,0 +1,53 @@
+{
+  "corridas": 30,
+  "exitosas": 30,
+  "fallidas": 0,
+  "con_violaciones": 0,
+  "post_s": {
+    "min": 20.101578126999925,
+    "p50": 20.137285521999956,
+    "p95": 20.18279763399994,
+    "max": 20.279047195999965,
+    "media": 20.14253761446666
+  },
+  "total_s": {
+    "min": 20.12442037200003,
+    "p50": 20.16613671700003,
+    "p95": 20.210093392999852,
+    "max": 20.305702890999896,
+    "media": 20.1685467893
+  },
+  "motor_s": {
+    "min": 20.016,
+    "p50": 20.02,
+    "p95": 20.03,
+    "max": 20.031,
+    "media": 20.022066666666667
+  },
+  "servidos_min": 148,
+  "no_asignados_max": 2,
+  "cumple_rnf001": true,
+  "escenario": {
+    "pedidos": 150,
+    "vehiculos": 15,
+    "semillas": [
+      2027,
+      2056
+    ],
+    "fecha_operacion": "2026-11-16",
+    "tiempo_limite_motor_s": 20,
+    "cliente": "TestClient en proceso (sin latencia de red)"
+  },
+  "parametros_version": "BENCH-REFERENCIA-RN",
+  "parametros_registrados_por_el_benchmark": false,
+  "limite_rnf001_s": 45.0,
+  "medido_en": "2026-11-08T05:53:34+00:00",
+  "entorno": {
+    "commit": "eb53947",
+    "python": "3.12.3",
+    "ortools": "9.14.6206",
+    "sistema": "Linux 6.18.44-fc-v310",
+    "procesador": "x86_64",
+    "cpus": 2
+  }
+}
