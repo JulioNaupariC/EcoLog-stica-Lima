@@ -298,11 +298,11 @@ def ejecutar(argv: Sequence[str] | None = None) -> int:
     database_url = os.environ.get("DATABASE_URL")
     ensure_safe_target(database_url, os.environ.get("APP_ENV"), SUFIJOS)
 
+    from alembic.config import Config
+    from alembic.script import ScriptDirectory
     from fastapi.testclient import TestClient
     from sqlalchemy import text
 
-    from alembic.config import Config
-    from alembic.script import ScriptDirectory
     from app.core.config import Settings
     from app.db.session import build_engine, session_factory
     from app.main import create_app

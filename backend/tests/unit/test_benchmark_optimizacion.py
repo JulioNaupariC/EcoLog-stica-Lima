@@ -25,7 +25,9 @@ def parada(pedido, eta="2026-11-16T10:00:00-05:00"):
 
 def detalle(paradas, peso=100.0, omitidos=()):
     return {
-        "rutas": [{"vehiculo": {"vehiculo_id": V1}, "peso_kg": peso, "paradas": paradas}],
+        "rutas": [
+            {"vehiculo": {"vehiculo_id": V1}, "peso_kg": peso, "paradas": paradas}
+        ],
         "no_asignados": [{"pedido_id": p} for p in omitidos],
     }
 
