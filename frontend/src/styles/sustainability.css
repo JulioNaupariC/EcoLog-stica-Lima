@@ -1,0 +1,11 @@
+.sustainability-page { display: grid; gap: var(--space-5); min-width: 0; }
+.sustainability-filters { display: flex; flex-wrap: wrap; align-items: end; gap: var(--space-4); padding: var(--space-5); }
+.sustainability-filters .form-field { flex: 1 1 12rem; min-width: 0; }
+.sustainability-filters .field-error { flex-basis: 100%; }
+.sustainability-page .card { min-width: 0; }
+.sustainability-page code { overflow-wrap: anywhere; }
+.sustainability-page h3 { margin-block: var(--space-4) var(--space-2); }
+@media (max-width: 35rem) {
+  .sustainability-filters { align-items: stretch; }
+  .sustainability-filters > button { width: 100%; }
+}

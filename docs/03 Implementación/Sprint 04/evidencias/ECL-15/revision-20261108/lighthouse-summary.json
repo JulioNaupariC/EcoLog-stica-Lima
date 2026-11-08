@@ -1,0 +1,9 @@
+{
+  "lighthouseVersion": "12.6.1",
+  "fetchTime": "2026-11-08T18:57:03.921Z",
+  "gatherMode": "snapshot",
+  "finalDisplayedUrl": "http://127.0.0.1:5184/indicadores/sostenibilidad",
+  "entorno": "SPA real y HTTP sintético interceptado; sin login real ni prueba del backend",
+  "accessibility": 1,
+  "failedAudits": []
+}
