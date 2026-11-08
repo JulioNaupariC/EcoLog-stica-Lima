@@ -45,6 +45,13 @@ class Settings(BaseSettings):
     database_url: SecretStr | None = None
     db_connect_timeout: int = Field(default=5, ge=1, le=30)
     session_ttl_minutes: int = Field(default=60, ge=1, le=1440)
+    # ST-047: depot of every optimization (WGS84). The default is the spike's
+    # working assumption (Santa Anita, ECL-93); set the company's real depot
+    # with DEPOSITO_LATITUD / DEPOSITO_LONGITUD. It is kept in each snapshot.
+    deposito_latitud: float = Field(default=-12.0470, ge=-90, le=90)
+    deposito_longitud: float = Field(default=-76.9680, ge=-180, le=180)
+    # RNF-001: the search stops here; the request stays well under 45 s.
+    optimizacion_tiempo_limite_s: int = Field(default=20, ge=1, le=40)
     cors_allowed_origins: list[str] = Field(default_factory=list)
 
     @field_validator("cors_allowed_origins")
