@@ -21,10 +21,11 @@ def metricas_vehiculo(distancia_km: float, vehiculo: VehiculoVRP) -> Metricas:
 
 
 def sumar(metricas: Sequence[Metricas]) -> Metricas:
+    """Exact totals: RNF-011 forbids intermediate rounding (BDD decision 7)."""
     return Metricas(
-        distancia_km=round(sum(m.distancia_km for m in metricas), 3),
-        co2_kg=round(sum(m.co2_kg for m in metricas), 3),
-        combustible_l=round(sum(m.combustible_l for m in metricas), 3),
+        distancia_km=sum(m.distancia_km for m in metricas),
+        co2_kg=sum(m.co2_kg for m in metricas),
+        combustible_l=sum(m.combustible_l for m in metricas),
     )
 
 

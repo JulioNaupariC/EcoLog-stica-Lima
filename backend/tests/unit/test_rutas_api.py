@@ -292,3 +292,40 @@ def test_openapi_documents_the_contract():
     detalle = paths["/optimizaciones/{optimizacion_id}"]["get"]["responses"]
     assert {"200", "401", "403", "404", "422"} <= set(detalle)
     assert "/indicadores/sostenibilidad" in paths
+
+
+def _resumen_completado() -> dict:
+    data = json.loads((FIXTURES / "optimizacion-completada.json").read_text("utf-8"))
+    return data["resumen"]
+
+
+def test_zero_baseline_savings_are_null_not_zero():
+    """BDD US-006 v1.0.0 (R10, decisión 4): base 0 -> null, nunca 0 %."""
+    from app.schemas.rutas import Resumen
+
+    resumen = _resumen_completado()
+    resumen["secuencial"]["costo_soles"] = 0
+    resumen["optimizada"]["costo_soles"] = 0
+    resumen["ahorro_pct"]["costo"] = None
+    assert Resumen.model_validate(resumen).ahorro_pct.costo is None
+    resumen["ahorro_pct"]["costo"] = 0.0
+    with pytest.raises(ValueError, match="ahorro_pct.costo"):
+        Resumen.model_validate(resumen)
+
+
+def test_null_savings_require_a_zero_baseline():
+    from app.schemas.rutas import Resumen
+
+    resumen = _resumen_completado()
+    resumen["ahorro_pct"]["distancia"] = None
+    with pytest.raises(ValueError, match="ahorro_pct.distancia"):
+        Resumen.model_validate(resumen)
+
+
+def test_negative_savings_have_no_artificial_floor():
+    from app.schemas.rutas import Ahorro
+
+    ahorro = Ahorro(distancia=-150.0, co2=-250.5, combustible=None, costo=100)
+    assert (ahorro.distancia, ahorro.co2) == (-150.0, -250.5)
+    with pytest.raises(ValueError):
+        Ahorro(distancia=100.01, co2=0, combustible=0, costo=0)
