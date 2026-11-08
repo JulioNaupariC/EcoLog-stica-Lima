@@ -20,6 +20,7 @@ export interface OperationRoute {
   ruta_id: string
   vehiculo: { placa: string }
   conductor: { nombre: string } | null
+  motivo_sin_conductor: keyof typeof DRIVER_ASSIGNMENT_REASONS | null
   estado: 'PLANIFICADA' | 'EN_CURSO' | 'CERRADA'
   salida: string; regreso: string; tiempo_min: number
   metricas: { distancia_km: number; co2_kg: number; combustible_l: number; costo_soles: number }
@@ -29,6 +30,12 @@ export interface OperationRoute {
 export const UNASSIGNED_REASONS = {
   EXCEDE_CAPACIDAD: 'Excede la capacidad disponible', VENTANA_INVIABLE: 'Ventana de entrega inviable',
   SIN_UBICACION: 'Sin ubicación válida', SIN_VEHICULO: 'Sin vehículo utilizable',
+}
+export const DRIVER_ASSIGNMENT_REASONS = {
+  SIN_CONDUCTOR_ELEGIBLE: 'Sin conductor elegible asignado',
+  LICENCIA_VENCIDA: 'Sin conductor: la licencia no cubre toda la conducción prevista',
+  DISPONIBILIDAD_INSUFICIENTE: 'Sin conductor: disponibilidad insuficiente para esta ruta',
+  JORNADA_INVIABLE: 'Sin conductor: se excede la jornada o falta el descanso requerido',
 }
 
 /** Internal presentation port. ST-045 does not yet publish traffic/alert fields. */
@@ -112,7 +119,11 @@ function route(value: unknown): OperationRoute {
   const salida = instant(r.salida), regreso = instant(r.regreso)
   ensure(Date.parse(salida) <= Date.parse(regreso))
   const conductor = r.conductor === null ? null : { nombre: text(object(r.conductor).nombre) }
+  const motivo_sin_conductor = conductor === null
+    ? choice(r.motivo_sin_conductor ?? 'SIN_CONDUCTOR_ELEGIBLE', Object.keys(DRIVER_ASSIGNMENT_REASONS) as (keyof typeof DRIVER_ASSIGNMENT_REASONS)[])
+    : null
   return { ruta_id: id(r.ruta_id), vehiculo: { placa: text(object(r.vehiculo).placa) }, conductor,
+    motivo_sin_conductor,
     estado: choice(r.estado, ['PLANIFICADA', 'EN_CURSO', 'CERRADA']), salida, regreso, tiempo_min: nonnegative(r.tiempo_min),
     metricas: { distancia_km: nonnegative(m.distancia_km), co2_kg: nonnegative(m.co2_kg),
       combustible_l: nonnegative(m.combustible_l), costo_soles: nonnegative(m.costo_soles) },

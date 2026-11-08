@@ -1,0 +1,37 @@
+{
+  "ticket": "ECL-79",
+  "baseline": "8a9f25d21012c7ba34dcf1a7f18ce30880bcb637",
+  "working_tree_dirty": true,
+  "timezone": "America/Lima",
+  "python": "3.12.10",
+  "unit": {
+    "name": "pytest",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "2",
+    "tests": "1208",
+    "time": "164.198",
+    "timestamp": "2026-11-08T17:17:47.522000+00:00",
+    "hostname": "a25c801e708b"
+  },
+  "integration": {
+    "name": "pytest",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "tests": "27",
+    "time": "42.961",
+    "timestamp": "2026-11-08T17:17:11.079364+00:00",
+    "hostname": "f26e4cf85a9e"
+  },
+  "coverage": {
+    "line-rate": "0.9496",
+    "lines-covered": "4526",
+    "lines-valid": "4766"
+  },
+  "changed_modules": {
+    "optimizacion/elegibilidad.py": "1",
+    "repositories/optimizaciones.py": "0.8304",
+    "services/optimizaciones.py": "1"
+  }
+}

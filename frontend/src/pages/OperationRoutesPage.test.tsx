@@ -134,3 +134,16 @@ it('un refresh fallido conserva la versión anterior y advierte su vigencia', as
   expect(await screen.findByRole('alert')).toHaveTextContent('Se conserva la última versión del plan')
   expect(screen.getByRole('heading', { name: 'Secuencia de paradas' })).toBeInTheDocument()
 })
+
+
+it.each([
+  ['LICENCIA_VENCIDA', 'la licencia no cubre toda la conducción prevista'],
+  ['DISPONIBILIDAD_INSUFICIENTE', 'disponibilidad insuficiente para esta ruta'],
+  ['JORNADA_INVIABLE', 'se excede la jornada o falta el descanso requerido'],
+] as const)('ECL-79: muestra la causa %s sin datos personales', async (motivo, mensaje) => {
+  const detail = operationFixture()
+  detail.rutas[0] = { ...detail.rutas[0], conductor: null, motivo_sin_conductor: motivo }
+  detailMock().mockResolvedValueOnce(detail)
+  show(); await routeHeading()
+  expect(screen.getByText(new RegExp(mensaje))).toBeInTheDocument()
+})

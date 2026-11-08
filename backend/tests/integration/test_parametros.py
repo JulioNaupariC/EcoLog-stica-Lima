@@ -10,6 +10,7 @@ from datetime import date, datetime, timedelta, timezone
 from decimal import Decimal
 
 import pytest
+from alembic.script import ScriptDirectory
 from sqlalchemy import delete, select, text
 from sqlalchemy.exc import DBAPIError, IntegrityError
 
@@ -201,5 +202,5 @@ def test_downgrade_refuses_with_parameter_history(parametros_database):
         command.downgrade(config, "0016_modelo_rutas")
     with factory() as session:
         assert session.scalar(text("SELECT version_num FROM alembic_version")) == (
-            "0017_parametros_versionados"
+            ScriptDirectory.from_config(config).get_current_head()
         )

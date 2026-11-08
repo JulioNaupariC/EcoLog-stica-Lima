@@ -1,7 +1,7 @@
 import { lazy, Suspense, useState } from 'react'
 import { AlertTriangle, Map, ShieldAlert } from 'lucide-react'
 import { Alert, Badge, Button } from './ui'
-import { routeTime } from '../domain/operationRoutes'
+import { DRIVER_ASSIGNMENT_REASONS, routeTime } from '../domain/operationRoutes'
 import type { OperationRoute, OptimizationDetail, RouteAlert } from '../domain/operationRoutes'
 
 const OperationRouteMap = lazy(() => import('./OperationRouteMap').then(module => ({ default: module.OperationRouteMap })))
@@ -25,7 +25,7 @@ export function OperationRouteDetail({ route, detail }: { route: OperationRoute;
   const traffic = detail.trafico
   return <section className="card route-detail" aria-labelledby="selected-route-title">
     <h2 id="selected-route-title">Ruta {route.vehiculo.placa}</h2>
-    <p>Estado: {route.estado.replaceAll('_', ' ').toLowerCase()} · {route.conductor ? route.conductor.nombre : 'Sin conductor elegible asignado'}</p>
+    <p>Estado: {route.estado.replaceAll('_', ' ').toLowerCase()} · {route.conductor ? route.conductor.nombre : DRIVER_ASSIGNMENT_REASONS[route.motivo_sin_conductor ?? 'SIN_CONDUCTOR_ELEGIBLE']}</p>
     <dl className="route-metrics">
       <div><dt>Distancia</dt><dd>{NUMBER.format(route.metricas.distancia_km)} km</dd></div>
       <div><dt>Duración planificada</dt><dd>{NUMBER.format(route.tiempo_min)} min</dd></div>

@@ -31,9 +31,12 @@ class OptimizacionStorageError(RuntimeError):
 
 @dataclass(frozen=True)
 class ConductorElegible:
+    """Coarse candidate; only the route-specific assignment proves eligibility."""
+
     conductor_id: UUID
-    disponible_desde: datetime
-    disponible_hasta: datetime
+    disponible_desde: datetime | None
+    disponible_hasta: datetime | None
+    licencia_vigente_hasta: date
 
 
 def _rows(session: Session, query: Any) -> list[RowMapping]:
@@ -94,23 +97,24 @@ class OptimizacionRepository:
         except SQLAlchemyError:
             raise OptimizacionStorageError("Optimization storage unavailable") from None
 
-    def conductores_elegibles(self, fecha: date) -> list[ConductorElegible]:
-        """Active drivers with an active driver account, licence valid on the
-        date and a declared availability window (ECL-79 eligibility)."""
+    def conductores_candidatos(self) -> list[ConductorElegible]:
+        """Active candidates, including expired/unavailable ones for diagnosis.
+
+        ECL-79 checks licence expiry over every driving interval, availability
+        over the full route and RN-005 after the engine supplies the timeline.
+        """
         rows = _rows(
             self._session,
             select(
                 Conductor.conductor_id,
                 Conductor.disponible_desde,
                 Conductor.disponible_hasta,
+                Conductor.licencia_vigente_hasta,
             )
             .join(Usuario, Usuario.usuario_id == Conductor.usuario_id)
             .where(Conductor.estado == "ACTIVO")
             .where(Usuario.rol == "CONDUCTOR")
             .where(Usuario.estado == "ACTIVO")
-            .where(Conductor.licencia_vigente_hasta >= fecha)
-            .where(Conductor.disponible_desde.is_not(None))
-            .where(Conductor.disponible_hasta.is_not(None))
             .order_by(Conductor.disponible_desde, Conductor.conductor_id),
         )
         return [ConductorElegible(**row) for row in rows]

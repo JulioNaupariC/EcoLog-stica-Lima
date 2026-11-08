@@ -8,6 +8,7 @@ assignment, RN-009 reasons, EN-008 pricing and the RNF-001 golden scenario
 
 from datetime import date, datetime, timedelta, timezone
 from decimal import Decimal
+from math import degrees
 from time import perf_counter
 from uuid import uuid4
 
@@ -28,10 +29,14 @@ from app.models import (
     Pedido,
     PedidoNoAsignado,
     Ruta,
+    Usuario,
     Vehiculo,
 )
 from app.optimizacion import sinteticos
-from app.optimizacion.modelo import EstadoSolucion, Solucion
+from app.optimizacion.distancias import RADIO_TIERRA_KM
+from app.optimizacion.modelo import Descanso, EstadoSolucion, Metricas, Parada, Solucion
+from app.optimizacion.modelo import Ruta as RutaVRP
+from app.repositories.optimizaciones import OptimizacionRepository
 from app.repositories.usuarios import UsuarioRepository
 from app.schemas.parametro import ValorParametro, VersionCreate
 from app.schemas.rutas import OptimizacionSolicitud
@@ -455,3 +460,209 @@ def test_golden_150_orders_15_vehicles_end_to_end_meets_rnf001(base_datos):
         assert ruta.peso_kg <= 1500 and ruta.paradas
         assert all(p.ventana_inicio <= p.eta <= p.ventana_fin for p in ruta.paradas)
     assert detalle.resumen.ahorro_pct.distancia is not None
+
+
+@pytest.fixture
+def asignacion_ecl79(escenario):
+    """Use one real stored order/vehicle/driver and a deterministic engine plan."""
+    return escenario
+
+
+def _plan_ecl79(escenario, *, viaje=12, salida=480, pausa=None):
+    factory = escenario["factory"]
+    # Same Haversine/speed/detour as ST-044. Aim half a minute below the
+    # desired integer so rounding remains stable across platforms.
+    distancia = (viaje - 0.5) / 60 * 20 / 1.35
+    latitud = sinteticos.DEPOSITO.latitud + degrees(distancia / RADIO_TIERRA_KM)
+    with factory.begin() as session:
+        pedido = session.get(Pedido, escenario["pedidos"][0])
+        pedido.ubicacion = f"SRID=4326;POINT({sinteticos.DEPOSITO.longitud} {latitud})"
+        pedido.ventana_inicio = BASE + timedelta(minutes=salida)
+        pedido.ventana_fin = BASE + timedelta(days=2)
+        driver = session.get(Conductor, escenario["conductor"])
+        driver.disponible_desde = BASE
+        driver.disponible_hasta = BASE + timedelta(days=2)
+        driver.licencia_vigente_hasta = FECHA
+    eta = salida + viaje
+    descansos = () if pausa is None else (Descanso(eta + 5, pausa),)
+    regreso = eta + 5 + (pausa or 0) + viaje
+
+    def resolver(problema):
+        ruta = RutaVRP(
+            vehiculo_id=problema.vehiculos[0].vehiculo_id,
+            paradas=(Parada(1, problema.pedidos[0].pedido_id, eta),),
+            salida_min=salida,
+            regreso_min=regreso,
+            peso_kg=1,
+            volumen_m3=1,
+            metricas=Metricas(distancia * 2, 1, 1),
+            descansos=descansos,
+        )
+        return Solucion(EstadoSolucion.COMPLETADA, (ruta,), (), None, 0.01)
+
+    solicitud = OptimizacionSolicitud(
+        fecha_operacion=FECHA,
+        pedido_ids=[escenario["pedidos"][0]],
+        vehiculo_ids=[escenario["vehiculos"][0]],
+    )
+    return servicio(factory, resolver=resolver), solicitud
+
+
+@pytest.mark.parametrize(
+    "viaje,pausa,elegible",
+    [
+        (120, None, True),
+        (121, None, False),
+        (240, 60, True),
+        (241, 60, False),
+        (240, 59, False),
+    ],
+    ids=[
+        "4h-sin-pausa",
+        "4h2min-sin-pausa",
+        "8h-descanso-exacto",
+        "8h2min",
+        "descanso-59min",
+    ],
+)
+def test_ECL79_F1_F2_asignacion_persistida_y_solucion_conservada(
+    asignacion_ecl79, viaje, pausa, elegible
+):
+    datos = asignacion_ecl79
+    service, solicitud = _plan_ecl79(datos, viaje=viaje, pausa=pausa)
+    aceptada = service.optimizar(solicitud, datos["operador"])
+    assert aceptada.estado.value == "COMPLETADA"
+    detalle = service.detalle(aceptada.optimizacion_id)
+    [ruta] = detalle.rutas
+    assert len(ruta.paradas) == 1
+    assert not detalle.no_asignados
+    if elegible:
+        assert ruta.conductor.conductor_id == datos["conductor"]
+        assert ruta.motivo_sin_conductor is None
+    else:
+        assert ruta.conductor is None
+        assert ruta.motivo_sin_conductor.value == "JORNADA_INVIABLE"
+    with datos["factory"]() as session:
+        almacenada = session.scalar(select(Ruta))
+        assert almacenada.conductor_id == (datos["conductor"] if elegible else None)
+        assert session.scalar(select(func.count()).select_from(ParadaRuta)) == 1
+
+
+@pytest.mark.parametrize("salida,elegible", [(23 * 60, True), (23 * 60 + 50, False)])
+def test_ECL79_D3_licencia_toda_conduccion_cruce_medianoche(
+    asignacion_ecl79, salida, elegible
+):
+    datos = asignacion_ecl79
+    service, solicitud = _plan_ecl79(datos, salida=salida)
+    aceptada = service.optimizar(solicitud, datos["operador"])
+    [ruta] = service.detalle(aceptada.optimizacion_id).rutas
+    assert (ruta.conductor is not None) is elegible
+    if not elegible:
+        assert ruta.motivo_sin_conductor.value == "LICENCIA_VENCIDA"
+    # The final day licence passes the coarse date filter in both cases;
+    # the final route's driving timeline decides whether assignment is possible.
+    with datos["factory"]() as session:
+        assert OptimizacionRepository(session).conductores_candidatos()
+
+
+@pytest.mark.parametrize(
+    "cambio",
+    [
+        "conductor-inactivo",
+        "cuenta-inactiva",
+        "otro-rol",
+        "sin-disponibilidad",
+        "licencia-vencida",
+    ],
+)
+def test_ECL79_candidatos_reales_excluyen_perfiles_no_autorizados(
+    asignacion_ecl79, cambio
+):
+    datos = asignacion_ecl79
+    service, solicitud = _plan_ecl79(datos)
+    with datos["factory"].begin() as session:
+        chofer = session.get(Conductor, datos["conductor"])
+        cuenta = session.get(Usuario, chofer.usuario_id)
+        if cambio == "conductor-inactivo":
+            chofer.estado = "INACTIVO"
+        elif cambio == "cuenta-inactiva":
+            cuenta.estado = "INACTIVO"
+        elif cambio == "otro-rol":
+            cuenta.rol = "OPERADOR"
+        elif cambio == "sin-disponibilidad":
+            chofer.disponible_desde = chofer.disponible_hasta = None
+        else:
+            chofer.licencia_vigente_hasta = FECHA - timedelta(days=1)
+    aceptada = service.optimizar(solicitud, datos["operador"])
+    [ruta] = service.detalle(aceptada.optimizacion_id).rutas
+    assert ruta.conductor is None
+    assert ruta.motivo_sin_conductor.value == (
+        "LICENCIA_VENCIDA"
+        if cambio == "licencia-vencida"
+        else "DISPONIBILIDAD_INSUFICIENTE"
+        if cambio == "sin-disponibilidad"
+        else "SIN_CONDUCTOR_ELEGIBLE"
+    )
+
+
+@pytest.mark.parametrize(
+    "borde,elegible", [("exacto", True), ("inicio+1min", False), ("fin-1min", False)]
+)
+def test_ECL79_disponibilidad_se_comprueba_para_la_ruta_completa(
+    asignacion_ecl79, borde, elegible
+):
+    datos = asignacion_ecl79
+    service, solicitud = _plan_ecl79(datos)
+    with datos["factory"].begin() as session:
+        chofer = session.get(Conductor, datos["conductor"])
+        chofer.disponible_desde = BASE + timedelta(
+            minutes=480 + (borde == "inicio+1min")
+        )
+        chofer.disponible_hasta = BASE + timedelta(minutes=509 - (borde == "fin-1min"))
+    aceptada = service.optimizar(solicitud, datos["operador"])
+    [ruta] = service.detalle(aceptada.optimizacion_id).rutas
+    assert (ruta.conductor is not None) is elegible
+
+
+def test_ECL79_migracion_0018_round_trip_y_una_cabeza(migration_database):
+    engine, config = migration_database
+    command.upgrade(config, "head")
+    with engine.connect() as connection:
+        definition = connection.scalar(
+            text(
+                "SELECT pg_get_constraintdef(oid) FROM pg_constraint "
+                "WHERE conname='ck_ruta_motivo_sin_conductor'"
+            )
+        )
+        assert "LICENCIA_VENCIDA" in definition
+        assert "DISPONIBILIDAD_INSUFICIENTE" in definition
+        assert "JORNADA_INVIABLE" in definition
+    command.downgrade(config, "0017_parametros_versionados")
+    with engine.connect() as connection:
+        definition = connection.scalar(
+            text(
+                "SELECT pg_get_constraintdef(oid) FROM pg_constraint "
+                "WHERE conname='ck_ruta_motivo_sin_conductor'"
+            )
+        )
+        assert "LICENCIA_VENCIDA" not in definition
+    command.upgrade(config, "head")
+    command.check(config)
+    from alembic.script import ScriptDirectory
+
+    assert ScriptDirectory.from_config(config).get_heads() == [
+        "0018_motivos_elegibilidad"
+    ]
+
+
+def test_ECL79_downgrade_no_borra_motivos_operativos(
+    asignacion_ecl79, migration_database
+):
+    datos = asignacion_ecl79
+    service, solicitud = _plan_ecl79(datos, salida=23 * 60 + 50)
+    ack = service.optimizar(solicitud, datos["operador"])
+    _, config = migration_database
+    with pytest.raises(RuntimeError, match="ECL-79 reasons require manual treatment"):
+        command.downgrade(config, "0017_parametros_versionados")
+    [ruta] = service.detalle(ack.optimizacion_id).rutas
+    assert ruta.motivo_sin_conductor.value == "LICENCIA_VENCIDA"

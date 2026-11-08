@@ -426,12 +426,34 @@ Frank, conservar, ajustar o retirar cada regla candidata y alinear los BDD con
 el contrato aprobado. Cualquier cambio a RF-003/RN-005 debe tramitarse mediante
 control de cambios; este documento no declara pruebas ejecutadas.
 
+## Evidencia posterior de asignación — ECL-79
+
+La matriz anterior conserva la verificación histórica de ECL-71. El incremento
+del 08/11/2026 aporta pruebas de asignación ST-047, sin modificar los escenarios
+Gherkin ni confundir `habilitado_asignacion` con factibilidad de una ruta.
+El [informe ECL-79 y sus evidencias originales](<../../03 Implementación/Sprint 04/ECL-79 elegibilidad conductores.md>)
+registra el contrato de cómputo y las ejecuciones unitarias/PostGIS.
+
+| Escenario | Evidencia nueva de ECL-79 |
+|---|---|
+| D3 — Licencia durante toda la conducción | `test_D3_licencia_ultimo_dia_lima_y_cruce_medianoche` y `test_ECL79_D3_licencia_toda_conduccion_cruce_medianoche`: último día de Lima, equivalencia UTC y conducción después del vencimiento. La ruta rechazada informa `LICENCIA_VENCIDA`, sin revelar licencias individuales; ampliación de motivos autorizada expresamente por José para ECL-79. |
+| D4 — Disponibilidad aplicada a una ruta | `test_disponibilidad_cubre_toda_ruta_con_bordes_exactos` y `test_ECL79_disponibilidad_se_comprueba_para_la_ruta_completa`: igualdad en ambos bordes admitida; inicio tardío y fin anticipado rechazados. |
+| F1 — Conducción total | `test_F1_ocho_horas_admitidas_ocho_horas_un_minuto_rechazadas` y `test_ECL79_F1_F2_asignacion_persistida_y_solucion_conservada`: 8 h admitidas y exceso rechazado con descansos válidos. Servicio y espera se distinguen de conducción. |
+| F2 — Conducción continua y descanso | `test_F2_borde_cuatro_horas_sin_descanso`, `test_F2_descanso_exacto_reinicia_conduccion` y la integración F1/F2: 3 h 59 min y 4 h admitidas; continuación sin descanso rechazada; pausa exacta de 60 min válida, 59 min no reinician el contador. |
+
+El contrato de asignación utiliza los tiempos de viaje de ST-044 y sus
+descansos explícitos; no interpreta la duración de disponibilidad como
+conducción. La evidencia de casos con motor determinista se distingue de las
+regresiones que ejecutan OR-Tools. La auditoría y aprobación del PR son
+posteriores a estas pruebas; esta adenda no ratifica diferencias de ECL-81.
+
 ## Historial de versiones
 
 | Versión | Fecha | Cambio |
 |---|---|---|
 | 0.2.0 | 25/10/2026 | Revisión ECL-71: verificación de todos los escenarios, precisiones del contrato observado y diferencias registradas en ECL-79/ECL-80/ECL-81. Ratificación de Julio pendiente. |
 | 1.0.0 | 26/10/2026 | Ratificación documental de Julio en el PR #64: «Ratifico ECL-47 y ECL-51 según esta verificación». Se conservan las diferencias y seguimientos ECL-79/ECL-80/ECL-81. |
+| 1.1.0 | 08/11/2026 | Adenda de evidencia ECL-79 para D3/D4/F1/F2 sobre asignación ST-047. Conserva escenarios, matriz histórica y decisiones normativas pendientes. |
 
 La ratificación se registra por el contenido explícito del comentario de Julio.
 GitHub registra esa revisión como COMMENTED, no como APPROVED; la aprobación

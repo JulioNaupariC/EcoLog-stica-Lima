@@ -1267,11 +1267,45 @@ sobre los pedidos y vehículos guardados y responde 201 solo con la corrida
 
 - **Selección:** sin listas, pedidos `PENDIENTE` de la fecha de Lima y vehículos `ACTIVO`; más de 150/15 es 422, nunca se trunca.
 - **Costos:** versión de parámetros vigente (EN-008), guardada en `parametros_version`; ahorros exactos, con signo y `null` con base 0.
-- **Conductores:** primer conductor elegible que cubre la ruta completa, uno por ruta; si no hay, `SIN_CONDUCTOR_ELEGIBLE` (ECL-79).
+- **Conductores:** candidatos con cuenta y perfil activos y rol CONDUCTOR; la asignación verifica después licencia durante toda la conducción prevista en Lima, disponibilidad para la ruta completa y RN-005. Cada conductor se usa una vez por corrida; sin candidato válido se conserva la ruta con un motivo público de elegibilidad (ECL-79).
 - **Auditoría:** cada llamada queda registrada por la autorización (`AUTORIZACION_PERMITIDA`/`DENEGADA` con permiso y motivo), sin cuerpos, coordenadas ni datos personales.
 - **Trazado:** segmentos rectos depósito → paradas → depósito; no es la red vial.
 - `/indicadores/sostenibilidad` sigue simulado hasta US-009.
 
 [Contrato, reglas y pruebas](<../docs/03 Implementación/Sprint 04/ECL-96 servicio de optimizacion.md>)
+
+### Elegibilidad por ruta — ECL-79
+
+`app/optimizacion/elegibilidad.py` reconstruye conducción a partir de las
+distancias Haversine, factor de desvío y velocidad usados por ST-044. Ubica
+cada viaje lo antes posible entre salida/fin de servicio y ETA/regreso,
+interrumpiéndolo por los descansos explícitos del motor. Servicio y espera
+ordinaria no son conducción ni se convierten automáticamente en descanso.
+Si el horario no admite esos viajes o un descanso se superpone al servicio,
+la ruta no autoriza asignar conductor.
+
+RN-005 admite hasta 480 minutos de conducción total y 240 entre descansos
+explícitos de al menos 60 minutos. Los límites son inclusivos; se validan
+en la asignación aunque el plan venga de otro resolver. La disponibilidad
+debe cubrir toda la ruta, incluidos servicio, espera y descansos.
+
+La licencia vale hasta terminar su último día en `America/Lima`. Los tramos
+de conducción usan intervalos `[inicio, fin)`: se admite terminar exactamente
+en la medianoche de vencimiento y se rechaza conducir desde ese instante.
+No basta comprobar `fecha_operacion` ni `habilitado_asignacion` del CRUD.
+
+La solución y las paradas se conservan si una ruta queda sin conductor.
+Los motivos públicos son `LICENCIA_VENCIDA`,
+`DISPONIBILIDAD_INSUFICIENTE`, `JORNADA_INVIABLE` y
+`SIN_CONDUCTOR_ELEGIBLE` cuando no quedan candidatos libres. Se aplica primero
+la factibilidad temporal/RN-005, luego disponibilidad y finalmente licencia.
+No se exponen licencias individuales ni se amplía el CRUD. La migración
+`0018_motivos_elegibilidad` actualiza el CHECK y protege el downgrade si existen
+rutas que utilizan los nuevos motivos. Frontend valida y muestra sus mensajes.
+
+El generador OR-Tools conserva su restricción conservadora anterior (servicio
+y espera cuentan para su búsqueda); esta tarea valida la asignación y no
+amplía el espacio de soluciones del solver. Tampoco asigna conductores entre
+optimizaciones distintas. [Contrato y evidencia ECL-79](<../docs/03 Implementación/Sprint 04/ECL-79 elegibilidad conductores.md>).
 
 [← Volver al README principal](../README.md)

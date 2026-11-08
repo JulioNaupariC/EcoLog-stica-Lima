@@ -65,3 +65,14 @@ it('M05: sin historial no inventa tráfico y permite horas de Lima', () => {
   expect(validOperationDate('2026-02-30')).toBe(false)
   expect(validOperationDate('private')).toBe(false)
 })
+
+
+it.each(['LICENCIA_VENCIDA', 'DISPONIBILIDAD_INSUFICIENTE', 'JORNADA_INVIABLE', 'SIN_CONDUCTOR_ELEGIBLE'] as const)('ECL-79: conserva el motivo publico %s sin datos de licencia', motivo => {
+  const data = structuredClone(completed)
+  const value = { ...data, rutas: [{ ...data.rutas[0], conductor: null, motivo_sin_conductor: motivo }] }
+  expect(parseOptimization(value).rutas[0].motivo_sin_conductor).toBe(motivo)
+})
+it('ECL-79: rechaza un motivo de conductor desconocido', () => {
+  const data = structuredClone(completed)
+  expect(() => parseOptimization({ ...data, rutas: [{ ...data.rutas[0], conductor: null, motivo_sin_conductor: 'INVENTADO' }] })).toThrow(InvalidRouteData)
+})

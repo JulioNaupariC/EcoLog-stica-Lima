@@ -1,0 +1,55 @@
+{
+  "ticket": "ECL-79",
+  "baseline": "8a9f25d21012c7ba34dcf1a7f18ce30880bcb637",
+  "working_tree_dirty": true,
+  "timezone": "America/Lima",
+  "python": "3.12.10",
+  "phase": "public-reasons-authorized-by-user",
+  "unit": {
+    "name": "pytest",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "2",
+    "tests": "1214",
+    "time": "179.323",
+    "timestamp": "2026-11-08T17:25:13.193263+00:00",
+    "hostname": "37906a3e4165"
+  },
+  "integration": {
+    "name": "pytest",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "tests": "56",
+    "time": "72.526",
+    "timestamp": "2026-11-08T17:24:36.864025+00:00",
+    "hostname": "cc219e4a1ff8"
+  },
+  "parameters": {
+    "name": "pytest",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "tests": "10",
+    "time": "16.360",
+    "timestamp": "2026-11-08T17:28:05.179021+00:00",
+    "hostname": "31ba1a09fb41"
+  },
+  "frontend": {
+    "name": "vitest tests",
+    "tests": "900",
+    "failures": "0",
+    "errors": "0",
+    "time": "208.1604834"
+  },
+  "coverage": {
+    "line-rate": "0.9537",
+    "lines-covered": "4557",
+    "lines-valid": "4778"
+  },
+  "changed_modules": {
+    "optimizacion/elegibilidad.py": "1",
+    "repositories/optimizaciones.py": "1",
+    "services/optimizaciones.py": "1"
+  }
+}
