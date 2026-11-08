@@ -4,7 +4,7 @@
 |---|---|
 | Versión / fecha | 1.0.0 / 08/11/2026, America/Lima |
 | Ticket | [ECL-79](https://continental-team-il84x39k.atlassian.net/browse/ECL-79), 5 Story Points |
-| Rama | `feat/ECL-79-elegibilidad-conductores`, desde `main` `8a9f25d` |
+| Rama | `feat/ECL-79-elegibilidad-conductores`, origen `8a9f25d`; actualizada con `main` `0004826` mediante merge `725c556` |
 | Fuente | [BDD ECL-47 / ST-021, D3/D4/F1/F2](<../../02 Planificación/BDD/ECL-47-ST-021-conductores.md>) y RN-005 |
 | Responsable | José Delgadillo; identidad Git cotejada con `JoseDelgadillo277` |
 | Revisores | @ANTONY-MUNIVE (backend), @JulioNaupariC (docs/BDD), @GiancarloSE (frontend) |
@@ -126,32 +126,38 @@ esta rama independiente de `main`.
 
 | Verificación | Resultado |
 |---|---|
-| `ruff check .` / `ruff format --check .` | Correctos; 264 archivos con formato válido |
-| Suite unitaria completa backend | **1212 aprobadas, 2 omitidas**; cobertura **95,37 %** (4557/4778 líneas) |
+| `ruff check .` / `ruff format --check .` | Correctos; 272 archivos con formato válido |
+| Suite unitaria completa backend | **1305 aprobadas, 2 omitidas**; cobertura **95,53 %** (4786/5010 líneas) |
 | Incremento afectado | Dominio, servicio y repositorio de optimización: **100 %** de líneas en cada módulo |
-| Integración optimizaciones/modelo de rutas | **56 aprobadas**, incluye migración, protección de downgrade y cada motivo nuevo |
-| Regresión de parámetros | **10 aprobadas**; integración total ejecutada: **66**, sin solapamiento entre archivos |
+| Integración optimizaciones/modelo/parámetros/cierre | **72 aprobadas**, incluye migración, protección de downgrade y cada motivo nuevo |
+| Rollback sobre el main actualizado | Se conserva la cabeza vigente al rechazar la eliminación de historial de parámetros o rutas cerradas; incluido en las 72 pruebas |
 | Frontend `typecheck` / `lint` / `build` | Correctos |
-| Suite completa frontend con cobertura | **900 aprobadas**; líneas **97,89 %**, statements **95,78 %**, branches **93,07 %**, functions **95,30 %**; todos los gates ≥80 % aprobados |
+| Suite completa frontend con cobertura | **953 aprobadas**; líneas **97,96 %**, statements **95,91 %**, branches **93,15 %**, functions **95,49 %**; todos los gates ≥80 % aprobados |
 | Frontend afectado | Dominio y componente: 100 % de líneas; branches del componente 35/42 (83,33 %) |
 
-Ejecución final sobre `8a9f25d` + cambios locales, `working_tree_dirty: true`;
-no se atribuyen sus resultados al commit creado después de medir:
+Revalidación del código de aplicación en `725c556`, tras incorporar
+`main` `0004826`. No hay cambios de aplicación pendientes respecto a ese
+commit; la aserción de rollback de cierre se adaptó a la cabeza vigente y
+se repitió la integración. Los documentos y evidencias se completaron después.
+La migración se renumeró a 0019 porque main incorporó `0018_cierre_rutas`.
+Los resultados anteriores se conservan en directorios separados:
 
-- [Resumen de la campaña final](evidencias/ECL-79/run-20261108T172711Z/summary.json).
-- [JUnit backend](evidencias/ECL-79/run-20261108T172711Z/unit-tests.xml) y
-  [cobertura XML](evidencias/ECL-79/run-20261108T172711Z/backend-coverage.xml).
-- [JUnit de optimizaciones/modelo/migración](evidencias/ECL-79/run-20261108T172711Z/integration-tests.xml)
-  y [JUnit de parámetros](evidencias/ECL-79/run-20261108T172711Z/parameter-tests.xml).
-- [JUnit frontend](evidencias/ECL-79/run-20261108T172711Z/frontend-tests.xml),
-  [LCOV](evidencias/ECL-79/run-20261108T172711Z/frontend-lcov.info) y
-  [cobertura frontend extraída](evidencias/ECL-79/run-20261108T172711Z/frontend-coverage-summary.json).
-- [Dockerfile de herramientas](evidencias/ECL-79/run-20261108T172711Z/Dockerfile.tests)
-  y [Compose utilizado](evidencias/ECL-79/run-20261108T172711Z/compose.yaml).
+- [Resumen de la campaña final](evidencias/ECL-79/run-20261108T215609Z/summary.json).
+- [JUnit backend](evidencias/ECL-79/run-20261108T215609Z/unit-tests.xml) y
+  [cobertura XML](evidencias/ECL-79/run-20261108T215609Z/backend-coverage.xml).
+- [JUnit de optimizaciones/modelo/migración](evidencias/ECL-79/run-20261108T215609Z/integration-tests.xml)
+  (incluye parámetros y cierre de rutas).
+- [JUnit frontend](evidencias/ECL-79/run-20261108T215609Z/frontend-tests.xml),
+  [LCOV](evidencias/ECL-79/run-20261108T215609Z/frontend-lcov.info) y
+  [cobertura frontend extraída](evidencias/ECL-79/run-20261108T215609Z/frontend-coverage-summary.json).
+- [Dockerfile de herramientas](evidencias/ECL-79/run-20261108T215609Z/Dockerfile.tests)
+  y [Compose utilizado](evidencias/ECL-79/run-20261108T215609Z/compose.yaml).
 
-El [registro previo a ampliar motivos](evidencias/ECL-79/run-20261108T171942Z/summary.json)
-se conserva separado (1206 unitarias y 27 de integración); no se utiliza como
-resultado final ni se suman pruebas repetidas. Los XML enumeran las dos
+El [registro de la ampliación anterior al merge](evidencias/ECL-79/run-20261108T172711Z/summary.json)
+(1212 unitarias, 66 de integración y 900 de frontend) y el
+[registro previo a ampliar motivos](evidencias/ECL-79/run-20261108T171942Z/summary.json)
+se conservan separados (este último: 1206 unitarias y 27 de integración);
+no se utilizan como resultado final ni se suman pruebas repetidas. Los XML enumeran las dos
 omisiones unitarias y los avisos de dependencias. Vitest emitió avisos `act`
 en pruebas preexistentes; no hubo fallos de pruebas ni de sus umbrales.
 
@@ -164,7 +170,7 @@ python -m ruff check .
 python -m ruff format --check .
 python -m pytest tests/unit --cov=app --cov-fail-under=80
 # TEST_DATABASE_URL privada: base *_test vacía, diferente de DATABASE_URL.
-python -m pytest tests/integration/test_optimizaciones.py tests/integration/test_modelo_rutas.py tests/integration/test_parametros.py
+python -m pytest tests/integration/test_optimizaciones.py tests/integration/test_modelo_rutas.py tests/integration/test_parametros.py tests/integration/test_cierre_rutas.py
 python -m alembic heads
 ```
 

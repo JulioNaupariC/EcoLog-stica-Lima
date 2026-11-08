@@ -1407,6 +1407,7 @@ El generador OR-Tools conserva su restricción conservadora anterior (servicio
 y espera cuentan para su búsqueda); esta tarea valida la asignación y no
 amplía el espacio de soluciones del solver. Tampoco asigna conductores entre
 optimizaciones distintas. [Contrato y evidencia ECL-79](<../docs/03 Implementación/Sprint 04/ECL-79 elegibilidad conductores.md>).
+
 ## Cierre de rutas y sostenibilidad — ECL-119 / US-009
 
 | Endpoint | Permiso | Regla |

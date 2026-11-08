@@ -1,0 +1,47 @@
+{
+  "ticket": "ECL-79",
+  "main_commit": "0004826",
+  "application_commit": "725c5566904576e0fd509420cee2bf0a49b790e3",
+  "application_tree_clean": true,
+  "test_change": "closure rollback assertion uses current Alembic head",
+  "timezone": "America/Lima",
+  "python": "3.12.10",
+  "migration_head": "0019_motivos_elegibilidad",
+  "unit": {
+    "name": "pytest",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "2",
+    "tests": "1307",
+    "time": "213.691",
+    "timestamp": "2026-11-08T21:52:03.104051+00:00",
+    "hostname": "4f9dd6f45888"
+  },
+  "integration": {
+    "name": "pytest",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "tests": "72",
+    "time": "122.457",
+    "timestamp": "2026-11-08T21:55:06.085488+00:00",
+    "hostname": "2cf23b9b717c"
+  },
+  "frontend": {
+    "name": "vitest tests",
+    "tests": "953",
+    "failures": "0",
+    "errors": "0",
+    "time": "227.6114556"
+  },
+  "coverage": {
+    "line-rate": "0.9553",
+    "lines-covered": "4786",
+    "lines-valid": "5010"
+  },
+  "affected_modules": {
+    "optimizacion/elegibilidad.py": "1",
+    "repositories/optimizaciones.py": "1",
+    "services/optimizaciones.py": "1"
+  }
+}
