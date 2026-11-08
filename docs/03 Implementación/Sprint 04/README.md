@@ -36,6 +36,7 @@ No representan resultados ejecutados ni documentos aprobados.
 - [ECL-87 — Code smells del frontend y validación de accesibilidad](<ECL-87 code smells frontend.md>)
 - [ECL-96 — Servicio de optimización y endpoints de rutas (ST-047)](<ECL-96 servicio de optimizacion.md>)
 - [ECL-21 — Benchmark de extremo a extremo de RNF-001 (EN-003)](<ECL-21 benchmark RNF-001.md>)
+- [ECL-119 — Cierre de rutas y agregado real de sostenibilidad (US-009)](<ECL-119 cierre de rutas y sostenibilidad.md>)
 - [ECL-82 — US-012 v1.1.0: jornada de la parada, idempotencia y validación de I03](VALIDACION_US012_ECL82_V_1_1_0.md)
 
 ### Entregables y documentación existentes

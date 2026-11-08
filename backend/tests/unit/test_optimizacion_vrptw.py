@@ -172,6 +172,26 @@ def test_happy_route_serves_every_order_inside_its_window():
     assert s.comparacion is not None
 
 
+def test_each_route_keeps_its_own_sequential_reference():
+    """ECL-119: same orders and vehicle as the route, in registration order."""
+    pedidos = [
+        pedido("A", 0.01, 0.0, ventana=(10 * H, 11 * H)),
+        pedido("B", -0.01, 0.0, ventana=(8 * H, 9 * H)),
+        pedido("C", 0.0, 0.01, ventana=(9 * H, 10 * H)),
+    ]
+    p = problema(pedidos, [vehiculo()])
+    ruta = vrptw.resolver(p).rutas[0]
+    km = matriz_km(
+        [DEPOSITO, *(x.ubicacion for x in pedidos)], p.configuracion.factor_desvio
+    )
+    esperado = ruta_secuencial(
+        list(enumerate(pedidos, start=1)), [p.vehiculos[0]], lambda a, b: km[a][b]
+    )
+    assert ruta.secuencial == esperado
+    # Registration order A-B-C crosses the depot; the optimized order does not.
+    assert ruta.secuencial.distancia_km >= ruta.metricas.distancia_km
+
+
 def test_capacity_splits_orders_between_vehicles():
     pedidos = [pedido("A", kg=600), pedido("B", 0.0, 0.01, kg=600)]
     p = problema(pedidos, [vehiculo("V1"), vehiculo("V2")])

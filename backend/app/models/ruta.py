@@ -170,6 +170,12 @@ class Ruta(Base):
             " AND ".join(f"{m} >= 0" for m in _METRICAS), name="ck_ruta_metricas"
         ),
         CheckConstraint("jsonb_typeof(descansos) = 'array'", name="ck_ruta_descansos"),
+        CheckConstraint(
+            " AND ".join(
+                f"(secuencial_{m} IS NULL OR secuencial_{m} >= 0)" for m in _METRICAS
+            ),
+            name="ck_ruta_secuencial",
+        ),
         # One route per vehicle and per driver inside the same optimization.
         UniqueConstraint("optimizacion_id", "vehiculo_id", name="uq_ruta_vehiculo"),
         Index(
@@ -183,6 +189,12 @@ class Ruta(Base):
         Index("ix_ruta_conductor_fecha", "conductor_id", "fecha_operacion"),
         Index("ix_ruta_fecha_estado", "fecha_operacion", "estado"),
         Index("ix_ruta_trazado", "trazado", postgresql_using="gist"),
+        # ECL-119: US-009 filters closed routes by closing instant.
+        Index(
+            "ix_ruta_cerrada_en",
+            "cerrada_en",
+            postgresql_where=text("estado = 'CERRADA'"),
+        ),
         UniqueConstraint("ruta_id", "optimizacion_id", name="uq_ruta_optimizacion"),
     )
 
@@ -226,6 +238,12 @@ class Ruta(Base):
         JSONB, server_default=text("'[]'::jsonb")
     )
     cerrada_en: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    # ECL-119: sequential reference on exactly this route's orders and vehicle.
+    # Null only for routes stored before 0018; such routes cannot be closed.
+    secuencial_distancia_km: Mapped[float | None] = mapped_column(Double)
+    secuencial_co2_kg: Mapped[float | None] = mapped_column(Double)
+    secuencial_combustible_l: Mapped[float | None] = mapped_column(Double)
+    secuencial_costo_soles: Mapped[float | None] = mapped_column(Double)
 
     def __repr__(self) -> str:
         return "<Ruta>"

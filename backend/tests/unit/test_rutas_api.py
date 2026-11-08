@@ -7,6 +7,7 @@ test_optimizaciones_service.py and the PostGIS integration tests.
 
 import json
 from contextlib import contextmanager
+from datetime import date
 from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import Mock
@@ -16,7 +17,7 @@ import pytest
 from fastapi.testclient import TestClient
 
 from app.api.dependencies import get_current_session
-from app.api.rutas import get_optimization_service
+from app.api.rutas import get_closure_service, get_optimization_service
 from app.core.config import Settings
 from app.core.rbac import Identidad, Rol
 from app.main import create_app
@@ -25,10 +26,19 @@ from app.schemas.rutas import (
     IndicadoresSostenibilidad,
     OptimizacionDetalle,
     OptimizacionSolicitud,
+    ParadaActualizada,
+    RutaCerrada,
 )
 from app.services import rutas_simuladas
 from app.services.autenticacion import AuthenticatedSession
 from app.services.autorizacion import AutorizacionService
+from app.services.cierre_rutas import (
+    CierreConflicto,
+    CierreUnavailable,
+    IndicadoresIncompletos,
+    ResultadoInvalido,
+    RutaNoEncontrada,
+)
 from app.services.optimizaciones import (
     OptimizacionFallida,
     OptimizacionUnavailable,
@@ -66,9 +76,17 @@ def client_for(role, servicio=None):
     )
     optimizador = servicio or FakeOptimizador()
     app.dependency_overrides[get_optimization_service] = lambda: optimizador
+    # ECL-119: closures and the dashboard; the fake serves the ST-045 fixtures.
+    cierres = Mock()
+    cierres.indicadores.side_effect = (
+        rutas_simuladas.RutasSimuladasService().sostenibilidad
+    )
+    app.dependency_overrides[get_closure_service] = lambda: cierres
     with TestClient(app) as client:
         app.state.authorization_service = AutorizacionService(Mock())
-        yield SimpleNamespace(client=client, servicio=optimizador, identity=identity)
+        yield SimpleNamespace(
+            client=client, servicio=optimizador, identity=identity, cierres=cierres
+        )
 
 
 def ids() -> dict[EstadoOptimizacion, str]:
@@ -448,3 +466,176 @@ def test_negative_savings_have_no_artificial_floor():
     assert (ahorro.distancia, ahorro.co2) == (-150.0, -250.5)
     with pytest.raises(ValueError):
         Ahorro(distancia=100.01, co2=0, combustible=0, costo=0)
+
+
+# --- ECL-119: stop outcomes, closure and dashboard errors ---------------------
+
+RUTA = uuid4()
+PARADA = uuid4()
+HORA = "2026-11-16T10:30:00-05:00"
+
+
+def actualizada(estado="ATENDIDA", ruta_estado="EN_CURSO"):
+    return ParadaActualizada(
+        parada_id=PARADA,
+        ruta_id=RUTA,
+        estado=estado,
+        atendida_en=HORA if estado == "ATENDIDA" else None,
+        ruta_estado=ruta_estado,
+    )
+
+
+def test_operator_records_a_stop_outcome():
+    with client_for(Rol.OPERADOR) as ctx:
+        ctx.cierres.registrar_parada.return_value = actualizada()
+        response = ctx.client.patch(
+            f"/rutas/{RUTA}/paradas/{PARADA}",
+            json={"estado": "ATENDIDA", "atendida_en": HORA},
+        )
+    assert response.status_code == 200
+    assert response.json()["ruta_estado"] == "EN_CURSO"
+    assert response.headers["Cache-Control"] == "no-store"
+    assert "X-Datos-Simulados" not in response.headers
+    ruta, parada, solicitud = ctx.cierres.registrar_parada.call_args.args
+    assert (ruta, parada) == (RUTA, PARADA) and solicitud.estado.value == "ATENDIDA"
+
+
+@pytest.mark.parametrize(
+    "cuerpo",
+    [
+        {"estado": "ATENDIDA"},  # served needs the real time
+        {"estado": "PENDIENTE"},  # only final outcomes
+        {"estado": "NO_ATENDIDA", "nota": "x"},  # no extra fields
+        {"estado": "ATENDIDA", "atendida_en": "2026-11-16T10:30:00"},  # naive
+    ],
+)
+def test_invalid_outcomes_are_422_without_echo(cuerpo):
+    with client_for(Rol.OPERADOR) as ctx:
+        response = ctx.client.patch(f"/rutas/{RUTA}/paradas/{PARADA}", json=cuerpo)
+    assert response.status_code == 422
+    assert (
+        "2026-11-16T10:30:00" not in response.text and 'PENDIENTE"' not in response.text
+    )
+    ctx.cierres.registrar_parada.assert_not_called()
+
+
+@pytest.mark.parametrize(
+    ("error", "codigo"),
+    [
+        (RutaNoEncontrada("Parada no encontrada en la ruta"), 404),
+        (CierreConflicto("La parada ya tiene un resultado final"), 409),
+        (CierreUnavailable("private"), 503),
+    ],
+)
+def test_stop_outcome_errors(error, codigo):
+    with client_for(Rol.OPERADOR) as ctx:
+        ctx.cierres.registrar_parada.side_effect = error
+        response = ctx.client.patch(
+            f"/rutas/{RUTA}/paradas/{PARADA}", json={"estado": "NO_ATENDIDA"}
+        )
+    assert response.status_code == codigo
+    assert "private" not in response.text
+
+
+def test_service_time_rules_are_422_with_field_and_reason():
+    with client_for(Rol.OPERADOR) as ctx:
+        ctx.cierres.registrar_parada.side_effect = ResultadoInvalido(
+            "atendida_en", "La hora de atención no puede ser futura"
+        )
+        response = ctx.client.patch(
+            f"/rutas/{RUTA}/paradas/{PARADA}",
+            json={"estado": "ATENDIDA", "atendida_en": HORA},
+        )
+    assert response.status_code == 422
+    assert response.json()["detail"] == {
+        "campo": "atendida_en",
+        "motivo": "La hora de atención no puede ser futura",
+    }
+
+
+def test_operator_closes_a_route_as_the_session_user():
+    with client_for(Rol.OPERADOR) as ctx:
+        ctx.cierres.cerrar.return_value = RutaCerrada(
+            ruta_id=RUTA,
+            estado="CERRADA",
+            cerrada_en="2026-11-16T18:00:00-05:00",
+            paradas_atendidas=3,
+            paradas_no_atendidas=1,
+        )
+        response = ctx.client.post(f"/rutas/{RUTA}/cierre")
+    assert response.status_code == 200
+    assert response.json()["estado"] == "CERRADA"
+    assert ctx.cierres.cerrar.call_args.args == (RUTA, ctx.identity.usuario_id)
+
+
+@pytest.mark.parametrize(
+    ("error", "codigo"),
+    [
+        (RutaNoEncontrada("Ruta no encontrada"), 404),
+        (CierreConflicto("Faltan 2 paradas por registrar"), 409),
+        (CierreUnavailable("private"), 503),
+    ],
+)
+def test_closure_errors(error, codigo):
+    with client_for(Rol.OPERADOR) as ctx:
+        ctx.cierres.cerrar.side_effect = error
+        response = ctx.client.post(f"/rutas/{RUTA}/cierre")
+    assert response.status_code == codigo
+    assert "private" not in response.text
+
+
+@pytest.mark.parametrize(
+    "rol", [Rol.ADMINISTRADOR, Rol.ANALISTA, Rol.AUDITOR, Rol.CONDUCTOR]
+)
+def test_only_the_operator_records_and_closes(rol):
+    with client_for(rol) as ctx:
+        cierre = ctx.client.post(f"/rutas/{RUTA}/cierre")
+        parada = ctx.client.patch(
+            f"/rutas/{RUTA}/paradas/{PARADA}", json={"estado": "NO_ATENDIDA"}
+        )
+    assert cierre.status_code == parada.status_code == 403
+    ctx.cierres.cerrar.assert_not_called()
+
+
+@pytest.mark.parametrize("error", [IndicadoresIncompletos("x"), CierreUnavailable("x")])
+def test_dashboard_never_publishes_partial_or_failed_aggregates(error):
+    with client_for(Rol.ANALISTA) as ctx:
+        ctx.cierres.indicadores.side_effect = error
+        response = ctx.client.get(
+            "/indicadores/sostenibilidad",
+            params={"desde": "2026-11-01", "hasta": "2026-11-30"},
+        )
+    assert response.status_code == 503
+    assert response.json() == {"detail": "Servicio no disponible"}
+
+
+def test_real_dashboard_has_no_simulated_header():
+    with client_for(Rol.ANALISTA) as ctx:
+        ctx.cierres.indicadores.side_effect = None
+        ctx.cierres.indicadores.return_value = (
+            rutas_simuladas.RutasSimuladasService()
+            .sostenibilidad(date(2025, 1, 1), date(2025, 1, 31))
+            .model_copy(update={"simulado": False})
+        )
+        response = ctx.client.get(
+            "/indicadores/sostenibilidad",
+            params={"desde": "2025-01-01", "hasta": "2025-01-31"},
+        )
+    assert response.status_code == 200 and response.json()["simulado"] is False
+    assert "X-Datos-Simulados" not in response.headers
+
+
+def test_closure_service_needs_a_database():
+    app = create_app(Settings(database_url=None))
+    identity = Identidad(uuid4(), Rol.OPERADOR, "ACTIVO")
+    app.dependency_overrides[get_current_session] = lambda: AuthenticatedSession(
+        uuid4(), identity
+    )
+    with TestClient(app) as client:
+        app.state.authorization_service = AutorizacionService(Mock())
+        response = client.post(f"/rutas/{RUTA}/cierre")
+    assert response.status_code == 503
+    request = SimpleNamespace(
+        app=SimpleNamespace(state=SimpleNamespace(session_factory=Mock()))
+    )
+    assert get_closure_service(request) is not None

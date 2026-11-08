@@ -10,6 +10,7 @@ from fastapi.testclient import TestClient
 
 from app.api.conditional_get import ConditionalGetMiddleware, _matches
 from app.api.dependencies import get_authenticated_session
+from app.api.rutas import get_closure_service
 from app.api.vehiculos import get_vehicle_service
 from app.core.config import Settings
 from app.core.rbac import Identidad, Rol
@@ -18,6 +19,7 @@ from app.models.vehiculo import Vehiculo
 from app.schemas.vehiculo import VehiclePage, VehicleResponse
 from app.services.autenticacion import AuthenticatedSession
 from app.services.autorizacion import AutorizacionService
+from app.services.rutas_simuladas import RutasSimuladasService
 
 FRONTEND = "http://127.0.0.1:5173"
 
@@ -138,9 +140,12 @@ def test_edge_personal_and_no_store_responses_get_no_etag():
     app.dependency_overrides[get_authenticated_session] = lambda: AuthenticatedSession(
         uuid4(), identity
     )
+    # Sustainability indicators (US-009, ECL-119) are no-store.
+    indicadores = Mock()
+    indicadores.indicadores.side_effect = RutasSimuladasService().sostenibilidad
+    app.dependency_overrides[get_closure_service] = lambda: indicadores
     with TestClient(app) as client:
         app.state.authorization_service = AutorizacionService(Mock())
-        # Simulated sustainability fixtures (US-009 pending): no-store.
         no_store = client.get(
             "/indicadores/sostenibilidad",
             params={"desde": "2026-11-01", "hasta": "2026-11-30"},
