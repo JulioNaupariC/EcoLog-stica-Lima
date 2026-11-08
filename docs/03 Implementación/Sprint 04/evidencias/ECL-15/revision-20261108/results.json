@@ -1,0 +1,100 @@
+{
+  "status": "passed",
+  "date": "2026-11-08T18:57:13.439Z",
+  "origin": "http://127.0.0.1:5184",
+  "source": "SPA real; login y GET interceptados con fixtures sintéticos ST-045, sin credenciales ni backend real",
+  "sourceHashes": {
+    "frontend/src/pages/SustainabilityPage.tsx": "dd7cbd40ee58fd40c0a00ecf7a7c48316b9a02b235262dfd1bb9737435ff4238",
+    "frontend/src/domain/sustainability.ts": "190bdad363bfcda2ea313c50cf6c042bba70897560a8dfc2dc3544fc9f858cc5",
+    "frontend/src/services/sustainability.ts": "1c319887cd3c3f22ffb9fcd2449f02e0908fd5525c544c4738acc1fe47c590f6",
+    "frontend/src/styles/sustainability.css": "4f3958dec8ef01a872f1490b8e65bcaa73653c7c7b85a5711340f20a9b33a2c4"
+  },
+  "records": [
+    {
+      "browser": "chrome",
+      "version": "Chrome/157.0.8103.38",
+      "theme": "light",
+      "width": 1280,
+      "scrollWidth": 1280,
+      "axeViolations": 0
+    },
+    {
+      "browser": "chrome",
+      "version": "Chrome/157.0.8103.38",
+      "theme": "light",
+      "width": 360,
+      "scrollWidth": 360,
+      "axeViolations": 0
+    },
+    {
+      "browser": "chrome",
+      "version": "Chrome/157.0.8103.38",
+      "theme": "dark",
+      "width": 1280,
+      "scrollWidth": 1280,
+      "axeViolations": 0
+    },
+    {
+      "browser": "chrome",
+      "version": "Chrome/157.0.8103.38",
+      "theme": "dark",
+      "width": 360,
+      "scrollWidth": 360,
+      "axeViolations": 0
+    },
+    {
+      "browser": "chrome",
+      "lighthouseMode": "snapshot",
+      "accessibility": 1,
+      "failures": []
+    },
+    {
+      "browser": "chrome",
+      "keyboardSubmit": true,
+      "invalidPeriodNoRequest": true,
+      "invalidPeriodFocus": true,
+      "emptyAndErrorDistinct": true,
+      "syntheticAggregateMaxBytes": 382
+    },
+    {
+      "browser": "firefox",
+      "version": "firefox/159.0.1",
+      "theme": "light",
+      "width": 1280,
+      "scrollWidth": 1280,
+      "axeViolations": 0
+    },
+    {
+      "browser": "firefox",
+      "version": "firefox/159.0.1",
+      "theme": "light",
+      "width": 360,
+      "scrollWidth": 360,
+      "axeViolations": 0
+    },
+    {
+      "browser": "firefox",
+      "version": "firefox/159.0.1",
+      "theme": "dark",
+      "width": 1280,
+      "scrollWidth": 1280,
+      "axeViolations": 0
+    },
+    {
+      "browser": "firefox",
+      "version": "firefox/159.0.1",
+      "theme": "dark",
+      "width": 360,
+      "scrollWidth": 360,
+      "axeViolations": 0
+    },
+    {
+      "browser": "firefox",
+      "keyboardSubmit": true,
+      "invalidPeriodNoRequest": true,
+      "invalidPeriodFocus": true,
+      "emptyAndErrorDistinct": true,
+      "syntheticAggregateMaxBytes": 382
+    }
+  ]
+}

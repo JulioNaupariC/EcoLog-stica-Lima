@@ -7,7 +7,7 @@ import {
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import type { AuthRole } from '../../services/auth'
-import { canListVehicles, canManageOperations, canManageUsers } from '../../domain/roles'
+import { canListVehicles, canManageOperations, canManageUsers, canViewOperationIndicators } from '../../domain/roles'
 import { Badge } from '../ui'
 import { AccountMenu } from './AccountMenu'
 
@@ -30,6 +30,7 @@ function staffNavigation(role: AuthRole): { label: string, items: NavEntry[] }[]
     ? [{ to: '/usuarios', label: 'Usuarios', icon: Users }] : []
   return [
     { label: 'General', items: [{ to: '/', label: 'Inicio', icon: Home, end: true }] },
+    ...(canViewOperationIndicators(role) ? [{ label: 'Analítica', items: [{ to: '/indicadores/sostenibilidad', label: 'Indicadores de sostenibilidad', icon: BarChart3 }] }] : []),
     ...(operations.length ? [{ label: 'Operación', items: operations }] : []),
     ...(resources.length ? [{ label: 'Recursos', items: resources }] : []),
     ...(administration.length ? [{ label: 'Administración', items: administration }] : []),
@@ -38,7 +39,6 @@ function staffNavigation(role: AuthRole): { label: string, items: NavEntry[] }[]
 
 const COMING_SOON: { label: string, icon: LucideIcon }[] = [
   { label: 'Rutas optimizadas', icon: RouteIcon },
-  { label: 'Indicadores de sostenibilidad', icon: BarChart3 },
 ]
 
 function useDesktop(): boolean {

@@ -51,7 +51,6 @@ function ComingSoon() {
     description="Funciones planificadas que todavía no muestran datos.">
     <ul className="coming-soon-list">
       <li><RouteIcon aria-hidden="true" size={18} /> Rutas optimizadas (VRPTW) <Badge tone="neutral" icon={null}>Próximamente</Badge></li>
-      <li><BarChart3 aria-hidden="true" size={18} /> Indicadores de CO₂ por ruta <Badge tone="neutral" icon={null}>Próximamente</Badge></li>
     </ul>
   </Card>
 }
@@ -86,6 +85,7 @@ function StaffHome({ role }: { role: AuthRole }) {
     <section aria-labelledby="home-shortcuts-title" className="home-section">
       <h2 id="home-shortcuts-title" className="section-title">Accesos rápidos</h2>
       <ul className="quick-links">
+        {summaryVisible ? <QuickLink to="/indicadores/sostenibilidad" icon={BarChart3} title="Indicadores de sostenibilidad" description="Periodo, métricas y comparación secuencial" /> : null}
         {manage ? <QuickLink to="/pedidos/nuevo" icon={ClipboardList} title="Registrar pedido" description="Con propuesta de preferencias del cliente" /> : null}
         {manage ? <QuickLink to="/clientes/preferencias" icon={Building2} title="Preferencias de entrega" description="Horarios, referencias y accesos" /> : null}
         {vehiclesVisible ? <QuickLink to="/vehiculos" icon={Truck} title="Vehículos" description={manage ? 'Flota y registro de unidades' : 'Consulta de la flota'} /> : null}

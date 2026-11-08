@@ -48,7 +48,8 @@ describe('HomePage — inicio por rol con datos reales', () => {
     vi.mocked(listPendingReports).mockResolvedValue([])
     show(role)
     await screen.findByRole('heading', { name: 'Accesos rápidos' })
-    expect(screen.getAllByRole('link').map(link => link.getAttribute('href')).sort()).toEqual([...paths].sort())
+    const expected = role === 'CONDUCTOR' ? [...paths] : [...paths, '/indicadores/sostenibilidad']
+    expect(screen.getAllByRole('link').map(link => link.getAttribute('href')).sort()).toEqual(expected.sort())
   })
 
   it('ruta dorada: el operador ve agregados reales con una sola petición y accesos rápidos', async () => {
@@ -66,7 +67,8 @@ describe('HomePage — inicio por rol con datos reales', () => {
     expect(screen.queryByText(/primeros 100/u)).not.toBeInTheDocument()
     expect(screen.getByRole('link', { name: /Registrar pedido/u })).toHaveAttribute('href', '/pedidos/nuevo')
     // Card title plus one badge per planned feature; no sprint names in the UI.
-    expect(screen.getAllByText('Próximamente')).toHaveLength(3)
+    expect(screen.getAllByText('Próximamente')).toHaveLength(2)
+    expect(screen.getByRole('link', { name: /Indicadores de sostenibilidad/u })).toHaveAttribute('href', '/indicadores/sostenibilidad')
     expect(screen.queryByText(/Sprint/u)).not.toBeInTheDocument()
     // No invented sustainability figures.
     expect(screen.queryByText(/kg CO₂/u)).not.toBeInTheDocument()

@@ -429,6 +429,7 @@ Los siguientes comentarios reservan enlaces para entregas futuras.
 - [ECL-96 — Servicio de optimización y endpoints de rutas (ST-047)](<docs/03 Implementación/Sprint 04/ECL-96 servicio de optimizacion.md>)
 - [ECL-21 — Benchmark de extremo a extremo de RNF-001 (EN-003)](<docs/03 Implementación/Sprint 04/ECL-21 benchmark RNF-001.md>)
 - [ECL-82 — US-012 v1.1.0: jornada de la parada, idempotencia y validación de I03](<docs/03 Implementación/Sprint 04/VALIDACION_US012_ECL82_V_1_1_0.md>)
+- [ECL-15 — Dashboard de sostenibilidad: interfaz, contrato y límites](<docs/03 Implementación/Sprint 04/ECL-15 dashboard sostenibilidad.md>)
 
 #### Estado de cierre del Sprint 4
 
