@@ -30,7 +30,19 @@ from app.core.incidencias import (
 )
 from app.db.session import session_factory
 from app.main import create_app
-from app.models import Auditoria, Conductor, Incidencia, Usuario
+from app.models import (
+    Auditoria,
+    Cliente,
+    Conductor,
+    DriverStopAssignment,
+    Incidencia,
+    Optimizacion,
+    ParadaRuta,
+    Pedido,
+    Ruta,
+    Usuario,
+    Vehiculo,
+)
 from app.repositories.auditoria import AuditStorageError, Evento
 from app.repositories.incidencias import IncidenciaRepository
 from app.repositories.usuarios import UsuarioRepository
@@ -79,6 +91,10 @@ def incident_database(migration_database, monkeypatch):
         with factory.begin() as session:
             session.execute(delete(Incidencia))
             session.execute(delete(Auditoria))
+            session.execute(delete(DriverStopAssignment))
+            session.execute(delete(ParadaRuta))
+            session.execute(delete(Ruta))
+            session.execute(delete(Optimizacion))
 
 
 def create_user(factory, email, role):
@@ -140,6 +156,73 @@ def setup(incident_database):
 
 def client_for(url):
     return TestClient(create_app(Settings(app_env="test", database_url=url)))
+
+
+@pytest.fixture
+def planned_stop(setup):
+    """Persist the full ST-046 chain; the assignment ID remains the API ID."""
+    with setup["factory"].begin() as session:
+        cliente = Cliente(nombre="Cliente sintético ECL-82")
+        vehiculo = Vehiculo(
+            placa="JRN-082",
+            tipo="FURGON",
+            capacidad_kg=1000,
+            capacidad_m3=10,
+            rendimiento_km_l=10,
+            factor_co2_kg_km=0.2,
+            anio_fabricacion=2022,
+        )
+        session.add_all([cliente, vehiculo])
+        session.flush()
+        pedido = Pedido(
+            cliente_id=cliente.cliente_id,
+            direccion="Calle Ficticia 82",
+            referencia="Prueba de jornada",
+            peso_kg=10,
+            volumen_m3=1,
+            ventana_inicio=T0,
+            ventana_fin=T0 + timedelta(hours=1),
+            prioridad="ESTANDAR",
+            tipo_producto="PAQUETE",
+        )
+        optimizacion = Optimizacion(
+            solicitada_por=setup["driver_a"].usuario_id,
+            fecha_operacion=T0.date(),
+            instantanea={},
+        )
+        session.add_all([pedido, optimizacion])
+        session.flush()
+        ruta = Ruta(
+            optimizacion_id=optimizacion.optimizacion_id,
+            fecha_operacion=T0.date(),
+            vehiculo_id=vehiculo.vehiculo_id,
+            conductor_id=setup["driver_a"].conductor_id,
+            salida=T0,
+            regreso=T0 + timedelta(hours=1),
+            tiempo_min=60,
+            peso_kg=10,
+            volumen_m3=1,
+            distancia_km=1,
+            co2_kg=0.2,
+            combustible_l=0.1,
+            costo_soles=1,
+            trazado="SRID=4326;LINESTRING(-77.04 -12.04, -77.05 -12.05)",
+        )
+        session.add(ruta)
+        session.flush()
+        parada = ParadaRuta(
+            ruta_id=ruta.ruta_id,
+            optimizacion_id=optimizacion.optimizacion_id,
+            pedido_id=pedido.pedido_id,
+            secuencia=1,
+            eta=T0,
+        )
+        session.add(parada)
+        session.flush()
+        assignment = session.get(DriverStopAssignment, setup["stop_a"])
+        assignment.parada_ruta_id = parada.parada_id
+        assignment.pedido_id = pedido.pedido_id
+        return ruta.ruta_id, parada.parada_id
 
 
 def login(client, email):
@@ -381,7 +464,7 @@ def test_I02_operacion_consulta_pendientes_ordenados_y_paginados(setup, email):
         assert private not in raw
 
 
-def test_I03_registrar_con_parada_propia(setup):
+def test_I03_registrar_con_parada_propia(setup, planned_stop):
     factory = setup["factory"]
     with client_for(setup["url"]) as driver:
         login(driver, DRIVER_A)
@@ -399,6 +482,88 @@ def test_I03_registrar_con_parada_propia(setup):
             {"id": setup["stop_a"]},
         )
     assert stop_status == "PENDIENTE"  # Registering does not touch the stop.
+    with factory() as session:
+        assert session.get(Ruta, planned_stop[0]).estado == "PLANIFICADA"
+        assert session.get(ParadaRuta, planned_stop[1]).estado == "PENDIENTE"
+        assert (
+            session.get(
+                Optimizacion, session.get(Ruta, planned_stop[0]).optimizacion_id
+            ).estado
+            == "EN_PROCESO"
+        )
+
+
+@pytest.mark.parametrize(
+    "ocurrida_en,fecha,expected",
+    [
+        ("2026-10-27T04:59:59Z", date(2026, 10, 26), 201),
+        ("2026-10-27T05:00:00Z", date(2026, 10, 27), 201),
+        ("2026-10-27T04:59:59Z", date(2026, 10, 27), 403),
+        ("2026-10-27T05:00:00Z", date(2026, 10, 26), 403),
+    ],
+)
+def test_ECL82_jornada_usa_fecha_lima_y_rechaza_otra_sin_persistir(
+    setup, planned_stop, ocurrida_en, fecha, expected
+):
+    with setup["factory"].begin() as session:
+        session.get(Ruta, planned_stop[0]).fecha_operacion = fecha
+    with client_for(setup["url"]) as driver:
+        login(driver, DRIVER_A)
+        response = post(
+            driver, body(parada_id=str(setup["stop_a"]), ocurrida_en=ocurrida_en)
+        )
+    assert response.status_code == expected
+    if expected == 403:
+        assert response.json() == {"detail": "Acceso denegado"}
+        assert_nothing_stored(setup["factory"])
+    else:
+        assert (
+            len(incidents(setup["factory"]))
+            == len(incident_audits(setup["factory"]))
+            == 1
+        )
+
+
+@pytest.mark.parametrize("route_driver", ["other", "none", "no-route"])
+def test_ECL82_asignacion_propia_sin_ruta_autorizada_403_generico(
+    setup, planned_stop, route_driver
+):
+    with setup["factory"].begin() as session:
+        ruta = session.get(Ruta, planned_stop[0])
+        if route_driver == "no-route":
+            session.get(DriverStopAssignment, setup["stop_a"]).parada_ruta_id = None
+        elif route_driver == "other":
+            ruta.conductor_id = setup["driver_b"].conductor_id
+        else:
+            ruta.conductor_id = None
+            ruta.motivo_sin_conductor = "SIN_CONDUCTOR_ELEGIBLE"
+    with client_for(setup["url"]) as driver:
+        login(driver, DRIVER_A)
+        response = post(driver, body(parada_id=str(setup["stop_a"])))
+    assert response.status_code == 403
+    assert response.json() == {"detail": "Acceso denegado"}
+    assert_nothing_stored(setup["factory"])
+
+
+def test_ECL82_replay_no_revalida_jornada_y_nueva_operacion_si(setup, planned_stop):
+    data = body(parada_id=str(setup["stop_a"]))
+    with client_for(setup["url"]) as driver:
+        login(driver, DRIVER_A)
+        original = post(driver, data)
+        assert original.status_code == 201
+        with setup["factory"].begin() as session:
+            session.get(Ruta, planned_stop[0]).fecha_operacion -= timedelta(days=1)
+        replay = post(driver, data)
+        assert replay.status_code == 200
+        assert replay.json() == original.json()
+        assert post(driver, {**data, "operation_id": str(uuid4())}).status_code == 403
+        assert (
+            post(driver, {**data, "observacion": "Contenido distinto"}).status_code
+            == 409
+        )
+    assert (
+        len(incidents(setup["factory"])) == len(incident_audits(setup["factory"])) == 1
+    )
 
 
 # --- Ruta infeliz -------------------------------------------------------------------

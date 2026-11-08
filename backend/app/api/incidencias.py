@@ -76,6 +76,10 @@ def _self_context(identity: Identidad) -> Contexto:
         200: {"description": "Reenvío idempotente: misma respuesta"},
         409: {"description": "Mismo operation_id con contenido distinto"},
         **_ERRORS,
+        403: {
+            "description": "Acceso denegado: rol, perfil, propietario o jornada "
+            "de la parada no autorizados"
+        },
     },
 )
 def register_incident(
@@ -104,7 +108,7 @@ def register_incident(
     try:
         acknowledgement, created = service.registrar(identity.usuario_id, payload)
     except (IncidenciaSinConductor, IncidenciaParadaAjena):
-        # Generic: no profile, or a stop of another driver (I08, I10).
+        # Generic: profile, stop owner or reporting day (I03, I08, I10).
         raise HTTPException(status.HTTP_403_FORBIDDEN, "Acceso denegado") from None
     except IncidenciaInvalida as error:
         # Same shape as SanitizedRoute 422s: field location and code, no input.

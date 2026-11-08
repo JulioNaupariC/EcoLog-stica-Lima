@@ -29,7 +29,8 @@ base ``*_demo`` y volver a sembrar ese mismo día.
 
 ECL-73: conductor.demo reporta 3 incidencias ficticias en Lima, pendientes de
 validación, con ``operation_id`` determinista (``uuid5`` marcado como versión 4,
-porque la BDD de ECL-72 exige UUID v4); la primera está asociada a su parada 1.
+porque la BDD de ECL-72 exige UUID v4). ECL-82: sin ruta planificada no se
+asocian paradas a altas nuevas; se conserva la referencia de altas existentes.
 Se registran con el servicio de incidencias.
 """
 
@@ -54,6 +55,7 @@ from app.core.rbac import Rol
 from app.db.session import build_engine, session_factory
 from app.models.cliente import Cliente
 from app.models.conductor import Conductor
+from app.models.incidencia import Incidencia
 from app.models.pedido import Pedido
 from app.repositories.usuarios import UsuarioRepository
 from app.schemas.conductor import ConductorCreate, ConductorUpdate
@@ -482,24 +484,34 @@ def incident_operation_id(key: str) -> UUID:
 def _ensure_incidents(
     factory: sessionmaker[Session],
     driver_account: UUID,
-    orders: list[UUID],
     now: datetime,
     summary: SeedSummary,
 ) -> None:
     service = IncidenciaService(factory)
-    first_stop = uuid5(STOP_NAMESPACE, str(orders[0]))
     for incident in INCIDENTS:
+        operation_id = incident_operation_id(incident.key)
+        # Preserve legacy payloads on replay; demo assignments have no route.
+        with factory() as session:
+            existing = session.execute(
+                select(Incidencia.parada_id)
+                .join(Conductor, Conductor.conductor_id == Incidencia.conductor_id)
+                .where(
+                    Conductor.usuario_id == driver_account,
+                    Incidencia.operation_id == operation_id,
+                )
+            ).one_or_none()
+        parada_id = existing.parada_id if existing is not None else None
         # Same operation_id on every run: the service returns the stored one.
         _ack, created = service.registrar(
             driver_account,
             IncidenciaCreate(
-                operation_id=incident_operation_id(incident.key),
+                operation_id=operation_id,
                 tipo=incident.tipo,
                 severidad=incident.severidad,
                 ocurrida_en=now - timedelta(minutes=incident.minutes_ago),
                 latitud=incident.latitud,
                 longitud=incident.longitud,
-                parada_id=first_stop if incident.first_stop else None,
+                parada_id=parada_id,
                 observacion=incident.observacion,
             ),
             now=now,
@@ -564,7 +576,7 @@ def seed(
     )
     orders = _ensure_orders(factory, clients, now.date(), summary)
     _ensure_assignments(factory, drivers[DRIVERS[0].dni], orders, summary)
-    _ensure_incidents(factory, drivers[DRIVERS[0].dni], orders, now, summary)
+    _ensure_incidents(factory, drivers[DRIVERS[0].dni], now, summary)
     _ensure_parameters(factory, users[Rol.ADMINISTRADOR], summary)
     return summary
 
