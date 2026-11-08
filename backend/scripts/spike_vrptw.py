@@ -34,6 +34,11 @@ LIMITE_RNF001_S = 45.0
 ESCENARIOS = ((150, 15), (100, 10), (50, 5))
 
 
+def _pct(valor: float | None) -> str:
+    """Presentation only: one decimal, or "no calculable" for a zero baseline."""
+    return "no calculable" if valor is None else f"{valor:.1f} %"
+
+
 def percentil(valores: list[float], p: float) -> float:
     """Nearest-rank percentile, the conservative definition."""
     ordenados = sorted(valores)
@@ -148,7 +153,7 @@ def medir(pedidos: int, vehiculos: int, semilla: int, corridas: int, limite: int
         "vecino_mas_cercano": vecino,
         "optimizada_sin_ventanas_km": libre_km,
         "ahorro_sin_ventanas_vs_vecino_pct": (
-            round((vecino["distancia_km"] - libre_km) / vecino["distancia_km"] * 100, 1)
+            (vecino["distancia_km"] - libre_km) / vecino["distancia_km"] * 100
             if vecino["distancia_km"]
             else None
         ),
@@ -180,11 +185,11 @@ def main() -> None:
             f"{corridas} corrida(s)) · {r['rutas']} rutas · "
             f"{r['pedidos_asignados']} asignados · "
             f"no asignados {[n['motivo'] for n in r['no_asignados']]} · "
-            f"ahorro distancia {r['ahorro_distancia_pct']} % "
+            f"ahorro distancia {_pct(r['ahorro_distancia_pct'])} "
             f"(vecino más cercano: {r['vecino_mas_cercano']['distancia_km']} km, "
             f"{r['vecino_mas_cercano']['cumplimiento_ventanas_pct']} % a tiempo; "
-            f"sin ventanas {r['ahorro_sin_ventanas_vs_vecino_pct']} % menos) · "
-            f"CO2 {r['ahorro_co2_pct']} % · violaciones {len(r['violaciones'])}"
+            f"sin ventanas {_pct(r['ahorro_sin_ventanas_vs_vecino_pct'])} menos) · "
+            f"CO2 {_pct(r['ahorro_co2_pct'])} · violaciones {len(r['violaciones'])}"
         )
 
     evidencia = {
