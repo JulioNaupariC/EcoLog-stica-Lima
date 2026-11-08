@@ -28,6 +28,10 @@ Fuente de reglas: [BDD US-006 v1.0.0](<../../02 Planificación/BDD/ECL-12-US-006
   «No se pudo calcular la solución de rutas» y puede consultarse. Una caída del
   almacenamiento responde `{"detail": "Servicio no disponible"}`.
 - El actor sale de la sesión; nunca del cuerpo.
+- Auditoría: cada llamada la registra la autorización
+  (`AUTORIZACION_PERMITIDA`/`AUTORIZACION_DENEGADA` con permiso y motivo), sin
+  cuerpos, coordenadas, nombres, DNI ni contacto. No se agregó evento ni
+  migración nuevos.
 - Fechas y horas en `America/Lima` con desfase; listado por `solicitada_en`
   descendente con desempate por ID, `page_size` 1–100 (20 por defecto, BDD).
 

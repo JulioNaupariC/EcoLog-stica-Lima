@@ -80,6 +80,8 @@ se puede copiar a `.env` e introducir allí la configuración privada.
 | `APP_ENV` | `development` (predeterminado), `test` o `production`. |
 | `DB_CONNECT_TIMEOUT` | Tiempo de conexión en segundos, entre 1 y 30; predeterminado 5. |
 | `CORS_ALLOWED_ORIGINS` | Array JSON de orígenes frontend permitidos, por ejemplo `["http://127.0.0.1:5173"]`. Predeterminado `[]`; en producción solo se aceptan orígenes HTTPS. |
+| `DEPOSITO_LATITUD`, `DEPOSITO_LONGITUD` | Depósito de las optimizaciones (WGS84). Predeterminado: depósito supuesto en Santa Anita (-12.0470, -76.9680). |
+| `OPTIMIZACION_TIEMPO_LIMITE_S` | Límite de búsqueda del motor, entre 1 y 40 s; predeterminado 20 (RNF-001). |
 
 Codificar caracteres especiales de usuario/contraseña en la URL. No registrar
 credenciales ni incluirlas en comandos compartidos. Usar un usuario de aplicación
@@ -1250,3 +1252,26 @@ Login devuelve expires_at y max_expires_at a todos los roles. POST /sesion/exten
 La migración 0015_sesion_extendida amplía la restricción de auditoría. Su downgrade elimina los eventos SESION_EXTENDIDA antes de restaurarla: requiere reversión autorizada por la pérdida de esos registros.
 
 [Contrato, pruebas y límites de recuperación](<../docs/03 Implementación/Sprint 04/ECL-83 aviso de sesion.md>).
+
+## Optimización de rutas — ECL-96 / ST-047
+
+`POST /optimizaciones` resuelve en la misma petición con el motor VRPTW de ST-044
+sobre los pedidos y vehículos guardados y responde 201 solo con la corrida
+`COMPLETADA` ya persistida (rutas, paradas y no asignados en una transacción).
+
+| Endpoint | Permiso | Respuestas |
+|---|---|---|
+| `POST /optimizaciones` | `optimizaciones.ejecutar`: solo Operador | 201; 422 `{campo, motivo}` sin eco ni corrida creada; 503 con `optimizacion_id` si quedó `FALLIDA` |
+| `GET /optimizaciones` | `optimizaciones.consultar` general | Página por `solicitada_en` descendente, `page_size` 1–100 (20) |
+| `GET /optimizaciones/{id}` | `rutas.consultar` general | Detalle con rutas, paradas, ETA en Lima, descansos y no asignados con motivo; 404 si no existe |
+
+- **Selección:** sin listas, pedidos `PENDIENTE` de la fecha de Lima y vehículos `ACTIVO`; más de 150/15 es 422, nunca se trunca.
+- **Costos:** versión de parámetros vigente (EN-008), guardada en `parametros_version`; ahorros exactos, con signo y `null` con base 0.
+- **Conductores:** primer conductor elegible que cubre la ruta completa, uno por ruta; si no hay, `SIN_CONDUCTOR_ELEGIBLE` (ECL-79).
+- **Auditoría:** cada llamada queda registrada por la autorización (`AUTORIZACION_PERMITIDA`/`DENEGADA` con permiso y motivo), sin cuerpos, coordenadas ni datos personales.
+- **Trazado:** segmentos rectos depósito → paradas → depósito; no es la red vial.
+- `/indicadores/sostenibilidad` sigue simulado hasta US-009.
+
+[Contrato, reglas y pruebas](<../docs/03 Implementación/Sprint 04/ECL-96 servicio de optimizacion.md>)
+
+[← Volver al README principal](../README.md)
