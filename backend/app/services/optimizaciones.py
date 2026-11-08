@@ -28,6 +28,7 @@ from app.core import calculos
 from app.models.ruta import Optimizacion, ParadaRuta, PedidoNoAsignado, Ruta
 from app.models.vehiculo import Vehiculo
 from app.optimizacion import vrptw
+from app.optimizacion.elegibilidad import PlanRuta, cumple_rn005, plan_de_ruta
 from app.optimizacion.modelo import (
     Configuracion,
     EstadoSolucion,
@@ -56,6 +57,7 @@ from app.schemas.rutas import (
     EstadoOptimizacion,
     LineString,
     Metricas,
+    MotivoSinConductor,
     NoAsignado,
     OptimizacionAceptada,
     OptimizacionDetalle,
@@ -124,26 +126,68 @@ def _costo(km: float, litros: float, parametros: dict[str, Decimal]) -> float:
     ) + calculos.costo_mantenimiento_soles(km, parametros["COSTO_MANTENIMIENTO_KM"])
 
 
-def asignar_conductores(
-    rutas: Sequence[tuple[datetime, datetime]], conductores: Sequence[ConductorElegible]
-) -> list[UUID | None]:
-    """ECL-79: each route gets the first free driver whose availability covers
-    it; a driver drives at most one route of a run (RN-004)."""
+@dataclass(frozen=True)
+class AsignacionConductor:
+    conductor_id: UUID | None
+    motivo: MotivoSinConductor | None
+
+
+def evaluar_asignaciones(
+    rutas: Sequence[PlanRuta | None], conductores: Sequence[ConductorElegible]
+) -> list[AsignacionConductor]:
+    """ECL-79: RN-005, licence throughout driving, availability for the route.
+
+    One driver per run; no candidate leaves the route unassigned (RN-004).
+    """
     libres = list(conductores)
-    asignados: list[UUID | None] = []
-    for salida, regreso in rutas:
+    asignados: list[AsignacionConductor] = []
+    for plan in rutas:
+        if plan is None or not cumple_rn005(plan):
+            asignados.append(
+                AsignacionConductor(None, MotivoSinConductor.JORNADA_INVIABLE)
+            )
+            continue
+        disponibles = [
+            c
+            for c in libres
+            if c.disponible_desde is not None
+            and c.disponible_hasta is not None
+            and c.disponible_desde <= plan.salida
+            and c.disponible_hasta >= plan.regreso
+        ]
         elegido = next(
-            (
-                c
-                for c in libres
-                if c.disponible_desde <= salida and c.disponible_hasta >= regreso
-            ),
+            (c for c in disponibles if _licencia_cubre(c.licencia_vigente_hasta, plan)),
             None,
         )
         if elegido is not None:
             libres.remove(elegido)
-        asignados.append(None if elegido is None else elegido.conductor_id)
+            asignados.append(AsignacionConductor(elegido.conductor_id, None))
+        else:
+            motivo = (
+                MotivoSinConductor.LICENCIA_VENCIDA
+                if disponibles
+                else MotivoSinConductor.DISPONIBILIDAD_INSUFICIENTE
+                if libres
+                else MotivoSinConductor.SIN_CONDUCTOR_ELEGIBLE
+            )
+            asignados.append(AsignacionConductor(None, motivo))
     return asignados
+
+
+def asignar_conductores(
+    rutas: Sequence[PlanRuta | None], conductores: Sequence[ConductorElegible]
+) -> list[UUID | None]:
+    """ID-only view of the same eligibility decision."""
+    return [a.conductor_id for a in evaluar_asignaciones(rutas, conductores)]
+
+
+def _licencia_cubre(ultimo_dia: date, plan: PlanRuta) -> bool:
+    if ultimo_dia == date.max:
+        return True
+    vence = medianoche(ultimo_dia + timedelta(days=1))
+    # Half-open driving intervals: finishing exactly at expiry is allowed;
+    # starting or continuing driving at that instant is not.
+    return all(inicio < vence and fin <= vence for inicio, fin in plan.conduccion)
 
 
 class OptimizacionService:
@@ -171,9 +215,7 @@ class OptimizacionService:
             with self._factory() as session:
                 repository = OptimizacionRepository(session)
                 seleccion = self._seleccionar(repository, solicitud)
-                conductores = repository.conductores_elegibles(
-                    solicitud.fecha_operacion
-                )
+                conductores = repository.conductores_candidatos()
             problema = self._problema(seleccion, solicitud.fecha_operacion)
             optimizacion = Optimizacion(
                 solicitada_por=actor,
@@ -322,7 +364,7 @@ class OptimizacionService:
                 }
                 for v in seleccion.vehiculos
             ],
-            "conductores_elegibles": conductores,
+            "conductores_candidatos": conductores,
         }
 
     def _guardar(  # noqa: PLR0913 - one call that stores a whole result
@@ -347,7 +389,8 @@ class OptimizacionService:
             )
             for r in solucion.rutas
         ]
-        choferes = asignar_conductores(horarios, conductores)
+        planes = [plan_de_ruta(problema, ruta, base) for ruta in solucion.rutas]
+        choferes = evaluar_asignaciones(planes, conductores)
         rutas: list[tuple[Ruta, list[ParadaRuta]]] = []
         a_tiempo = 0
         for ruta, (salida, regreso), conductor in zip(
@@ -423,7 +466,7 @@ class OptimizacionService:
         vehiculo: Vehiculo,
         pedidos: dict[str, PedidoVRP],
         horario: tuple[datetime, datetime],
-        conductor: UUID | None,
+        conductor: AsignacionConductor,
         parametros: dict[str, Decimal],
         base: datetime,
     ) -> Ruta:
@@ -433,8 +476,8 @@ class OptimizacionService:
             optimizacion_id=run_id,
             fecha_operacion=fecha,
             vehiculo_id=vehiculo.vehiculo_id,
-            conductor_id=conductor,
-            motivo_sin_conductor=None if conductor else "SIN_CONDUCTOR_ELEGIBLE",
+            conductor_id=conductor.conductor_id,
+            motivo_sin_conductor=conductor.motivo.value if conductor.motivo else None,
             salida=horario[0],
             regreso=horario[1],
             tiempo_min=ruta.duracion_min,

@@ -9,6 +9,7 @@ from datetime import date, datetime, timedelta, timezone
 from decimal import Decimal
 
 import pytest
+from alembic.script import ScriptDirectory
 from sqlalchemy import delete, func, select, text
 from sqlalchemy.exc import DBAPIError
 
@@ -331,5 +332,5 @@ def test_downgrade_refuses_with_closed_routes(base):
         command.downgrade(config, "0017_parametros_versionados")
     with factory() as session:
         assert session.scalar(text("SELECT version_num FROM alembic_version")) == (
-            "0018_cierre_rutas"
+            ScriptDirectory.from_config(config).get_current_head()
         )

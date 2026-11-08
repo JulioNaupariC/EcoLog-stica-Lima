@@ -1,0 +1,30 @@
+{
+  "totals": {
+    "LF": 2756,
+    "LH": 2700,
+    "FNF": 911,
+    "FNH": 870,
+    "BRF": 2966,
+    "BRH": 2763
+  },
+  "affected": [
+    {
+      "file": "src\\components\\OperationRouteDetail.tsx",
+      "FNF": 14,
+      "FNH": 14,
+      "LF": 16,
+      "LH": 16,
+      "BRF": 42,
+      "BRH": 35
+    },
+    {
+      "file": "src\\domain\\operationRoutes.ts",
+      "FNF": 38,
+      "FNH": 38,
+      "LF": 59,
+      "LH": 59,
+      "BRF": 46,
+      "BRH": 46
+    }
+  ]
+}

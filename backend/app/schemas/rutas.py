@@ -65,6 +65,9 @@ class MotivoSinConductor(str, Enum):
     """ECL-79: a route may have no eligible driver without being invalid."""
 
     SIN_CONDUCTOR_ELEGIBLE = "SIN_CONDUCTOR_ELEGIBLE"
+    LICENCIA_VENCIDA = "LICENCIA_VENCIDA"
+    DISPONIBILIDAD_INSUFICIENTE = "DISPONIBILIDAD_INSUFICIENTE"
+    JORNADA_INVIABLE = "JORNADA_INVIABLE"
 
 
 # --- requests ----------------------------------------------------------------

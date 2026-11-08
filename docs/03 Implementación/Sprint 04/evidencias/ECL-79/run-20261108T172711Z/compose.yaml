@@ -1,0 +1,20 @@
+﻿name: ecologistica-lima-ecl79
+services:
+  db:
+    image: postgis/postgis:16-3.5@sha256:94146ac37bc61e2322f88016056c5920729cb8c64c8542ed590af8fc2abdac07
+    env_file: test.env
+    tmpfs:
+      - /var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ecl79 -d bootstrap"]
+      interval: 2s
+      timeout: 3s
+      retries: 20
+  tests:
+    image: ecologistica-ecl82-tests
+    env_file: test.env
+    working_dir: /app
+    volumes:
+      - ../backend:/app
+    environment:
+      PYTHONPATH: /app

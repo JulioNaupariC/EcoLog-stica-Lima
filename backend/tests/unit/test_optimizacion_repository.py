@@ -66,13 +66,15 @@ def test_selection_queries():
         "conductor_id": uuid4(),
         "disponible_desde": T0,
         "disponible_hasta": T0 + timedelta(hours=8),
+        "licencia_vigente_hasta": date(2026, 11, 9),
     }
     session.execute.return_value.mappings.return_value = [conductor]
-    assert repository.conductores_elegibles(date(2026, 11, 9)) == [
-        ConductorElegible(**conductor)
-    ]
+    assert repository.conductores_candidatos() == [ConductorElegible(**conductor)]
     consulta = ultimo(session)
-    assert "usuario.rol =" in consulta and "licencia_vigente_hasta >=" in consulta
+    assert (
+        "usuario.rol =" in consulta and "conductor.licencia_vigente_hasta" in consulta
+    )
+    assert "licencia_vigente_hasta >=" not in consulta
     assert "dni" not in consulta.split("FROM")[0]
 
 

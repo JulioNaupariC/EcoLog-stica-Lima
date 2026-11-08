@@ -16,6 +16,7 @@ import pytest
 from sqlalchemy.exc import OperationalError
 
 from app.core.parametros import REFERENCIA_INICIAL
+from app.optimizacion.elegibilidad import PlanRuta
 from app.optimizacion.modelo import (
     Descanso,
     EstadoSolucion,
@@ -91,7 +92,7 @@ class FakeRepo:
         self.flota = [vehiculo(1), vehiculo(2)]
         self.conductores = [
             ConductorElegible(
-                uuid4(), BASE + timedelta(hours=7), BASE + timedelta(hours=19)
+                uuid4(), BASE + timedelta(hours=7), BASE + timedelta(hours=19), FECHA
             )
         ]
         self.creadas = []
@@ -120,7 +121,7 @@ class FakeRepo:
             return [v for v in self.flota if v.estado == "ACTIVO"][:limite]
         return [v for v in self.flota if v.vehiculo_id in ids]
 
-    def conductores_elegibles(self, fecha):
+    def conductores_candidatos(self):
         return list(self.conductores)
 
     def crear(self, optimizacion):
@@ -196,16 +197,17 @@ def test_savings_are_exact_signed_and_null_with_zero_base(base, nuevo, esperado)
 
 def test_drivers_go_to_the_first_route_they_cover_once_each():
     a = ConductorElegible(
-        uuid4(), BASE + timedelta(hours=8), BASE + timedelta(hours=12)
+        uuid4(), BASE + timedelta(hours=8), BASE + timedelta(hours=12), FECHA
     )
     b = ConductorElegible(
-        uuid4(), BASE + timedelta(hours=7), BASE + timedelta(hours=20)
+        uuid4(), BASE + timedelta(hours=7), BASE + timedelta(hours=20), FECHA
     )
     rutas = [
         (BASE + timedelta(hours=9), BASE + timedelta(hours=11)),
         (BASE + timedelta(hours=9), BASE + timedelta(hours=11)),
         (BASE + timedelta(hours=10), BASE + timedelta(hours=18)),
     ]
+    rutas = [PlanRuta(inicio, fin, ((inicio, fin),)) for inicio, fin in rutas]
     assert asignar_conductores(rutas, [a, b]) == [a.conductor_id, b.conductor_id, None]
     assert asignar_conductores(rutas, []) == [None, None, None]
 
@@ -230,7 +232,7 @@ def test_run_is_created_solved_priced_and_completed(repo):
     assert creada.estado == "EN_PROCESO" and creada.solicitada_por == ACTOR
     assert creada.instantanea["parametros"]["LITROS_POR_GALON"] == "3.785411784"
     assert len(creada.instantanea["pedidos"]) == 3
-    assert creada.instantanea["conductores_elegibles"] == 1
+    assert creada.instantanea["conductores_candidatos"] == 1
 
     run_id, valores, rutas, no_asignados = repo.completadas[0]
     assert run_id == aceptada.optimizacion_id
