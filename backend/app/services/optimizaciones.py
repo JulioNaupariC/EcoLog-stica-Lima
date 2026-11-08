@@ -38,6 +38,7 @@ from app.optimizacion.modelo import (
     Solucion,
     VehiculoVRP,
 )
+from app.optimizacion.modelo import Metricas as MetricasVRP
 from app.optimizacion.modelo import Ruta as RutaVRP
 from app.repositories.optimizaciones import (
     ConductorElegible,
@@ -443,6 +444,7 @@ class OptimizacionService:
             co2_kg=ruta.metricas.co2_kg,
             combustible_l=litros,
             costo_soles=_costo(km, litros, parametros),
+            **_secuencial_ruta(ruta.secuencial, parametros),
             trazado=trazado(
                 self._deposito, [pedidos[p.pedido_id].ubicacion for p in ruta.paradas]
             ),
@@ -530,6 +532,29 @@ class OptimizacionService:
         return OptimizacionPage(
             items=items, page=page, page_size=page_size, total=total, simulado=False
         )
+
+
+def _secuencial_ruta(
+    secuencial: MetricasVRP | None, parametros: dict[str, Decimal]
+) -> dict[str, float | None]:
+    """ECL-119: the route's own sequential reference, priced like the route."""
+    if secuencial is None:
+        return dict.fromkeys(
+            (
+                "secuencial_distancia_km",
+                "secuencial_co2_kg",
+                "secuencial_combustible_l",
+                "secuencial_costo_soles",
+            )
+        )
+    return {
+        "secuencial_distancia_km": secuencial.distancia_km,
+        "secuencial_co2_kg": secuencial.co2_kg,
+        "secuencial_combustible_l": secuencial.combustible_l,
+        "secuencial_costo_soles": _costo(
+            secuencial.distancia_km, secuencial.combustible_l, parametros
+        ),
+    }
 
 
 def trazado(deposito: Punto, paradas: Sequence[Punto | None]) -> str:

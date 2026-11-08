@@ -117,6 +117,9 @@ class Ruta:
     volumen_m3: float
     metricas: Metricas
     descansos: tuple[Descanso, ...] = ()
+    # ECL-119: the manual sequential practice on exactly this route's orders and
+    # vehicle, so closed routes can be compared with the same coverage (US-009).
+    secuencial: Metricas | None = None
 
     @property
     def duracion_min(self) -> int:

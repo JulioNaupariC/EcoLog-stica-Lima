@@ -266,6 +266,11 @@ class _Modelo:
             regreso = solucion.Value(self.tiempo.CumulVar(indice))
             ids = {p.pedido_id for p in paradas}
             cargados = [p for p in self.red.pedidos if p.pedido_id in ids]
+            propios = [
+                (nodo, pedido)
+                for nodo, pedido in enumerate(self.red.pedidos, start=1)
+                if pedido.pedido_id in ids
+            ]
             rutas.append(
                 Ruta(
                     vehiculo_id=vehiculo.vehiculo_id,
@@ -276,6 +281,9 @@ class _Modelo:
                     volumen_m3=round(sum(p.volumen_m3 for p in cargados), 3),
                     metricas=metricas_vehiculo(km, vehiculo),
                     descansos=self._descanso(solucion, v, salida, regreso),
+                    secuencial=ruta_secuencial(
+                        propios, (vehiculo,), lambda a, b: self.red.km[a][b]
+                    ),
                 )
             )
         return rutas

@@ -284,3 +284,42 @@ class IndicadoresSostenibilidad(BaseModel):
         ):
             raise ValueError("Sin datos, los indicadores van en null")
         return self
+
+
+# --- ECL-119: stop outcomes and route closure (US-009) -------------------------
+
+
+class EstadoFinalParada(str, Enum):
+    ATENDIDA = "ATENDIDA"
+    NO_ATENDIDA = "NO_ATENDIDA"
+
+
+class ResultadoParadaSolicitud(BaseModel):
+    """Outcome the Operator records; ATENDIDA needs the real service time."""
+
+    model_config = ConfigDict(extra="forbid", hide_input_in_errors=True)
+
+    estado: EstadoFinalParada
+    atendida_en: AwareDatetime | None = None
+
+    @model_validator(mode="after")
+    def hora_si_atendida(self) -> "ResultadoParadaSolicitud":
+        if self.estado is EstadoFinalParada.ATENDIDA and self.atendida_en is None:
+            raise ValueError("ATENDIDA requiere atendida_en")
+        return self
+
+
+class ParadaActualizada(BaseModel):
+    parada_id: UUID
+    ruta_id: UUID
+    estado: EstadoParada
+    atendida_en: AwareDatetime | None
+    ruta_estado: EstadoRuta
+
+
+class RutaCerrada(BaseModel):
+    ruta_id: UUID
+    estado: EstadoRuta
+    cerrada_en: AwareDatetime
+    paradas_atendidas: NonNegativeInt
+    paradas_no_atendidas: NonNegativeInt

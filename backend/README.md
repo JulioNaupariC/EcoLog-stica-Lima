@@ -951,7 +951,7 @@ actualiza la cobertura de I03 y conserva la evidencia histórica del Sprint 3.
 - **Vínculo con el conductor y la ruta:** la incidencia se vincula siempre al
   conductor. Sin parada no tiene ruta (ratificado por Julio). `ruta_id` llegará,
   nullable, con el modelo de rutas; ver
-  [Base de datos V_1_3_0](<../docs/01 Inicio/11. Base de datos V_1_3_0.md>).
+  [Base de datos V_1_4_0](<../docs/01 Inicio/11. Base de datos V_1_4_0.md>).
 - **Downgrade protegido:** se niega mientras existan incidencias o su
   auditoría.
 
@@ -1306,7 +1306,7 @@ páginas medidas en las dos campañas.
 
 Persistencia de la optimización de US-006 (migración `0016_modelo_rutas`).
 Catálogos en `app/core/rutas.py`, modelos en `app/models/ruta.py`; detalle en el
-[documento 11](<../docs/01 Inicio/11. Base de datos V_1_3_0.md>).
+[documento 11](<../docs/01 Inicio/11. Base de datos V_1_4_0.md>).
 
 | Tabla | Qué guarda | Reglas en base de datos |
 |---|---|---|
@@ -1370,8 +1370,24 @@ sobre los pedidos y vehículos guardados y responde 201 solo con la corrida
 - **Conductores:** primer conductor elegible que cubre la ruta completa, uno por ruta; si no hay, `SIN_CONDUCTOR_ELEGIBLE` (ECL-79).
 - **Auditoría:** cada llamada queda registrada por la autorización (`AUTORIZACION_PERMITIDA`/`DENEGADA` con permiso y motivo), sin cuerpos, coordenadas ni datos personales.
 - **Trazado:** segmentos rectos depósito → paradas → depósito; no es la red vial.
-- `/indicadores/sostenibilidad` sigue simulado hasta US-009.
+- `/indicadores/sostenibilidad` es real desde ECL-119 (ver la sección siguiente).
 
 [Contrato, reglas y pruebas](<../docs/03 Implementación/Sprint 04/ECL-96 servicio de optimizacion.md>)
+
+## Cierre de rutas y sostenibilidad — ECL-119 / US-009
+
+| Endpoint | Permiso | Regla |
+|---|---|---|
+| `PATCH /rutas/{ruta_id}/paradas/{parada_id}` | Solo Operador | ATENDIDA con `atendida_en` real (no futura ni anterior a la jornada) o NO_ATENDIDA; un resultado final no se sobrescribe |
+| `POST /rutas/{ruta_id}/cierre` | Solo Operador | Todas las paradas terminales; registra `cerrada_en` y audita `RUTA_CERRADA`; repetir no duplica |
+| `GET /indicadores/sostenibilidad` | `indicadores.consultar` | Solo rutas cerradas en el periodo de Lima; `null` sin datos; ahorros desde sumas con signo; cumplimiento con hora real |
+
+- Cada ruta guarda su referencia secuencial (`ruta.secuencial_*`, migración
+  `0018_cierre_rutas`) sobre sus mismos pedidos y vehículo, para comparar con
+  igual cobertura.
+- Las rutas guardadas antes de 0018 no tienen esa referencia y no se pueden
+  cerrar: hay que volver a optimizar la jornada.
+
+[Reglas, decisiones y pruebas](<../docs/03 Implementación/Sprint 04/ECL-119 cierre de rutas y sostenibilidad.md>)
 
 [← Volver al README principal](../README.md)

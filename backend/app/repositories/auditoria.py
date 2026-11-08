@@ -30,6 +30,7 @@ class Evento(str, Enum):
     INCIDENCIA_REGISTRADA = "INCIDENCIA_REGISTRADA"
     INCIDENCIA_RESUELTA = "INCIDENCIA_RESUELTA"
     PARAMETROS_VERSIONADOS = "PARAMETROS_VERSIONADOS"
+    RUTA_CERRADA = "RUTA_CERRADA"
 
 
 class ResultadoAcceso(str, Enum):
@@ -201,6 +202,20 @@ class DetalleParametrosVersionados(BaseModel):
         return self
 
 
+class DetalleRutaCerrada(BaseModel):
+    """ECL-119: stop outcome counts of a closed route; no personal data."""
+
+    model_config = ConfigDict(
+        frozen=True,
+        extra="forbid",
+        strict=True,
+        hide_input_in_errors=True,
+        revalidate_instances="always",
+    )
+    paradas_atendidas: int = Field(ge=0)
+    paradas_no_atendidas: int = Field(ge=0)
+
+
 class Registro(BaseModel):
     model_config = ConfigDict(
         frozen=True,
@@ -223,6 +238,7 @@ class Registro(BaseModel):
         | DetalleIncidenciaRegistrada
         | DetalleIncidenciaResuelta
         | DetalleParametrosVersionados
+        | DetalleRutaCerrada
     )
 
     @model_validator(mode="after")
@@ -248,6 +264,11 @@ class Registro(BaseModel):
         versioned = self.evento is Evento.PARAMETROS_VERSIONADOS
         if versioned != isinstance(self.detalle, DetalleParametrosVersionados):
             raise ValueError("Invalid audit event")
+        closed = self.evento is Evento.RUTA_CERRADA
+        if closed != isinstance(self.detalle, DetalleRutaCerrada):
+            raise ValueError("Invalid audit event")
+        if closed and (self.usuario_id is None or self.entidad_id is None):
+            raise ValueError("Invalid route audit event")
         if versioned and (self.usuario_id is None or self.entidad_id is None):
             raise ValueError("Invalid parameter audit event")
         if resolution != isinstance(self.detalle, DetalleIncidenciaResuelta):
@@ -338,6 +359,8 @@ class AuditoriaRepository:
             entidad = "incidencia"
         elif registro.evento is Evento.PARAMETROS_VERSIONADOS:
             entidad = "parametro"
+        elif registro.evento is Evento.RUTA_CERRADA:
+            entidad = "ruta"
         else:
             entidad = "autorizacion"
         row = Auditoria(

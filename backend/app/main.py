@@ -23,6 +23,7 @@ from app.api.pedidos import router as order_router
 from app.api.preferencias import router as preferencias_router
 from app.api.rutas import indicadores_router as sustainability_router
 from app.api.rutas import router as optimization_router
+from app.api.rutas import rutas_router as route_router
 from app.api.security_headers import SecurityHeadersMiddleware
 from app.api.usuarios import router as user_router
 from app.api.vehiculos import router as vehicle_router
@@ -130,5 +131,6 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.include_router(incident_router)
     app.include_router(optimization_router)
     app.include_router(sustainability_router)
+    app.include_router(route_router)
     app.include_router(parameter_router)
     return app
