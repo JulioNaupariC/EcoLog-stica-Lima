@@ -33,6 +33,7 @@ No representan resultados ejecutados ni documentos aprobados.
 - [ECL-98 — Resolución de incidencias: contrato, concurrencia y validaciones](<ECL-98 resolucion incidencias.md>)
 - [ECL-14 — Mapa operativo, lista accesible y límites de tráfico](<ECL-14 mapa rutas.md>)
 - [ECL-87 — Code smells del frontend y validación de accesibilidad](<ECL-87 code smells frontend.md>)
+- [ECL-96 — Servicio de optimización y endpoints de rutas (ST-047)](<ECL-96 servicio de optimizacion.md>)
 
 ### Entregables y documentación existentes
 
