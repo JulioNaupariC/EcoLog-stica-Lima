@@ -80,6 +80,8 @@ se puede copiar a `.env` e introducir allí la configuración privada.
 | `APP_ENV` | `development` (predeterminado), `test` o `production`. |
 | `DB_CONNECT_TIMEOUT` | Tiempo de conexión en segundos, entre 1 y 30; predeterminado 5. |
 | `CORS_ALLOWED_ORIGINS` | Array JSON de orígenes frontend permitidos, por ejemplo `["http://127.0.0.1:5173"]`. Predeterminado `[]`; en producción solo se aceptan orígenes HTTPS. |
+| `DEPOSITO_LATITUD`, `DEPOSITO_LONGITUD` | Depósito de las optimizaciones (WGS84). Predeterminado: depósito supuesto en Santa Anita (-12.0470, -76.9680). |
+| `OPTIMIZACION_TIEMPO_LIMITE_S` | Límite de búsqueda del motor, entre 1 y 40 s; predeterminado 20 (RNF-001). |
 
 Codificar caracteres especiales de usuario/contraseña en la URL. No registrar
 credenciales ni incluirlas en comandos compartidos. Usar un usuario de aplicación
@@ -218,7 +220,7 @@ Cada letra corresponde a un permiso distinto; D siempre es lógico.
 | optimizaciones.ejecutar / rutas.reoptimizar | — | Sí | — | — | — |
 | rutas.consultar | Sí | Sí | Asignada/jornada | Agregado | Anonimizado |
 | rutas.actualizar_estado | — | Sí | Asignada/jornada | — | — |
-| incidencias | R | CRU | CR propias | R agregado | R anonimizado |
+| incidencias | RU (U: resolución ECL-98) | CRU | CR propias | R agregado | R anonimizado |
 | indicadores.consultar | Sí | Sí | Propio | Sí | Sí |
 | reportes.consultar / reportes.descargar | Sí | Sí | Propio | Sí | Anonimizado |
 | compensacion.consultar | — | — | — | Sí | — |
@@ -232,7 +234,8 @@ RF-006 define generación mediante optimización. No existe comodín de Administ
 Interpretación restrictiva de la contradicción documental: aunque algunas celdas
 conceden D al Operador, la regla complementaria exige Administrador. Se deniega D
 al Operador y no se añade desactivación de incidencias a ningún rol porque la
-matriz solo concede R al Administrador. El Auditor no recibe DNI/contacto ni una
+matriz original solo concedía R al Administrador; ECL-98 añade U exclusivamente
+para validar o descartar. El Auditor no recibe DNI/contacto ni una
 excepción de acceso a datos personales; RNF-004 exige su protección.
 
 ### Contrato de uso independiente de HTTP
@@ -790,6 +793,20 @@ en `tests/unit/test_reset_password.py` y
 
 ## Incidencias (ECL-73)
 
+ECL-98 agrega `PATCH /incidencias/{incidencia_id}` para Administrador y Operador.
+Recibe `{"accion":"VALIDAR"}` o `{"accion":"DESCARTAR","motivo":"texto"}`;
+el motivo es opcional, admite hasta 300 puntos de código Unicode y no admite
+`null`. Devuelve `incidencia_id`, `estado` (`VALIDADA` o `DESCARTADA`),
+`resuelta_por` y `resuelta_en`. Respuestas: 401 sin sesión, 403 para otros roles,
+404 si no existe, 409 si ya fue resuelta, 422 por entrada inválida y 503 por
+fallo de persistencia/auditoría. Los contratos se publican en `/openapi.json`.
+La migración `0014_resolver_incidencias` añade actor, fecha y motivo; bloquea
+el downgrade si hay resoluciones o su auditoría. El bloqueo de fila serializa
+las decisiones y la transacción incluye `INCIDENCIA_RESUELTA`, con solo estado
+y bandera de motivo en el detalle. No dispara reoptimización ni bloqueos viales.
+
+Reproducción y criterios: [ECL-98](<../docs/03 Implementación/Sprint 04/ECL-98 resolucion incidencias.md>).
+
 ST-040, subtarea de US-012 (ECL-18). El conductor registra incidencias de su
 jornada y el Administrador o el Operador consultan las pendientes de validación.
 Lo consumen ECL-74 (José) y ECL-75 (Giancarlo).
@@ -899,20 +916,25 @@ endpoint `POST /conductor/incidencias` admite **solo el rol Conductor**, mediant
 - **Auditoría:** la denegación se registra como `AUTORIZACION_DENEGADA` con
   motivo `SIN_PERMISO`.
 
-### Jornada de la parada (I03): pendiente
+### Jornada de la parada (I03) — ECL-82
 
-La BDD pide que la parada sea del itinerario **y de la jornada** del reporte. El
-modelo actual no permite comprobar la jornada de forma confiable:
+Para una incidencia nueva con `parada_id`, se comprueba la propiedad de la
+asignación y se consulta su ruta mediante `RutaRepository.jornada_de_asignacion`.
+La ruta debe pertenecer al perfil del conductor autenticado y su
+`fecha_operacion` debe coincidir con `ocurrida_en` convertido a `America/Lima`.
+No se infiere jornada desde `assigned_at`, la ventana del pedido ni la fecha
+de recepción; se admiten reportes antiguos de la jornada correspondiente.
 
-- no existe una entidad de jornada ni de ruta;
-- el itinerario (`driver_stop_assignment`) no tiene fecha;
-- `pedido_id` es opcional;
-- la ventana de un pedido puede cruzar la medianoche de Lima.
+Parada propia de otra jornada, ruta de otro conductor o asignación antigua sin
+ruta vinculada reciben el mismo `403 {"detail":"Acceso denegado"}`, sin alta.
+Parada inexistente conserva 422; sin parada se conserva el alta válida.
+El replay equivalente de una operación almacenada devuelve su acuse original
+con 200 **antes** de consultar la parada o su jornada; contenido distinto
+conserva 409. Esto preserva la idempotencia de la cola offline.
 
-Hoy solo se valida que la parada exista y sea del conductor. La comprobación de
-jornada se aplaza a [ECL-82](https://continental-team-il84x39k.atlassian.net/browse/ECL-82)
-(falta el modelo de rutas); el aplazamiento está pendiente de ratificación de
-Julio. **I03 no está cubierto por completo.**
+No hay migraciones nuevas: se utiliza el vínculo persistido por ST-046.
+La [validación US-012 v1.1.0 del Sprint 4](<../docs/03 Implementación/Sprint 04/VALIDACION_US012_ECL82_V_1_1_0.md>)
+actualiza la cobertura de I03 y conserva la evidencia histórica del Sprint 3.
 
 ### Migración 0013
 
@@ -929,16 +951,19 @@ Julio. **I03 no está cubierto por completo.**
 - **Vínculo con el conductor y la ruta:** la incidencia se vincula siempre al
   conductor. Sin parada no tiene ruta (ratificado por Julio). `ruta_id` llegará,
   nullable, con el modelo de rutas; ver
-  [Base de datos V_1_1_0](<../docs/01 Inicio/11. Base de datos V_1_1_0.md>).
+  [Base de datos V_1_3_0](<../docs/01 Inicio/11. Base de datos V_1_3_0.md>).
 - **Downgrade protegido:** se niega mientras existan incidencias o su
   auditoría.
 
 ### Datos de demostración
 
 `scripts/seed_demo.py` agrega 3 incidencias ficticias de `conductor.demo`,
-pendientes de validación: avería, tráfico y clima en Lima, la primera asociada
-a su parada 1. Su `operation_id` es determinista: se deriva con `uuid5` y se
-marca como versión 4, así que volver a sembrar no las duplica.
+pendientes de validación: avería, tráfico y clima en Lima. Las altas nuevas
+se crean sin parada porque estas asignaciones demo todavía no tienen ruta
+planificada. Al repetir una siembra anterior se conserva la referencia de
+parada ya almacenada, sin revalidar jornada ni cambiar el payload del replay.
+Su `operation_id` es determinista: se deriva con `uuid5` y se marca como
+versión 4, así que volver a sembrar no las duplica.
 
 ## Endurecimiento HTTP — ECL-84 (OWASP A02/A10)
 
@@ -1007,6 +1032,13 @@ lleva su motivo: `SIN_UBICACION`, `EXCEDE_CAPACIDAD`, `VENTANA_INVIABLE` o
 registro. Cada vehículo los lleva hasta que el siguiente no cabe, sin mirar las
 ventanas. El ahorro se calcula sobre los mismos pedidos que atendió el
 optimizador (Visión: «comparación sobre el mismo conjunto de pedidos»).
+
+**Precisión del ahorro (BDD de US-006 v1.0.0, decisiones 4 y 7; RNF-011):**
+
+- Totales y porcentajes se calculan sin redondeos intermedios; el redondeo es solo de presentación.
+- Con base secuencial 0, el ahorro es `null` («No calculable») y nunca un 0 % inventado.
+- Un ahorro negativo conserva su signo. El esquema de la API acepta negativos sin piso y como máximo 100 %. `Resumen` exige que cada porcentaje sea `null` exactamente cuando su base es 0.
+- Las cifras de `evidencias/ECL-93/` se midieron antes de este cambio y conservan el redondeo de entonces.
 
 Medición reproducible del spike (desde `backend/`):
 
@@ -1229,6 +1261,7 @@ DistriRápido; se cambia con `--visitas-anuales`.
 - **Referencia:** la meta de 1,1 MB de la rúbrica equivale a 0,163 g CO₂e por
   visita (calificación C).
 
+
 ### Reproducción
 
 Desde `backend/`:
@@ -1242,5 +1275,77 @@ python -m pytest tests/unit/test_swdm_v4.py -q
 
 Con `--despues`, el script calcula la reducción por página. Solo compara las
 páginas medidas en las dos campañas.
+
+## Modelo de rutas — ECL-95 / ST-046
+
+Persistencia de la optimización de US-006 (migración `0016_modelo_rutas`).
+Catálogos en `app/core/rutas.py`, modelos en `app/models/ruta.py`; detalle en el
+[documento 11](<../docs/01 Inicio/11. Base de datos V_1_3_0.md>).
+
+| Tabla | Qué guarda | Reglas en base de datos |
+|---|---|---|
+| `optimizacion` | Cada ejecución: quién, fecha de operación, estado, tiempos, `parametros_version`, referencia secuencial e `instantanea` (flota, pedidos, depósito y matriz usados). | Solo los estados finales tienen `finalizada_en`; solo FALLIDA tiene `error`; COMPLETADA exige `parametros_version`. |
+| `ruta` | Ruta de un vehículo en una fecha (`fecha_operacion` + `conductor_id` = jornada), métricas, trazado `GEOGRAPHY(LINESTRING,4326)` y descansos. | Una por vehículo y por conductor en cada optimización; sin conductor exige `motivo_sin_conductor` (ECL-79); métricas ≥ 0. |
+| `parada_ruta` | Pedidos en orden con ETA y estado. | Un pedido una sola vez por optimización; secuencia única por ruta; FK compuesta (ruta, optimización). |
+| `pedido_no_asignado` | Pedido que quedó fuera y su motivo (RN-009). | Motivo del catálogo, con `JORNADA_INVIABLE` (decisión 5 de la BDD). |
+
+- **Métricas:** van en `DOUBLE PRECISION`, sin redondeo intermedio (RNF-011).
+- **Incidencias:** `incidencia.ruta_id` es nullable; las existentes quedan en `null`.
+- **Jornada de una asignación (ECL-82):** `driver_stop_assignment.parada_ruta_id` (opcional y único) le da a la asignación su ruta y su jornada. `RutaRepository.jornada_de_asignacion(stop_id)` devuelve ruta, conductor y fecha, o `None` para las asignaciones del Sprint 3.
+- **Downgrade:** se niega si ya hay optimizaciones, porque son historial operativo, igual que en 0013.
+
+Pruebas: `tests/unit/test_ruta_repository.py` y
+`tests/integration/test_modelo_rutas.py` (27 casos contra PostGIS: ida y vuelta
+de la migración, restricciones, métricas exactas, trazado y jornada).
+
+## Parámetros versionados — EN-008 / ECL-26
+
+Parámetros de cálculo con fuente y vigencia (RNF-011), migración
+`0017_parametros_versionados`. Catálogo en `app/core/parametros.py`, cálculos
+puros en `app/core/calculos.py`; detalle y casos de referencia en
+[ECL-26 parámetros versionados](<../docs/03 Implementación/Sprint 04/ECL-26 parametros versionados y casos de referencia.md>).
+
+| Endpoint | Permiso (matriz vigente) | Respuesta |
+|---|---|---|
+| `GET /parametros[?fecha=ISO-8601 con zona]` | `parametros.consultar`: Administrador, Operador, Analista, Auditor | Versión vigente ahora o en esa fecha; 404 si no hay |
+| `GET /parametros/{version}` | `parametros.consultar` | Una versión exacta, para recalcular un resultado histórico |
+| `POST /parametros` | `parametros.crear`: solo Administrador | 201 con la versión; 409 si el código existe o su inicio no es posterior a la vigente; 422 si falta un requerido, la unidad no es la del código, el valor no es > 0 o falta la fuente |
+
+- **Versiones:** una versión nueva cierra la abierta en su `vigente_desde` en la misma transacción que la auditoría `PARAMETROS_VERSIONADOS`. Esa auditoría lleva solo los códigos, nunca los valores. Nada se edita ni se borra, y la base de datos admite una sola versión abierta.
+- **Requeridos:** `PRECIO_COMBUSTIBLE_GALON` (PEN/gal, RN-011), `LITROS_POR_GALON` (L/gal, decisión 8 de la BDD de US-006) y `COSTO_MANTENIMIENTO_KM` (PEN/km, RN-012). `CAPTURA_CO2_ARBOL_ANIO` es opcional (RN-014): sin ese factor, la compensación no se calcula.
+- **Combustible:** el precio es por galón, así que los litros se convierten con `LITROS_POR_GALON` antes de multiplicar. Nada se redondea en el cálculo.
+- **Optimizaciones:** `optimizacion.parametros_version` referencia una versión existente; una ejecución completada siempre es reproducible.
+- **Demo:** `scripts/seed_demo.py` registra la versión `REFERENCIA-RN-2026-11` con los valores de RN-011 y RN-012 y la definición exacta del galón (NIST Handbook 44). Las fuentes de mercado están pendientes (Julio, ECL-26).
+- **Casos de referencia (RNF-011):** `tests/unit/test_casos_referencia_rnf011.py` lee los 20 casos calculados a mano por Julio del CSV del Sprint 4 y exige un error ≤ 0,01. Mientras falten casos, la prueba de completitud queda **omitida** con el motivo «pendiente».
+- **Downgrade:** se niega si ya hay versiones registradas.
+
+## Renovación de sesión — ECL-83
+
+Login devuelve expires_at y max_expires_at a todos los roles. POST /sesion/extender conserva cookie y token; renueva por SESSION_TTL_MINUTES (60 minutos), limitado a creado_en + 12 horas. Respuestas 401: sesión inválida; 409: expiración ya en el tope; 503: almacenamiento no disponible. La cookie (HttpOnly, SameSite=Strict, Secure en producción) se emite solo en el login con Max-Age de 12 horas y no se reemite al renovar: la vigencia real la decide sesion.expira_en en el servidor. Login y renovación responden con Cache-Control: no-store. La auditoría SESION_EXTENDIDA y el cambio de expiración son atómicos. Renovar conserva la restricción de cambio obligatorio de contraseña.
+
+La migración 0015_sesion_extendida amplía la restricción de auditoría. Su downgrade elimina los eventos SESION_EXTENDIDA antes de restaurarla: requiere reversión autorizada por la pérdida de esos registros.
+
+[Contrato, pruebas y límites de recuperación](<../docs/03 Implementación/Sprint 04/ECL-83 aviso de sesion.md>).
+
+## Optimización de rutas — ECL-96 / ST-047
+
+`POST /optimizaciones` resuelve en la misma petición con el motor VRPTW de ST-044
+sobre los pedidos y vehículos guardados y responde 201 solo con la corrida
+`COMPLETADA` ya persistida (rutas, paradas y no asignados en una transacción).
+
+| Endpoint | Permiso | Respuestas |
+|---|---|---|
+| `POST /optimizaciones` | `optimizaciones.ejecutar`: solo Operador | 201; 422 `{campo, motivo}` sin eco ni corrida creada; 503 con `optimizacion_id` si quedó `FALLIDA` |
+| `GET /optimizaciones` | `optimizaciones.consultar` general | Página por `solicitada_en` descendente, `page_size` 1–100 (20) |
+| `GET /optimizaciones/{id}` | `rutas.consultar` general | Detalle con rutas, paradas, ETA en Lima, descansos y no asignados con motivo; 404 si no existe |
+
+- **Selección:** sin listas, pedidos `PENDIENTE` de la fecha de Lima y vehículos `ACTIVO`; más de 150/15 es 422, nunca se trunca.
+- **Costos:** versión de parámetros vigente (EN-008), guardada en `parametros_version`; ahorros exactos, con signo y `null` con base 0.
+- **Conductores:** primer conductor elegible que cubre la ruta completa, uno por ruta; si no hay, `SIN_CONDUCTOR_ELEGIBLE` (ECL-79).
+- **Auditoría:** cada llamada queda registrada por la autorización (`AUTORIZACION_PERMITIDA`/`DENEGADA` con permiso y motivo), sin cuerpos, coordenadas ni datos personales.
+- **Trazado:** segmentos rectos depósito → paradas → depósito; no es la red vial.
+- `/indicadores/sostenibilidad` sigue simulado hasta US-009.
+
+[Contrato, reglas y pruebas](<../docs/03 Implementación/Sprint 04/ECL-96 servicio de optimizacion.md>)
 
 [← Volver al README principal](../README.md)

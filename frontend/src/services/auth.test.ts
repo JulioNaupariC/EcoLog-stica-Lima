@@ -1,4 +1,4 @@
-import { AuthServiceError, login, logout } from './auth'
+import { AuthServiceError, extendSession, login, logout } from './auth'
 import type { AuthRole, LoginRequest } from './auth'
 
 const payload: LoginRequest = {
@@ -7,6 +7,41 @@ const payload: LoginRequest = {
 }
 
 const usuario_id = '123e4567-e89b-12d3-a456-426614174000'
+
+describe('ECL-83 renovar sesión', () => {
+  beforeEach(() => { vi.stubEnv('VITE_API_BASE_URL', 'http://127.0.0.1:8000') })
+  afterEach(() => { vi.unstubAllEnvs(); vi.unstubAllGlobals() })
+  it('usa POST con la cookie, sin enviar token ni plazos del cliente', async () => {
+    const result = { expires_at: '2026-11-07T13:00:00Z', max_expires_at: '2026-11-08T00:00:00Z' }
+    const fetchMock = vi.fn().mockResolvedValue(jsonResponse(result, 200))
+    vi.stubGlobal('fetch', fetchMock)
+    expect(await extendSession()).toEqual(result)
+    expect(fetchMock).toHaveBeenCalledWith('http://127.0.0.1:8000/sesion/extender', {
+      method: 'POST', credentials: 'include', headers: { 'Content-Type': 'application/json' },
+    })
+  })
+  it.each([401, 409, 503, 500])('propaga HTTP %i sin detalles internos', async status => {
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(jsonResponse({ detail: 'synthetic-private' }, status)))
+    const result = await extendSession().catch((error: unknown) => error)
+    expect(result).toBeInstanceOf(AuthServiceError)
+    expect(String(result)).not.toContain('synthetic-private')
+    if (status === 401 || status === 409) expect(result).toMatchObject({ status })
+  })
+  it.each([{}, { expires_at: 'bad', max_expires_at: 'bad' },
+    { expires_at: '2026-11-08T00:00:00Z', max_expires_at: '2026-11-07T00:00:00Z' },
+  ])('rechaza plazos incompletos o incompatibles: %j', async body => {
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(jsonResponse(body, 200)))
+    await expect(extendSession()).rejects.toBeInstanceOf(AuthServiceError)
+  })
+  it('maneja red, configuración y JSON inválidos', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new Error('network')))
+    await expect(extendSession()).rejects.toMatchObject({ kind: 'network' })
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(new Response('no-json', { status: 200 })))
+    await expect(extendSession()).rejects.toMatchObject({ kind: 'unavailable' })
+    vi.stubEnv('VITE_API_BASE_URL', 'invalid')
+    await expect(extendSession()).rejects.toBeInstanceOf(AuthServiceError)
+  })
+})
 
 function jsonResponse(body: unknown, status: number): Response {
   return new Response(JSON.stringify(body), {
@@ -49,8 +84,9 @@ describe('servicio de autenticación', () => {
     'ANALISTA',
     'AUDITOR',
   ])('acepta la identidad real con rol %s', async (rol) => {
-    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(jsonResponse({ usuario_id, rol }, 200)))
-    await expect(login(payload)).resolves.toEqual({ usuario_id, rol })
+    const deadlines = { expires_at: '2026-11-07T13:00:00Z', max_expires_at: '2026-11-08T00:00:00Z' }
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(jsonResponse({ usuario_id, rol, ...deadlines }, 200)))
+    await expect(login(payload)).resolves.toEqual({ usuario_id, rol, ...deadlines })
   })
 
   it.each([

@@ -27,10 +27,13 @@ from app.schemas.incidencia import (
     IncidenciaCreate,
     IncidenciaPage,
     IncidenciaRegistrada,
+    IncidenciaResolver,
+    IncidenciaResuelta,
 )
 from app.services.incidencias import (
     IncidenciaConflicto,
     IncidenciaInvalida,
+    IncidenciaNoEncontrada,
     IncidenciaParadaAjena,
     IncidenciaService,
     IncidenciaSinConductor,
@@ -73,6 +76,10 @@ def _self_context(identity: Identidad) -> Contexto:
         200: {"description": "Reenvío idempotente: misma respuesta"},
         409: {"description": "Mismo operation_id con contenido distinto"},
         **_ERRORS,
+        403: {
+            "description": "Acceso denegado: rol, perfil, propietario o jornada "
+            "de la parada no autorizados"
+        },
     },
 )
 def register_incident(
@@ -101,7 +108,7 @@ def register_incident(
     try:
         acknowledgement, created = service.registrar(identity.usuario_id, payload)
     except (IncidenciaSinConductor, IncidenciaParadaAjena):
-        # Generic: no profile, or a stop of another driver (I08, I10).
+        # Generic: profile, stop owner or reporting day (I03, I08, I10).
         raise HTTPException(status.HTTP_403_FORBIDDEN, "Acceso denegado") from None
     except IncidenciaInvalida as error:
         # Same shape as SanitizedRoute 422s: field location and code, no input.
@@ -151,3 +158,35 @@ def list_incidents(
         raise HTTPException(
             status.HTTP_503_SERVICE_UNAVAILABLE, "Servicio no disponible"
         ) from None
+
+
+@router.patch(
+    "/{incidencia_id}",
+    response_model=IncidenciaResuelta,
+    responses={
+        404: {"description": "Incidencia no encontrada"},
+        409: {"description": "La incidencia ya fue resuelta"},
+        **_ERRORS,
+    },
+)
+def resolve_incident(
+    incidencia_id: UUID,
+    payload: IncidenciaResolver,
+    identity: Annotated[
+        Identidad,
+        Depends(
+            require_permission(
+                Permiso.INCIDENCIAS_ACTUALIZAR, roles={Rol.ADMINISTRADOR, Rol.OPERADOR}
+            )
+        ),
+    ],
+    service: Annotated[IncidenciaService, Depends(get_incident_service)],
+) -> IncidenciaResuelta:
+    try:
+        return service.resolver(incidencia_id, identity.usuario_id, payload)
+    except IncidenciaNoEncontrada:
+        raise HTTPException(404, "Incidencia no encontrada") from None
+    except IncidenciaConflicto:
+        raise HTTPException(409, "La incidencia ya fue resuelta") from None
+    except IncidenciaUnavailable:
+        raise HTTPException(503, "Servicio no disponible") from None

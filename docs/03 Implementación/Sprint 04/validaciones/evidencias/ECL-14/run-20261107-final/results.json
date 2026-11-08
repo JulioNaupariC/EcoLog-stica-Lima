@@ -1,0 +1,166 @@
+{
+  "source": "ST-045 synthetic HTTP responses; not backend or provider integration",
+  "chromeVersion": "Chrome/156.0.8078.80",
+  "firefoxVersion": "146.0.1",
+  "records": [
+    {
+      "engine": "chrome",
+      "theme": "light",
+      "width": 1280,
+      "scrollWidth": 1280,
+      "axeViolations": 0,
+      "axeIncomplete": 2
+    },
+    {
+      "engine": "chrome",
+      "theme": "light",
+      "lighthouseMode": "snapshot",
+      "lighthouseAccessibility": 1,
+      "failures": []
+    },
+    {
+      "engine": "chrome",
+      "theme": "light",
+      "width": 360,
+      "scrollWidth": 360,
+      "axeViolations": 0,
+      "axeIncomplete": 2
+    },
+    {
+      "engine": "chrome",
+      "theme": "dark",
+      "width": 1280,
+      "scrollWidth": 1280,
+      "axeViolations": 0,
+      "axeIncomplete": 2
+    },
+    {
+      "engine": "chrome",
+      "theme": "dark",
+      "lighthouseMode": "snapshot",
+      "lighthouseAccessibility": 1,
+      "failures": []
+    },
+    {
+      "engine": "chrome",
+      "theme": "dark",
+      "width": 360,
+      "scrollWidth": 360,
+      "axeViolations": 0,
+      "axeIncomplete": 2
+    },
+    {
+      "failedRequest": "https://tile.openstreetmap.org/13/2343/4371.png",
+      "reason": "net::ERR_ABORTED"
+    },
+    {
+      "failedRequest": "https://tile.openstreetmap.org/13/2344/4371.png",
+      "reason": "net::ERR_ABORTED"
+    },
+    {
+      "failedRequest": "https://tile.openstreetmap.org/13/2343/4372.png",
+      "reason": "net::ERR_ABORTED"
+    },
+    {
+      "failedRequest": "https://tile.openstreetmap.org/13/2344/4372.png",
+      "reason": "net::ERR_ABORTED"
+    },
+    {
+      "failedRequest": "https://tile.openstreetmap.org/13/2343/4371.png",
+      "reason": "net::ERR_FAILED"
+    },
+    {
+      "failedRequest": "https://tile.openstreetmap.org/13/2344/4371.png",
+      "reason": "net::ERR_FAILED"
+    },
+    {
+      "failedRequest": "https://tile.openstreetmap.org/13/2343/4372.png",
+      "reason": "net::ERR_FAILED"
+    },
+    {
+      "failedRequest": "https://tile.openstreetmap.org/13/2344/4372.png",
+      "reason": "net::ERR_FAILED"
+    },
+    {
+      "failedRequest": "https://tile.openstreetmap.org/14/4688/8743.png",
+      "reason": "net::ERR_FAILED"
+    },
+    {
+      "failedRequest": "https://tile.openstreetmap.org/14/4688/8744.png",
+      "reason": "net::ERR_FAILED"
+    },
+    {
+      "failedRequest": "https://tile.openstreetmap.org/14/4687/8743.png",
+      "reason": "net::ERR_FAILED"
+    },
+    {
+      "failedRequest": "https://tile.openstreetmap.org/14/4689/8743.png",
+      "reason": "net::ERR_FAILED"
+    },
+    {
+      "failedRequest": "https://tile.openstreetmap.org/14/4687/8744.png",
+      "reason": "net::ERR_FAILED"
+    },
+    {
+      "failedRequest": "https://tile.openstreetmap.org/14/4689/8744.png",
+      "reason": "net::ERR_FAILED"
+    },
+    {
+      "failedRequest": "https://tile.openstreetmap.org/13/2343/4371.png",
+      "reason": "net::ERR_FAILED"
+    },
+    {
+      "failedRequest": "https://tile.openstreetmap.org/13/2344/4371.png",
+      "reason": "net::ERR_FAILED"
+    },
+    {
+      "failedRequest": "https://tile.openstreetmap.org/13/2343/4372.png",
+      "reason": "net::ERR_FAILED"
+    },
+    {
+      "failedRequest": "https://tile.openstreetmap.org/13/2344/4372.png",
+      "reason": "net::ERR_FAILED"
+    },
+    {
+      "engine": "chrome",
+      "tileFailureRetainsList": true,
+      "keyboardList": true
+    },
+    {
+      "failedRequest": "https://tile.openstreetmap.org/13/2343/4371.png",
+      "reason": "net::ERR_ABORTED"
+    },
+    {
+      "failedRequest": "https://tile.openstreetmap.org/13/2344/4371.png",
+      "reason": "net::ERR_ABORTED"
+    },
+    {
+      "failedRequest": "https://tile.openstreetmap.org/13/2343/4372.png",
+      "reason": "net::ERR_ABORTED"
+    },
+    {
+      "failedRequest": "https://tile.openstreetmap.org/13/2344/4372.png",
+      "reason": "net::ERR_ABORTED"
+    },
+    {
+      "engine": "chrome",
+      "emptyLoadingFailedDistinct": true
+    },
+    {
+      "engine": "firefox",
+      "theme": "light",
+      "width": 1280,
+      "scrollWidth": 1280,
+      "axeViolations": 0,
+      "axeIncomplete": 2
+    },
+    {
+      "engine": "firefox",
+      "theme": "light",
+      "width": 360,
+      "scrollWidth": 360,
+      "axeViolations": 0,
+      "axeIncomplete": 2
+    }
+  ]
+}

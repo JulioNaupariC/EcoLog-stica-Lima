@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="19" failures="0" errors="0" time="0.3435924">
+    <testsuite name="src/hooks/useIncidentSynchronization.test.tsx" timestamp="2026-11-08T16:58:06.695Z" hostname="LAPTOP-FO4PP4GD" tests="4" failures="0" errors="0" skipped="0" time="0.3132115">
+        <testcase classname="src/hooks/useIncidentSynchronization.test.tsx" name="ruta de borde: reautenticación del mismo propietario reanuda 401, no 403/409/422" time="0.0754448">
+        </testcase>
+        <testcase classname="src/hooks/useIncidentSynchronization.test.tsx" name="ruta de borde: navegación sin propietario no sincroniza; cambiar cuenta cancela la anterior" time="0.1531011">
+        </testcase>
+        <testcase classname="src/hooks/useIncidentSynchronization.test.tsx" name="ruta de borde: reconexión, aviso local y sondeo reintentan sin solaparse" time="0.0804824">
+        </testcase>
+        <testcase classname="src/hooks/useIncidentSynchronization.test.tsx" name="ruta infeliz: error de persistencia al recuperar sesión no produce envío" time="0.0017354">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/services/incidentSync.test.ts" timestamp="2026-11-08T16:58:06.700Z" hostname="LAPTOP-FO4PP4GD" tests="15" failures="0" errors="0" skipped="0" time="0.0303809">
+        <testcase classname="src/services/incidentSync.test.ts" name="ruta dorada: persiste antes de enviar y acepta 201/200 sin reenviar confirmados" time="0.0084935">
+        </testcase>
+        <testcase classname="src/services/incidentSync.test.ts" name="ruta de borde: offline y respuesta perdida reutilizan exactamente operación y contenido" time="0.0025794">
+        </testcase>
+        <testcase classname="src/services/incidentSync.test.ts" name="ruta infeliz: 401 conserva contenido y pausa reintentos automáticos" time="0.0016943">
+        </testcase>
+        <testcase classname="src/services/incidentSync.test.ts" name="ruta infeliz: 403 conserva contenido y pausa reintentos automáticos" time="0.0012771">
+        </testcase>
+        <testcase classname="src/services/incidentSync.test.ts" name="ruta infeliz: 409 conserva contenido y pausa reintentos automáticos" time="0.0013264">
+        </testcase>
+        <testcase classname="src/services/incidentSync.test.ts" name="ruta infeliz: 422 conserva contenido y pausa reintentos automáticos" time="0.0009848">
+        </testcase>
+        <testcase classname="src/services/incidentSync.test.ts" name="ruta de borde: 5xx y confirmación inválida no retiran el pendiente" time="0.0010049">
+        </testcase>
+        <testcase classname="src/services/incidentSync.test.ts" name="ruta de borde: cuenta ajena, cambio de cookie y cancelación nunca envían el pendiente" time="0.0009488">
+        </testcase>
+        <testcase classname="src/services/incidentSync.test.ts" name="ruta feliz: borrador por propietario y encolado atómico elimina solo el borrador propio" time="0.0032659">
+        </testcase>
+        <testcase classname="src/services/incidentSync.test.ts" name="ruta de borde: base separada conserva itineraries y pendingReports del Sprint 2" time="0.0023104">
+        </testcase>
+        <testcase classname="src/services/incidentSync.test.ts" name="ruta infeliz: falla de almacenamiento e identidad se propagan sin confirmar" time="0.0012368">
+        </testcase>
+        <testcase classname="src/services/incidentSync.test.ts" name="ruta infeliz: corrección de 422 es atómica y conserva operación; conflicto no admite corrección" time="0.0013414">
+        </testcase>
+        <testcase classname="src/services/incidentSync.test.ts" name="ruta infeliz: respuestas sin acuse válido se rechazan" time="0.0011629">
+        </testcase>
+        <testcase classname="src/services/incidentSync.test.ts" name="ruta infeliz: no envía sin propietario esperado válido" time="0.0003615">
+        </testcase>
+        <testcase classname="src/services/incidentSync.test.ts" name="ruta de borde: Web Locks coordina pestañas y cancelación durante verificación evita POST" time="0.0005384">
+        </testcase>
+    </testsuite>
+</testsuites>

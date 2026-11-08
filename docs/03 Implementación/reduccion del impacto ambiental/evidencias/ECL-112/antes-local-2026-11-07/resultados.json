@@ -1,0 +1,88 @@
+{
+  "ticket": "ECL-112",
+  "scope": "Local paired measurement of public login; not ECL-115",
+  "baselineEcl108": "e09dcd80e32431018d4020bb02c89ffae7505705",
+  "head": "1b8a5501d27bf42c3bd04718add156eb5ba89f67",
+  "modifiedTrackedFiles": [],
+  "baseCssSha256": "7fddb84b63b7c226b16135e3f4754299d44a26639cae2b0127a5ae89f4068bed",
+  "startedAt": "2026-11-07T21:26:36.734Z",
+  "timezone": "America/Lima",
+  "node": "v22.20.0",
+  "cpu": "Intel(R) Core(TM) i7-10700F CPU @ 2.90GHz",
+  "ramBytes": 17068310528,
+  "windowsRelease": "10.0.26200",
+  "lighthouse": "12.8.2",
+  "viewport": {
+    "width": 1350,
+    "height": 940,
+    "deviceScaleFactor": 1
+  },
+  "configuration": {
+    "mode": "navigation",
+    "preset": "desktop",
+    "performanceOnly": true,
+    "disableStorageReset": true,
+    "network": "DevTools NetworkLog; no throttling; disabled HTTP cache; networkidle0 + 1 second",
+    "lighthouseThrottling": {
+      "rttMs": 40,
+      "throughputKbps": 10240,
+      "cpuSlowdownMultiplier": 1,
+      "requestLatencyMs": 0,
+      "downloadThroughputKbps": 0,
+      "uploadThroughputKbps": 0
+    },
+    "frontend": "Docker Compose / Vite development",
+    "warmup": "One initial public login navigation before the three measured reloads; no API campaign",
+    "limitations": "Different PC and Chrome from ECL-108; protected views and final ECL-115 not measured"
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "performance": 55.00000000000001,
+      "fcpMs": 5007.2748,
+      "lcpMs": 9504.9122,
+      "tbtMs": 0,
+      "cls": 0.000005301965677261186,
+      "transferredBytes": 10760850,
+      "requests": 58
+    },
+    {
+      "round": 2,
+      "performance": 55.00000000000001,
+      "fcpMs": 5019.843400000001,
+      "lcpMs": 9522.7651,
+      "tbtMs": 0,
+      "cls": 0.000005301965677261186,
+      "transferredBytes": 10760850,
+      "requests": 58
+    },
+    {
+      "round": 3,
+      "performance": 55.00000000000001,
+      "fcpMs": 4978.3486,
+      "lcpMs": 9452.5229,
+      "tbtMs": 0,
+      "cls": 0.000005301965677261186,
+      "transferredBytes": 10760850,
+      "requests": 58
+    }
+  ],
+  "chrome": "Chrome/157.0.8103.38",
+  "accessibility": 100,
+  "inlineSvg": {
+    "count": 6,
+    "decorativeHidden": true,
+    "images": 0,
+    "fontFamily": "\"Inter Variable\", Inter, ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif"
+  },
+  "medians": {
+    "performance": 55.00000000000001,
+    "fcpMs": 5007.2748,
+    "lcpMs": 9504.9122,
+    "tbtMs": 0,
+    "cls": 0.000005301965677261186,
+    "transferredBytes": 10760850,
+    "requests": 58
+  },
+  "finishedAt": "2026-11-07T21:27:23.448Z"
+}

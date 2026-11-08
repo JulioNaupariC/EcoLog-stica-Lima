@@ -10,7 +10,7 @@ import json
 import threading
 from concurrent.futures import ThreadPoolExecutor
 from datetime import date, datetime, timedelta, timezone
-from uuid import uuid1, uuid4
+from uuid import UUID, uuid1, uuid4
 from zoneinfo import ZoneInfo
 
 import pytest
@@ -30,15 +30,33 @@ from app.core.incidencias import (
 )
 from app.db.session import session_factory
 from app.main import create_app
-from app.models import Auditoria, Conductor, Incidencia, Usuario
-from app.repositories.auditoria import Evento
+from app.models import (
+    Auditoria,
+    Cliente,
+    Conductor,
+    DriverStopAssignment,
+    Incidencia,
+    Optimizacion,
+    ParadaRuta,
+    Pedido,
+    Ruta,
+    Usuario,
+    Vehiculo,
+)
+from app.repositories.auditoria import AuditStorageError, Evento
 from app.repositories.incidencias import IncidenciaRepository
 from app.repositories.usuarios import UsuarioRepository
 from app.schemas.conductor import ConductorCreate
+from app.schemas.incidencia import IncidenciaResolver
 from app.services import incidencias as incident_service
 from app.services.conductores import ConductorService
 from app.services.credenciales import CredentialService
 from app.services.driver_reports import DriverReportService
+from app.services.incidencias import (
+    IncidenciaConflicto,
+    IncidenciaService,
+    IncidenciaUnavailable,
+)
 
 pytestmark = pytest.mark.integration
 
@@ -73,6 +91,10 @@ def incident_database(migration_database, monkeypatch):
         with factory.begin() as session:
             session.execute(delete(Incidencia))
             session.execute(delete(Auditoria))
+            session.execute(delete(DriverStopAssignment))
+            session.execute(delete(ParadaRuta))
+            session.execute(delete(Ruta))
+            session.execute(delete(Optimizacion))
 
 
 def create_user(factory, email, role):
@@ -136,6 +158,73 @@ def client_for(url):
     return TestClient(create_app(Settings(app_env="test", database_url=url)))
 
 
+@pytest.fixture
+def planned_stop(setup):
+    """Persist the full ST-046 chain; the assignment ID remains the API ID."""
+    with setup["factory"].begin() as session:
+        cliente = Cliente(nombre="Cliente sintético ECL-82")
+        vehiculo = Vehiculo(
+            placa="JRN-082",
+            tipo="FURGON",
+            capacidad_kg=1000,
+            capacidad_m3=10,
+            rendimiento_km_l=10,
+            factor_co2_kg_km=0.2,
+            anio_fabricacion=2022,
+        )
+        session.add_all([cliente, vehiculo])
+        session.flush()
+        pedido = Pedido(
+            cliente_id=cliente.cliente_id,
+            direccion="Calle Ficticia 82",
+            referencia="Prueba de jornada",
+            peso_kg=10,
+            volumen_m3=1,
+            ventana_inicio=T0,
+            ventana_fin=T0 + timedelta(hours=1),
+            prioridad="ESTANDAR",
+            tipo_producto="PAQUETE",
+        )
+        optimizacion = Optimizacion(
+            solicitada_por=setup["driver_a"].usuario_id,
+            fecha_operacion=T0.date(),
+            instantanea={},
+        )
+        session.add_all([pedido, optimizacion])
+        session.flush()
+        ruta = Ruta(
+            optimizacion_id=optimizacion.optimizacion_id,
+            fecha_operacion=T0.date(),
+            vehiculo_id=vehiculo.vehiculo_id,
+            conductor_id=setup["driver_a"].conductor_id,
+            salida=T0,
+            regreso=T0 + timedelta(hours=1),
+            tiempo_min=60,
+            peso_kg=10,
+            volumen_m3=1,
+            distancia_km=1,
+            co2_kg=0.2,
+            combustible_l=0.1,
+            costo_soles=1,
+            trazado="SRID=4326;LINESTRING(-77.04 -12.04, -77.05 -12.05)",
+        )
+        session.add(ruta)
+        session.flush()
+        parada = ParadaRuta(
+            ruta_id=ruta.ruta_id,
+            optimizacion_id=optimizacion.optimizacion_id,
+            pedido_id=pedido.pedido_id,
+            secuencia=1,
+            eta=T0,
+        )
+        session.add(parada)
+        session.flush()
+        assignment = session.get(DriverStopAssignment, setup["stop_a"])
+        assignment.parada_ruta_id = parada.parada_id
+        assignment.pedido_id = pedido.pedido_id
+        return ruta.ruta_id, parada.parada_id
+
+
 def login(client, email):
     response = client.post("/login", json={"email": email, "password": PASSWORD})
     assert response.status_code == 200
@@ -176,6 +265,108 @@ def incident_audits(factory):
 def assert_nothing_stored(factory):
     assert incidents(factory) == []
     assert incident_audits(factory) == []
+
+
+def resolution_audits(factory):
+    with factory() as session:
+        return list(
+            session.scalars(
+                select(Auditoria).where(
+                    Auditoria.accion == Evento.INCIDENCIA_RESUELTA.value
+                )
+            )
+        )
+
+
+@pytest.mark.parametrize(
+    "action,state", [("VALIDAR", "VALIDADA"), ("DESCARTAR", "DESCARTADA")]
+)
+def test_ECL98_resolver_http_persiste_y_sale_del_listado(
+    setup, migration_database, action, state
+):
+    with client_for(setup["url"]) as driver:
+        login(driver, DRIVER_A)
+        incident_id = post(driver, body()).json()["incidencia_id"]
+    with client_for(setup["url"]) as operator:
+        login(operator, "operador-inc@example.test")
+        response = operator.patch(
+            f"/incidencias/{incident_id}",
+            json={
+                "accion": action,
+                "motivo": "Motivo privado" + "😀" * 280,
+            },
+        )
+        assert response.status_code == 200
+        assert response.json()["estado"] == state
+        assert operator.get("/incidencias").json()["total"] == 0
+        assert (
+            operator.patch(
+                f"/incidencias/{incident_id}", json={"accion": action}
+            ).status_code
+            == 409
+        )
+    [row] = incidents(setup["factory"])
+    assert str(row.resuelta_por) == response.json()["resuelta_por"]
+    assert row.resuelta_en == T0
+    assert row.motivo.startswith("Motivo privado")
+    [audit] = resolution_audits(setup["factory"])
+    assert audit.usuario_id == row.resuelta_por
+    assert audit.entidad == "incidencia"
+    assert audit.detalle == {"estado": state, "con_motivo": True}
+    _engine, config = migration_database
+    with pytest.raises(IntegrityError, match="resolutions require manual treatment"):
+        command.downgrade(config, "0013_incidencias")
+    assert incidents(setup["factory"])[0].estado == state
+
+
+def test_ECL98_dos_operadores_una_decision_y_un_conflicto(setup):
+    factory = setup["factory"]
+    with client_for(setup["url"]) as driver:
+        login(driver, DRIVER_A)
+        incident_id = post(driver, body()).json()["incidencia_id"]
+    actor = create_user(factory, "segundo-operador@example.test", "OPERADOR")
+    other = create_user(factory, "tercer-operador@example.test", "OPERADOR")
+    start = threading.Barrier(2)
+
+    def resolve(user, action):
+        start.wait(timeout=10)
+        try:
+            return IncidenciaService(factory).resolver(
+                UUID(incident_id), user, IncidenciaResolver(accion=action)
+            )
+        except IncidenciaConflicto:
+            return None
+
+    with ThreadPoolExecutor(max_workers=2) as executor:
+        first = executor.submit(resolve, actor, "VALIDAR")
+        second = executor.submit(resolve, other, "DESCARTAR")
+        results = [first.result(timeout=15), second.result(timeout=15)]
+    assert sum(result is None for result in results) == 1
+    winner = next(result for result in results if result is not None)
+    [row] = incidents(factory)
+    assert row.estado == winner.estado
+    assert row.resuelta_por == winner.resuelta_por
+    assert len(resolution_audits(factory)) == 1
+
+
+def test_ECL98_fallo_auditoria_revierte_estado(setup, monkeypatch):
+    with client_for(setup["url"]) as driver:
+        login(driver, DRIVER_A)
+        incident_id = post(driver, body()).json()["incidencia_id"]
+    actor = create_user(setup["factory"], "operador-rollback@example.test", "OPERADOR")
+
+    def fail(self, registro):
+        raise AuditStorageError("private")
+
+    monkeypatch.setattr(incident_service.AuditoriaRepository, "insert", fail)
+    with pytest.raises(IncidenciaUnavailable):
+        IncidenciaService(setup["factory"]).resolver(
+            UUID(incident_id), actor, IncidenciaResolver(accion="VALIDAR")
+        )
+    [row] = incidents(setup["factory"])
+    assert row.estado == "PENDIENTE_VALIDACION"
+    assert row.resuelta_por is None and row.resuelta_en is None
+    assert not resolution_audits(setup["factory"])
 
 
 # --- Ruta dorada --------------------------------------------------------------
@@ -273,7 +464,7 @@ def test_I02_operacion_consulta_pendientes_ordenados_y_paginados(setup, email):
         assert private not in raw
 
 
-def test_I03_registrar_con_parada_propia(setup):
+def test_I03_registrar_con_parada_propia(setup, planned_stop):
     factory = setup["factory"]
     with client_for(setup["url"]) as driver:
         login(driver, DRIVER_A)
@@ -291,6 +482,88 @@ def test_I03_registrar_con_parada_propia(setup):
             {"id": setup["stop_a"]},
         )
     assert stop_status == "PENDIENTE"  # Registering does not touch the stop.
+    with factory() as session:
+        assert session.get(Ruta, planned_stop[0]).estado == "PLANIFICADA"
+        assert session.get(ParadaRuta, planned_stop[1]).estado == "PENDIENTE"
+        assert (
+            session.get(
+                Optimizacion, session.get(Ruta, planned_stop[0]).optimizacion_id
+            ).estado
+            == "EN_PROCESO"
+        )
+
+
+@pytest.mark.parametrize(
+    "ocurrida_en,fecha,expected",
+    [
+        ("2026-10-27T04:59:59Z", date(2026, 10, 26), 201),
+        ("2026-10-27T05:00:00Z", date(2026, 10, 27), 201),
+        ("2026-10-27T04:59:59Z", date(2026, 10, 27), 403),
+        ("2026-10-27T05:00:00Z", date(2026, 10, 26), 403),
+    ],
+)
+def test_ECL82_jornada_usa_fecha_lima_y_rechaza_otra_sin_persistir(
+    setup, planned_stop, ocurrida_en, fecha, expected
+):
+    with setup["factory"].begin() as session:
+        session.get(Ruta, planned_stop[0]).fecha_operacion = fecha
+    with client_for(setup["url"]) as driver:
+        login(driver, DRIVER_A)
+        response = post(
+            driver, body(parada_id=str(setup["stop_a"]), ocurrida_en=ocurrida_en)
+        )
+    assert response.status_code == expected
+    if expected == 403:
+        assert response.json() == {"detail": "Acceso denegado"}
+        assert_nothing_stored(setup["factory"])
+    else:
+        assert (
+            len(incidents(setup["factory"]))
+            == len(incident_audits(setup["factory"]))
+            == 1
+        )
+
+
+@pytest.mark.parametrize("route_driver", ["other", "none", "no-route"])
+def test_ECL82_asignacion_propia_sin_ruta_autorizada_403_generico(
+    setup, planned_stop, route_driver
+):
+    with setup["factory"].begin() as session:
+        ruta = session.get(Ruta, planned_stop[0])
+        if route_driver == "no-route":
+            session.get(DriverStopAssignment, setup["stop_a"]).parada_ruta_id = None
+        elif route_driver == "other":
+            ruta.conductor_id = setup["driver_b"].conductor_id
+        else:
+            ruta.conductor_id = None
+            ruta.motivo_sin_conductor = "SIN_CONDUCTOR_ELEGIBLE"
+    with client_for(setup["url"]) as driver:
+        login(driver, DRIVER_A)
+        response = post(driver, body(parada_id=str(setup["stop_a"])))
+    assert response.status_code == 403
+    assert response.json() == {"detail": "Acceso denegado"}
+    assert_nothing_stored(setup["factory"])
+
+
+def test_ECL82_replay_no_revalida_jornada_y_nueva_operacion_si(setup, planned_stop):
+    data = body(parada_id=str(setup["stop_a"]))
+    with client_for(setup["url"]) as driver:
+        login(driver, DRIVER_A)
+        original = post(driver, data)
+        assert original.status_code == 201
+        with setup["factory"].begin() as session:
+            session.get(Ruta, planned_stop[0]).fecha_operacion -= timedelta(days=1)
+        replay = post(driver, data)
+        assert replay.status_code == 200
+        assert replay.json() == original.json()
+        assert post(driver, {**data, "operation_id": str(uuid4())}).status_code == 403
+        assert (
+            post(driver, {**data, "observacion": "Contenido distinto"}).status_code
+            == 409
+        )
+    assert (
+        len(incidents(setup["factory"])) == len(incident_audits(setup["factory"])) == 1
+    )
 
 
 # --- Ruta infeliz -------------------------------------------------------------------
@@ -747,7 +1020,7 @@ def test_I16_mismo_uuid_de_otro_conductor_es_independiente(setup):
 
 def test_0013_upgrade_downgrade_upgrade_una_sola_cabeza(migration_database):
     engine, config = migration_database
-    assert ScriptDirectory.from_config(config).get_heads() == ["0013_incidencias"]
+    assert len(ScriptDirectory.from_config(config).get_heads()) == 1
     command.upgrade(config, "0013_incidencias")
     with engine.connect() as connection:
         constraints = dict(

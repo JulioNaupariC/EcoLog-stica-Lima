@@ -1,0 +1,11 @@
+{
+  "fecha": "2026-11-07",
+  "origen": "Declaración del usuario Giancarlo",
+  "entorno": "127.0.0.1:5174; componente real y HTTP simulado, sin credenciales",
+  "casos": [
+    "renovación conservando DEMO-001",
+    "tope 409 y guardar borrador"
+  ],
+  "resultado_declarado": "Anuncios, foco y teclado correctos en ambos casos",
+  "limitaciones": "Sin grabación ni versión registrada de Narrador; no es prueba manual contra backend real."
+}

@@ -18,6 +18,7 @@ from app.api.incidencias import conductor_router as incident_report_router
 from app.api.incidencias import router as incident_router
 from app.api.indicadores import router as indicator_router
 from app.api.metrics import router as metrics_router
+from app.api.parametros import router as parameter_router
 from app.api.pedidos import router as order_router
 from app.api.preferencias import router as preferencias_router
 from app.api.rutas import indicadores_router as sustainability_router
@@ -129,4 +130,5 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.include_router(incident_router)
     app.include_router(optimization_router)
     app.include_router(sustainability_router)
+    app.include_router(parameter_router)
     return app

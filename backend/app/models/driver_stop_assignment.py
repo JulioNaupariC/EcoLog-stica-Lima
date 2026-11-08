@@ -24,6 +24,7 @@ class DriverStopAssignment(Base):
     __tablename__ = "driver_stop_assignment"
     __table_args__ = (
         UniqueConstraint("pedido_id", name="uq_driver_stop_pedido"),
+        UniqueConstraint("parada_ruta_id", name="uq_driver_stop_parada_ruta"),
         CheckConstraint("position > 0", name="ck_driver_stop_position"),
         CheckConstraint(
             "status IN ('PENDIENTE','EN_RUTA','ENTREGADO','NO_ENTREGADO')",
@@ -50,6 +51,16 @@ class DriverStopAssignment(Base):
     status: Mapped[str] = mapped_column(String(15), server_default=text("'PENDIENTE'"))
     assigned_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=text("CURRENT_TIMESTAMP")
+    )
+    # ECL-95: the planned stop this assignment publishes to the driver. Through
+    # it, an assignment has a route and a jornada (ruta.fecha_operacion), which
+    # ECL-82 needs to validate incident I03. Null for Sprint 3 assignments.
+    parada_ruta_id: Mapped[UUID | None] = mapped_column(
+        ForeignKey(
+            "parada_ruta.parada_id",
+            name="fk_driver_stop_parada_ruta",
+            ondelete="RESTRICT",
+        )
     )
 
     def __repr__(self) -> str:

@@ -36,6 +36,7 @@ class Incidencia(Base):
             f"char_length(observacion) <= {OBSERVACION_MAX}",
             name="ck_incidencia_observacion",
         ),
+        CheckConstraint("char_length(motivo) <= 300", name="ck_incidencia_motivo"),
         Index(
             "ix_incidencia_estado_ocurrida",
             "estado",
@@ -61,6 +62,10 @@ class Incidencia(Base):
             ondelete="RESTRICT",
         )
     )
+    # ECL-95: nullable route, as document 11 foresaw once the route model exists.
+    ruta_id: Mapped[UUID | None] = mapped_column(
+        ForeignKey("ruta.ruta_id", name="fk_incidencia_ruta", ondelete="RESTRICT")
+    )
     operation_id: Mapped[UUID] = mapped_column()
     tipo: Mapped[str] = mapped_column(String(20))
     severidad: Mapped[str] = mapped_column(String(10))
@@ -78,6 +83,13 @@ class Incidencia(Base):
     estado: Mapped[str] = mapped_column(
         String(25), server_default=text("'PENDIENTE_VALIDACION'")
     )
+    resuelta_por: Mapped[UUID | None] = mapped_column(
+        ForeignKey(
+            "usuario.usuario_id", name="fk_incidencia_resuelta_por", ondelete="RESTRICT"
+        )
+    )
+    resuelta_en: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    motivo: Mapped[str | None] = mapped_column(String(300))
 
     def __repr__(self) -> str:
         return "<Incidencia>"

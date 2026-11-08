@@ -1,15 +1,16 @@
 # ECL-97 / ECL-14 — Reglas y BDD de US-008: mapa operativo
 
-> **Estado: BORRADOR.** Aprobación de Julio pendiente antes de implementar
-> esta historia (A4). Escenarios previstos, sin resultados de prueba ejecutados.
+> **Estado: APROBADO — BDD v1.0.0 (07/11/2026).** Ratificada por Julio
+> como criterios de aceptación para US-008. Escenarios previstos, sin pruebas
+> ejecutadas ni proveedor de tráfico real confirmado.
 
 | Metadato | Valor |
 |---|---|
-| Versión | 0.1.1 |
+| Versión | 1.0.0 |
 | Fecha | 06/11/2026, America/Lima |
 | Autor | Frank Roy Yupanqui Acevedo — @FrankRoyYA |
 | Ticket / historia | [ECL-97](https://continental-team-il84x39k.atlassian.net/browse/ECL-97) / [ECL-14, US-008](https://continental-team-il84x39k.atlassian.net/browse/ECL-14) |
-| Revisor | Julio Armando Naupari Camarena — @JulioNaupariC |
+| Ratificación de negocio | Julio Armando Naupari Camarena — @JulioNaupariC; 07/11/2026 |
 | Dependencias | BDD de US-006 aprobada y contrato ST-045 ajustado; implementación del mapa de José según el ticket proporcionado |
 
 ## Fuentes y alcance
@@ -17,7 +18,7 @@
 - [RF-008 y RF-001](<../../01 Inicio/06. Requisitos funcionales V_1_1_0.md>).
 - [RN-002, RN-006, RN-009 y RN-010](<../../01 Inicio/09. Reglas de negocio V_1_1_0.md>).
 - [RNF-003 a RNF-006, RNF-009 y cumplimiento transversal](<../../01 Inicio/07. Requisitos no funcionales V_1_2_0.md>).
-- [ruta y parada_ruta](<../../01 Inicio/11. Base de datos V_1_1_0.md>),
+- [ruta y parada_ruta](<../../01 Inicio/11. Base de datos V_1_3_0.md>),
   [C4 e integraciones degradadas](<../../01 Inicio/12. Modelo C4 V_1_0_0.md>),
   [contrato publicado provisional](../../../backend/app/schemas/rutas.py) y
   [BDD US-006](ECL-12-US-006-rutas-optimizadas.md).
@@ -63,7 +64,7 @@ identificados como simulados; disponer de una geometría no demuestra una red vi
 
 ## Datos y contrato candidato de tráfico
 
-Propuesta **pendiente de Julio**, ausente en ST-045 actual: agregar al detalle
+Decisión **ratificada por Julio para el contrato objetivo**, aún ausente en ST-045: agregar al detalle
 `trafico` con `estado` (`DISPONIBLE`, `DEGRADADO`, `SIN_DATOS`), `fuente`
 nullable, `actualizado_en` nullable (hora del dato, no de la última consulta),
 y `tramos` con referencia a secuencias origen/destino, `tiempo_min` y nivel de
@@ -155,16 +156,33 @@ Es una propuesta para Julio; no ratifica decisiones ni modifica las reglas.
 | Contrato de detalle y privacidad | Mantener solo Administrador/Operador en detalle; otras proyecciones conservan su matriz. Ratificar junto a R11, sin conceder acceso general al Conductor. | Propone mantener la matriz vigente; concreta que solo Operador optimiza. El alcance del detalle queda a decisión de Julio. |
 | Lista equivalente y estados | Hace verificable accesibilidad y degradación sin inventar otro endpoint. `simulado` del contrato publicado se conserva visible. | Sin precisión específica sobre lista accesible; acuerdo técnico general con las propuestas. |
 
+## Ratificación de Julio — 07/11/2026
+
+Julio ratifica las reglas y escenarios M01–M06 de US-008: mismo orden de ruta
+entre mapa y lista accesible, GeoJSON WGS84 (`[longitud, latitud]`), ETA como
+estimación y no atención real, alertas diferenciadas de bloqueos, fuente/hora
+y modo degradado sin inventar tráfico. El detalle general se reserva a
+Administrador y Operador; las vistas propias del Conductor y agregados de
+Analista/Auditor respetan la matriz RBAC.
+
+El contrato objetivo incorpora `trafico` y `alertas`, inicialmente
+`SIN_DATOS` sin fuente/hora cuando no haya proveedor. La implementación de
+tramos, catálogo de congestión y máximo de antigüedad queda condicionada a
+fuente/proveedor y definición técnica verificables; no se fija un umbral
+arbitrario ni se presenta la geometría sintética como red vial medida.
+El ajuste de OpenAPI, fixtures y UI deberá revisarse en tickets dependientes.
+
 ## Aprobación y entrega
 
-BORRADOR hasta auditoría independiente y aprobación real de Julio, con enlace,
-fecha y versión. No se asume aprobado por tener fixtures ni por aprobar otra
-historia. Publicar los cambios de contrato antes de implementar sus consumidores.
+Ratificación de negocio registrada el 07/11/2026. La auditoría técnica
+independiente, revisión de Frank, validación del contrato y merge se comprueban
+en el PR correspondiente. Esta aprobación no acredita implementación ni pruebas.
 
 | Versión | Fecha | Cambio |
 |---|---|---|
 | 0.1.0 | 06/11/2026 | Escenarios M01–M06, alternativa accesible y propuesta de tráfico degradado. |
 | 0.1.1 | 06/11/2026 | Incorpora la propuesta técnica de backend y navegación del Sprint 4; reglas sin cambios y aprobación de Julio pendiente. |
+| 1.0.0 | 07/11/2026 | Ratificación expresa de acceso, trazado, accesibilidad, degradación y contrato objetivo; implementación pendiente. |
 
 [Índice del Sprint 4](<../../03 Implementación/Sprint 04/README.md>) ·
 [← Volver al README principal](../../../README.md)

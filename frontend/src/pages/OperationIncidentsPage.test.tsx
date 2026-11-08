@@ -1,7 +1,8 @@
-import { act, render, screen, waitFor, within } from '@testing-library/react'
+import { act, fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { OperationIncidentsPage } from './OperationIncidentsPage'
 import { IncidentListError, listPendingIncidents } from '../services/incidentList'
+import { IncidentResolutionError, resolveIncident } from '../services/incidentResolution'
 import { pendingIncident as incident, pendingIncidentPage as page } from '../test/incidentFixtures'
 
 vi.mock('../services/incidentList', async original => {
@@ -9,12 +10,89 @@ vi.mock('../services/incidentList', async original => {
   return { ...actual, listPendingIncidents: vi.fn() }
 })
 const listMock = vi.mocked(listPendingIncidents)
+vi.mock('../services/incidentResolution', async original => ({
+  ...await original<typeof import('../services/incidentResolution')>(), resolveIncident: vi.fn(),
+}))
+const resolveMock = vi.mocked(resolveIncident)
 beforeEach(() => { listMock.mockReset().mockResolvedValue(page) })
+beforeEach(() => { resolveMock.mockReset().mockResolvedValue({
+  incidencia_id: incident.incidencia_id, estado: 'VALIDADA',
+  resuelta_por: incident.conductor.conductor_id, resuelta_en: incident.registrada_en,
+}) })
 afterEach(() => { vi.useRealTimers() })
 
 function renderPage(onSessionExpired = vi.fn()) {
   return { ...render(<OperationIncidentsPage onSessionExpired={onSessionExpired} />), onSessionExpired }
 }
+
+it.each(['Validar', 'Descartar'])('ECL-98: confirma %s con teclado y retira la incidencia', async action => {
+  const user = userEvent.setup()
+  renderPage()
+  const opener = await screen.findByRole('button', { name: `${action} incidencia ${incident.incidencia_id}` })
+  opener.focus()
+  await user.keyboard('{Enter}')
+  const dialog = screen.getByRole('dialog', { name: `${action} incidencia` })
+  expect(within(dialog).getByRole('textbox')).toHaveFocus()
+  await user.type(within(dialog).getByRole('textbox'), 'Revisión operativa')
+  listMock.mockResolvedValue({ ...page, items: [], total: 0 })
+  within(dialog).getByRole('button', { name: 'Confirmar decisión' }).focus()
+  await user.keyboard('{Enter}')
+  expect(await screen.findByText(action === 'Validar' ? 'Incidencia validada.' : 'Incidencia descartada.')).toHaveFocus()
+  expect(resolveMock).toHaveBeenCalledWith(incident.incidencia_id, action === 'Validar' ? 'VALIDAR' : 'DESCARTAR', 'Revisión operativa')
+  expect(await screen.findByText('No hay incidencias pendientes de validación')).toBeInTheDocument()
+  expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+})
+
+it('ECL-98: Escape y cancelar devuelven foco y no envían; motivo excedido bloquea confirmar', async () => {
+  const user = userEvent.setup()
+  renderPage()
+  const opener = await screen.findByRole('button', { name: `Validar incidencia ${incident.incidencia_id}` })
+  await user.click(opener)
+  await user.keyboard('{Escape}')
+  expect(opener).toHaveFocus()
+  expect(resolveMock).not.toHaveBeenCalled()
+  await user.click(opener)
+  fireEvent.change(screen.getByRole('textbox'), { target: { value: 'x'.repeat(301) } })
+  expect(screen.getByRole('button', { name: 'Confirmar decisión' })).toBeDisabled()
+  await user.click(screen.getByRole('button', { name: 'Cancelar' }))
+  expect(opener).toHaveFocus()
+})
+
+it('ECL-98: 409 anuncia la decisión concurrente y actualiza la lista', async () => {
+  resolveMock.mockRejectedValue(new IncidentResolutionError('conflict'))
+  renderPage()
+  await userEvent.click(await screen.findByRole('button', { name: `Validar incidencia ${incident.incidencia_id}` }))
+  listMock.mockResolvedValue({ ...page, items: [], total: 0 })
+  await userEvent.click(screen.getByRole('button', { name: 'Confirmar decisión' }))
+  expect(await screen.findByText(/Otra persona ya resolvió/)).toBeInTheDocument()
+  expect(await screen.findByText('No hay incidencias pendientes de validación')).toBeInTheDocument()
+})
+
+it.each(['unauthorized', 'forbidden', 'unavailable'] as const)('ECL-98: maneja %s sin retirar el pendiente', async kind => {
+  resolveMock.mockRejectedValue(new IncidentResolutionError(kind))
+  const { onSessionExpired } = renderPage()
+  await userEvent.click(await screen.findByRole('button', { name: `Descartar incidencia ${incident.incidencia_id}` }))
+  await userEvent.click(screen.getByRole('button', { name: 'Confirmar decisión' }))
+  if (kind === 'unauthorized') await waitFor(() => expect(onSessionExpired).toHaveBeenCalledOnce())
+  else expect(await screen.findByRole('alert')).toHaveTextContent(new IncidentResolutionError(kind).message)
+  expect(listMock).toHaveBeenCalledOnce()
+})
+
+it('ECL-98: mientras guarda bloquea decisiones duplicadas y Escape', async () => {
+  let finish!: (value: Awaited<ReturnType<typeof resolveIncident>>) => void
+  resolveMock.mockReturnValue(new Promise(resolve => { finish = resolve }))
+  renderPage()
+  await userEvent.click(await screen.findByRole('button', { name: `Validar incidencia ${incident.incidencia_id}` }))
+  await userEvent.click(screen.getByRole('button', { name: 'Confirmar decisión' }))
+  expect(screen.getByRole('button', { name: 'Guardando…' })).toBeDisabled()
+  await userEvent.keyboard('{Escape}')
+  expect(screen.getByRole('dialog')).toBeInTheDocument()
+  expect(resolveMock).toHaveBeenCalledOnce()
+  await act(async () => {
+    finish({ incidencia_id: incident.incidencia_id, estado: 'VALIDADA', resuelta_por: incident.conductor.conductor_id, resuelta_en: incident.registrada_en })
+    await Promise.resolve()
+  })
+})
 
 it('I02: presenta hora de Lima, catálogo, severidad textual con icono y solo el nombre del conductor', async () => {
   renderPage()

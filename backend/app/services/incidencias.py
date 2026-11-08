@@ -19,6 +19,7 @@ from app.repositories.auditoria import (
     AuditoriaRepository,
     AuditStorageError,
     DetalleIncidenciaRegistrada,
+    DetalleIncidenciaResuelta,
     Evento,
     Registro,
 )
@@ -28,12 +29,15 @@ from app.repositories.incidencias import (
     IncidenciaStorageError,
     StoredIncidencia,
 )
+from app.repositories.rutas import RutaRepository, RutaStorageError
 from app.schemas.incidencia import (
     ConductorResumen,
     IncidenciaCreate,
     IncidenciaListItem,
     IncidenciaPage,
     IncidenciaRegistrada,
+    IncidenciaResolver,
+    IncidenciaResuelta,
 )
 
 LIMA = ZoneInfo("America/Lima")
@@ -49,7 +53,7 @@ class IncidenciaSinConductor(PermissionError):
 
 
 class IncidenciaParadaAjena(PermissionError):
-    """The stop exists but belongs to another driver (generic 403, I10)."""
+    """The stop is outside the driver's itinerary or reporting day (403)."""
 
 
 class IncidenciaInvalida(ValueError):
@@ -71,6 +75,10 @@ class IncidenciaConflicto(ValueError):
 
 class IncidenciaUnavailable(RuntimeError):
     """Sanitized persistence or audit failure."""
+
+
+class IncidenciaNoEncontrada(LookupError):
+    """Incident does not exist."""
 
 
 def _ack(stored: StoredIncidencia) -> IncidenciaRegistrada:
@@ -99,6 +107,39 @@ class IncidenciaService:
     def __init__(self, factory: sessionmaker[Session]) -> None:
         self._factory = factory
 
+    def resolver(
+        self, incidencia_id: UUID, usuario_id: UUID, payload: IncidenciaResolver
+    ) -> IncidenciaResuelta:
+        try:
+            with self._factory.begin() as session:
+                row = IncidenciaRepository(session).lock_for_resolution(incidencia_id)
+                if row is None:
+                    raise IncidenciaNoEncontrada()
+                if row.estado != EstadoIncidencia.PENDIENTE_VALIDACION.value:
+                    raise IncidenciaConflicto()
+                row.estado = "VALIDADA" if payload.accion == "VALIDAR" else "DESCARTADA"
+                row.resuelta_por = usuario_id
+                row.resuelta_en = utc_now()
+                row.motivo = payload.motivo
+                AuditoriaRepository(session).insert(
+                    Registro(
+                        usuario_id=usuario_id,
+                        entidad_id=incidencia_id,
+                        evento=Evento.INCIDENCIA_RESUELTA,
+                        detalle=DetalleIncidenciaResuelta(
+                            estado=row.estado, con_motivo=bool(payload.motivo)
+                        ),
+                    )
+                )
+                return IncidenciaResuelta(
+                    incidencia_id=incidencia_id,
+                    estado=row.estado,
+                    resuelta_por=usuario_id,
+                    resuelta_en=row.resuelta_en,
+                )
+        except (IncidenciaStorageError, AuditStorageError, SQLAlchemyError):
+            raise IncidenciaUnavailable("Servicio no disponible") from None
+
     def registrar(
         self,
         usuario_id: UUID,
@@ -122,6 +163,17 @@ class IncidenciaService:
                         raise IncidenciaConflicto("Operation ID conflict")
                     return _ack(stored), False
                 self._validate_new(repository, usuario_id, payload, current)
+                if payload.parada_id is not None:
+                    jornada = RutaRepository(session).jornada_de_asignacion(
+                        payload.parada_id
+                    )
+                    if (
+                        jornada is None
+                        or jornada.conductor_id != conductor_id
+                        or jornada.fecha_operacion
+                        != payload.ocurrida_en.astimezone(LIMA).date()
+                    ):
+                        raise IncidenciaParadaAjena("Stop outside reporting day")
                 incidencia = repository.add(
                     Incidencia(
                         conductor_id=conductor_id,
@@ -161,7 +213,12 @@ class IncidenciaService:
         except IncidenciaDuplicateOperation:
             # I13: a concurrent first send won the race; never answer 5xx.
             return self._concurrent_retry(usuario_id, payload), False
-        except (IncidenciaStorageError, AuditStorageError, SQLAlchemyError):
+        except (
+            IncidenciaStorageError,
+            RutaStorageError,
+            AuditStorageError,
+            SQLAlchemyError,
+        ):
             raise IncidenciaUnavailable("Servicio no disponible") from None
 
     def listar(

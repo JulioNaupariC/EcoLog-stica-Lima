@@ -198,7 +198,7 @@ y [políticas de ejecución de PowerShell](https://learn.microsoft.com/en-us/pow
 - [Usuarios V_1_0_0](<docs/01 Inicio/08. Usuarios V_1_0_0.md>)
 - [Reglas de negocio V_1_1_0](<docs/01 Inicio/09. Reglas de negocio V_1_1_0.md>)
 - [Stack tecnológico V_1_0_0](<docs/01 Inicio/10. Stack tecnológico V_1_0_0.md>)
-- [Base de datos V_1_1_0](<docs/01 Inicio/11. Base de datos V_1_1_0.md>)
+- [Base de datos V_1_3_0](<docs/01 Inicio/11. Base de datos V_1_3_0.md>)
 - [Modelo C4 V_1_0_0](<docs/01 Inicio/12. Modelo C4 V_1_0_0.md>)
 - [Restricciones V_1_0_0](<docs/01 Inicio/13. Restricciones V_1_0_0.md>)
 
@@ -222,7 +222,7 @@ y [políticas de ejecución de PowerShell](https://learn.microsoft.com/en-us/pow
 
 ### Especificaciones BDD del Sprint 4
 
-- ECL-97 — Borradores para ratificación de Julio antes de implementar: [ECL-12 / US-006 — Rutas optimizadas](<docs/02 Planificación/BDD/ECL-12-US-006-rutas-optimizadas.md>), [ECL-14 / US-008 — Mapa operativo](<docs/02 Planificación/BDD/ECL-14-US-008-mapa.md>), [ECL-15 / US-009 — Dashboard](<docs/02 Planificación/BDD/ECL-15-US-009-dashboard.md>) y [ECL-13 / US-007 — Reoptimización (extensión)](<docs/02 Planificación/BDD/ECL-13-US-007-reoptimizacion.md>).
+- ECL-97 — BDD US-006, US-008 y US-009 ratificadas (v1.0.0); US-007 permanece como borrador de extensión: [ECL-12 / US-006 — Rutas optimizadas](<docs/02 Planificación/BDD/ECL-12-US-006-rutas-optimizadas.md>), [ECL-14 / US-008 — Mapa operativo](<docs/02 Planificación/BDD/ECL-14-US-008-mapa.md>), [ECL-15 / US-009 — Dashboard](<docs/02 Planificación/BDD/ECL-15-US-009-dashboard.md>) y [ECL-13 / US-007 — Reoptimización (extensión)](<docs/02 Planificación/BDD/ECL-13-US-007-reoptimizacion.md>).
 
 ### Estado de Jira — fotografía de planificación inicial
 
@@ -397,13 +397,62 @@ sprint; las tres ramas de cierre están protegidas contra cambios y borrado.
 | `sprint-3` | Sprint 3 — Calidad y Seguridad (PR #59–#85), con el registro de la Review y la carpeta de cada sprint | `cf4bb2c` (03/11/2026) |
 | `main` | Rama de integración | — |
 
-### Sprint 4 — Green IT
+### Sprint 4 — Green IT y documentación
+
+#### Entregables del Sprint 4
+
+[Índice del Sprint 4](<docs/03 Implementación/Sprint 04/README.md>)
+
+Los siguientes comentarios reservan enlaces para entregas futuras.
+
+<!-- ECL-100 Revisión -->
+
+<!-- ECL-101 Retrospectiva -->
+
+<!-- ECL-102 Calidad y OWASP -->
+
+<!-- ECL-103 WCAG -->
+
+<!-- ECL-104 Matriz final -->
+
+- [ECL-26 — Parámetros versionados y casos de referencia (RNF-011)](<docs/03 Implementación/Sprint 04/ECL-26 parametros versionados y casos de referencia.md>)
+
+<!-- ECL-105 Guía de demo -->
+
+#### Documentación técnica del Sprint 4
+
+- [Convenciones y glosario ECL-99](<docs/03 Implementación/Sprint 04/CONVENCIONES_Y_GLOSARIO_ECL99.md>)
+- [Plantilla de Revisión y demostración ECL-99](<docs/03 Implementación/Sprint 04/PLANTILLA_REVISION_SPRINT4_ECL99.md>)
+- [ECL-98 — Resolución de incidencias: contrato, concurrencia y validaciones](<docs/03 Implementación/Sprint 04/ECL-98 resolucion incidencias.md>)
+- [ECL-14 — Mapa operativo, lista accesible y límites de tráfico](<docs/03 Implementación/Sprint 04/ECL-14 mapa rutas.md>)
+- [ECL-87 — Code smells del frontend y validación de accesibilidad](<docs/03 Implementación/Sprint 04/ECL-87 code smells frontend.md>)
+- [ECL-96 — Servicio de optimización y endpoints de rutas (ST-047)](<docs/03 Implementación/Sprint 04/ECL-96 servicio de optimizacion.md>)
+- [ECL-21 — Benchmark de extremo a extremo de RNF-001 (EN-003)](<docs/03 Implementación/Sprint 04/ECL-21 benchmark RNF-001.md>)
+- [ECL-82 — US-012 v1.1.0: jornada de la parada, idempotencia y validación de I03](<docs/03 Implementación/Sprint 04/VALIDACION_US012_ECL82_V_1_1_0.md>)
+- [ECL-15 — Dashboard de sostenibilidad: interfaz, contrato y límites](<docs/03 Implementación/Sprint 04/ECL-15 dashboard sostenibilidad.md>)
+
+#### Estado de cierre del Sprint 4
+
+| Indicador | Estado |
+|---|---|
+| Velocidad y SP finalizados | Pendientes de verificar en Jira |
+| Revisión y demostración | Pendientes de registrar |
+| Retrospectiva | Pendiente |
+| Calidad y seguridad | Pendiente de consolidación |
+| Rama de cierre | Pendiente |
+
+#### Green IT
+
 
 [Índice de entregables del Sprint 4](<docs/03 Implementación/Sprint 04/README.md>)
 
 - [ECL-118 — Informe 02: estándares de ingeniería de software y guía de desarrollo verde (borrador)](<docs/03 Implementación/reduccion del impacto ambiental/02 Estandares Ingeniería de software V_1_0_0.md>)
 - [ECL-108 — Línea base ANTES: resultados y medianas](<docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-50-12-524Z/README.md>) · [Protocolo y preparación inicial](<docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/README.md>)
 - [ECL-111 — React.lazy, listados de 12 y verificación offline](<docs/03 Implementación/reduccion del impacto ambiental/ECL-111 React lazy y paginacion V_1_0_0.md>)
+- [ECL-113 - Build de produccion con Gzip y cache](<docs/03 Implementación/Sprint 04/ECL-113 build produccion.md>)
+- [ECL-115 — Medición DESPUÉS: evidencias y límites](<docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/README.md>) · [Comparación ANTES vs. DESPUÉS](<docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/comparacion.md>)
+- [ECL-114 — Lighthouse CI y corrección de pruebas diferidas](<docs/03 Implementación/reduccion del impacto ambiental/ECL-114 auditoria Green IT en CI.md>)
+- [ECL-112 — Fuentes, recursos estáticos, SVG y análisis del bundle](<docs/03 Implementación/reduccion del impacto ambiental/ECL-112 recursos estaticos V_1_0_0.md>)
 
 ## Fase 04: Contribución
 
@@ -444,3 +493,5 @@ Frontend:
 - [ECL-58](frontend/evidencias/ECL-58/README.md)
 - [ECL-58 — reprueba offline con el rediseño (13/10/2026)](frontend/evidencias/ECL-58/retest-20261013/README.md)
 - [ECL-22 — rediseño UI/UX, capturas antes/después y accesibilidad](frontend/evidencias/ECL-22-rediseno/README.md)
+
+- [ECL-83 — Aviso y renovación de sesión](<docs/03 Implementación/Sprint 04/ECL-83 aviso de sesion.md>)

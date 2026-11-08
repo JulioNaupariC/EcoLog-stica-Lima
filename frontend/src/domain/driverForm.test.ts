@@ -40,6 +40,27 @@ it('permite licencia vencida y retirar disponibilidad sólo en edición', () => 
   expect(result.create).toBeUndefined()
 })
 
+it.each([
+  ['a@b.c', true], [' a@b.c ', true], ['a+b@b.c', true], ['ñ@例.测试', true],
+  ['a@a..', true], ['a@...', true], ['a@.a.b', true],
+  ['a@.a', false], ['a@a.', false], ['a@..', false], ['@a.b', false],
+  ['a@@b.c', false], ['a@b@c.d', false], ['a b@c.d', false],
+  ['a@b\u00a0.c', false], ['a@b\nc.d', false],
+  [`${'a'.repeat(251)}@b.c`, true], [`${'a'.repeat(252)}@b.c`, false],
+])('conserva el formato de correo %s (válido: %s)', (email, valid) => {
+  const result = validateDriver({ ...values, email }, false, false)
+  expect(Boolean(result.create)).toBe(valid)
+  expect(Boolean(result.errors.email)).toBe(!valid)
+})
+
+it.each([100_000, 200_000, 400_000])('rechaza entradas adversarias de %i caracteres', size => {
+  for (const email of [`a@${'a'.repeat(size)}`, `a@${'.'.repeat(size)}!`]) {
+    expect(validateDriver({ ...values, email }, false, false).errors.email).toBeTruthy()
+  }
+  const result = validateDriver({ ...values, licencia_numero: 'x'.repeat(size) }, false, false)
+  expect(result.errors.licencia_numero).toBeTruthy()
+})
+
 it('envía sólo cambios y preserva precisión temporal al editar otros campos', () => {
   const original = { ...driver, disponible_desde: '2099-10-09T13:15:00.123456Z' }
   const initial = valuesFromDriver(original)

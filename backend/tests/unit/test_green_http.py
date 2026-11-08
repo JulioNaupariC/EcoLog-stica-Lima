@@ -140,7 +140,11 @@ def test_edge_personal_and_no_store_responses_get_no_etag():
     )
     with TestClient(app) as client:
         app.state.authorization_service = AutorizacionService(Mock())
-        no_store = client.get("/optimizaciones")  # simulated routes: no-store
+        # Simulated sustainability fixtures (US-009 pending): no-store.
+        no_store = client.get(
+            "/indicadores/sostenibilidad",
+            params={"desde": "2026-11-01", "hasta": "2026-11-30"},
+        )
         metrics = client.get("/metrics")
     assert no_store.status_code == 200 and "etag" not in no_store.headers
     assert "etag" not in metrics.headers

@@ -3,20 +3,27 @@
 # cada PR. Hay dos dueños por área para que nadie apruebe su propio trabajo:
 # la aprobación debe venir del otro dueño (política de PR, sección 3.4).
 # La última regla que coincide con un archivo es la que se aplica.
+#
+# Suplente temporal (08/11/2026): @GiancarloSE se agrega como tercer dueño de
+# las áreas por defecto, backend, docs y README para cubrir ausencias de los
+# dueños titulares. Propuesto por Antony; lo aprueba en su PR un dueño de
+# .github/. Pendiente de ratificación por Julio (coordinador, política de PR
+# sección 10) y de reflejarse en la tabla 3.4 de esa política; si no se
+# ratifica, se revierte.
 
 # Por defecto: líder del proyecto y analista de requisitos.
-*                                   @JulioNaupariC @FrankRoyYA
+*                                   @JulioNaupariC @FrankRoyYA @GiancarloSE
 
 # Backend y optimización (API, dominio, base de datos, migraciones).
-/backend/                           @ANTONY-MUNIVE @JulioNaupariC
+/backend/                           @ANTONY-MUNIVE @JulioNaupariC @GiancarloSE
 
 # Frontend, UX/UI y aseguramiento de calidad.
 /frontend/                          @JoseDelgadillo277 @GiancarloSE
 
 # Documentación de gestión del proyecto.
-/docs/                              @JulioNaupariC @FrankRoyYA
+/docs/                              @JulioNaupariC @FrankRoyYA @GiancarloSE
 /docs/02\ Planificación/BDD/        @FrankRoyYA @JulioNaupariC
-/README.md                          @JulioNaupariC @FrankRoyYA
+/README.md                          @JulioNaupariC @FrankRoyYA @GiancarloSE
 
 # Plataforma, CI/CD y calidad.
 /.github/                           @JulioNaupariC @JoseDelgadillo277

@@ -12,6 +12,16 @@ it('restores only the last verified driver hint in the same tab without credenti
   expect(recallDriver()).toBeNull()
 })
 
+it('conserva el tope absoluto del conductor después de renovar, sin aceptar un tope inválido', () => {
+  const renewed = { ...driver, max_expires_at: new Date(Date.now() + 43_200_000).toISOString() }
+  rememberDriver(renewed)
+  expect(recallDriver()).toEqual(renewed)
+  rememberDriver({ ...driver, max_expires_at: 'invalid' })
+  expect(recallDriver()).toEqual(driver)
+  rememberDriver({ ...driver, max_expires_at: new Date(0).toISOString() })
+  expect(recallDriver()).toEqual(driver)
+})
+
 it.each([
   { ...driver, rol: 'ADMINISTRADOR' as const },
   { ...driver, usuario_id: 'invalid' },

@@ -3,6 +3,43 @@
 Este índice incorpora los enlaces de ECL-108. La planificación y el glosario
 del sprint corresponden a ECL-99 y no se definen en este ticket.
 
+## Índice
+
+### Entregables previstos
+
+Los siguientes comentarios reservan espacios para informes futuros.
+No representan resultados ejecutados ni documentos aprobados.
+
+<!-- ECL-100 Revisión -->
+
+<!-- ECL-101 Retrospectiva -->
+
+<!-- ECL-102 Calidad y OWASP -->
+
+<!-- ECL-103 WCAG -->
+
+<!-- ECL-104 Matriz final -->
+
+- [ECL-26 — Parámetros versionados y casos de referencia (RNF-011)](<ECL-26 parametros versionados y casos de referencia.md>)
+
+<!-- ECL-105 Guía de demo -->
+
+### Documentación técnica
+
+- [ECL-83 — Aviso y renovación de sesión](<ECL-83 aviso de sesion.md>)
+
+- [Convenciones y glosario ECL-99](CONVENCIONES_Y_GLOSARIO_ECL99.md)
+- [Plantilla de Revisión y demostración](PLANTILLA_REVISION_SPRINT4_ECL99.md)
+- [ECL-98 — Resolución de incidencias: contrato, concurrencia y validaciones](<ECL-98 resolucion incidencias.md>)
+- [ECL-14 — Mapa operativo, lista accesible y límites de tráfico](<ECL-14 mapa rutas.md>)
+- [ECL-15 — Dashboard de sostenibilidad: interfaz, contrato y límites](<ECL-15 dashboard sostenibilidad.md>)
+- [ECL-87 — Code smells del frontend y validación de accesibilidad](<ECL-87 code smells frontend.md>)
+- [ECL-96 — Servicio de optimización y endpoints de rutas (ST-047)](<ECL-96 servicio de optimizacion.md>)
+- [ECL-21 — Benchmark de extremo a extremo de RNF-001 (EN-003)](<ECL-21 benchmark RNF-001.md>)
+- [ECL-82 — US-012 v1.1.0: jornada de la parada, idempotencia y validación de I03](VALIDACION_US012_ECL82_V_1_1_0.md)
+
+### Entregables y documentación existentes
+
 ## Green IT
 
 - [ECL-118 — Informe 02: estándares de ingeniería de software y guía de desarrollo verde (borrador)](<../reduccion del impacto ambiental/02 Estandares Ingeniería de software V_1_0_0.md>)
@@ -17,6 +54,10 @@ históricos conservan la observación de que todavía no existía durante la med
 el enlace de navegación queda incorporado aquí sin editar esas evidencias.
 
 - [ECL-111 — React.lazy, listados de 12 y verificación offline](<../reduccion del impacto ambiental/ECL-111 React lazy y paginacion V_1_0_0.md>)
+- [ECL-113 - Build de produccion con Gzip y cache](<ECL-113 build produccion.md>)
+- [ECL-115 — Medición DESPUÉS: evidencias y límites](<../reduccion del impacto ambiental/evidencias/despues/README.md>) · [Comparación ANTES vs. DESPUÉS](<../reduccion del impacto ambiental/evidencias/despues/comparacion.md>)
+- [ECL-114 — Lighthouse CI y corrección de pruebas diferidas](<../reduccion del impacto ambiental/ECL-114 auditoria Green IT en CI.md>)
+- [ECL-112 — Fuentes, recursos estáticos, SVG y análisis del bundle](<../reduccion del impacto ambiental/ECL-112 recursos estaticos V_1_0_0.md>)
 
 ## Entorno local y acciones de retrospectiva
 
@@ -24,6 +65,6 @@ el enlace de navegación queda incorporado aquí sin editar esas evidencias.
 
 ## Especificaciones BDD
 
-- ECL-97 — Borradores pendientes de ratificación de Julio: [US-006 — Rutas optimizadas](<../../02 Planificación/BDD/ECL-12-US-006-rutas-optimizadas.md>), [US-008 — Mapa](<../../02 Planificación/BDD/ECL-14-US-008-mapa.md>), [US-009 — Dashboard](<../../02 Planificación/BDD/ECL-15-US-009-dashboard.md>) y [US-007 — Reoptimización (extensión)](<../../02 Planificación/BDD/ECL-13-US-007-reoptimizacion.md>).
+- ECL-97 — BDD US-006, US-008 y US-009 ratificadas (v1.0.0); US-007 continúa como borrador de extensión: [US-006 — Rutas optimizadas](<../../02 Planificación/BDD/ECL-12-US-006-rutas-optimizadas.md>), [US-008 — Mapa](<../../02 Planificación/BDD/ECL-14-US-008-mapa.md>), [US-009 — Dashboard](<../../02 Planificación/BDD/ECL-15-US-009-dashboard.md>) y [US-007 — Reoptimización (extensión)](<../../02 Planificación/BDD/ECL-13-US-007-reoptimizacion.md>).
 
 [← Volver al README principal](../../../README.md)

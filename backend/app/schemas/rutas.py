@@ -29,7 +29,9 @@ PAGE_SIZE_MAX = 100
 
 Latitud = Annotated[float, Field(ge=-90, le=90, allow_inf_nan=False)]
 Longitud = Annotated[float, Field(ge=-180, le=180, allow_inf_nan=False)]
-Porcentaje = Annotated[float, Field(ge=-100, le=100, allow_inf_nan=False)]
+# BDD US-006 v1.0.0, decision 4: savings may be negative without an artificial
+# floor (a worse route keeps its sign); at most 100 % is saved.
+Porcentaje = Annotated[float, Field(le=100, allow_inf_nan=False)]
 
 
 class EstadoOptimizacion(str, Enum):
@@ -100,12 +102,16 @@ class Metricas(BaseModel):
 
 
 class Ahorro(BaseModel):
-    """Percentage saved against the sequential route on the same orders."""
+    """Percentage saved against the sequential route on the same orders.
 
-    distancia: Porcentaje
-    co2: Porcentaje
-    combustible: Porcentaje
-    costo: Porcentaje
+    ``None`` when the sequential baseline is zero ("No calculable"): the value
+    is never invented as 0 % (BDD US-006 v1.0.0, R10 and decision 4).
+    """
+
+    distancia: Porcentaje | None
+    co2: Porcentaje | None
+    combustible: Porcentaje | None
+    costo: Porcentaje | None
 
 
 class Resumen(BaseModel):
@@ -116,6 +122,22 @@ class Resumen(BaseModel):
     secuencial: Metricas
     ahorro_pct: Ahorro
     cumplimiento_ventanas_pct: Annotated[float, Field(ge=0, le=100)]
+
+    @model_validator(mode="after")
+    def ahorro_nulo_solo_con_base_cero(self) -> "Resumen":
+        """A percentage is null exactly when its sequential baseline is zero."""
+        pares = (
+            ("distancia", self.secuencial.distancia_km),
+            ("co2", self.secuencial.co2_kg),
+            ("combustible", self.secuencial.combustible_l),
+            ("costo", self.secuencial.costo_soles),
+        )
+        for campo, base in pares:
+            if (getattr(self.ahorro_pct, campo) is None) != (base == 0):
+                raise ValueError(
+                    f"ahorro_pct.{campo} es null solo si la base secuencial es 0"
+                )
+        return self
 
 
 class OptimizacionAceptada(BaseModel):
@@ -227,7 +249,7 @@ class AhorroPeriodo(BaseModel):
     co2_kg: float
     combustible_l: float
     costo_soles: float
-    pct: Porcentaje
+    pct: Porcentaje | None
 
 
 class IndicadoresSostenibilidad(BaseModel):

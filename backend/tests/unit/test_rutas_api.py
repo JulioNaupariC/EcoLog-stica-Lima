@@ -1,4 +1,9 @@
-"""ECL-94 (ST-045): route API contract with simulated data and real RBAC."""
+"""ECL-94 (ST-045) / ECL-96 (ST-047): route API contract and real RBAC.
+
+The optimization service is replaced by a fake that serves the published
+fixtures, so these tests pin the HTTP contract; the real service is covered by
+test_optimizaciones_service.py and the PostGIS integration tests.
+"""
 
 import json
 from contextlib import contextmanager
@@ -11,6 +16,7 @@ import pytest
 from fastapi.testclient import TestClient
 
 from app.api.dependencies import get_current_session
+from app.api.rutas import get_optimization_service
 from app.core.config import Settings
 from app.core.rbac import Identidad, Rol
 from app.main import create_app
@@ -23,22 +29,46 @@ from app.schemas.rutas import (
 from app.services import rutas_simuladas
 from app.services.autenticacion import AuthenticatedSession
 from app.services.autorizacion import AutorizacionService
+from app.services.optimizaciones import (
+    OptimizacionFallida,
+    OptimizacionUnavailable,
+    SeleccionInvalida,
+)
 
 FIXTURES = rutas_simuladas.FIXTURES
 FRONTEND = Path(__file__).resolve().parents[3] / "frontend/src/test/fixtures/rutas"
 FECHA = "2026-11-20"
 
 
+class FakeOptimizador(rutas_simuladas.RutasSimuladasService):
+    """Serves the fixtures; ``optimizar`` answers like a completed real run."""
+
+    def __init__(self):
+        self.error = None
+        self.llamadas = []
+
+    def optimizar(self, solicitud, actor):
+        self.llamadas.append((solicitud, actor))
+        if self.error is not None:
+            raise self.error
+        aceptada = self.solicitar(solicitud)
+        return aceptada.model_copy(
+            update={"estado": EstadoOptimizacion.COMPLETADA, "simulado": False}
+        )
+
+
 @contextmanager
-def client_for(role):
+def client_for(role, servicio=None):
     app = create_app(Settings(database_url=None))
     identity = Identidad(uuid4(), role, "ACTIVO")
     app.dependency_overrides[get_current_session] = lambda: AuthenticatedSession(
         uuid4(), identity
     )
+    optimizador = servicio or FakeOptimizador()
+    app.dependency_overrides[get_optimization_service] = lambda: optimizador
     with TestClient(app) as client:
         app.state.authorization_service = AutorizacionService(Mock())
-        yield SimpleNamespace(client=client)
+        yield SimpleNamespace(client=client, servicio=optimizador, identity=identity)
 
 
 def ids() -> dict[EstadoOptimizacion, str]:
@@ -98,12 +128,101 @@ def test_frontend_fixtures_are_identical_to_the_backend_ones():
 def test_operator_requests_an_optimization():
     with client_for(Rol.OPERADOR) as ctx:
         response = ctx.client.post("/optimizaciones", json={"fecha_operacion": FECHA})
-    assert response.status_code == 202
+    assert response.status_code == 201
     body = response.json()
-    assert body["estado"] == "EN_PROCESO" and body["simulado"] is True
+    assert body["estado"] == "COMPLETADA" and body["simulado"] is False
     assert body["optimizacion_id"] == ids()[EstadoOptimizacion.COMPLETADA]
-    assert response.headers["X-Datos-Simulados"] == "true"
+    assert "X-Datos-Simulados" not in response.headers
     assert response.headers["Cache-Control"] == "no-store"
+    solicitud, actor = ctx.servicio.llamadas[0]
+    assert actor == ctx.identity.usuario_id  # never taken from the payload
+    assert str(solicitud.fecha_operacion) == FECHA
+
+
+def test_unusable_selection_is_422_with_field_and_reason_only():
+    servicio = FakeOptimizador()
+    servicio.error = SeleccionInvalida("vehiculo_ids", "No hay vehículos ACTIVO")
+    secreto = str(uuid4())
+    with client_for(Rol.OPERADOR, servicio) as ctx:
+        response = ctx.client.post(
+            "/optimizaciones",
+            json={"fecha_operacion": FECHA, "vehiculo_ids": [secreto]},
+        )
+    assert response.status_code == 422
+    assert response.json()["detail"] == {
+        "campo": "vehiculo_ids",
+        "motivo": "No hay vehículos ACTIVO",
+    }
+    assert secreto not in response.text
+
+
+def test_failed_calculation_is_503_with_the_run_to_consult():
+    servicio = FakeOptimizador()
+    run = uuid4()
+    servicio.error = OptimizacionFallida(run)
+    with client_for(Rol.OPERADOR, servicio) as ctx:
+        response = ctx.client.post("/optimizaciones", json={"fecha_operacion": FECHA})
+    assert response.status_code == 503
+    assert response.json()["detail"] == {
+        "optimizacion_id": str(run),
+        "estado": "FALLIDA",
+        "motivo": "No se pudo calcular la solución de rutas",
+    }
+
+
+@pytest.mark.parametrize(
+    ("metodo", "ruta"),
+    [
+        ("post", "/optimizaciones"),
+        ("get", "/optimizaciones"),
+        ("get", f"/optimizaciones/{uuid4()}"),
+    ],
+)
+def test_storage_outage_is_a_sanitized_503(metodo, ruta):
+    class Caido(FakeOptimizador):
+        def optimizar(self, solicitud, actor):
+            raise OptimizacionUnavailable("private detail")
+
+        def listar(self, *args):
+            raise OptimizacionUnavailable("private detail")
+
+        def detalle(self, *args):
+            raise OptimizacionUnavailable("private detail")
+
+    with client_for(Rol.OPERADOR, Caido()) as ctx:
+        response = getattr(ctx.client, metodo)(
+            ruta, **({"json": {"fecha_operacion": FECHA}} if metodo == "post" else {})
+        )
+    assert response.status_code == 503
+    assert response.json() == {"detail": "Servicio no disponible"}
+
+
+def test_without_database_the_optimizer_is_unavailable():
+    app = create_app(Settings(database_url=None))
+    identity = Identidad(uuid4(), Rol.OPERADOR, "ACTIVO")
+    app.dependency_overrides[get_current_session] = lambda: AuthenticatedSession(
+        uuid4(), identity
+    )
+    with TestClient(app) as client:
+        app.state.authorization_service = AutorizacionService(Mock())
+        response = client.get("/optimizaciones")
+    assert response.status_code == 503
+
+
+def test_real_service_is_built_from_the_app_settings():
+    from app.api.rutas import get_optimization_service as construir
+
+    settings = Settings(
+        database_url=None, deposito_latitud=-12.05, optimizacion_tiempo_limite_s=7
+    )
+    request = SimpleNamespace(
+        app=SimpleNamespace(
+            state=SimpleNamespace(session_factory=Mock(), settings=settings)
+        )
+    )
+    service = construir(request)
+    assert service._deposito.latitud == -12.05
+    assert service._configuracion.tiempo_limite_s == 7
 
 
 @pytest.mark.parametrize(
@@ -292,3 +411,40 @@ def test_openapi_documents_the_contract():
     detalle = paths["/optimizaciones/{optimizacion_id}"]["get"]["responses"]
     assert {"200", "401", "403", "404", "422"} <= set(detalle)
     assert "/indicadores/sostenibilidad" in paths
+
+
+def _resumen_completado() -> dict:
+    data = json.loads((FIXTURES / "optimizacion-completada.json").read_text("utf-8"))
+    return data["resumen"]
+
+
+def test_zero_baseline_savings_are_null_not_zero():
+    """BDD US-006 v1.0.0 (R10, decisión 4): base 0 -> null, nunca 0 %."""
+    from app.schemas.rutas import Resumen
+
+    resumen = _resumen_completado()
+    resumen["secuencial"]["costo_soles"] = 0
+    resumen["optimizada"]["costo_soles"] = 0
+    resumen["ahorro_pct"]["costo"] = None
+    assert Resumen.model_validate(resumen).ahorro_pct.costo is None
+    resumen["ahorro_pct"]["costo"] = 0.0
+    with pytest.raises(ValueError, match="ahorro_pct.costo"):
+        Resumen.model_validate(resumen)
+
+
+def test_null_savings_require_a_zero_baseline():
+    from app.schemas.rutas import Resumen
+
+    resumen = _resumen_completado()
+    resumen["ahorro_pct"]["distancia"] = None
+    with pytest.raises(ValueError, match="ahorro_pct.distancia"):
+        Resumen.model_validate(resumen)
+
+
+def test_negative_savings_have_no_artificial_floor():
+    from app.schemas.rutas import Ahorro
+
+    ahorro = Ahorro(distancia=-150.0, co2=-250.5, combustible=None, costo=100)
+    assert (ahorro.distancia, ahorro.co2) == (-150.0, -250.5)
+    with pytest.raises(ValueError):
+        Ahorro(distancia=100.01, co2=0, combustible=0, costo=0)

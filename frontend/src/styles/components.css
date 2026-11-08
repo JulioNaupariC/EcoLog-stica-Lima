@@ -1,10 +1,40 @@
 /* Componentes y patrones de página. Solo usa tokens (var(--…)). */
+.operation-routes-page { display: grid; gap: var(--space-4); min-width: 0; }
+.operation-routes-page .card { padding: var(--space-4); min-width: 0; }
+.route-filters { display: flex; flex-wrap: wrap; align-items: end; gap: var(--space-4); }
+.route-filters .form-field { flex: 1 1 220px; min-width: 0; }
+.route-filters input, .route-filters select { width: 100%; min-width: 0; }
+.operation-routes-layout { display: grid; gap: var(--space-4); align-items: start; min-width: 0; }
+.route-picker ul, .route-alerts { list-style: none; padding: 0; display: grid; gap: var(--space-3); }
+.route-picker .btn { width: 100%; justify-content: flex-start; text-align: left; }
+.route-detail { display: grid; gap: var(--space-3); }
+.route-detail p { margin: 0; overflow-wrap: anywhere; }
+.route-metrics { display: flex; flex-wrap: wrap; gap: var(--space-4); margin: 0; }
+.route-metrics dt, .route-stop-list dt { font-weight: 600; }
+.route-metrics dd, .route-stop-list dd { margin: 0; }
+.route-map-actions { display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: center; }
+.operation-route-map { height: 380px; width: 100%; isolation: isolate; z-index: 0; background: var(--color-surface-muted); }
+.operation-route-map .route-stop-pin { display: flex; align-items: center; justify-content: center; border-radius: 50%; background: var(--color-brand-700); border: 3px solid var(--color-surface); color: var(--color-primary-contrast); font-size: 16px; font-weight: 700; box-shadow: var(--shadow-sm); }
+.operation-route-map .leaflet-control-zoom a { width: 44px; height: 44px; line-height: 44px; }
+.operation-route-map :focus-visible { outline: 3px solid var(--color-focus); outline-offset: 3px; }
+.operation-route-map .leaflet-popup-content { color: var(--color-text); background: var(--color-surface); }
+.operation-route-map .leaflet-popup-content-wrapper, .operation-route-map .leaflet-popup-tip { background: var(--color-surface); }
+.map-attribution { font-size: 0.85rem; padding: var(--space-2); background: var(--color-surface); }
+.route-map-warning { padding: var(--space-3); }
+.route-id { overflow-wrap: anywhere; }
+.route-stop-list { padding-left: var(--space-5); display: grid; gap: var(--space-4); }
+.route-stop-list > li { padding: var(--space-3); border: 1px solid var(--color-border); border-radius: var(--radius-md); overflow-wrap: anywhere; }
+.route-stop-list > li h4 { margin: 0 0 var(--space-2); }
+@media (min-width: 75rem) { .operation-routes-layout { grid-template-columns: minmax(230px, 0.8fr) minmax(0, 2fr); } }
+@media (max-width: 30rem) { .operation-route-map { height: 320px; } }
 .incident-fields { border: 0; padding: 0; margin: 0; min-width: 0; display: grid; gap: var(--space-4); }
 .incident-choice { display: flex; align-items: center; gap: var(--space-2); min-height: 48px; padding: var(--space-2); cursor: pointer; }
 .incident-choice input { width: 20px; height: 20px; flex-shrink: 0; }
 .incident-choice svg { flex-shrink: 0; }
 .incident-reports { display: grid; gap: var(--space-3); }
 .incident-page textarea { width: 100%; resize: vertical; }
+.incident-resolution-actions { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.incident-resolution-form textarea { width: 100%; min-height: 96px; resize: vertical; }
 
 /* ---------- Botones (guía ST-029: 48 px, radio 12 px) ---------- */
 .btn {

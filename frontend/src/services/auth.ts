@@ -19,6 +19,7 @@ export interface LoginResponse {
   usuario_id: string
   rol: AuthRole
   expires_at?: string
+  max_expires_at?: string
   /** ECL-77: signed in with a temporary password; only the change is allowed. */
   debe_cambiar_contrasena?: true
 }
@@ -155,7 +156,39 @@ export async function login(payload: LoginRequest): Promise<LoginResponse> {
   return { usuario_id: body.usuario_id, rol: body.rol,
     ...(typeof body.expires_at === 'string' && Number.isFinite(Date.parse(body.expires_at))
       ? { expires_at: body.expires_at } : {}),
+    ...(typeof body.max_expires_at === 'string' && Number.isFinite(Date.parse(body.max_expires_at))
+      ? { max_expires_at: body.max_expires_at } : {}),
     ...(body.debe_cambiar_contrasena === true ? { debe_cambiar_contrasena: true as const } : {}) }
+}
+
+export interface SessionExtension {
+  expires_at: string
+  max_expires_at: string
+}
+
+export async function extendSession(): Promise<SessionExtension> {
+  let response: Response
+  try {
+    response = await fetch(buildApiUrl('sesion/extender'), {
+      method: 'POST', credentials: 'include', headers: { 'Content-Type': 'application/json' },
+    })
+  } catch {
+    throw new AuthServiceError('network', 'No se pudo renovar la sesión. Comprueba tu conexión.')
+  }
+  if (response.status === 409) {
+    throw new AuthServiceError('unexpected', 'La sesión alcanzó su duración máxima; vuelve a iniciar sesión', { status: 409 })
+  }
+  if (response.status === 401) {
+    throw new AuthServiceError('unauthorized', 'Tu sesión ha vencido.', { status: 401 })
+  }
+  const body = await responseBody(response)
+  if (!response.ok || response.status !== 200 || !isRecord(body) ||
+      typeof body.expires_at !== 'string' || typeof body.max_expires_at !== 'string' ||
+      !Number.isFinite(Date.parse(body.expires_at)) || !Number.isFinite(Date.parse(body.max_expires_at)) ||
+      Date.parse(body.expires_at) > Date.parse(body.max_expires_at)) {
+    throw new AuthServiceError('unavailable', 'No se pudo renovar la sesión. Inténtalo de nuevo.')
+  }
+  return { expires_at: body.expires_at, max_expires_at: body.max_expires_at }
 }
 
 export async function logout(): Promise<void> {

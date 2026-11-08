@@ -1,0 +1,16 @@
+{
+  "requests": 8,
+  "transferredBytes": 433643,
+  "cacheDisabled": true,
+  "failures": 0,
+  "serviceWorker": {
+    "controlled": false,
+    "registrations": 1,
+    "cacheStorageNames": [
+      "ecologistica-shell-42d0c9463b174799fd24f2ca6821fb4ce7d6f29bf4bccef785f437141a071c31"
+    ]
+  },
+  "bypassServiceWorker": true,
+  "observedMs": 1795.2554999999993,
+  "finalUrl": "http://127.0.0.1:5173/login"
+}
