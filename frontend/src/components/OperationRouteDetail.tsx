@@ -1,8 +1,9 @@
 import { lazy, Suspense, useState } from 'react'
+import type { ReactNode } from 'react'
 import { AlertTriangle, Map, ShieldAlert } from 'lucide-react'
 import { Alert, Badge, Button } from './ui'
 import { DRIVER_ASSIGNMENT_REASONS, routeTime } from '../domain/operationRoutes'
-import type { OperationRoute, OptimizationDetail, RouteAlert } from '../domain/operationRoutes'
+import type { OperationRoute, OptimizationDetail, RouteAlert, RouteStop } from '../domain/operationRoutes'
 
 const OperationRouteMap = lazy(() => import('./OperationRouteMap').then(module => ({ default: module.OperationRouteMap })))
 const NUMBER = new Intl.NumberFormat('es-PE', { maximumFractionDigits: 2 })
@@ -18,7 +19,9 @@ export function RouteAlerts({ alerts }: { alerts: RouteAlert[] }) {
   </li>)}</ul>
 }
 
-export function OperationRouteDetail({ route, detail }: { route: OperationRoute; detail: OptimizationDetail }) {
+export function OperationRouteDetail({ route, detail, routeActions, renderStopActions }: {
+  route: OperationRoute; detail: OptimizationDetail; routeActions?: ReactNode; renderStopActions?: (stop: RouteStop) => ReactNode
+}) {
   const [showMap, setShowMap] = useState(true)
   const [selectedStopId, setSelectedStopId] = useState<string>()
   const alerts = detail.alertas.filter(a => a.rutaId === route.ruta_id)
@@ -26,6 +29,7 @@ export function OperationRouteDetail({ route, detail }: { route: OperationRoute;
   return <section className="card route-detail" aria-labelledby="selected-route-title">
     <h2 id="selected-route-title">Ruta {route.vehiculo.placa}</h2>
     <p>Estado: {route.estado.replaceAll('_', ' ').toLowerCase()} · {route.conductor ? route.conductor.nombre : DRIVER_ASSIGNMENT_REASONS[route.motivo_sin_conductor ?? 'SIN_CONDUCTOR_ELEGIBLE']}</p>
+    {routeActions}
     <dl className="route-metrics">
       <div><dt>Distancia</dt><dd>{NUMBER.format(route.metricas.distancia_km)} km</dd></div>
       <div><dt>Duración planificada</dt><dd>{NUMBER.format(route.tiempo_min)} min</dd></div>
@@ -67,6 +71,7 @@ export function OperationRouteDetail({ route, detail }: { route: OperationRoute;
           <div><dt>Ventana de atención (Lima)</dt><dd>{routeTime(stop.ventana_inicio)} a {routeTime(stop.ventana_fin)}</dd></div>
           <div><dt>Estado de la parada</dt><dd>{STOP_STATE[stop.estado]}</dd></div>
         </dl>
+        {renderStopActions?.(stop)}
         <RouteAlerts alerts={alerts.filter(a => !a.paradaId || a.paradaId === stop.parada_id)} />
         <Button variant="secondary" onClick={() => { setSelectedStopId(stop.parada_id); setShowMap(true) }}>
           Ver parada {stop.secuencia} en mapa

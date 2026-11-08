@@ -1,18 +1,22 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Map, RefreshCw } from 'lucide-react'
 import { Alert, Badge, Button, EmptyState, PageHeader } from '../components/ui'
-import { OperationRouteDetail } from '../components/OperationRouteDetail'
+import { RouteExecution } from '../components/RouteExecution'
 import { InvalidRouteData, operationDateInLima, retainTraffic, routeTime, UNASSIGNED_REASONS, validOperationDate } from '../domain/operationRoutes'
 import type { OptimizationDetail, OptimizationPage } from '../domain/operationRoutes'
 import { OperationRoutesError, operationRoutesApi } from '../services/operationRoutes'
 import type { RouteSource } from '../services/operationRoutes'
+import type { AuthRole } from '../services/auth'
+import type { ClosedRoute, UpdatedStop } from '../domain/routeOutcomes'
+import type { RouteOutcomeSource } from '../services/routeOutcomes'
 
 const STATE = { EN_PROCESO: 'En proceso', COMPLETADA: 'Completada', FALLIDA: 'Fallida' }
+const ROUTE_STATE = { PLANIFICADA: 'Planificada', EN_CURSO: 'En curso', CERRADA: 'Cerrada' }
 const safeMessage = (error: unknown) => error instanceof OperationRoutesError ? error.message
   : error instanceof InvalidRouteData ? error.message : 'No se pudo cargar la información de rutas. Intenta de nuevo.'
 
-export function OperationRoutesPage({ onSessionExpired, source = operationRoutesApi }: {
-  onSessionExpired: () => void; source?: RouteSource
+export function OperationRoutesPage({ onSessionExpired, source = operationRoutesApi, role, outcomes }: {
+  onSessionExpired: () => void; source?: RouteSource; role?: AuthRole; outcomes?: RouteOutcomeSource
 }) {
   const [date, setDate] = useState(operationDateInLima)
   const [page, setPage] = useState(1)
@@ -39,16 +43,18 @@ export function OperationRoutesPage({ onSessionExpired, source = operationRoutes
     setSelectedId(id); setDetailBusy(true); setDetailError('')
     try {
       const value = await source.detail(id, controller.signal)
-      if (number !== detailRequest.current || controller.signal.aborted) return
+      if (number !== detailRequest.current || controller.signal.aborted) return false
       if (value.fecha_operacion !== expectedDate) throw new Error('Wrong date')
       const result = retainTraffic(latestDetail.current, value)
       latestDetail.current = result; setDetail(result)
       setRouteId(current => result.rutas.some(r => r.ruta_id === current) ? current : result.rutas[0]?.ruta_id ?? '')
+      return true
     } catch (error) {
-      if (number !== detailRequest.current || controller.signal.aborted || expire(error)) return
+      if (number !== detailRequest.current || controller.signal.aborted || expire(error)) return false
       setDetailError(safeMessage(error))
       // Keep the previous plan only for a failed refresh of that same optimization.
       if (latestDetail.current?.optimizacion_id !== id) { latestDetail.current = null; setDetail(null) }
+      return false
     } finally { if (number === detailRequest.current && !controller.signal.aborted) setDetailBusy(false) }
   }, [source, expire])
   const loadList = useCallback(async (chosenDate: string, chosenPage: number) => {
@@ -75,6 +81,15 @@ export function OperationRoutesPage({ onSessionExpired, source = operationRoutes
   }, [date, loadList])
   const route = detail?.rutas.find(r => r.ruta_id === routeId)
   const pages = listing ? Math.max(1, Math.ceil(listing.total / listing.page_size)) : 1
+  function updateRoute(result: UpdatedStop | ClosedRoute) {
+    const current = latestDetail.current
+    if (!current || current.optimizacion_id !== selectedId) return
+    const updated = { ...current, rutas: current.rutas.map(route => route.ruta_id !== result.ruta_id ? route : {
+      ...route, estado: 'ruta_estado' in result ? result.ruta_estado : result.estado,
+      paradas: route.paradas.map(stop => 'parada_id' in result && stop.parada_id === result.parada_id ? { ...stop, estado: result.estado } : stop),
+    }) }
+    latestDetail.current = updated; setDetail(updated)
+  }
 
   return <section className="operation-routes-page" aria-labelledby="operation-routes-title">
     <PageHeader titleId="operation-routes-title" title="Rutas y alertas en mapa" eyebrow="Operación"
@@ -113,9 +128,11 @@ export function OperationRoutesPage({ onSessionExpired, source = operationRoutes
           <ul>{detail.rutas.map(r => <li key={r.ruta_id}><Button variant={r.ruta_id === routeId ? 'primary' : 'secondary'}
             aria-pressed={r.ruta_id === routeId} onClick={() => setRouteId(r.ruta_id)}>
             Ruta {r.vehiculo.placa} · {r.paradas.length} paradas · {r.metricas.distancia_km} km · {r.tiempo_min} min
-          </Button><Badge tone="neutral">{STATE[detail.estado]}</Badge></li>)}</ul>
+          </Button><Badge tone="neutral">{ROUTE_STATE[r.estado]}</Badge></li>)}</ul>
         </section>
-        {route ? <OperationRouteDetail key={`${detail.optimizacion_id}-${route.ruta_id}`} route={route} detail={detail} /> : null}
+        {route ? <RouteExecution key={`${detail.optimizacion_id}-${route.ruta_id}`} route={route} detail={detail}
+          canRecord={role === 'OPERADOR'} disabled={detailBusy || Boolean(detailError)} source={outcomes}
+          onRecorded={updateRoute} onClosed={updateRoute} onRefresh={() => loadDetail(selectedId, date)} onSessionExpired={onSessionExpired} /> : null}
       </div>}
       <section className="card" aria-labelledby="unassigned-title"><h2 id="unassigned-title">Pedidos no asignados</h2>
         {detail.no_asignados.length ? <ul>{detail.no_asignados.map(item => <li key={item.pedido_id}><span className="route-id">{item.pedido_id}</span>: {UNASSIGNED_REASONS[item.motivo]}</li>)}</ul>

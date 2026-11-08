@@ -1,0 +1,13 @@
+{
+  "fecha": "2026-11-08",
+  "origen": "Declaración del usuario Giancarlo",
+  "pagina": "http://127.0.0.1:5185/",
+  "entorno": "Componente real con rol Operador simulado, dos paradas y operaciones en memoria; sin credenciales ni cambios en BD",
+  "solicitado": [
+    "Error 503 anunciado y enfocado",
+    "Actualizar estado y registrar ATENDIDA y NO_ATENDIDA",
+    "Cancelar y confirmar cierre con teclado"
+  ],
+  "resultado_declarado": "Narrador, foco y teclado correctos en todo el flujo",
+  "limites": "Sin versión de Narrador ni grabación; ajustes posteriores de espaciado y hora explícita de 24 h verificados automáticamente. La prueba real de API/BD se registra por separado."
+}

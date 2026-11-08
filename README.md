@@ -432,6 +432,7 @@ Los siguientes comentarios reservan enlaces para entregas futuras.
 - [ECL-119 — Cierre de rutas y agregado real de sostenibilidad (US-009)](<docs/03 Implementación/Sprint 04/ECL-119 cierre de rutas y sostenibilidad.md>)
 - [ECL-82 — US-012 v1.1.0: jornada de la parada, idempotencia y validación de I03](<docs/03 Implementación/Sprint 04/VALIDACION_US012_ECL82_V_1_1_0.md>)
 - [ECL-15 — Dashboard de sostenibilidad: interfaz, contrato y límites](<docs/03 Implementación/Sprint 04/ECL-15 dashboard sostenibilidad.md>)
+- [ECL-120 — Registro de resultados de paradas y cierre de rutas](<docs/03 Implementación/Sprint 04/ECL-120 registro y cierre de rutas.md>)
 
 #### Estado de cierre del Sprint 4
 

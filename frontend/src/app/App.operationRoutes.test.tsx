@@ -4,6 +4,7 @@ import { App } from './App'
 import { login, logout } from '../services/auth'
 import type { AuthRole } from '../services/auth'
 import { operationRoutesApi } from '../services/operationRoutes'
+import { operationFixture, operationPage } from '../test/operationRoutesFixtures'
 
 vi.mock('../services/auth', async original => ({ ...await original<typeof import('../services/auth')>(), login: vi.fn(), logout: vi.fn() }))
 vi.mock('../services/operationRoutes', async original => ({ ...await original<typeof import('../services/operationRoutes')>(),
@@ -32,6 +33,18 @@ it.each(['ADMINISTRADOR', 'OPERADOR'] as const)('M01: %s abre el mapa por menú'
   fireEvent.click(screen.getByRole('link', { name: 'Rutas y alertas' }))
   expect(await screen.findByRole('heading', { name: 'Rutas y alertas en mapa' })).toBeInTheDocument()
   await waitFor(() => expect(operationRoutesApi.list).toHaveBeenCalledOnce())
+})
+it.each(['ADMINISTRADOR', 'OPERADOR'] as const)('ECL-120: %s recibe el modo de detalle correcto desde la sesión', async role => {
+  const plan = operationFixture(); plan.simulado = false
+  vi.mocked(operationRoutesApi.list).mockResolvedValue({ ...operationPage(), simulado: false })
+  vi.mocked(operationRoutesApi.detail).mockResolvedValue(plan)
+  show(); await signIn(role)
+  fireEvent.click(screen.getByRole('link', { name: 'Rutas y alertas' }))
+  await screen.findByRole('heading', { name: 'Rutas y alertas en mapa' })
+  fireEvent.change(screen.getByLabelText('Fecha de operación'), { target: { value: plan.fecha_operacion } })
+  await screen.findByRole('heading', { name: 'Ruta ECO-101' })
+  if (role === 'OPERADOR') expect(screen.getByRole('button', { name: 'Registrar resultado de parada 1' })).toBeInTheDocument()
+  else expect(screen.queryByRole('button', { name: /Registrar resultado/ })).not.toBeInTheDocument()
 })
 it.each(['CONDUCTOR', 'ANALISTA', 'AUDITOR'] as const)('M04: %s no ve el menú ni abre el detalle por URL', async role => {
   show(); await signIn(role)

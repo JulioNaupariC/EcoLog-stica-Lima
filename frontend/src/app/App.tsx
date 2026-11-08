@@ -228,7 +228,7 @@ function AppRoutes() {
     <Route path="/operacion/incidencias" element={guarded(createOrdersAllowed,
       <OperationIncidentsPage key={identity.usuario_id} onSessionExpired={handleSessionExpired} />)} />
     <Route path="/operacion/rutas" element={guarded(createOrdersAllowed,
-      <OperationRoutesPage key={identity.usuario_id} onSessionExpired={handleSessionExpired} />)} />
+      <OperationRoutesPage key={identity.usuario_id} role={identity.rol} onSessionExpired={handleSessionExpired} />)} />
     <Route path="/indicadores/sostenibilidad" element={guarded(canViewOperationIndicators(identity.rol),
       <SustainabilityPage key={identity.usuario_id} onSessionExpired={handleSessionExpired} />)} />
     <Route path="/vehiculos" element={guarded(vehiclesAllowed, <VehiclesPage canCreate={createOrdersAllowed} />)} />

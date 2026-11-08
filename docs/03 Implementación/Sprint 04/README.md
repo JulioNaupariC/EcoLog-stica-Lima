@@ -38,6 +38,7 @@ No representan resultados ejecutados ni documentos aprobados.
 - [ECL-21 — Benchmark de extremo a extremo de RNF-001 (EN-003)](<ECL-21 benchmark RNF-001.md>)
 - [ECL-79 — Elegibilidad de conductores y RN-005 al asignar rutas](<ECL-79 elegibilidad conductores.md>)
 - [ECL-119 — Cierre de rutas y agregado real de sostenibilidad (US-009)](<ECL-119 cierre de rutas y sostenibilidad.md>)
+- [ECL-120 — Registro de resultados de paradas y cierre de rutas](<ECL-120 registro y cierre de rutas.md>)
 - [ECL-82 — US-012 v1.1.0: jornada de la parada, idempotencia y validación de I03](VALIDACION_US012_ECL82_V_1_1_0.md)
 
 ### Entregables y documentación existentes
