@@ -175,3 +175,18 @@ it('un acuse de cierre con conteos incoherentes no confirma el cierre', async ()
   expect(screen.getByText(/Estado: en curso/)).toBeInTheDocument()
   expect(screen.queryByRole('link', { name: 'Ver dashboard de sostenibilidad' })).not.toBeInTheDocument()
 })
+it('una lectura anterior no revierte un resultado confirmado mientras se actualiza el plan', async () => {
+  let resolveWrite!: (value: UpdatedStop) => void
+  let resolveRead!: (value: ReturnType<typeof operationFixture>) => void
+  vi.mocked(outcomes.record).mockImplementationOnce(() => new Promise(done => { resolveWrite = done }))
+  show(); await ready(); open(1); save(1)
+  vi.mocked(source.detail).mockImplementationOnce(() => new Promise(done => { resolveRead = done }))
+  fireEvent.click(screen.getByRole('button', { name: 'Actualizar plan' }))
+  await waitFor(() => expect(source.detail).toHaveBeenCalledTimes(2))
+  await act(async () => { resolveWrite({ ruta_id: plan.rutas[0].ruta_id, parada_id: plan.rutas[0].paradas[0].parada_id, estado: 'ATENDIDA', atendida_en: '2026-11-20T13:00:00-05:00', ruta_estado: 'EN_CURSO' }); await Promise.resolve() })
+  await waitFor(() => expect(screen.queryByRole('button', { name: 'Registrar resultado de parada 1' })).not.toBeInTheDocument())
+  await act(async () => { resolveRead(structuredClone(plan)); await Promise.resolve() })
+  expect(screen.queryByRole('button', { name: 'Registrar resultado de parada 1' })).not.toBeInTheDocument()
+  expect(screen.getByText(/Estado: en curso/)).toBeInTheDocument()
+  expect(screen.getByRole('button', { name: 'Registrar resultado de parada 2' })).toBeEnabled()
+})

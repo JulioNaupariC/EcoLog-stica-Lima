@@ -84,6 +84,8 @@ export function OperationRoutesPage({ onSessionExpired, source = operationRoutes
   function updateRoute(result: UpdatedStop | ClosedRoute) {
     const current = latestDetail.current
     if (!current || current.optimizacion_id !== selectedId) return
+    // An earlier GET must not overwrite this newer, confirmed write.
+    detailRequest.current++; detailAbort.current?.abort(); setDetailBusy(false)
     const updated = { ...current, rutas: current.rutas.map(route => route.ruta_id !== result.ruta_id ? route : {
       ...route, estado: 'ruta_estado' in result ? result.ruta_estado : result.estado,
       paradas: route.paradas.map(stop => 'parada_id' in result && stop.parada_id === result.parada_id ? { ...stop, estado: result.estado } : stop),
