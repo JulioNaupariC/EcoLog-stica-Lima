@@ -23,6 +23,8 @@ from app.models import (
     Incidencia,
     Optimizacion,
     ParadaRuta,
+    Parametro,
+    ParametroVersion,
     Pedido,
     PedidoNoAsignado,
     Ruta,
@@ -55,6 +57,9 @@ def rutas_database(migration_database):
             session.execute(delete(ParadaRuta))
             session.execute(delete(Ruta))
             session.execute(delete(Optimizacion))
+            # 0017 (EN-008) refuses to downgrade while parameter versions exist.
+            session.execute(delete(Parametro))
+            session.execute(delete(ParametroVersion))
 
 
 @pytest.fixture
@@ -65,6 +70,14 @@ def datos(rutas_database):
             CredentialService(UsuarioRepository(session))
             .create("operador-rutas@example.test", "synthetic-password-1", "OPERADOR")
             .usuario_id
+        )
+        # EN-008: a completed run references an existing parameter version.
+        session.add(
+            ParametroVersion(
+                version="SIMULADO-2026-11",
+                vigente_desde=T0 - timedelta(days=30),
+                creada_por=operador,
+            )
         )
         cliente = Cliente(nombre="Cliente sintético")
         vehiculos = [
@@ -363,11 +376,12 @@ def test_incident_route_is_nullable_and_constrained(rutas_database):
     assert Incidencia.__table__.c.ruta_id.foreign_keys
 
 
-def test_migration_round_trip_and_refusal_with_history(rutas_database, datos):
+def test_migration_round_trip_and_refusal_with_history(rutas_database):
     factory, config = rutas_database
     engine = factory.kw["bind"]
-    assert ScriptDirectory.from_config(config).get_heads() == ["0016_modelo_rutas"]
-    command.downgrade(config, "-1")
+    assert len(ScriptDirectory.from_config(config).get_heads()) == 1
+    # Explicit target: later revisions (0017+) sit above 0016 and go down first.
+    command.downgrade(config, "0015_sesion_extendida")
     with engine.connect() as connection:
         tablas = set(inspect(connection).get_table_names())
         assert not {"optimizacion", "ruta", "parada_ruta", "pedido_no_asignado"} & (
@@ -376,11 +390,27 @@ def test_migration_round_trip_and_refusal_with_history(rutas_database, datos):
         assert "ruta_id" not in {
             c["name"] for c in inspect(connection).get_columns("incidencia")
         }
-    command.upgrade(config, "head")
-    guardar(factory, optimizacion(solicitada_por=datos["operador"]))
-    with pytest.raises(DBAPIError, match="require manual treatment"):
-        command.downgrade(config, "-1")
+    command.upgrade(config, "0016_modelo_rutas")
+    with factory.begin() as session:
+        operador = (
+            CredentialService(UsuarioRepository(session))
+            .create("operador-mig@example.test", "synthetic-password-1", "OPERADOR")
+            .usuario_id
+        )
+    # An in-process run needs no parameter version: 0016 is tested alone.
+    guardar(
+        factory,
+        optimizacion(
+            solicitada_por=operador,
+            estado="EN_PROCESO",
+            finalizada_en=None,
+            parametros_version=None,
+        ),
+    )
+    with pytest.raises(DBAPIError, match="ECL-95 optimizations"):
+        command.downgrade(config, "0015_sesion_extendida")
     with engine.connect() as connection:
         assert connection.scalar(text("SELECT version_num FROM alembic_version")) == (
             "0016_modelo_rutas"
         )
+    command.upgrade(config, "head")

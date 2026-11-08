@@ -18,7 +18,7 @@
 - [RF-008 y RF-001](<../../01 Inicio/06. Requisitos funcionales V_1_1_0.md>).
 - [RN-002, RN-006, RN-009 y RN-010](<../../01 Inicio/09. Reglas de negocio V_1_1_0.md>).
 - [RNF-003 a RNF-006, RNF-009 y cumplimiento transversal](<../../01 Inicio/07. Requisitos no funcionales V_1_2_0.md>).
-- [ruta y parada_ruta](<../../01 Inicio/11. Base de datos V_1_2_0.md>),
+- [ruta y parada_ruta](<../../01 Inicio/11. Base de datos V_1_3_0.md>),
   [C4 e integraciones degradadas](<../../01 Inicio/12. Modelo C4 V_1_0_0.md>),
   [contrato publicado provisional](../../../backend/app/schemas/rutas.py) y
   [BDD US-006](ECL-12-US-006-rutas-optimizadas.md).

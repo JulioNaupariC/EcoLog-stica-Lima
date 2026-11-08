@@ -29,6 +29,7 @@ class Evento(str, Enum):
     CONTRASENA_CAMBIADA = "CONTRASENA_CAMBIADA"
     INCIDENCIA_REGISTRADA = "INCIDENCIA_REGISTRADA"
     INCIDENCIA_RESUELTA = "INCIDENCIA_RESUELTA"
+    PARAMETROS_VERSIONADOS = "PARAMETROS_VERSIONADOS"
 
 
 class ResultadoAcceso(str, Enum):
@@ -172,6 +173,34 @@ class DetalleIncidenciaResuelta(BaseModel):
     con_motivo: bool
 
 
+CodigoParametro = Literal[
+    "PRECIO_COMBUSTIBLE_GALON",
+    "LITROS_POR_GALON",
+    "COSTO_MANTENIMIENTO_KM",
+    "CAPTURA_CO2_ARBOL_ANIO",
+]
+
+
+class DetalleParametrosVersionados(BaseModel):
+    """EN-008: which codes a new version sets; values live in ``parametro``."""
+
+    model_config = ConfigDict(
+        frozen=True,
+        extra="forbid",
+        strict=True,
+        hide_input_in_errors=True,
+        revalidate_instances="always",
+    )
+    codigos: tuple[CodigoParametro, ...] = Field(min_length=1)
+    cierra_version_anterior: bool
+
+    @model_validator(mode="after")
+    def codigos_unicos(self) -> "DetalleParametrosVersionados":
+        if len(set(self.codigos)) != len(self.codigos):
+            raise ValueError("Duplicate audit field")
+        return self
+
+
 class Registro(BaseModel):
     model_config = ConfigDict(
         frozen=True,
@@ -193,6 +222,7 @@ class Registro(BaseModel):
         | DetalleContrasena
         | DetalleIncidenciaRegistrada
         | DetalleIncidenciaResuelta
+        | DetalleParametrosVersionados
     )
 
     @model_validator(mode="after")
@@ -215,6 +245,11 @@ class Registro(BaseModel):
         )
         incident = self.evento is Evento.INCIDENCIA_REGISTRADA
         resolution = self.evento is Evento.INCIDENCIA_RESUELTA
+        versioned = self.evento is Evento.PARAMETROS_VERSIONADOS
+        if versioned != isinstance(self.detalle, DetalleParametrosVersionados):
+            raise ValueError("Invalid audit event")
+        if versioned and (self.usuario_id is None or self.entidad_id is None):
+            raise ValueError("Invalid parameter audit event")
         if resolution != isinstance(self.detalle, DetalleIncidenciaResuelta):
             raise ValueError("Invalid audit event")
         if authorization != isinstance(self.detalle, Detalle):
@@ -301,6 +336,8 @@ class AuditoriaRepository:
             Evento.INCIDENCIA_RESUELTA,
         ):
             entidad = "incidencia"
+        elif registro.evento is Evento.PARAMETROS_VERSIONADOS:
+            entidad = "parametro"
         else:
             entidad = "autorizacion"
         row = Auditoria(

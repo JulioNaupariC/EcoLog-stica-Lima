@@ -944,7 +944,7 @@ Julio. **I03 no está cubierto por completo.**
 - **Vínculo con el conductor y la ruta:** la incidencia se vincula siempre al
   conductor. Sin parada no tiene ruta (ratificado por Julio). `ruta_id` llegará,
   nullable, con el modelo de rutas; ver
-  [Base de datos V_1_2_0](<../docs/01 Inicio/11. Base de datos V_1_2_0.md>).
+  [Base de datos V_1_3_0](<../docs/01 Inicio/11. Base de datos V_1_3_0.md>).
 - **Downgrade protegido:** se niega mientras existan incidencias o su
   auditoría.
 
@@ -1202,7 +1202,7 @@ ECL-108 en ECL-115. Este cambio no publica cifras propias.
 
 Persistencia de la optimización de US-006 (migración `0016_modelo_rutas`).
 Catálogos en `app/core/rutas.py`, modelos en `app/models/ruta.py`; detalle en el
-[documento 11 V_1_2_0](<../docs/01 Inicio/11. Base de datos V_1_2_0.md>).
+[documento 11](<../docs/01 Inicio/11. Base de datos V_1_3_0.md>).
 
 | Tabla | Qué guarda | Reglas en base de datos |
 |---|---|---|
@@ -1219,6 +1219,27 @@ Catálogos en `app/core/rutas.py`, modelos en `app/models/ruta.py`; detalle en e
 Pruebas: `tests/unit/test_ruta_repository.py` y
 `tests/integration/test_modelo_rutas.py` (27 casos contra PostGIS: ida y vuelta
 de la migración, restricciones, métricas exactas, trazado y jornada).
+
+## Parámetros versionados — EN-008 / ECL-26
+
+Parámetros de cálculo con fuente y vigencia (RNF-011), migración
+`0017_parametros_versionados`. Catálogo en `app/core/parametros.py`, cálculos
+puros en `app/core/calculos.py`; detalle y casos de referencia en
+[ECL-26 parámetros versionados](<../docs/03 Implementación/Sprint 04/ECL-26 parametros versionados y casos de referencia.md>).
+
+| Endpoint | Permiso (matriz vigente) | Respuesta |
+|---|---|---|
+| `GET /parametros[?fecha=ISO-8601 con zona]` | `parametros.consultar`: Administrador, Operador, Analista, Auditor | Versión vigente ahora o en esa fecha; 404 si no hay |
+| `GET /parametros/{version}` | `parametros.consultar` | Una versión exacta, para recalcular un resultado histórico |
+| `POST /parametros` | `parametros.crear`: solo Administrador | 201 con la versión; 409 si el código existe o su inicio no es posterior a la vigente; 422 si falta un requerido, la unidad no es la del código, el valor no es > 0 o falta la fuente |
+
+- **Versiones:** una versión nueva cierra la abierta en su `vigente_desde` en la misma transacción que la auditoría `PARAMETROS_VERSIONADOS`. Esa auditoría lleva solo los códigos, nunca los valores. Nada se edita ni se borra, y la base de datos admite una sola versión abierta.
+- **Requeridos:** `PRECIO_COMBUSTIBLE_GALON` (PEN/gal, RN-011), `LITROS_POR_GALON` (L/gal, decisión 8 de la BDD de US-006) y `COSTO_MANTENIMIENTO_KM` (PEN/km, RN-012). `CAPTURA_CO2_ARBOL_ANIO` es opcional (RN-014): sin ese factor, la compensación no se calcula.
+- **Combustible:** el precio es por galón, así que los litros se convierten con `LITROS_POR_GALON` antes de multiplicar. Nada se redondea en el cálculo.
+- **Optimizaciones:** `optimizacion.parametros_version` referencia una versión existente; una ejecución completada siempre es reproducible.
+- **Demo:** `scripts/seed_demo.py` registra la versión `REFERENCIA-RN-2026-11` con los valores de RN-011 y RN-012 y la definición exacta del galón (NIST Handbook 44). Las fuentes de mercado están pendientes (Julio, ECL-26).
+- **Casos de referencia (RNF-011):** `tests/unit/test_casos_referencia_rnf011.py` lee los 20 casos calculados a mano por Julio del CSV del Sprint 4 y exige un error ≤ 0,01. Mientras falten casos, la prueba de completitud queda **omitida** con el motivo «pendiente».
+- **Downgrade:** se niega si ya hay versiones registradas.
 
 [← Volver al README principal](../README.md)
 

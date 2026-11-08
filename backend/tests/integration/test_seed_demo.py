@@ -8,7 +8,14 @@ from sqlalchemy import delete, func, select
 from alembic import command
 from app.core.rbac import Rol
 from app.db.session import session_factory
-from app.models import Auditoria, Cliente, Incidencia, Pedido
+from app.models import (
+    Auditoria,
+    Cliente,
+    Incidencia,
+    Parametro,
+    ParametroVersion,
+    Pedido,
+)
 from app.models.conductor import Conductor
 from app.models.driver_stop_assignment import DriverStopAssignment
 from app.models.usuario import Usuario
@@ -36,6 +43,9 @@ def demo_factory(migration_database):
             # 0013 refuses to downgrade while incidents or their audit exist.
             session.execute(delete(Incidencia))
             session.execute(delete(Auditoria))
+            # 0017 refuses to downgrade while parameter versions exist.
+            session.execute(delete(Parametro))
+            session.execute(delete(ParametroVersion))
 
 
 def counts(factory):
@@ -67,6 +77,8 @@ def test_ruta_dorada_crea_el_conjunto_completo(demo_factory):
     }
     assert summary.existing == {}
     assert summary.created["incidencias"] == 3
+    # EN-008: the reference parameter version (RN-011, RN-012, gallon).
+    assert summary.created["parametros"] == 1
 
 
 def test_ruta_feliz_conductor_demo_ve_su_itinerario_real(demo_factory):
@@ -108,6 +120,7 @@ def test_ruta_infeliz_segunda_ejecucion_no_duplica(demo_factory):
     assert summary.existing["pedidos"] == 20
     assert summary.existing["asignaciones"] == 5
     assert summary.existing["incidencias"] == 3
+    assert summary.existing["parametros"] == 1
 
 
 def test_ruta_dorada_incidencias_demo_pendientes_y_auditadas(demo_factory):

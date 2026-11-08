@@ -18,7 +18,7 @@
 - [RF-009, RF-001 y equivalencia ambiental RF-011](<../../01 Inicio/06. Requisitos funcionales V_1_1_0.md>).
 - [RN-002, RN-011 a RN-014 y parámetros históricos](<../../01 Inicio/09. Reglas de negocio V_1_1_0.md>).
 - [RNF-004, RNF-009, RNF-011 y RNF-012](<../../01 Inicio/07. Requisitos no funcionales V_1_2_0.md>).
-- [ruta, parada_ruta, optimizacion y parametro](<../../01 Inicio/11. Base de datos V_1_2_0.md>),
+- [ruta, parada_ruta, optimizacion y parametro](<../../01 Inicio/11. Base de datos V_1_3_0.md>),
   [BDD US-006](ECL-12-US-006-rutas-optimizadas.md),
   [matriz de roles](<../../01 Inicio/08. Usuarios V_1_0_0.md>) y
   [contrato ST-045](../../../backend/app/schemas/rutas.py).

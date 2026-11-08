@@ -118,8 +118,14 @@ class Optimizacion(Base):
     )
     finalizada_en: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     duracion_s: Mapped[float | None] = mapped_column(Double)
+    # EN-008: references an existing parameter version (migration 0017).
     parametros_version: Mapped[str | None] = mapped_column(
-        String(PARAMETROS_VERSION_MAX)
+        String(PARAMETROS_VERSION_MAX),
+        ForeignKey(
+            "parametro_version.version",
+            name="fk_optimizacion_parametros",
+            ondelete="RESTRICT",
+        ),
     )
     simulado: Mapped[bool] = mapped_column(Boolean, server_default=text("false"))
     error: Mapped[str | None] = mapped_column(String(ERROR_MAX))
