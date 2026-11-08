@@ -4,7 +4,7 @@ Persistence is replaced by mocks; the clock is fixed at T0 from the BDD.
 """
 
 import json
-from datetime import datetime, timedelta, timezone
+from datetime import date, datetime, timedelta, timezone
 from types import SimpleNamespace
 from unittest.mock import MagicMock, Mock
 from uuid import UUID, uuid1, uuid4
@@ -36,6 +36,7 @@ from app.repositories.incidencias import (
     IncidenciaStorageError,
     StoredIncidencia,
 )
+from app.repositories.rutas import JornadaParada, RutaStorageError
 from app.schemas.incidencia import IncidenciaCreate, IncidenciaResolver
 from app.services import incidencias as module
 from app.services.incidencias import (
@@ -155,6 +156,10 @@ def fakes(monkeypatch):
     repository.conductor_id_for.return_value = CONDUCTOR
     repository.find_by_operation.return_value = None
     repository.stop_owner.return_value = USER
+    routes = Mock()
+    routes.jornada_de_asignacion.return_value = JornadaParada(
+        uuid4(), CONDUCTOR, T0.date()
+    )
 
     def add(incidencia, latitud, longitud):
         incidencia.incidencia_id = uuid4()
@@ -168,10 +173,12 @@ def fakes(monkeypatch):
     audit.insert.side_effect = audit_rows.append
     monkeypatch.setattr(module, "IncidenciaRepository", lambda session: repository)
     monkeypatch.setattr(module, "AuditoriaRepository", lambda session: audit)
+    monkeypatch.setattr(module, "RutaRepository", lambda session: routes)
     monkeypatch.setattr(module, "utc_now", lambda: T0.astimezone(timezone.utc))
     return SimpleNamespace(
         service=IncidenciaService(MagicMock()),
         repository=repository,
+        routes=routes,
         audit_rows=audit_rows,
     )
 
@@ -232,6 +239,7 @@ def test_I01_alta_sin_parada_queda_pendiente_y_auditada_sin_datos_personales(fak
     assert (incidencia.conductor_id, incidencia.parada_id) == (CONDUCTOR, None)
     assert (lat, lon) == (-12.0464, -77.0428)
     fakes.repository.stop_owner.assert_not_called()
+    fakes.routes.jornada_de_asignacion.assert_not_called()
     [row] = fakes.audit_rows
     assert row.evento is Evento.INCIDENCIA_REGISTRADA
     assert (row.usuario_id, row.entidad_id) == (USER, ack.incidencia_id)
@@ -251,6 +259,79 @@ def test_I03_alta_con_parada_propia(fakes):
     fakes.repository.stop_owner.assert_called_once_with(STOP)
     assert fakes.repository.add.call_args.args[0].parada_id == STOP
     assert fakes.audit_rows[0].detalle.con_parada is True
+    fakes.routes.jornada_de_asignacion.assert_called_once_with(STOP)
+
+
+@pytest.mark.parametrize(
+    "jornada",
+    [
+        None,
+        JornadaParada(uuid4(), CONDUCTOR, T0.date() - timedelta(days=1)),
+        JornadaParada(uuid4(), uuid4(), T0.date()),
+        JornadaParada(uuid4(), None, T0.date()),
+    ],
+    ids=["sin-ruta", "otra-jornada", "otro-conductor-ruta", "ruta-sin-conductor"],
+)
+def test_ECL82_jornada_no_autorizada_sin_persistir(fakes, jornada):
+    fakes.routes.jornada_de_asignacion.return_value = jornada
+    with pytest.raises(IncidenciaParadaAjena):
+        fakes.service.registrar(USER, payload(parada_id=str(STOP)))
+    fakes.repository.add.assert_not_called()
+    assert not fakes.audit_rows
+
+
+@pytest.mark.parametrize(
+    "ocurrida_en,fecha",
+    [
+        ("2026-10-27T04:59:59Z", date(2026, 10, 26)),
+        ("2026-10-27T05:00:00Z", date(2026, 10, 27)),
+        ("2026-10-28T01:00:00+09:00", date(2026, 10, 27)),
+        ("2020-01-01T05:00:00Z", date(2020, 1, 1)),
+    ],
+)
+def test_ECL82_fecha_se_calcula_en_lima_sin_limitar_antiguedad(
+    fakes, ocurrida_en, fecha
+):
+    fakes.routes.jornada_de_asignacion.return_value = JornadaParada(
+        uuid4(), CONDUCTOR, fecha
+    )
+    assert fakes.service.registrar(
+        USER,
+        payload(parada_id=str(STOP), ocurrida_en=ocurrida_en),
+        now=T0 + timedelta(days=2),
+    )[1]
+
+
+def test_ECL82_reenvio_con_parada_no_consulta_jornada_ni_propietario(fakes):
+    original = payload(parada_id=str(STOP))
+    stored = stored_from(original)
+    fakes.repository.find_by_operation.return_value = stored
+    fakes.repository.stop_owner.side_effect = AssertionError("not revalidated")
+    fakes.routes.jornada_de_asignacion.side_effect = AssertionError("not revalidated")
+    ack, created = fakes.service.registrar(USER, original, now=T0 + timedelta(days=30))
+    assert not created and ack.incidencia_id == stored.incidencia_id
+    fakes.routes.jornada_de_asignacion.assert_not_called()
+    fakes.repository.add.assert_not_called()
+    assert not fakes.audit_rows
+
+
+def test_ECL82_fallo_consulta_jornada_es_no_disponible_sin_filtrar_detalles(fakes):
+    fakes.routes.jornada_de_asignacion.side_effect = RutaStorageError("private")
+    with pytest.raises(IncidenciaUnavailable, match="^Servicio no disponible$"):
+        fakes.service.registrar(USER, payload(parada_id=str(STOP)))
+    fakes.repository.add.assert_not_called()
+    assert not fakes.audit_rows
+
+
+def test_ECL82_carrera_relee_sin_consultar_jornada_otra_vez(fakes):
+    original = payload(parada_id=str(STOP))
+    stored = stored_from(original)
+    fakes.repository.find_by_operation.side_effect = [None, stored]
+    fakes.repository.add.side_effect = IncidenciaDuplicateOperation()
+    ack, created = fakes.service.registrar(USER, original)
+    assert not created and ack.incidencia_id == stored.incidencia_id
+    fakes.routes.jornada_de_asignacion.assert_called_once_with(STOP)
+    assert not fakes.audit_rows
 
 
 # --- I13 / I16: idempotencia por (conductor, operation_id) -------------------

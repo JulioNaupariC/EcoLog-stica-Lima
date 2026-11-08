@@ -55,7 +55,8 @@ describe('StaffShell', () => {
     expect(within(nav).getByRole('link', { name: 'Registrar pedido' })).toBeInTheDocument()
     expect(screen.getByText('Rutas optimizadas')).not.toHaveAttribute('href')
     // Section label plus one badge per planned feature; no sprint names in the UI.
-    expect(screen.getAllByText('Próximamente')).toHaveLength(3)
+    expect(screen.getAllByText('Próximamente')).toHaveLength(2)
+    expect(within(nav).getByRole('link', { name: 'Indicadores de sostenibilidad' })).toHaveAttribute('href', '/indicadores/sostenibilidad')
     expect(screen.queryByText(/Sprint/u)).not.toBeInTheDocument()
   })
 

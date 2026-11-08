@@ -916,20 +916,25 @@ endpoint `POST /conductor/incidencias` admite **solo el rol Conductor**, mediant
 - **Auditoría:** la denegación se registra como `AUTORIZACION_DENEGADA` con
   motivo `SIN_PERMISO`.
 
-### Jornada de la parada (I03): pendiente
+### Jornada de la parada (I03) — ECL-82
 
-La BDD pide que la parada sea del itinerario **y de la jornada** del reporte. El
-modelo actual no permite comprobar la jornada de forma confiable:
+Para una incidencia nueva con `parada_id`, se comprueba la propiedad de la
+asignación y se consulta su ruta mediante `RutaRepository.jornada_de_asignacion`.
+La ruta debe pertenecer al perfil del conductor autenticado y su
+`fecha_operacion` debe coincidir con `ocurrida_en` convertido a `America/Lima`.
+No se infiere jornada desde `assigned_at`, la ventana del pedido ni la fecha
+de recepción; se admiten reportes antiguos de la jornada correspondiente.
 
-- no existe una entidad de jornada ni de ruta;
-- el itinerario (`driver_stop_assignment`) no tiene fecha;
-- `pedido_id` es opcional;
-- la ventana de un pedido puede cruzar la medianoche de Lima.
+Parada propia de otra jornada, ruta de otro conductor o asignación antigua sin
+ruta vinculada reciben el mismo `403 {"detail":"Acceso denegado"}`, sin alta.
+Parada inexistente conserva 422; sin parada se conserva el alta válida.
+El replay equivalente de una operación almacenada devuelve su acuse original
+con 200 **antes** de consultar la parada o su jornada; contenido distinto
+conserva 409. Esto preserva la idempotencia de la cola offline.
 
-Hoy solo se valida que la parada exista y sea del conductor. La comprobación de
-jornada se aplaza a [ECL-82](https://continental-team-il84x39k.atlassian.net/browse/ECL-82)
-(falta el modelo de rutas); el aplazamiento está pendiente de ratificación de
-Julio. **I03 no está cubierto por completo.**
+No hay migraciones nuevas: se utiliza el vínculo persistido por ST-046.
+La [validación US-012 v1.1.0 del Sprint 4](<../docs/03 Implementación/Sprint 04/VALIDACION_US012_ECL82_V_1_1_0.md>)
+actualiza la cobertura de I03 y conserva la evidencia histórica del Sprint 3.
 
 ### Migración 0013
 
@@ -946,16 +951,19 @@ Julio. **I03 no está cubierto por completo.**
 - **Vínculo con el conductor y la ruta:** la incidencia se vincula siempre al
   conductor. Sin parada no tiene ruta (ratificado por Julio). `ruta_id` llegará,
   nullable, con el modelo de rutas; ver
-  [Base de datos V_1_3_0](<../docs/01 Inicio/11. Base de datos V_1_3_0.md>).
+  [Base de datos V_1_4_0](<../docs/01 Inicio/11. Base de datos V_1_4_0.md>).
 - **Downgrade protegido:** se niega mientras existan incidencias o su
   auditoría.
 
 ### Datos de demostración
 
 `scripts/seed_demo.py` agrega 3 incidencias ficticias de `conductor.demo`,
-pendientes de validación: avería, tráfico y clima en Lima, la primera asociada
-a su parada 1. Su `operation_id` es determinista: se deriva con `uuid5` y se
-marca como versión 4, así que volver a sembrar no las duplica.
+pendientes de validación: avería, tráfico y clima en Lima. Las altas nuevas
+se crean sin parada porque estas asignaciones demo todavía no tienen ruta
+planificada. Al repetir una siembra anterior se conserva la referencia de
+parada ya almacenada, sin revalidar jornada ni cambiar el payload del replay.
+Su `operation_id` es determinista: se deriva con `uuid5` y se marca como
+versión 4, así que volver a sembrar no las duplica.
 
 ## Endurecimiento HTTP — ECL-84 (OWASP A02/A10)
 
@@ -1200,11 +1208,105 @@ Reglas de seguridad:
 Las cifras ANTES/DESPUÉS de bytes transferidos se miden con el protocolo de
 ECL-108 en ECL-115. Este cambio no publica cifras propias.
 
+## Green IT: energía y CO₂e con SWDM v4 — ECL-116
+
+`scripts/swdm_v4.py` convierte los bytes medidos en ECL-108 (ANTES) y ECL-115
+(DESPUÉS) en kWh y g CO₂e por visita, con su proyección anual. Es la fuente de
+los números de energía y emisiones del informe 01 (ECL-117).
+
+### Modelo y fuentes (consultadas el 06/11/2026)
+
+| Parámetro | Valor | Fuente |
+|---|---|---|
+| Energía operacional (kWh/GB) | centro de datos 0,055 · red 0,059 · dispositivo 0,080 | [SWDM v4](https://sustainablewebdesign.org/estimating-digital-emissions/) |
+| Energía incorporada (kWh/GB) | centro de datos 0,012 · red 0,013 · dispositivo 0,081 | SWDM v4 |
+| Total | 0,300 kWh/GB | Suma de los seis segmentos |
+| Intensidad global | 494 g CO₂e/kWh | SWDM v4 (Ember, World) |
+| Intensidad Perú (análisis adicional) | 263,27 g CO₂e/kWh, solo segmentos operacionales | Ember, dato `PER` incluido en CO2.js 0.19.0 |
+| Sensibilidad Perú | 173 g CO₂e/kWh | Electricity Maps 2025 (`PE`), incluido en CO2.js 0.19.0 |
+| Calificación | A+ ≤ 0,040 · A ≤ 0,079 · B ≤ 0,145 · C ≤ 0,209 · D ≤ 0,278 · E ≤ 0,359 · F mayor (g/visita) | SWDM v4 en CO2.js 0.19.0 |
+
+- **No se usan** los coeficientes de v3 del ejemplo del docente (0,81 kWh/GB y
+  442 g/kWh).
+- **1 GB = 10⁹ bytes** (decimal), como SWDM v4 y CO2.js.
+- Los bytes son el total *Transferred* de una carga completa con la caché
+  deshabilitada (mediana de 3 corridas).
+- **Fórmula por visita:**
+  `[(OPDC × (1 − verde) + EMDC) + (OPN + EMN) + (OPUD + EMUD)] × (nuevos + recurrentes × (1 − caché))`.
+  Cada término es GB × kWh/GB × g/kWh. Por defecto se toma el caso
+  conservador: toda visita es nueva, sin hosting verde.
+- **Verificación cruzada:** las pruebas comparan cada resultado con
+  [CO2.js 0.19.0](https://www.npmjs.com/package/@tgwf/co2) (The Green Web
+  Foundation) con precisión 10⁻⁹. Esto incluye la red de Perú, el hosting
+  verde y las visitas recurrentes.
+- **Factor oficial del SEIN:** no se encontró en una fuente oficial de COES o
+  MINEM. Por eso no se usa; el valor de Perú se presenta como análisis
+  adicional y no reemplaza al global.
+
+### Supuesto de la proyección anual
+
+**4 500 visitas al año** = 15 vehículos (escenario de RNF-001) × 1 carga de
+itinerario por jornada × 300 jornadas. Es un supuesto de escala, no un dato de
+DistriRápido; se cambia con `--visitas-anuales`.
+
+### Resultados ANTES (ECL-108)
+
+| Página | Bytes | kWh/visita | g CO₂e/visita | g CO₂e Perú | Calificación | kWh/año | kg CO₂e/año |
+|---|---:|---:|---:|---:|:-:|---:|---:|
+| `/login` | 11 434 626 | 0,003430 | 1,6946 | 1,1828 | F | 15,437 | 7,626 |
+| `/conductor/itinerario` | 11 438 644 | 0,003432 | 1,6952 | 1,1832 | F | 15,442 | 7,628 |
+
+- `/` y `/vehiculos` con Operador quedaron como NM en ECL-108; el script no
+  las cuenta como cero.
+- **Referencia:** la meta de 1,1 MB de la rúbrica equivale a 0,163 g CO₂e por
+  visita (calificación C).
+
+### Resultados DESPUÉS (ECL-115) y reducción
+
+Se usa la **campaña suplementaria** de ECL-115 (`run-2026-11-08T06-52-40-316Z`),
+que omite el service worker. Es una carga completa con la caché deshabilitada,
+igual que ANTES.
+
+| Página | Bytes | kWh/visita | g CO₂e/visita | g CO₂e Perú | Calificación | kWh/año | kg CO₂e/año | Reducción |
+|---|---:|---:|---:|---:|:-:|---:|---:|---:|
+| `/login` | 433 643 | 0,000130 | 0,0643 | 0,0449 | A | 0,585 | 0,289 | 96,2 % |
+| `/conductor/itinerario` | 459 748 | 0,000138 | 0,0681 | 0,0476 | A | 0,621 | 0,307 | 96,0 % |
+
+- Las dos páginas bajan de F a A y quedan por debajo de la meta de 1,1 MB de la
+  rúbrica. En la proyección conservadora, el itinerario pasa de 7,628 a
+  0,307 kg CO₂e al año con 4 500 visitas.
+- **Recarga con caché offline:** la campaña principal de ECL-115 mide recargas
+  con el service worker ya instalado (1 020 y 3 103 bytes, unos 0,0002 y
+  0,0005 g por visita). Es una visita recurrente, no una primera carga. No se
+  usa para la reducción porque daría un 100 % que no es comparable.
+- **Límites de la comparación:**
+  - ANTES se midió con el servidor de desarrollo de Vite y DESPUÉS con el
+    build de producción de ECL-113. La mayor parte de la reducción viene de ese
+    cambio de modo de servicio. No se atribuye a cada optimización por separado.
+  - Son estimaciones del modelo SWDM v4 a partir de bytes transferidos, no
+    consumo eléctrico medido.
+  - `/` y `/vehiculos` siguen como NM en ECL-115 y no se comparan.
+
+### Reproducción
+
+Desde `backend/`:
+
+```powershell
+python scripts/swdm_v4.py                       # ANTES de ECL-108
+python scripts/swdm_v4.py --despues            # ECL-115 sin service worker
+python scripts/swdm_v4.py --despues "<otra campaña>/resultados.json"
+python scripts/swdm_v4.py --bytes 1100000 --json
+python -m pytest tests/unit/test_swdm_v4.py -q
+```
+
+Con `--despues`, el script calcula la reducción por página. Solo compara las
+páginas medidas en las dos campañas.
+
 ## Modelo de rutas — ECL-95 / ST-046
 
 Persistencia de la optimización de US-006 (migración `0016_modelo_rutas`).
 Catálogos en `app/core/rutas.py`, modelos en `app/models/ruta.py`; detalle en el
-[documento 11](<../docs/01 Inicio/11. Base de datos V_1_3_0.md>).
+[documento 11](<../docs/01 Inicio/11. Base de datos V_1_4_0.md>).
 
 | Tabla | Qué guarda | Reglas en base de datos |
 |---|---|---|
@@ -1243,8 +1345,6 @@ puros en `app/core/calculos.py`; detalle y casos de referencia en
 - **Casos de referencia (RNF-011):** `tests/unit/test_casos_referencia_rnf011.py` lee los 20 casos calculados a mano por Julio del CSV del Sprint 4 y exige un error ≤ 0,01. Mientras falten casos, la prueba de completitud queda **omitida** con el motivo «pendiente».
 - **Downgrade:** se niega si ya hay versiones registradas.
 
-[← Volver al README principal](../README.md)
-
 ## Renovación de sesión — ECL-83
 
 Login devuelve expires_at y max_expires_at a todos los roles. POST /sesion/extender conserva cookie y token; renueva por SESSION_TTL_MINUTES (60 minutos), limitado a creado_en + 12 horas. Respuestas 401: sesión inválida; 409: expiración ya en el tope; 503: almacenamiento no disponible. La cookie (HttpOnly, SameSite=Strict, Secure en producción) se emite solo en el login con Max-Age de 12 horas y no se reemite al renovar: la vigencia real la decide sesion.expira_en en el servidor. Login y renovación responden con Cache-Control: no-store. La auditoría SESION_EXTENDIDA y el cambio de expiración son atómicos. Renovar conserva la restricción de cambio obligatorio de contraseña.
@@ -1270,7 +1370,7 @@ sobre los pedidos y vehículos guardados y responde 201 solo con la corrida
 - **Conductores:** candidatos con cuenta y perfil activos y rol CONDUCTOR; la asignación verifica después licencia durante toda la conducción prevista en Lima, disponibilidad para la ruta completa y RN-005. Cada conductor se usa una vez por corrida; sin candidato válido se conserva la ruta con un motivo público de elegibilidad (ECL-79).
 - **Auditoría:** cada llamada queda registrada por la autorización (`AUTORIZACION_PERMITIDA`/`DENEGADA` con permiso y motivo), sin cuerpos, coordenadas ni datos personales.
 - **Trazado:** segmentos rectos depósito → paradas → depósito; no es la red vial.
-- `/indicadores/sostenibilidad` sigue simulado hasta US-009.
+- `/indicadores/sostenibilidad` es real desde ECL-119 (ver la sección siguiente).
 
 [Contrato, reglas y pruebas](<../docs/03 Implementación/Sprint 04/ECL-96 servicio de optimizacion.md>)
 
@@ -1300,12 +1400,27 @@ Los motivos públicos son `LICENCIA_VENCIDA`,
 `SIN_CONDUCTOR_ELEGIBLE` cuando no quedan candidatos libres. Se aplica primero
 la factibilidad temporal/RN-005, luego disponibilidad y finalmente licencia.
 No se exponen licencias individuales ni se amplía el CRUD. La migración
-`0018_motivos_elegibilidad` actualiza el CHECK y protege el downgrade si existen
+`0019_motivos_elegibilidad` actualiza el CHECK y protege el downgrade si existen
 rutas que utilizan los nuevos motivos. Frontend valida y muestra sus mensajes.
 
 El generador OR-Tools conserva su restricción conservadora anterior (servicio
 y espera cuentan para su búsqueda); esta tarea valida la asignación y no
 amplía el espacio de soluciones del solver. Tampoco asigna conductores entre
 optimizaciones distintas. [Contrato y evidencia ECL-79](<../docs/03 Implementación/Sprint 04/ECL-79 elegibilidad conductores.md>).
+## Cierre de rutas y sostenibilidad — ECL-119 / US-009
+
+| Endpoint | Permiso | Regla |
+|---|---|---|
+| `PATCH /rutas/{ruta_id}/paradas/{parada_id}` | Solo Operador | ATENDIDA con `atendida_en` real (no futura ni anterior a la jornada) o NO_ATENDIDA; un resultado final no se sobrescribe |
+| `POST /rutas/{ruta_id}/cierre` | Solo Operador | Todas las paradas terminales; registra `cerrada_en` y audita `RUTA_CERRADA`; repetir no duplica |
+| `GET /indicadores/sostenibilidad` | `indicadores.consultar` | Solo rutas cerradas en el periodo de Lima; `null` sin datos; ahorros desde sumas con signo; cumplimiento con hora real |
+
+- Cada ruta guarda su referencia secuencial (`ruta.secuencial_*`, migración
+  `0018_cierre_rutas`) sobre sus mismos pedidos y vehículo, para comparar con
+  igual cobertura.
+- Las rutas guardadas antes de 0018 no tienen esa referencia y no se pueden
+  cerrar: hay que volver a optimizar la jornada.
+
+[Reglas, decisiones y pruebas](<../docs/03 Implementación/Sprint 04/ECL-119 cierre de rutas y sostenibilidad.md>)
 
 [← Volver al README principal](../README.md)

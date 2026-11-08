@@ -624,7 +624,7 @@ def test_ECL79_disponibilidad_se_comprueba_para_la_ruta_completa(
     assert (ruta.conductor is not None) is elegible
 
 
-def test_ECL79_migracion_0018_round_trip_y_una_cabeza(migration_database):
+def test_ECL79_migracion_0019_round_trip_y_una_cabeza(migration_database):
     engine, config = migration_database
     command.upgrade(config, "head")
     with engine.connect() as connection:
@@ -637,7 +637,7 @@ def test_ECL79_migracion_0018_round_trip_y_una_cabeza(migration_database):
         assert "LICENCIA_VENCIDA" in definition
         assert "DISPONIBILIDAD_INSUFICIENTE" in definition
         assert "JORNADA_INVIABLE" in definition
-    command.downgrade(config, "0017_parametros_versionados")
+    command.downgrade(config, "0018_cierre_rutas")
     with engine.connect() as connection:
         definition = connection.scalar(
             text(
@@ -651,7 +651,7 @@ def test_ECL79_migracion_0018_round_trip_y_una_cabeza(migration_database):
     from alembic.script import ScriptDirectory
 
     assert ScriptDirectory.from_config(config).get_heads() == [
-        "0018_motivos_elegibilidad"
+        "0019_motivos_elegibilidad"
     ]
 
 
@@ -663,6 +663,6 @@ def test_ECL79_downgrade_no_borra_motivos_operativos(
     ack = service.optimizar(solicitud, datos["operador"])
     _, config = migration_database
     with pytest.raises(RuntimeError, match="ECL-79 reasons require manual treatment"):
-        command.downgrade(config, "0017_parametros_versionados")
+        command.downgrade(config, "0018_cierre_rutas")
     [ruta] = service.detalle(ack.optimizacion_id).rutas
     assert ruta.motivo_sin_conductor.value == "LICENCIA_VENCIDA"

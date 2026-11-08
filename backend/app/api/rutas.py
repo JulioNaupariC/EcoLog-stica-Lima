@@ -1,10 +1,10 @@
-"""ECL-94 (ST-045) / ECL-96 (ST-047): route optimization and sustainability.
+"""ECL-94 (ST-045), ECL-96 (ST-047), ECL-119: routes and sustainability.
 
 Optimizations are real since ST-047: the request is solved and stored before
-answering (``simulado: false``). The sustainability dashboard keeps the
-simulated fixtures (``simulado: true`` plus the ``X-Datos-Simulados: true``
-header) until it reads closed routes (US-009). RBAC follows the static matrix
-(``app.core.rbac``) without changing it:
+answering (``simulado: false``). Since ECL-119 the Operator records stop
+outcomes and closes routes, and the sustainability dashboard adds only closed
+routes (US-009). RBAC follows the static matrix (``app.core.rbac``) without
+changing it:
 
 - request an optimization: ``optimizaciones.ejecutar`` (Operador);
 - list optimizations (summaries, no personal data): ``optimizaciones.consultar``
@@ -12,7 +12,9 @@ header) until it reads closed routes (US-009). RBAC follows the static matrix
 - one optimization with routes, stops and driver names: ``rutas.consultar``
   general scope (Administrador, Operador);
 - sustainability dashboard: ``indicadores.consultar`` general scope
-  (Administrador, Operador, Analista, Auditor).
+  (Administrador, Operador, Analista, Auditor);
+- stop outcomes and route closure: ``rutas.actualizar_estado`` general scope,
+  narrowed to the Operador as the ratified US-009 BDD says.
 """
 
 from datetime import date
@@ -23,7 +25,7 @@ from fastapi import APIRouter, Depends, HTTPException, Query, Request, Response,
 
 from app.api.dependencies import require_permission
 from app.api.validation import SanitizedRoute
-from app.core.rbac import Identidad, Permiso
+from app.core.rbac import Identidad, Permiso, Rol
 from app.optimizacion.modelo import Punto
 from app.schemas.rutas import (
     PAGE_SIZE_DEFAULT,
@@ -33,6 +35,17 @@ from app.schemas.rutas import (
     OptimizacionDetalle,
     OptimizacionPage,
     OptimizacionSolicitud,
+    ParadaActualizada,
+    ResultadoParadaSolicitud,
+    RutaCerrada,
+)
+from app.services.cierre_rutas import (
+    CierreConflicto,
+    CierreRutaService,
+    CierreUnavailable,
+    IndicadoresIncompletos,
+    ResultadoInvalido,
+    RutaNoEncontrada,
 )
 from app.services.optimizaciones import (
     OptimizacionFallida,
@@ -40,12 +53,12 @@ from app.services.optimizaciones import (
     OptimizacionUnavailable,
     SeleccionInvalida,
 )
-from app.services.rutas_simuladas import RutasSimuladasService
 
 router = APIRouter(prefix="/optimizaciones", tags=["rutas"], route_class=SanitizedRoute)
 indicadores_router = APIRouter(
     prefix="/indicadores", tags=["rutas"], route_class=SanitizedRoute
 )
+rutas_router = APIRouter(prefix="/rutas", tags=["rutas"], route_class=SanitizedRoute)
 
 SIMULADO = "X-Datos-Simulados"
 _ERRORS = {
@@ -56,10 +69,6 @@ _ERRORS = {
 
 
 NO_DISPONIBLE = "Servicio no disponible"
-
-
-def get_route_service() -> RutasSimuladasService:
-    return RutasSimuladasService()
 
 
 def get_optimization_service(request: Request) -> OptimizacionService:
@@ -74,7 +83,14 @@ def get_optimization_service(request: Request) -> OptimizacionService:
     )
 
 
-Servicio = Annotated[RutasSimuladasService, Depends(get_route_service)]
+def get_closure_service(request: Request) -> CierreRutaService:
+    factory = getattr(request.app.state, "session_factory", None)
+    if factory is None:
+        raise HTTPException(status.HTTP_503_SERVICE_UNAVAILABLE, NO_DISPONIBLE)
+    return CierreRutaService(factory)
+
+
+Cierres = Annotated[CierreRutaService, Depends(get_closure_service)]
 Optimizador = Annotated[OptimizacionService, Depends(get_optimization_service)]
 
 
@@ -201,17 +217,20 @@ def get_optimization(
     response_model=IndicadoresSostenibilidad,
     summary="Indicadores de sostenibilidad del periodo",
     description=(
-        "Solo rutas CERRADA del periodo (US-009). Sin rutas cerradas responde "
-        "con_datos=false y los indicadores en null, nunca ceros inventados."
+        "Solo rutas CERRADA cuyo cierre cae en el periodo, días inclusivos de "
+        "Lima (US-009). Sin rutas cerradas responde con_datos=false y los "
+        "indicadores en null, nunca ceros inventados. Ahorros desde sumas, con "
+        "signo; pct null si la base secuencial es 0. Cumplimiento con la hora "
+        "real de atención; NO_ATENDIDA cuenta como incumplida."
     ),
-    responses=_ERRORS,
+    responses={**_ERRORS, 503: {"description": "Servicio no disponible"}},
 )
 def sustainability_indicators(
     response: Response,
     _identity: Annotated[
         Identidad, Depends(require_permission(Permiso.INDICADORES_CONSULTAR))
     ],
-    service: Servicio,
+    service: Cierres,
     desde: date,
     hasta: date,
 ) -> IndicadoresSostenibilidad:
@@ -220,5 +239,87 @@ def sustainability_indicators(
             status.HTTP_422_UNPROCESSABLE_CONTENT,
             "El inicio del periodo es posterior al fin",
         )
-    _marcar(response)
-    return service.sostenibilidad(desde, hasta)
+    try:
+        indicadores = service.indicadores(desde, hasta)
+    except (CierreUnavailable, IndicadoresIncompletos):
+        raise _no_disponible() from None
+    _marcar(response, indicadores.simulado)
+    return indicadores
+
+
+_RUTA_ERRORS = {
+    **_ERRORS,
+    404: {"description": "Ruta o parada inexistente"},
+    409: {"description": "El estado de la ruta o la parada no permite el cambio"},
+    503: {"description": "Servicio no disponible"},
+}
+_OPERADOR = require_permission(
+    Permiso.RUTAS_ACTUALIZAR_ESTADO, roles=frozenset({Rol.OPERADOR})
+)
+
+
+@rutas_router.patch(
+    "/{ruta_id}/paradas/{parada_id}",
+    response_model=ParadaActualizada,
+    summary="Registrar el resultado de una parada",
+    description=(
+        "El Operador registra ATENDIDA (con la hora real atendida_en, no futura "
+        "ni anterior a la jornada) o NO_ATENDIDA. Una parada con resultado final "
+        "no se sobrescribe (409); repetir el mismo resultado responde 200. El "
+        "primer resultado pasa la ruta de PLANIFICADA a EN_CURSO."
+    ),
+    responses=_RUTA_ERRORS,
+)
+def record_stop_outcome(
+    ruta_id: UUID,
+    parada_id: UUID,
+    payload: ResultadoParadaSolicitud,
+    response: Response,
+    _identity: Annotated[Identidad, Depends(_OPERADOR)],
+    service: Cierres,
+) -> ParadaActualizada:
+    try:
+        resultado = service.registrar_parada(ruta_id, parada_id, payload)
+    except RutaNoEncontrada as error:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, str(error)) from None
+    except CierreConflicto as error:
+        raise HTTPException(status.HTTP_409_CONFLICT, str(error)) from None
+    except ResultadoInvalido as error:
+        raise HTTPException(
+            status.HTTP_422_UNPROCESSABLE_CONTENT,
+            {"campo": error.campo, "motivo": error.motivo},
+        ) from None
+    except CierreUnavailable:
+        raise _no_disponible() from None
+    _marcar(response, simulado=False)
+    return resultado
+
+
+@rutas_router.post(
+    "/{ruta_id}/cierre",
+    response_model=RutaCerrada,
+    summary="Cerrar una ruta",
+    description=(
+        "Solo el Operador. Exige todas las paradas en ATENDIDA o NO_ATENDIDA; "
+        "registra cerrada_en y audita el cierre sin datos personales. Repetir "
+        "el cierre devuelve el ya guardado, sin duplicarlo. Una optimización "
+        "COMPLETADA o una ETA alcanzada no cierran la ruta."
+    ),
+    responses=_RUTA_ERRORS,
+)
+def close_route(
+    ruta_id: UUID,
+    response: Response,
+    identity: Annotated[Identidad, Depends(_OPERADOR)],
+    service: Cierres,
+) -> RutaCerrada:
+    try:
+        cierre = service.cerrar(ruta_id, identity.usuario_id)
+    except RutaNoEncontrada as error:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, str(error)) from None
+    except CierreConflicto as error:
+        raise HTTPException(status.HTTP_409_CONFLICT, str(error)) from None
+    except CierreUnavailable:
+        raise _no_disponible() from None
+    _marcar(response, simulado=False)
+    return cierre

@@ -506,4 +506,5 @@ def test_openapi_documenta_el_contrato():
     post = paths["/conductor/incidencias"]["post"]["responses"]
     get = paths["/incidencias"]["get"]["responses"]
     assert {"200", "201", "401", "403", "409", "422", "503"} <= set(post)
+    assert "jornada" in post["403"]["description"]
     assert {"200", "401", "403", "422", "503"} <= set(get)

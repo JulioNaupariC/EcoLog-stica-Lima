@@ -1,0 +1,14 @@
+{
+  "fecha": "2026-11-08",
+  "origen": "Declaración del usuario Giancarlo",
+  "pagina": "http://127.0.0.1:5173/indicadores/sostenibilidad",
+  "entorno": "App local Docker, endpoint existente de sostenibilidad con datos simulados; sin intervención del verificador HTTP automatizado",
+  "comprobacion_solicitada": [
+    "Narrador anuncia Desde/Hasta, periodo aplicado, tabla y unidades",
+    "Consulta de noviembre de 2026 con datos de prueba",
+    "Consulta de enero de 2025 con estado Sin datos",
+    "Uso por teclado"
+  ],
+  "resultado_declarado": "Narrador, teclado y ambos periodos correctos",
+  "limitaciones": "Rol concreto y versión de Narrador no registrados; sin grabación. No prueba agregación de rutas reales ni conformidad WCAG completa."
+}

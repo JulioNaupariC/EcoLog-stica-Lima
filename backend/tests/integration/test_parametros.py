@@ -201,6 +201,7 @@ def test_downgrade_refuses_with_parameter_history(parametros_database):
     with pytest.raises(DBAPIError, match="EN-008 parameter versions"):
         command.downgrade(config, "0016_modelo_rutas")
     with factory() as session:
+        # The refused downgrade rolls back to wherever it started (the head).
         assert session.scalar(text("SELECT version_num FROM alembic_version")) == (
             ScriptDirectory.from_config(config).get_current_head()
         )

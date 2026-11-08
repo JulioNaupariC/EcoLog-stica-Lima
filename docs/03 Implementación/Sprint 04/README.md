@@ -32,10 +32,13 @@ No representan resultados ejecutados ni documentos aprobados.
 - [Plantilla de Revisión y demostración](PLANTILLA_REVISION_SPRINT4_ECL99.md)
 - [ECL-98 — Resolución de incidencias: contrato, concurrencia y validaciones](<ECL-98 resolucion incidencias.md>)
 - [ECL-14 — Mapa operativo, lista accesible y límites de tráfico](<ECL-14 mapa rutas.md>)
+- [ECL-15 — Dashboard de sostenibilidad: interfaz, contrato y límites](<ECL-15 dashboard sostenibilidad.md>)
 - [ECL-87 — Code smells del frontend y validación de accesibilidad](<ECL-87 code smells frontend.md>)
 - [ECL-96 — Servicio de optimización y endpoints de rutas (ST-047)](<ECL-96 servicio de optimizacion.md>)
 - [ECL-21 — Benchmark de extremo a extremo de RNF-001 (EN-003)](<ECL-21 benchmark RNF-001.md>)
 - [ECL-79 — Elegibilidad de conductores y RN-005 al asignar rutas](<ECL-79 elegibilidad conductores.md>)
+- [ECL-119 — Cierre de rutas y agregado real de sostenibilidad (US-009)](<ECL-119 cierre de rutas y sostenibilidad.md>)
+- [ECL-82 — US-012 v1.1.0: jornada de la parada, idempotencia y validación de I03](VALIDACION_US012_ECL82_V_1_1_0.md)
 
 ### Entregables y documentación existentes
 

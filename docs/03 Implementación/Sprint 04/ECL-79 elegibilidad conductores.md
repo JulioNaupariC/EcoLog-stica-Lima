@@ -17,7 +17,7 @@ rutas que no pueden recibir conductor conservan su solución y sus paradas.
 El usuario autorizó expresamente ampliar los motivos públicos, añadir la
 migración y ajustar el contrato para informar la causa de licencia vencida
 exigida por D3. La interfaz presenta los nuevos motivos sin datos de licencia.
-No se modifica el CRUD de conductores ni la lógica del ticket ECL-82 pendiente.
+No se modifica el CRUD de conductores ni la lógica del ticket ECL-82.
 Terminología: [glosario ECL-99](CONVENCIONES_Y_GLOSARIO_ECL99.md).
 
 ## Contrato de cómputo
@@ -72,12 +72,12 @@ Los motivos pertenecen a **rutas sin conductor**, no al catálogo distinto de
 pedidos no asignados. No se exponen DNI, número de licencia ni los perfiles de
 los candidatos rechazados.
 
-`0018_motivos_elegibilidad`, sobre `0017_parametros_versionados`, amplía el
+`0019_motivos_elegibilidad`, sobre `0018_cierre_rutas`, amplía el
 CHECK `ck_ruta_motivo_sin_conductor`. No cambia columnas ni reescribe motivos
 existentes. Su downgrade se niega si existen rutas con motivos nuevos; no los
 convierte artificialmente al motivo antiguo. En una base sin esos datos se
 probó downgrade/upgrade y comparación del esquema mediante Alembic.
-`alembic heads` muestra una única cabeza: `0018_motivos_elegibilidad`.
+`alembic heads` muestra una única cabeza: `0019_motivos_elegibilidad`.
 
 El enum Pydantic actualiza OpenAPI/Swagger. El frontend valida los cuatro
 motivos, conserva compatibilidad con fixtures anteriores sin motivo explícito
@@ -95,7 +95,7 @@ El cambio de contrato se comunica en el PR a los revisores de frontend/backend.
 | Servicio/espera y cronología | `test_plan_separa_conduccion_servicio_y_espera_con_tiempos_de_matriz`, `test_plan_interrumpe_conduccion_con_descanso_y_conserva_servicio`, casos de horario inválido y solapamiento. |
 | Perfil, cuenta y rol reales | PostGIS `test_ECL79_candidatos_reales_excluyen_perfiles_no_autorizados`: perfil/cuenta inactivos, rol distinto, licencia vencida y disponibilidad ausente. |
 | Motivo conocido y no pérdida de ruta | U `test_motivo_publico_refleja_causa_verificada`; PostGIS `test_ECL79_F1_F2_asignacion_persistida_y_solucion_conservada`: una ruta/parada guardadas, sin descartar la optimización. |
-| Migración y rollback | `test_ECL79_migracion_0018_round_trip_y_una_cabeza`, `test_ECL79_downgrade_no_borra_motivos_operativos`; regresión de parámetros conserva la cabeza real al fallar su downgrade. |
+| Migración y rollback | `test_ECL79_migracion_0019_round_trip_y_una_cabeza`, `test_ECL79_downgrade_no_borra_motivos_operativos`; regresión de parámetros conserva la cabeza real al fallar su downgrade. |
 | Consumo y presentación frontend | `operationRoutes.test.ts` admite los cuatro motivos y rechaza uno desconocido; `OperationRoutesPage.test.tsx` muestra las tres causas específicas sin datos personales. |
 
 Archivos de referencia:
@@ -105,7 +105,7 @@ Archivos de referencia:
 - [Servicio ST-047](../../../backend/app/services/optimizaciones.py),
   [pruebas U](../../../backend/tests/unit/test_optimizaciones_service.py) e
   [integración PostGIS](../../../backend/tests/integration/test_optimizaciones.py).
-- [Migración 0018](../../../backend/alembic/versions/0018_motivos_elegibilidad.py).
+- [Migración 0019](../../../backend/alembic/versions/0019_motivos_elegibilidad.py).
 - [Contrato frontend](../../../frontend/src/domain/operationRoutes.ts) y
   [detalle de ruta](../../../frontend/src/components/OperationRouteDetail.tsx).
 

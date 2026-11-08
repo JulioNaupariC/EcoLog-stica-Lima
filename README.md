@@ -198,7 +198,7 @@ y [políticas de ejecución de PowerShell](https://learn.microsoft.com/en-us/pow
 - [Usuarios V_1_0_0](<docs/01 Inicio/08. Usuarios V_1_0_0.md>)
 - [Reglas de negocio V_1_1_0](<docs/01 Inicio/09. Reglas de negocio V_1_1_0.md>)
 - [Stack tecnológico V_1_0_0](<docs/01 Inicio/10. Stack tecnológico V_1_0_0.md>)
-- [Base de datos V_1_3_0](<docs/01 Inicio/11. Base de datos V_1_3_0.md>)
+- [Base de datos V_1_4_0](<docs/01 Inicio/11. Base de datos V_1_4_0.md>)
 - [Modelo C4 V_1_0_0](<docs/01 Inicio/12. Modelo C4 V_1_0_0.md>)
 - [Restricciones V_1_0_0](<docs/01 Inicio/13. Restricciones V_1_0_0.md>)
 
@@ -429,6 +429,9 @@ Los siguientes comentarios reservan enlaces para entregas futuras.
 - [ECL-96 — Servicio de optimización y endpoints de rutas (ST-047)](<docs/03 Implementación/Sprint 04/ECL-96 servicio de optimizacion.md>)
 - [ECL-21 — Benchmark de extremo a extremo de RNF-001 (EN-003)](<docs/03 Implementación/Sprint 04/ECL-21 benchmark RNF-001.md>)
 - [ECL-79 — Elegibilidad de conductores y RN-005 al asignar rutas](<docs/03 Implementación/Sprint 04/ECL-79 elegibilidad conductores.md>)
+- [ECL-119 — Cierre de rutas y agregado real de sostenibilidad (US-009)](<docs/03 Implementación/Sprint 04/ECL-119 cierre de rutas y sostenibilidad.md>)
+- [ECL-82 — US-012 v1.1.0: jornada de la parada, idempotencia y validación de I03](<docs/03 Implementación/Sprint 04/VALIDACION_US012_ECL82_V_1_1_0.md>)
+- [ECL-15 — Dashboard de sostenibilidad: interfaz, contrato y límites](<docs/03 Implementación/Sprint 04/ECL-15 dashboard sostenibilidad.md>)
 
 #### Estado de cierre del Sprint 4
 

@@ -4,8 +4,8 @@ import sqlalchemy as sa
 
 from alembic import op
 
-revision = "0018_motivos_elegibilidad"
-down_revision = "0017_parametros_versionados"
+revision = "0019_motivos_elegibilidad"
+down_revision = "0018_cierre_rutas"
 branch_labels = None
 depends_on = None
 

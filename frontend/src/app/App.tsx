@@ -11,7 +11,7 @@ import { SessionExpiryNotice } from '../components/SessionExpiryNotice'
 import { captureSessionDraft, downloadSessionDraft } from '../services/sessionDraft'
 import type { SessionDraft } from '../services/sessionDraft'
 import type { SessionExtension } from '../services/auth'
-import { canListVehicles, canManageOperations, canManageUsers, ROLE_LABEL } from '../domain/roles'
+import { canListVehicles, canManageOperations, canManageUsers, canViewOperationIndicators, ROLE_LABEL } from '../domain/roles'
 import { logout, type LoginResponse } from '../services/auth'
 import { clearItinerary } from '../services/offlineStorage'
 import { listPendingReports } from '../services/reportQueue'
@@ -31,6 +31,7 @@ const DeliveryPreferencesPage = lazy(() => import('../pages/DeliveryPreferencesP
 const UsersPage = lazy(() => import('../pages/UsersPage').then(module => ({ default: module.UsersPage })))
 const OperationIncidentsPage = lazy(() => import('../pages/OperationIncidentsPage').then(module => ({ default: module.OperationIncidentsPage })))
 const OperationRoutesPage = lazy(() => import('../pages/OperationRoutesPage').then(module => ({ default: module.OperationRoutesPage })))
+const SustainabilityPage = lazy(() => import('../pages/SustainabilityPage').then(module => ({ default: module.SustainabilityPage })))
 const ChangePasswordPage = lazy(() => import('../pages/ChangePasswordPage').then(module => ({ default: module.ChangePasswordPage })))
 
 // Commit the title effect with the resolved page, rather than the loading fallback.
@@ -228,6 +229,8 @@ function AppRoutes() {
       <OperationIncidentsPage key={identity.usuario_id} onSessionExpired={handleSessionExpired} />)} />
     <Route path="/operacion/rutas" element={guarded(createOrdersAllowed,
       <OperationRoutesPage key={identity.usuario_id} onSessionExpired={handleSessionExpired} />)} />
+    <Route path="/indicadores/sostenibilidad" element={guarded(canViewOperationIndicators(identity.rol),
+      <SustainabilityPage key={identity.usuario_id} onSessionExpired={handleSessionExpired} />)} />
     <Route path="/vehiculos" element={guarded(vehiclesAllowed, <VehiclesPage canCreate={createOrdersAllowed} />)} />
     <Route path="/conductor/itinerario" element={guarded(identity.rol === 'CONDUCTOR',
       <DriverItineraryPage key={identity.usuario_id} ownerId={identity.usuario_id} onSessionExpired={handleSessionExpired} />)} />
