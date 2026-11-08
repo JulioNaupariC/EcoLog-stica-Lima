@@ -18,7 +18,7 @@
 - [RF-007 y RF-001](<../../01 Inicio/06. Requisitos funcionales V_1_1_0.md>).
 - [RN-002 a RN-010, RN-015, RN-019](<../../01 Inicio/09. Reglas de negocio V_1_1_0.md>).
 - [RNF-002 a RNF-004 y RNF-009](<../../01 Inicio/07. Requisitos no funcionales V_1_2_0.md>).
-- [Modelo ruta, parada_ruta, incidencia y optimizacion](<../../01 Inicio/11. Base de datos V_1_2_0.md>),
+- [Modelo ruta, parada_ruta, incidencia y optimizacion](<../../01 Inicio/11. Base de datos V_1_3_0.md>),
   [BDD de incidencias](ECL-72-ST-039-incidencias.md),
   [BDD US-006](ECL-12-US-006-rutas-optimizadas.md) y
   [matriz RBAC](<../../01 Inicio/08. Usuarios V_1_0_0.md>).

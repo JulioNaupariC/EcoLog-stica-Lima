@@ -49,6 +49,7 @@ from sqlalchemy.orm import Session, sessionmaker
 
 from app.core.config import Settings
 from app.core.incidencias import SeveridadIncidencia, TipoIncidencia
+from app.core.parametros import REFERENCIA_INICIAL, UNIDADES
 from app.core.rbac import Rol
 from app.db.session import build_engine, session_factory
 from app.models.cliente import Cliente
@@ -57,6 +58,7 @@ from app.models.pedido import Pedido
 from app.repositories.usuarios import UsuarioRepository
 from app.schemas.conductor import ConductorCreate, ConductorUpdate
 from app.schemas.incidencia import IncidenciaCreate
+from app.schemas.parametro import ValorParametro, VersionCreate
 from app.schemas.pedido import PedidoCreate
 from app.schemas.preferencias import PreferenciasPatch
 from app.schemas.vehiculo import VehicleCreate
@@ -64,6 +66,7 @@ from app.services.conductores import ConductorService
 from app.services.credenciales import CredentialService
 from app.services.driver_reports import DriverReportService
 from app.services.incidencias import IncidenciaService
+from app.services.parametros import ParametroService, ParametrosNoEncontrados
 from app.services.pedidos import PedidoService
 from app.services.preferencias import PreferenciasService
 from app.services.vehiculos import VehicleDuplicatePlate, VehiculoService
@@ -504,6 +507,46 @@ def _ensure_incidents(
         summary.count("incidencias", created=created)
 
 
+REFERENCIA_PARAMETROS = "REFERENCIA-RN-2026-11"
+
+
+def _ensure_parameters(
+    factory: sessionmaker[Session], admin_id: UUID, summary: SeedSummary
+) -> None:
+    """EN-008: initial reference version, only if none exists yet.
+
+    Values and sources come from ``app.core.parametros.REFERENCIA_INICIAL``
+    (RN-011, RN-012 and the exact gallon definition); nothing is invented.
+    """
+    service = ParametroService(factory)
+    try:
+        service.por_version(REFERENCIA_PARAMETROS)
+    except ParametrosNoEncontrados:
+        pass
+    else:
+        summary.count("parametros", created=False)
+        return
+    service.registrar(
+        VersionCreate(
+            version=REFERENCIA_PARAMETROS,
+            vigente_desde=datetime(2026, 11, 1, tzinfo=LIMA),
+            nota="Valores de referencia de RN-011 y RN-012; fuentes de mercado "
+            "pendientes (ECL-26).",
+            valores=[
+                ValorParametro(
+                    codigo=valor.codigo,
+                    valor=valor.valor,
+                    unidad=UNIDADES[valor.codigo],
+                    fuente=valor.fuente,
+                )
+                for valor in REFERENCIA_INICIAL
+            ],
+        ),
+        admin_id,
+    )
+    summary.count("parametros", created=True)
+
+
 def seed(
     factory: sessionmaker[Session],
     passwords: Mapping[Rol, str],
@@ -522,6 +565,7 @@ def seed(
     orders = _ensure_orders(factory, clients, now.date(), summary)
     _ensure_assignments(factory, drivers[DRIVERS[0].dni], orders, summary)
     _ensure_incidents(factory, drivers[DRIVERS[0].dni], orders, now, summary)
+    _ensure_parameters(factory, users[Rol.ADMINISTRADOR], summary)
     return summary
 
 
@@ -552,6 +596,7 @@ def main(environ: Mapping[str, str] = os.environ) -> int:
         "pedidos",
         "asignaciones",
         "incidencias",
+        "parametros",
     ):
         print(
             f"{kind}: {summary.created.get(kind, 0)} creados, "

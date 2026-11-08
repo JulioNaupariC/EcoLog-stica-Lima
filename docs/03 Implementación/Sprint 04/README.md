@@ -20,7 +20,7 @@ No representan resultados ejecutados ni documentos aprobados.
 
 <!-- ECL-104 Matriz final -->
 
-<!-- ECL-26 Casos de referencia -->
+- [ECL-26 — Parámetros versionados y casos de referencia (RNF-011)](<ECL-26 parametros versionados y casos de referencia.md>)
 
 <!-- ECL-105 Guía de demo -->
 
