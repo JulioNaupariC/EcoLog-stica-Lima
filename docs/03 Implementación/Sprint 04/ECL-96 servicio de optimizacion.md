@@ -1,6 +1,6 @@
 # ECL-96 (ST-047) — Servicio de optimización y endpoints de rutas
 
-Alcance de esta entrega (PR 1 de 2): `POST /optimizaciones`,
+Alcance de ECL-96: `POST /optimizaciones`,
 `GET /optimizaciones` y `GET /optimizaciones/{optimizacion_id}` dejan de usar
 datos simulados y resuelven con el motor VRPTW de ST-044 sobre los pedidos y
 vehículos guardados. El contrato publicado en ST-045 (ECL-94) no cambia de
@@ -90,13 +90,16 @@ matriz del motor (Haversine × factor de desvío 1,35 a velocidad constante).
 - La campaña de 30 corridas para P95 de RNF-001 corresponde a EN-003; este
   ticket no la reporta como cumplida.
 
-## Pendiente para el PR 2 de ST-047
+## Fuera del alcance de ECL-96
 
-- Cierre de ruta (`rutas.actualizar_estado`).
-- Indicadores reales de sostenibilidad (US-009) sobre rutas cerradas.
-- Distinción de conducción, servicio y espera de RN-005 y motivo
-  `JORNADA_INVIABLE` cuando su causa esté verificada (requiere actualizar el
-  enum del contrato y avisar a frontend).
+Trabajo relacionado que pertenece a otros tickets del Sprint 4:
+
+- EN-003 (ECL-21): cola/worker y campaña de 30 corridas para el P95 de RNF-001.
+- ECL-79: distinción de conducción, servicio y espera de RN-005 y motivo
+  `JORNADA_INVIABLE` cuando su causa esté verificada (requiere ampliar el enum
+  del contrato y avisar a frontend).
+- US-009 (ECL-15): cierre de ruta e indicadores reales de sostenibilidad sobre
+  rutas cerradas.
 
 [Índice del Sprint 4](README.md)
 
