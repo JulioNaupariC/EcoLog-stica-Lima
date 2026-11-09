@@ -1,0 +1,20 @@
+{
+  "status": "passed",
+  "tests": 1014,
+  "files": 65,
+  "coverage": {
+    "lines": {
+      "percent": 97.99,
+      "covered": 2830,
+      "total": 2888
+    },
+    "statements": 95.95,
+    "branches": 93.19,
+    "functions": 95.63
+  },
+  "typecheck": "passed",
+  "lint": "passed",
+  "build": "passed",
+  "sourceCommit": "110f390",
+  "note": "Revalidación posterior a la corrección de lecturas anteriores; registros históricos intactos."
+}

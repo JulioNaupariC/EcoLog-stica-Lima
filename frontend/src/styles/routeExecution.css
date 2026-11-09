@@ -1,0 +1,11 @@
+.route-execution { display: grid; gap: var(--space-3); margin-block: var(--space-4); }
+.route-execution > button { justify-self: start; }
+.route-close-confirm { padding: var(--space-4); border: 1px solid var(--color-border); border-radius: var(--radius-md); }
+.stop-outcome-form { margin-top: var(--space-4); }
+.stop-outcome-form fieldset { display: grid; gap: var(--space-3); min-width: 0; }
+.stop-outcome-form .form-actions { flex-wrap: wrap; }
+.stop-outcome-form .form-actions, .route-close-confirm .form-actions {
+  position: static; margin: 0; padding: 0; border: 0; background: transparent; box-shadow: none;
+}
+.stop-outcome-form input, .stop-outcome-form select { min-width: 0; max-width: 100%; }
+@media (max-width: 35rem) { .route-close-confirm .form-actions > button, .stop-outcome-form .form-actions > button { width: 100%; } }

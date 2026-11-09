@@ -1,0 +1,18 @@
+[
+  {
+    "theme": "light",
+    "lighthouseVersion": "12.6.1",
+    "fetchTime": "2026-11-08T23:24:46.993Z",
+    "gatherMode": "snapshot",
+    "accessibility": 1,
+    "failedAudits": []
+  },
+  {
+    "theme": "dark",
+    "lighthouseVersion": "12.6.1",
+    "fetchTime": "2026-11-08T23:24:51.115Z",
+    "gatherMode": "snapshot",
+    "accessibility": 1,
+    "failedAudits": []
+  }
+]

@@ -1,0 +1,9 @@
+{
+  "fecha_utc": "2026-11-08T23:41:25.585968+00:00",
+  "commit_funcional": "110f390",
+  "casos_pagina_aprobados": 18,
+  "fallidos": 0,
+  "regresion": "Una lectura iniciada antes del acuse no revierte la parada confirmada; descarta también el estado de carga anterior.",
+  "reproduccion_previa": "El caso adicional falló en 61babe8 antes de invalidar la lectura.",
+  "source_sha256": "a87d2859f1b69bcf4b42fcf88a176d65a1fd6bb4ed06476be5f67989a041f6b5"
+}
