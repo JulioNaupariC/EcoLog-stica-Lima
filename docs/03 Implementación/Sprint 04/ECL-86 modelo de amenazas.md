@@ -89,9 +89,9 @@ afirma que el worker/cola del diseño C4 esté desplegado.
 | **D — Denegación de servicio** | Solicitudes concurrentes de cálculo consumen CPU/recursos de la API o base y degradan otras solicitudes. | Límites de selección (150 pedidos/15 vehículos) y límite de búsqueda configurable; la corrida se marca FALLIDA con error seguro si el cálculo falla. [optimizaciones.py](../../../backend/app/services/optimizaciones.py), [rutas.py](../../../backend/app/api/rutas.py), [ECL-96 fuera de alcance](ECL-96%20servicio%20de%20optimizacion.md). | **Riesgo abierto:** el cálculo se ejecuta dentro de la solicitud y no se identificó cola de trabajos, worker ni límite de concurrencia/rate limit en el flujo actual. Seguimiento de rendimiento/desacoplamiento: [RSK-02](../../02%20Planificaci%C3%B3n/03%20Registro%20de%20riesgos%20V_1_0_0.md) / [ECL-21](https://continental-team-il84x39k.atlassian.net/browse/ECL-21). |
 | **E — Elevación de privilegios** | Un Conductor, Analista o Auditor usa el endpoint de ejecución o el de detalle para acceder a funciones operativas. | Permisos `OPTIMIZACIONES_EJECUTAR` y `RUTAS_CONSULTAR` aplicados en cada endpoint con roles distintos; listado y detalle tienen permisos documentados. [rutas.py](../../../backend/app/api/rutas.py), [rbac.py](../../../backend/app/core/rbac.py), [tests de permisos](../../../backend/tests/unit/test_rutas_api.py). | **Bajo:** la cobertura depende de que endpoints nuevos mantengan las dependencias de permiso; incluir rutas añadidas en las pruebas RBAC de regresión. Seguimiento: [ECL-86](https://continental-team-il84x39k.atlassian.net/browse/ECL-86). |
 
-## 5. Regla de alerta propuesta — HTTP 5xx
+## 5. Regla de alerta — HTTP 5xx
 
-**Estado: propuesta; no desplegada ni validada por el responsable técnico.**
+**Estado: propuesta revisada técnicamente (10/11/2026); implementable con la instrumentación de ECL-60, pero no desplegada. El despliegue queda en ECL-122.**
 ECL-60 instrumenta `ecolog_http_5xx_total` y
 `ecolog_http_requests_total`, con etiquetas acotadas a método, plantilla de
 ruta y estado (para requests); las métricas no incluyen cuerpos, credenciales,
@@ -109,7 +109,7 @@ Propuesta para una plataforma compatible con Prometheus:
       sum(rate(ecolog_http_requests_total[5m]))
     ) > 0.01
     and
-    sum(rate(ecolog_http_requests_total[5m])) > 0
+    sum(increase(ecolog_http_5xx_total[5m])) >= 3
   for: 5m
   labels:
     severity: warning
@@ -119,18 +119,37 @@ Propuesta para una plataforma compatible con Prometheus:
     description: "La tasa agregada supera el umbral durante la ventana sostenida; revisar disponibilidad de la API."
 ```
 
+El mínimo de 3 errores en la ventana evita alertar con poco tráfico, donde un solo 500 equivaldría al 100 %; con tráfico nulo la división no produce valor y la alerta no se dispara.
+
 El umbral de 1% toma como referencia RNF-008, pero la ventana de cinco minutos
 es una propuesta de operación, no un requisito ya aprobado. La notificación
 debe incluir únicamente nombre de alerta, servicio, periodo y valor agregado;
 no adjuntar request/response, identificadores de usuario, contraseñas, tokens,
 ubicaciones ni observaciones.
 
-**Confirmación solicitada a Antony Munive (@ANTONY-MUNIVE):** validar si esta
-regla es implementable con la instrumentación ECL-60 en su estado actual,
-considerando que los contadores son locales al proceso y que `GET /metrics`
-requiere permiso `INDICADORES_CONSULTAR`. Confirmar también el scraping/
-autenticación y destino de alertas. Hasta esa confirmación, no se declara
-implementable, activa ni aceptada.
+### Resultado de la revisión técnica
+
+Revisión de Antony Munive, responsable técnico de ECL-60, el 10/11/2026:
+
+- **Contadores:** `ecolog_http_5xx_total{method,route}` y
+  `ecolog_http_requests_total{method,route,status}` son contadores; la serie
+  5xx existe en 0 por ruta y `/metrics` no se cuenta a sí misma. Son locales al
+  proceso y se reinician con la API; `rate()` tolera el reinicio (se publica
+  `ecolog_process_start_time_seconds`). Hoy hay un solo proceso (uvicorn sin
+  `--workers`); con varias réplicas o workers habría que scrapear cada
+  instancia por separado, nunca a través de un balanceador.
+- **Autenticación:** `/metrics` exige sesión con cookie y el permiso
+  `INDICADORES_CONSULTAR`. Un scraper no puede autenticarse así, la sesión vence
+  a las 12 h y cada scrape se audita como `AUTORIZACION_PERMITIDA` (unas 5 760
+  filas al día con scrapes cada 15 s). Ajuste: credencial propia del scraper
+  solo para `/metrics` (por ejemplo, token Bearer desde variable de entorno,
+  sin secretos en el repositorio y sin auditar los scrapes exitosos) o
+  exposición solo en la red interna.
+- **Scraping:** no hay Prometheus en `compose.yaml` ni en `compose.prod.yaml`.
+- **Destino:** no hay Alertmanager ni receptor definido; el canal lo decide el
+  equipo y sus credenciales van en el entorno.
+
+Estos ajustes se registran en ECL-122 (https://continental-team-il84x39k.atlassian.net/browse/ECL-122), fuera del Sprint 4.
 
 Evidencia: [métricas ECL-60](../../../backend/evidencias/ECL-60/metricas.prom),
 [contrato de `/metrics`](../../../backend/app/api/metrics.py),
@@ -146,7 +165,7 @@ Evidencia: [métricas ECL-60](../../../backend/evidencias/ECL-60/metricas.prom),
 | Exposición de datos offline en el dispositivo | Cola offline — I | IndexedDB no cifra en reposo ubicación/observación; no hay ticket específico de cifrado/retención identificado. | [RSK-06](../../02%20Planificaci%C3%B3n/03%20Registro%20de%20riesgos%20V_1_0_0.md) / [ECL-86](https://continental-team-il84x39k.atlassian.net/browse/ECL-86). |
 | Crecimiento de cola offline | Cola offline — D | No se identificó cuota funcional para cantidad/tamaño total de pendientes ni alerta de sincronización detenida. | [RSK-08](../../02%20Planificaci%C3%B3n/03%20Registro%20de%20riesgos%20V_1_0_0.md) / [ECL-86](https://continental-team-il84x39k.atlassian.net/browse/ECL-86). Sin ticket específico de cuota identificado. |
 | Saturación de API por optimizaciones | Optimización — D | Cálculo síncrono; el worker/cola es parte de EN-003, no se afirma implementado aquí. | [RSK-02](../../02%20Planificaci%C3%B3n/03%20Registro%20de%20riesgos%20V_1_0_0.md) / [ECL-21](https://continental-team-il84x39k.atlassian.net/browse/ECL-21). |
-| Detección tardía de actividad anómala | Login, restablecimiento y optimización — R | Eventos de auditoría y métricas disponibles, pero no se encontró en el repositorio una regla ni canal de alertas desplegado. | [ECL-86](https://continental-team-il84x39k.atlassian.net/browse/ECL-86). Regla 5xx propuesta en este documento, pendiente de Antony. |
+| Detección tardía de actividad anómala | Login, restablecimiento y optimización — R | Eventos de auditoría y métricas disponibles, pero no se encontró en el repositorio una regla ni canal de alertas desplegado. | [ECL-86](https://continental-team-il84x39k.atlassian.net/browse/ECL-86). Regla 5xx propuesta y revisada técnicamente; despliegue (credencial de `/metrics`, Prometheus y Alertmanager) en ECL-122. |
 
 Las referencias a Jira documentan seguimiento, no confirman estado, prioridad,
 responsable ni cierre. Cuando no se encontró un ticket específico para
