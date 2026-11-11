@@ -622,6 +622,8 @@ Una Historia de Usuario o Enabler solo puede pasar a **Done** cuando cumple simu
 - Cobertura de pruebas unitarias **≥80%** para el incremento afectado y pruebas obligatorias en verde.
 - Análisis estático/SAST ejecutado mediante **SonarQube y/o CodeQL**, sin vulnerabilidades críticas abiertas.
 - Pull Request aprobado mediante **Peer Review por al menos un par técnico** distinto del autor.
+- Cada PR cuenta con la aprobación comentada de un dueño de cada carpeta/área afectada según `CODEOWNERS`; el comentario indica qué revisó (pruebas, alcance y evidencias) y los acuerdos. Una aprobación sin comentario se señala y se completa antes del merge.
+- El **autor del PR realiza el merge** después de obtener las aprobaciones requeridas de los dueños de cada carpeta/área afectada según `CODEOWNERS` y cumplir las demás condiciones de integración.
 - Despliegue automatizado ejecutable en ambiente de **Staging / Pruebas**.
 - Documentación técnica, README y **OpenAPI/Swagger** actualizados cuando el cambio afecte API, configuración o arquitectura.
 - Criterios BDD de la Historia/Enabler aprobados y evidencia adjunta o referenciada.
