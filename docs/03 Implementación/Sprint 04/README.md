@@ -66,6 +66,7 @@ el enlace de navegación queda incorporado aquí sin editar esas evidencias.
 
 ## Entorno local y acciones de retrospectiva
 
+- [ECL-91 / A12 — Corte de alcance de PR y seguimiento para ECL-101](<ECL-91 corte de alcance de PR.md>)
 - [ECL-90 / A11 — Guía, verificaciones y tabla de resultados para Frank](<guias/GUIA_ENTORNO_LOCAL_ECL90.md>)
 
 ## Especificaciones BDD

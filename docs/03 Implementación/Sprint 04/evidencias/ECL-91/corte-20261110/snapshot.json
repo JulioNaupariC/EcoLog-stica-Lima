@@ -1,0 +1,5335 @@
+{
+  "captured_at_utc": "2026-11-11T03:59:33.786Z",
+  "timezone": "America/Lima",
+  "base_main": "0658771d87aa1c95bd94a31efbca69c83bf0b5e3",
+  "api": "https://api.github.com/repos/JulioNaupariC/EcoLog-stica-Lima",
+  "selection": "Base main; cohorte operativa #85 y #87–#123. Sin milestones/etiquetas de sprint; ratificar contra Jira en ECL-101.",
+  "method": "Archivos del diff de cada PR, paginados y contrastados con changed_files. Evidencias excluidas solo bajo evidencias/, salvo scripts/código/configuración ejecutable. Edad hasta merged_at, closed_at o captura. Relación de seguimiento evaluada manualmente en descripción y conversaciones; no se accedió a Jira.",
+  "totals": {
+    "cohort": 38,
+    "exceeded": 17,
+    "exceeded_files": 16,
+    "exceeded_age": 1,
+    "explicit_followup": 1,
+    "subsequent_partial": 2,
+    "unverified": 14
+  },
+  "rows": [
+    {
+      "number": 84,
+      "url": "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/84",
+      "title": "docs(ECL-69): registrar la Review del Sprint 3 y la evaluación del docente",
+      "author": "JulioNaupariC",
+      "head": "c901393f953f96cea43d6404cf30dd27498ed7bb",
+      "base": "main",
+      "created_at": "2026-11-02T14:19:55Z",
+      "merged_at": "2026-11-03T18:26:19Z",
+      "closed_at": "2026-11-03T18:26:19Z",
+      "cohort": false,
+      "exclusion": "Cierre documental del Sprint 3 (ECL-69 / rama sprint-3)",
+      "files_total": 2,
+      "files_excluded": 0,
+      "files_counted": 2,
+      "age_hours": 28.106666666666666,
+      "exceeds_files": false,
+      "exceeds_age": true,
+      "exceeds": true,
+      "followup": {
+        "kind": "no_aplica",
+        "tickets": [],
+        "sources": [],
+        "note": ""
+      },
+      "files": [
+        {
+          "path": "README.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 03/01 Revisión del Sprint V_1_0_0.md",
+          "status": "modified",
+          "excluded": false
+        }
+      ],
+      "discussion_urls": []
+    },
+    {
+      "number": 85,
+      "url": "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/85",
+      "title": "docs(ECL-92): ordenar docs/03 Implementación con una carpeta por sprint",
+      "author": "ANTONY-MUNIVE",
+      "head": "e82f3822ce3996c0362797777a6e3454c343506f",
+      "base": "main",
+      "created_at": "2026-11-03T18:32:53Z",
+      "merged_at": "2026-11-03T20:10:19Z",
+      "closed_at": "2026-11-03T20:10:19Z",
+      "cohort": true,
+      "exclusion": null,
+      "files_total": 13,
+      "files_excluded": 0,
+      "files_counted": 13,
+      "age_hours": 1.623888888888889,
+      "exceeds_files": true,
+      "exceeds_age": false,
+      "exceeds": true,
+      "followup": {
+        "kind": "no_verificado",
+        "tickets": [],
+        "sources": [],
+        "note": "Sin relación explícita suficiente para acreditar el resto en las fuentes consultadas; no prueba inexistencia en Jira."
+      },
+      "files": [
+        {
+          "path": "README.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "docs/02 Planificación/BDD/ECL-72-ST-039-incidencias.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 01/01 Informe de estado del proyecto V_1_0_0.md",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 01/02 Registro de Impedimentos V_1_0_0.md",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 01/03 Revisión del Sprint V_1_0_0.md",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 01/04 Retrospectiva del Sprint V_1_0_0.md",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 01/README.md",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 02/01 Informe de estado del proyecto V_1_0_0.md",
+          "previous": "docs/03 Implementación/01 Informe de estado del proyecto V_1_0_0.md",
+          "status": "renamed",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 02/02 Registro de Impedimentos V_1_0_0.md",
+          "previous": "docs/03 Implementación/02 Registro de Impedimentos V_1_0_0.md",
+          "status": "renamed",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 02/03 Revisión del Sprint V_1_0_0.md",
+          "previous": "docs/03 Implementación/03 Revisión del Sprint V_1_0_0.md",
+          "status": "renamed",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 02/04 Retrospectiva del Sprint V_1_0_0.md",
+          "previous": "docs/03 Implementación/04 Retrospectiva del Sprint V_1_0_0.md",
+          "status": "renamed",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 02/README.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 03/02 Retrospectiva del Sprint V_1_0_0.md",
+          "status": "modified",
+          "excluded": false
+        }
+      ],
+      "discussion_urls": [
+        "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/85#issuecomment-6612400889",
+        "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/85#pullrequestreview-5757556483",
+        "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/85#pullrequestreview-5757748858",
+        "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/85#pullrequestreview-5758178987"
+      ]
+    },
+    {
+      "number": 86,
+      "url": "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/86",
+      "title": "docs(sprint3): registrar la rama de cierre sprint-3",
+      "author": "ANTONY-MUNIVE",
+      "head": "95d4059c86d54f27d15945ab4d6e577844d2b058",
+      "base": "main",
+      "created_at": "2026-11-03T23:19:19Z",
+      "merged_at": "2026-11-03T23:25:41Z",
+      "closed_at": "2026-11-03T23:25:41Z",
+      "cohort": false,
+      "exclusion": "Cierre documental del Sprint 3 (ECL-69 / rama sprint-3)",
+      "files_total": 1,
+      "files_excluded": 0,
+      "files_counted": 1,
+      "age_hours": 0.10611111111111111,
+      "exceeds_files": false,
+      "exceeds_age": false,
+      "exceeds": false,
+      "followup": {
+        "kind": "no_aplica",
+        "tickets": [],
+        "sources": [],
+        "note": ""
+      },
+      "files": [
+        {
+          "path": "README.md",
+          "status": "modified",
+          "excluded": false
+        }
+      ],
+      "discussion_urls": []
+    },
+    {
+      "number": 87,
+      "url": "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/87",
+      "title": "fix(ECL-84): cabeceras de seguridad, 422 saneados y cierre de S8703",
+      "author": "ANTONY-MUNIVE",
+      "head": "101e08bcb7e8279fdfeae3c40f98caff99e17a1d",
+      "base": "main",
+      "created_at": "2026-11-06T19:42:09Z",
+      "merged_at": "2026-11-06T21:43:58Z",
+      "closed_at": "2026-11-06T21:43:58Z",
+      "cohort": true,
+      "exclusion": null,
+      "files_total": 10,
+      "files_excluded": 0,
+      "files_counted": 10,
+      "age_hours": 2.0302777777777776,
+      "exceeds_files": false,
+      "exceeds_age": false,
+      "exceeds": false,
+      "followup": {
+        "kind": "no_aplica",
+        "tickets": [],
+        "sources": [],
+        "note": ""
+      },
+      "files": [
+        {
+          "path": "backend/README.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/api/pedidos.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/api/security_headers.py",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/api/vehiculos.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/main.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/monitoring/poll.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/schemas/pedido.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/tests/unit/test_monitoring_poll.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/tests/unit/test_pedido_api.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/tests/unit/test_security_headers.py",
+          "status": "added",
+          "excluded": false
+        }
+      ],
+      "discussion_urls": []
+    },
+    {
+      "number": 88,
+      "url": "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/88",
+      "title": "feat(ECL-93): spike del optimizador VRPTW con OR-Tools",
+      "author": "ANTONY-MUNIVE",
+      "head": "985a15bbc8c90575e6e11c28c63c9759e5ef0817",
+      "base": "main",
+      "created_at": "2026-11-06T20:01:25Z",
+      "merged_at": "2026-11-06T22:21:15Z",
+      "closed_at": "2026-11-06T22:21:15Z",
+      "cohort": true,
+      "exclusion": null,
+      "files_total": 17,
+      "files_excluded": 3,
+      "files_counted": 14,
+      "age_hours": 2.3305555555555557,
+      "exceeds_files": true,
+      "exceeds_age": false,
+      "exceeds": true,
+      "followup": {
+        "kind": "no_verificado",
+        "tickets": [],
+        "sources": [],
+        "note": "Sin relación explícita suficiente para acreditar el resto en las fuentes consultadas; no prueba inexistencia en Jira."
+      },
+      "files": [
+        {
+          "path": "README.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/README.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/optimizacion/__init__.py",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/optimizacion/distancias.py",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/optimizacion/metricas.py",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/optimizacion/modelo.py",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/optimizacion/sinteticos.py",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/optimizacion/verificacion.py",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/optimizacion/vrptw.py",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "backend/evidencias/ECL-93/README.md",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "backend/evidencias/ECL-93/medicion-entorno-nube.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "backend/evidencias/ECL-93/medicion-laptop.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "backend/pyproject.toml",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/requirements-dev.lock",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/requirements.lock",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/scripts/spike_vrptw.py",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "backend/tests/unit/test_optimizacion_vrptw.py",
+          "status": "added",
+          "excluded": false
+        }
+      ],
+      "discussion_urls": [
+        "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/88#issuecomment-6696698355",
+        "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/88#pullrequestreview-5806204543",
+        "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/88#pullrequestreview-5807770525",
+        "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/88#pullrequestreview-5807794346"
+      ]
+    },
+    {
+      "number": 89,
+      "url": "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/89",
+      "title": "feat(ECL-94): contrato de la API de rutas con datos simulados",
+      "author": "ANTONY-MUNIVE",
+      "head": "285e82a723bb71485186f7594c7f9774a1306512",
+      "base": "main",
+      "created_at": "2026-11-06T20:01:32Z",
+      "merged_at": "2026-11-06T23:04:26Z",
+      "closed_at": "2026-11-06T23:04:26Z",
+      "cohort": true,
+      "exclusion": null,
+      "files_total": 20,
+      "files_excluded": 0,
+      "files_counted": 20,
+      "age_hours": 3.0483333333333333,
+      "exceeds_files": true,
+      "exceeds_age": false,
+      "exceeds": true,
+      "followup": {
+        "kind": "no_verificado",
+        "tickets": [],
+        "sources": [],
+        "note": "Sin relación explícita suficiente para acreditar el resto en las fuentes consultadas; no prueba inexistencia en Jira."
+      },
+      "files": [
+        {
+          "path": "backend/README.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/api/rutas.py",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/main.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/schemas/rutas.py",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/services/rutas_simuladas.py",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/simulacion/rutas/optimizacion-aceptada.json",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/simulacion/rutas/optimizacion-completada.json",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/simulacion/rutas/optimizacion-en-proceso.json",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/simulacion/rutas/optimizacion-fallida.json",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/simulacion/rutas/optimizaciones-pagina.json",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/simulacion/rutas/sostenibilidad-con-datos.json",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/simulacion/rutas/sostenibilidad-sin-datos.json",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "backend/tests/unit/test_rutas_api.py",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/test/fixtures/rutas/optimizacion-aceptada.json",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/test/fixtures/rutas/optimizacion-completada.json",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/test/fixtures/rutas/optimizacion-en-proceso.json",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/test/fixtures/rutas/optimizacion-fallida.json",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/test/fixtures/rutas/optimizaciones-pagina.json",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/test/fixtures/rutas/sostenibilidad-con-datos.json",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/test/fixtures/rutas/sostenibilidad-sin-datos.json",
+          "status": "added",
+          "excluded": false
+        }
+      ],
+      "discussion_urls": [
+        "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/89#issuecomment-6697441471",
+        "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/89#pullrequestreview-5806205755",
+        "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/89#pullrequestreview-5808178597",
+        "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/89#pullrequestreview-5808179635"
+      ]
+    },
+    {
+      "number": 90,
+      "url": "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/90",
+      "title": "docs(ECL-108): documentar línea base Green IT con mediciones reales",
+      "author": "JoseDelgadillo277",
+      "head": "b72c0320fd46b1fc56843ba0ccfa7bb9eb24ae7a",
+      "base": "main",
+      "created_at": "2026-11-06T23:40:40Z",
+      "merged_at": "2026-11-07T00:16:54Z",
+      "closed_at": "2026-11-07T00:16:54Z",
+      "cohort": true,
+      "exclusion": null,
+      "files_total": 117,
+      "files_excluded": 107,
+      "files_counted": 10,
+      "age_hours": 0.6038888888888889,
+      "exceeds_files": false,
+      "exceeds_age": false,
+      "exceeds": false,
+      "followup": {
+        "kind": "no_aplica",
+        "tickets": [],
+        "sources": [],
+        "note": ""
+      },
+      "files": [
+        {
+          "path": "README.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/README.md",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/README.md",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-46-38-851Z/api-conductores.csv",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-46-38-851Z/api-incidencias.csv",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-46-38-851Z/api-vehiculos.csv",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-46-38-851Z/login-01-network.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-46-38-851Z/login-01-pagina.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-46-38-851Z/login-01.lighthouse.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-46-38-851Z/login-01.network.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-46-38-851Z/login-02-network.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-46-38-851Z/login-02-pagina.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-46-38-851Z/login-02.lighthouse.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-46-38-851Z/login-02.network.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-46-38-851Z/login-03-network.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-46-38-851Z/login-03-pagina.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-46-38-851Z/login-03.lighthouse.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-46-38-851Z/login-03.network.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-46-38-851Z/login.resultado.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-46-38-851Z/medir.mjs",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-46-38-851Z/resultados.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-47-43-784Z/api-conductores.csv",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-47-43-784Z/api-incidencias.csv",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-47-43-784Z/api-vehiculos.csv",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-47-43-784Z/inicio-operador.resultado.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-47-43-784Z/itinerario-conductor.resultado.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-47-43-784Z/login-01-network.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-47-43-784Z/login-01-pagina.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-47-43-784Z/login-01.lighthouse.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-47-43-784Z/login-01.network.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-47-43-784Z/login-02-network.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-47-43-784Z/login-02-pagina.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-47-43-784Z/login-02.lighthouse.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-47-43-784Z/login-02.network.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-47-43-784Z/login-03-network.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-47-43-784Z/login-03-pagina.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-47-43-784Z/login-03.lighthouse.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-47-43-784Z/login-03.network.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-47-43-784Z/login.resultado.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-47-43-784Z/medir.mjs",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-47-43-784Z/resultados.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-47-43-784Z/vehiculos-operador.resultado.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-50-12-524Z/README.md",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-50-12-524Z/api-conductores.csv",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-50-12-524Z/api-incidencias.csv",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-50-12-524Z/api-vehiculos.csv",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-50-12-524Z/calcular.py",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-50-12-524Z/capturar-reportes.mjs",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-50-12-524Z/inicio-operador-01-network.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-50-12-524Z/inicio-operador-01-pagina.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-50-12-524Z/inicio-operador-01.network.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-50-12-524Z/inicio-operador-antes-recarga.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-50-12-524Z/inicio-operador.resultado.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-50-12-524Z/itinerario-conductor-01-lighthouse-reporte.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-50-12-524Z/itinerario-conductor-01-lighthouse.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-50-12-524Z/itinerario-conductor-01-network.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-50-12-524Z/itinerario-conductor-01-pagina.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-50-12-524Z/itinerario-conductor-01.lighthouse.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-50-12-524Z/itinerario-conductor-01.network.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-50-12-524Z/itinerario-conductor-02-lighthouse-reporte.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-50-12-524Z/itinerario-conductor-02-lighthouse.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-50-12-524Z/itinerario-conductor-02-network.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-50-12-524Z/itinerario-conductor-02-pagina.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-50-12-524Z/itinerario-conductor-02.lighthouse.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-50-12-524Z/itinerario-conductor-02.network.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-50-12-524Z/itinerario-conductor-03-lighthouse-reporte.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-50-12-524Z/itinerario-conductor-03-lighthouse.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-50-12-524Z/itinerario-conductor-03-network.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-50-12-524Z/itinerario-conductor-03-pagina.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-50-12-524Z/itinerario-conductor-03.lighthouse.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-50-12-524Z/itinerario-conductor-03.network.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-50-12-524Z/itinerario-conductor-antes-recarga.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-50-12-524Z/itinerario-conductor.resultado.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-50-12-524Z/login-01-lighthouse-reporte.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-50-12-524Z/login-01-lighthouse.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-50-12-524Z/login-01-network.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-50-12-524Z/login-01-pagina.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-50-12-524Z/login-01.lighthouse.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-50-12-524Z/login-01.network.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-50-12-524Z/login-02-lighthouse-reporte.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-50-12-524Z/login-02-lighthouse.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-50-12-524Z/login-02-network.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-50-12-524Z/login-02-pagina.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-50-12-524Z/login-02.lighthouse.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-50-12-524Z/login-02.network.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-50-12-524Z/login-03-lighthouse-reporte.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-50-12-524Z/login-03-lighthouse.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-50-12-524Z/login-03-network.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-50-12-524Z/login-03-pagina.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-50-12-524Z/login-03.lighthouse.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-50-12-524Z/login-03.network.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-50-12-524Z/login.resultado.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-50-12-524Z/medir.mjs",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-50-12-524Z/resultados.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-50-12-524Z/vehiculos-operador.resultado.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-52-50-871Z/medir.mjs",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-52-50-871Z/resultados.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-52-50-871Z/vehiculos-operador.resultado.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-53-29-416Z/medir.mjs",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-53-29-416Z/resultados.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-53-29-416Z/vehiculos-operador-01-network.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-53-29-416Z/vehiculos-operador-01-pagina.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-53-29-416Z/vehiculos-operador-01.network.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-53-29-416Z/vehiculos-operador-antes-recarga.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-53-29-416Z/vehiculos-operador.resultado.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-56-10-225Z/inicio-operador-01-network.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-56-10-225Z/inicio-operador-01-pagina.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-56-10-225Z/inicio-operador-01.network.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-56-10-225Z/inicio-operador-antes-recarga.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-56-10-225Z/inicio-operador.resultado.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-56-10-225Z/medir.mjs",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-56-10-225Z/resultados.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-56-10-225Z/vehiculos-operador-01-network.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-56-10-225Z/vehiculos-operador-01-pagina.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-56-10-225Z/vehiculos-operador-01.network.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-56-10-225Z/vehiculos-operador-antes-recarga.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/antes/run-2026-11-06T23-56-10-225Z/vehiculos-operador.resultado.json",
+          "status": "added",
+          "excluded": true
+        }
+      ],
+      "discussion_urls": []
+    },
+    {
+      "number": 91,
+      "url": "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/91",
+      "title": "docs(ECL-97): definir BDD de optimización, mapa y sostenibilidad",
+      "author": "FrankRoyYA",
+      "head": "1bb196067d9095c1e5367d2a029cc281538fec8d",
+      "base": "main",
+      "created_at": "2026-11-07T00:07:39Z",
+      "merged_at": "2026-11-07T00:36:01Z",
+      "closed_at": "2026-11-07T00:36:01Z",
+      "cohort": true,
+      "exclusion": null,
+      "files_total": 6,
+      "files_excluded": 0,
+      "files_counted": 6,
+      "age_hours": 0.4727777777777778,
+      "exceeds_files": false,
+      "exceeds_age": false,
+      "exceeds": false,
+      "followup": {
+        "kind": "no_aplica",
+        "tickets": [],
+        "sources": [],
+        "note": ""
+      },
+      "files": [
+        {
+          "path": "README.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "docs/02 Planificación/BDD/ECL-12-US-006-rutas-optimizadas.md",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "docs/02 Planificación/BDD/ECL-13-US-007-reoptimizacion.md",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "docs/02 Planificación/BDD/ECL-14-US-008-mapa.md",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "docs/02 Planificación/BDD/ECL-15-US-009-dashboard.md",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/README.md",
+          "status": "modified",
+          "excluded": false
+        }
+      ],
+      "discussion_urls": []
+    },
+    {
+      "number": 92,
+      "url": "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/92",
+      "title": "docs(ECL-90): verificar entorno local y documentar seguimiento de A11",
+      "author": "JoseDelgadillo277",
+      "head": "bf814f34864a981ff182724c55263f9f9fcaf80a",
+      "base": "main",
+      "created_at": "2026-11-07T00:31:20Z",
+      "merged_at": "2026-11-07T00:58:56Z",
+      "closed_at": "2026-11-07T00:58:56Z",
+      "cohort": true,
+      "exclusion": null,
+      "files_total": 10,
+      "files_excluded": 5,
+      "files_counted": 5,
+      "age_hours": 0.46,
+      "exceeds_files": false,
+      "exceeds_age": false,
+      "exceeds": false,
+      "followup": {
+        "kind": "no_aplica",
+        "tickets": [],
+        "sources": [],
+        "note": ""
+      },
+      "files": [
+        {
+          "path": "README.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/README.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/evidencias/ECL-90/run-2026-11-07T00-25-45-115Z/app.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/evidencias/ECL-90/run-2026-11-07T00-25-45-115Z/entorno.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/evidencias/ECL-90/run-2026-11-07T00-25-45-115Z/integration.xml",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/evidencias/ECL-90/run-2026-11-07T00-25-45-115Z/login-operador.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/evidencias/ECL-90/run-2026-11-07T00-25-45-115Z/verificacion.txt",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/guias/GUIA_ENTORNO_LOCAL_ECL90.md",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "scripts/tests/test-verificar-entorno.ps1",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "scripts/verificar_entorno.ps1",
+          "status": "added",
+          "excluded": false
+        }
+      ],
+      "discussion_urls": []
+    },
+    {
+      "number": 93,
+      "url": "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/93",
+      "title": "docs(ECL-118): preparar informe de estándares y guía verde",
+      "author": "FrankRoyYA",
+      "head": "ff9ad92812f5a3d4204c931a06af07a542e58de3",
+      "base": "main",
+      "created_at": "2026-11-07T00:49:03Z",
+      "merged_at": "2026-11-07T01:18:54Z",
+      "closed_at": "2026-11-07T01:18:54Z",
+      "cohort": true,
+      "exclusion": null,
+      "files_total": 3,
+      "files_excluded": 0,
+      "files_counted": 3,
+      "age_hours": 0.4975,
+      "exceeds_files": false,
+      "exceeds_age": false,
+      "exceeds": false,
+      "followup": {
+        "kind": "no_aplica",
+        "tickets": [],
+        "sources": [],
+        "note": ""
+      },
+      "files": [
+        {
+          "path": "README.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/README.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/02 Estandares Ingeniería de software V_1_0_0.md",
+          "status": "added",
+          "excluded": false
+        }
+      ],
+      "discussion_urls": []
+    },
+    {
+      "number": 94,
+      "url": "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/94",
+      "title": "feat(ECL-110): compresión GZip y revalidación con ETag en la API",
+      "author": "ANTONY-MUNIVE",
+      "head": "a4fdcfdeaaab4e707ec638fe161f355053c18f75",
+      "base": "main",
+      "created_at": "2026-11-07T01:25:49Z",
+      "merged_at": "2026-11-07T02:29:05Z",
+      "closed_at": "2026-11-07T02:29:05Z",
+      "cohort": true,
+      "exclusion": null,
+      "files_total": 4,
+      "files_excluded": 0,
+      "files_counted": 4,
+      "age_hours": 1.0544444444444445,
+      "exceeds_files": false,
+      "exceeds_age": false,
+      "exceeds": false,
+      "followup": {
+        "kind": "no_aplica",
+        "tickets": [],
+        "sources": [],
+        "note": ""
+      },
+      "files": [
+        {
+          "path": "backend/README.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/api/conditional_get.py",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/main.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/tests/unit/test_green_http.py",
+          "status": "added",
+          "excluded": false
+        }
+      ],
+      "discussion_urls": []
+    },
+    {
+      "number": 95,
+      "url": "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/95",
+      "title": "feat(ECL-111): cargar rutas bajo demanda y listar doce registros por página",
+      "author": "JoseDelgadillo277",
+      "head": "38fc5176246ab9d83f5c652498666c161a46e894",
+      "base": "main",
+      "created_at": "2026-11-07T01:33:00Z",
+      "merged_at": "2026-11-07T01:49:30Z",
+      "closed_at": "2026-11-07T01:49:30Z",
+      "cohort": true,
+      "exclusion": null,
+      "files_total": 51,
+      "files_excluded": 29,
+      "files_counted": 22,
+      "age_hours": 0.275,
+      "exceeds_files": true,
+      "exceeds_age": false,
+      "exceeds": true,
+      "followup": {
+        "kind": "no_verificado",
+        "tickets": [],
+        "sources": [],
+        "note": "Sin relación explícita suficiente para acreditar el resto en las fuentes consultadas; no prueba inexistencia en Jira."
+      },
+      "files": [
+        {
+          "path": "README.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/README.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/ECL-111 React lazy y paginacion V_1_0_0.md",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/ECL-111/accesibilidad.mjs",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/ECL-111/accesibilidad/antes-conductor-1.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/ECL-111/accesibilidad/antes-conductor-2.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/ECL-111/accesibilidad/antes-conductor-3.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/ECL-111/accesibilidad/antes-login-1.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/ECL-111/accesibilidad/antes-login-2.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/ECL-111/accesibilidad/antes-login-3.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/ECL-111/accesibilidad/despues-conductor-1.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/ECL-111/accesibilidad/despues-conductor-2.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/ECL-111/accesibilidad/despues-conductor-3.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/ECL-111/accesibilidad/despues-login-1.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/ECL-111/accesibilidad/despues-login-2.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/ECL-111/accesibilidad/despues-login-3.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/ECL-111/accesibilidad/results.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/ECL-111/build-antes.txt",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/ECL-111/build-despues.txt",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/ECL-111/cobertura-inicial.txt",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/ECL-111/cobertura.txt",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/ECL-111/contexto.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/ECL-111/fragmentos-antes.txt",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/ECL-111/fragmentos-despues.txt",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/ECL-111/medicion-bundle.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/ECL-111/medir-bundle.mjs",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/ECL-111/navegacion/chunk-no-visitado-offline.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/ECL-111/navegacion/results.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/ECL-111/offline/chrome-offline.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/ECL-111/offline/chrome-reconnected.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/ECL-111/offline/firefox-offline.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/ECL-111/offline/firefox-reconnected.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/ECL-111/offline/results.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/ECL-111/paralela-con-timeouts.txt",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/ECL-111/verificar-navegacion.mjs",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/app/App.drivers.test.tsx",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/app/App.lazy.test.tsx",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/app/App.passwordReset.test.tsx",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/app/App.reportRecovery.test.tsx",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/app/App.test.tsx",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/app/App.tsx",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/pages/DriversPage.test.tsx",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/pages/DriversPage.tsx",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/pages/OperationIncidentsPage.test.tsx",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/pages/OperationIncidentsPage.tsx",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/pages/UsersPage.test.tsx",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/pages/UsersPage.tsx",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/pages/VehiclesPage.test.tsx",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/pages/VehiclesPage.tsx",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/services/vehicles.test.ts",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/services/vehicles.ts",
+          "status": "modified",
+          "excluded": false
+        }
+      ],
+      "discussion_urls": [
+        "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/95#issuecomment-6700458974",
+        "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/95#pullrequestreview-5809253811",
+        "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/95#pullrequestreview-5809298522",
+        "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/95#pullrequestreview-5809300981",
+        "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/95#pullrequestreview-5809310061"
+      ]
+    },
+    {
+      "number": 96,
+      "url": "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/96",
+      "title": "perf(green): paginar vehículos, proyección mínima y 12 filas por defecto (ECL-109)",
+      "author": "ANTONY-MUNIVE",
+      "head": "ec9903c30da0c26e5341c6ec7aa5fc7f9a66a7bb",
+      "base": "main",
+      "created_at": "2026-11-07T01:42:47Z",
+      "merged_at": "2026-11-07T02:15:49Z",
+      "closed_at": "2026-11-07T02:15:49Z",
+      "cohort": true,
+      "exclusion": null,
+      "files_total": 21,
+      "files_excluded": 0,
+      "files_counted": 21,
+      "age_hours": 0.5505555555555556,
+      "exceeds_files": true,
+      "exceeds_age": false,
+      "exceeds": true,
+      "followup": {
+        "kind": "no_verificado",
+        "tickets": [],
+        "sources": [],
+        "note": "Sin relación explícita suficiente para acreditar el resto en las fuentes consultadas; no prueba inexistencia en Jira."
+      },
+      "files": [
+        {
+          "path": "backend/README.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/api/clientes.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/api/conductores.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/api/usuarios.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/api/vehiculos.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/core/incidencias.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/repositories/conductores.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/repositories/vehiculos.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/schemas/vehiculo.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/services/conductores.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/services/vehiculos.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/tests/integration/test_clientes_http_e2e.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/tests/integration/test_incidencias.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/tests/integration/test_vehiculo_crud.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/tests/unit/test_clientes_api.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/tests/unit/test_conductor_service.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/tests/unit/test_incidencias_service.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/tests/unit/test_paginacion_por_defecto.py",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "backend/tests/unit/test_vehiculo_api.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/tests/unit/test_vehiculo_repository.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/tests/unit/test_vehiculo_service.py",
+          "status": "modified",
+          "excluded": false
+        }
+      ],
+      "discussion_urls": [
+        "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/96#issuecomment-6700760215",
+        "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/96#pullrequestreview-5809269644",
+        "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/96#pullrequestreview-5809425971"
+      ]
+    },
+    {
+      "number": 97,
+      "url": "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/97",
+      "title": "feat(green): calcular energía y CO2e por visita con SWDM v4 (ECL-116)",
+      "author": "ANTONY-MUNIVE",
+      "head": "3ce6d002c329e55f1497b27e47ed3f6b154631bf",
+      "base": "main",
+      "created_at": "2026-11-07T01:45:04Z",
+      "merged_at": "2026-11-08T20:54:35Z",
+      "closed_at": "2026-11-08T20:54:36Z",
+      "cohort": true,
+      "exclusion": null,
+      "files_total": 3,
+      "files_excluded": 0,
+      "files_counted": 3,
+      "age_hours": 43.158611111111114,
+      "exceeds_files": false,
+      "exceeds_age": true,
+      "exceeds": true,
+      "followup": {
+        "kind": "no_verificado",
+        "tickets": [],
+        "sources": [],
+        "note": "Sin relación explícita suficiente para acreditar el resto en las fuentes consultadas; no prueba inexistencia en Jira."
+      },
+      "files": [
+        {
+          "path": "backend/README.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/scripts/swdm_v4.py",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "backend/tests/unit/test_swdm_v4.py",
+          "status": "added",
+          "excluded": false
+        }
+      ],
+      "discussion_urls": [
+        "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/97#issuecomment-6726863581",
+        "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/97#pullrequestreview-5809280684",
+        "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/97#pullrequestreview-5819613533",
+        "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/97#pullrequestreview-5819622063",
+        "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/97#pullrequestreview-5819622467"
+      ]
+    },
+    {
+      "number": 98,
+      "url": "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/98",
+      "title": "test(ECL-88): verificar revisión de Code Owners",
+      "author": "JulioNaupariC",
+      "head": "cab670dcc33270696d3fb712646ec35ed530eee6",
+      "base": "main",
+      "created_at": "2026-11-07T04:26:49Z",
+      "merged_at": null,
+      "closed_at": "2026-11-07T04:39:45Z",
+      "cohort": true,
+      "exclusion": null,
+      "files_total": 1,
+      "files_excluded": 0,
+      "files_counted": 1,
+      "age_hours": 0.21555555555555556,
+      "exceeds_files": false,
+      "exceeds_age": false,
+      "exceeds": false,
+      "followup": {
+        "kind": "no_aplica",
+        "tickets": [],
+        "sources": [],
+        "note": ""
+      },
+      "files": [
+        {
+          "path": "frontend/ECL-88-CODEOWNERS-PRUEBA.md",
+          "status": "added",
+          "excluded": false
+        }
+      ],
+      "discussion_urls": []
+    },
+    {
+      "number": 99,
+      "url": "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/99",
+      "title": "feat(ECL-113): configurar build de producción con Gzip y caché",
+      "author": "JulioNaupariC",
+      "head": "be22f6edf2228469988f295ba4168947a4718237",
+      "base": "main",
+      "created_at": "2026-11-07T05:21:03Z",
+      "merged_at": "2026-11-07T05:30:59Z",
+      "closed_at": "2026-11-07T05:30:59Z",
+      "cohort": true,
+      "exclusion": null,
+      "files_total": 6,
+      "files_excluded": 0,
+      "files_counted": 6,
+      "age_hours": 0.16555555555555557,
+      "exceeds_files": false,
+      "exceeds_age": false,
+      "exceeds": false,
+      "followup": {
+        "kind": "no_aplica",
+        "tickets": [],
+        "sources": [],
+        "note": ""
+      },
+      "files": [
+        {
+          "path": "README.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "compose.prod.yaml",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/ECL-113 build produccion.md",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/README.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "frontend/Dockerfile.prod",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "frontend/nginx.prod.conf",
+          "status": "added",
+          "excluded": false
+        }
+      ],
+      "discussion_urls": []
+    },
+    {
+      "number": 100,
+      "url": "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/100",
+      "title": "docs(ECL-97): ratificar BDD de rutas, mapa y dashboard",
+      "author": "JulioNaupariC",
+      "head": "0fdc11542619012d2518ea212cae0a000fa2e8a1",
+      "base": "main",
+      "created_at": "2026-11-07T05:44:19Z",
+      "merged_at": "2026-11-07T05:51:10Z",
+      "closed_at": "2026-11-07T05:51:10Z",
+      "cohort": true,
+      "exclusion": null,
+      "files_total": 5,
+      "files_excluded": 0,
+      "files_counted": 5,
+      "age_hours": 0.11416666666666667,
+      "exceeds_files": false,
+      "exceeds_age": false,
+      "exceeds": false,
+      "followup": {
+        "kind": "no_aplica",
+        "tickets": [],
+        "sources": [],
+        "note": ""
+      },
+      "files": [
+        {
+          "path": "README.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "docs/02 Planificación/BDD/ECL-12-US-006-rutas-optimizadas.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "docs/02 Planificación/BDD/ECL-14-US-008-mapa.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "docs/02 Planificación/BDD/ECL-15-US-009-dashboard.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/README.md",
+          "status": "modified",
+          "excluded": false
+        }
+      ],
+      "discussion_urls": []
+    },
+    {
+      "number": 101,
+      "url": "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/101",
+      "title": "docs(ECL-99): aplicar feedback docente al Sprint 4",
+      "author": "JulioNaupariC",
+      "head": "8c6d8835f3e1e8fb6175fdb837543536d4690b90",
+      "base": "main",
+      "created_at": "2026-11-07T06:16:10Z",
+      "merged_at": "2026-11-07T18:22:36Z",
+      "closed_at": "2026-11-07T18:22:36Z",
+      "cohort": true,
+      "exclusion": null,
+      "files_total": 4,
+      "files_excluded": 0,
+      "files_counted": 4,
+      "age_hours": 12.107222222222223,
+      "exceeds_files": false,
+      "exceeds_age": false,
+      "exceeds": false,
+      "followup": {
+        "kind": "no_aplica",
+        "tickets": [],
+        "sources": [],
+        "note": ""
+      },
+      "files": [
+        {
+          "path": "README.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/CONVENCIONES_Y_GLOSARIO_ECL99.md",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/PLANTILLA_REVISION_SPRINT4_ECL99.md",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/README.md",
+          "status": "modified",
+          "excluded": false
+        }
+      ],
+      "discussion_urls": []
+    },
+    {
+      "number": 102,
+      "url": "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/102",
+      "title": "feat(ECL-98): validar y descartar incidencias desde Operación",
+      "author": "JoseDelgadillo277",
+      "head": "73e6f6eda64b8c251beda799ba27aefa098ed2cd",
+      "base": "main",
+      "created_at": "2026-11-07T18:51:45Z",
+      "merged_at": "2026-11-07T19:02:17Z",
+      "closed_at": "2026-11-07T19:02:17Z",
+      "cohort": true,
+      "exclusion": null,
+      "files_total": 23,
+      "files_excluded": 0,
+      "files_counted": 23,
+      "age_hours": 0.17555555555555555,
+      "exceeds_files": true,
+      "exceeds_age": false,
+      "exceeds": true,
+      "followup": {
+        "kind": "no_verificado",
+        "tickets": [],
+        "sources": [],
+        "note": "Sin relación explícita suficiente para acreditar el resto en las fuentes consultadas; no prueba inexistencia en Jira."
+      },
+      "files": [
+        {
+          "path": "README.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/README.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/alembic/versions/0014_resolver_incidencias.py",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/api/incidencias.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/core/rbac.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/models/auditoria.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/models/incidencia.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/repositories/auditoria.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/repositories/incidencias.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/schemas/incidencia.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/services/incidencias.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/tests/integration/test_incidencias.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/tests/unit/test_incidencias_api.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/tests/unit/test_incidencias_service.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/tests/unit/test_rbac.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/ECL-98 resolucion incidencias.md",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/README.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "frontend/README.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/pages/OperationIncidentsPage.test.tsx",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/pages/OperationIncidentsPage.tsx",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/services/incidentResolution.test.ts",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/services/incidentResolution.ts",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/styles/components.css",
+          "status": "modified",
+          "excluded": false
+        }
+      ],
+      "discussion_urls": [
+        "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/102#issuecomment-6711632764",
+        "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/102#pullrequestreview-5814428760",
+        "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/102#pullrequestreview-5814454219",
+        "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/102#pullrequestreview-5814482008"
+      ]
+    },
+    {
+      "number": 103,
+      "url": "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/103",
+      "title": "ci(ECL-114): auditoría Green IT con Lighthouse CI y pruebas diferidas ECL-111",
+      "author": "JoseDelgadillo277",
+      "head": "f5f523d54ae6dff912289a110a7065cef149b3b6",
+      "base": "main",
+      "created_at": "2026-11-07T19:15:50Z",
+      "merged_at": "2026-11-07T19:29:54Z",
+      "closed_at": "2026-11-07T19:29:54Z",
+      "cohort": true,
+      "exclusion": null,
+      "files_total": 11,
+      "files_excluded": 1,
+      "files_counted": 10,
+      "age_hours": 0.23444444444444446,
+      "exceeds_files": false,
+      "exceeds_age": false,
+      "exceeds": false,
+      "followup": {
+        "kind": "no_aplica",
+        "tickets": [],
+        "sources": [],
+        "note": ""
+      },
+      "files": [
+        {
+          "path": ".github/workflows/green-audit.yml",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": ".gitignore",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "README.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/README.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/ECL-114 auditoria Green IT en CI.md",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/ECL-114/validacion-local.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "frontend/lighthouserc.json",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "frontend/package-lock.json",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "frontend/package.json",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/app/App.passwordReset.test.tsx",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/app/App.test.tsx",
+          "status": "modified",
+          "excluded": false
+        }
+      ],
+      "discussion_urls": []
+    },
+    {
+      "number": 104,
+      "url": "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/104",
+      "title": "feat(ECL-14): mapa de rutas con alternativa accesible y tráfico degradado",
+      "author": "JoseDelgadillo277",
+      "head": "5f6d23fd6a8293f80c92e66bf58df95445c53278",
+      "base": "main",
+      "created_at": "2026-11-07T19:56:18Z",
+      "merged_at": "2026-11-07T20:17:41Z",
+      "closed_at": "2026-11-07T20:17:41Z",
+      "cohort": true,
+      "exclusion": null,
+      "files_total": 53,
+      "files_excluded": 32,
+      "files_counted": 21,
+      "age_hours": 0.35638888888888887,
+      "exceeds_files": true,
+      "exceeds_age": false,
+      "exceeds": true,
+      "followup": {
+        "kind": "no_verificado",
+        "tickets": [],
+        "sources": [],
+        "note": "Sin relación explícita suficiente para acreditar el resto en las fuentes consultadas; no prueba inexistencia en Jira."
+      },
+      "files": [
+        {
+          "path": "README.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/ECL-14 mapa rutas.md",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/README.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/validaciones/evidencias/ECL-14/run-20261107-final/axe-chrome-dark-1280.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/validaciones/evidencias/ECL-14/run-20261107-final/axe-chrome-dark-360.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/validaciones/evidencias/ECL-14/run-20261107-final/axe-chrome-light-1280.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/validaciones/evidencias/ECL-14/run-20261107-final/axe-chrome-light-360.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/validaciones/evidencias/ECL-14/run-20261107-final/axe-firefox-light-1280.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/validaciones/evidencias/ECL-14/run-20261107-final/axe-firefox-light-360.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/validaciones/evidencias/ECL-14/run-20261107-final/chrome-dark-1280.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/validaciones/evidencias/ECL-14/run-20261107-final/chrome-dark-360.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/validaciones/evidencias/ECL-14/run-20261107-final/chrome-light-1280.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/validaciones/evidencias/ECL-14/run-20261107-final/chrome-light-360.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/validaciones/evidencias/ECL-14/run-20261107-final/firefox-light-1280.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/validaciones/evidencias/ECL-14/run-20261107-final/firefox-light-360.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/validaciones/evidencias/ECL-14/run-20261107-final/lighthouse-dark.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/validaciones/evidencias/ECL-14/run-20261107-final/lighthouse-light.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/validaciones/evidencias/ECL-14/run-20261107-final/results.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/validaciones/evidencias/ECL-14/run-20261107-final/run-start.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/validaciones/evidencias/ECL-14/run-20261107-sonar/axe-chrome-dark-1280.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/validaciones/evidencias/ECL-14/run-20261107-sonar/axe-chrome-dark-360.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/validaciones/evidencias/ECL-14/run-20261107-sonar/axe-chrome-light-1280.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/validaciones/evidencias/ECL-14/run-20261107-sonar/axe-chrome-light-360.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/validaciones/evidencias/ECL-14/run-20261107-sonar/axe-firefox-light-1280.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/validaciones/evidencias/ECL-14/run-20261107-sonar/axe-firefox-light-360.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/validaciones/evidencias/ECL-14/run-20261107-sonar/chrome-dark-1280.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/validaciones/evidencias/ECL-14/run-20261107-sonar/chrome-dark-360.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/validaciones/evidencias/ECL-14/run-20261107-sonar/chrome-light-1280.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/validaciones/evidencias/ECL-14/run-20261107-sonar/chrome-light-360.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/validaciones/evidencias/ECL-14/run-20261107-sonar/firefox-light-1280.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/validaciones/evidencias/ECL-14/run-20261107-sonar/firefox-light-360.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/validaciones/evidencias/ECL-14/run-20261107-sonar/lighthouse-dark.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/validaciones/evidencias/ECL-14/run-20261107-sonar/lighthouse-light.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/validaciones/evidencias/ECL-14/run-20261107-sonar/results.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/validaciones/evidencias/ECL-14/run-20261107-sonar/run-start.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "frontend/README.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "frontend/package-lock.json",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "frontend/package.json",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "frontend/scripts/verify-operation-routes.mjs",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/app/App.operationRoutes.test.tsx",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/app/App.tsx",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/components/OperationRouteDetail.tsx",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/components/OperationRouteMap.test.tsx",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/components/OperationRouteMap.tsx",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/components/layout/AppShell.tsx",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/domain/operationRoutes.test.ts",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/domain/operationRoutes.ts",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/pages/OperationRoutesPage.test.tsx",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/pages/OperationRoutesPage.tsx",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/services/operationRoutes.test.ts",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/services/operationRoutes.ts",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/styles/components.css",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/test/operationRoutesFixtures.ts",
+          "status": "added",
+          "excluded": false
+        }
+      ],
+      "discussion_urls": [
+        "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/104#issuecomment-6712445908",
+        "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/104#pullrequestreview-5814677402",
+        "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/104#pullrequestreview-5814683102",
+        "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/104#pullrequestreview-5814690656",
+        "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/104#pullrequestreview-5814743713",
+        "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/104#pullrequestreview-5814745096"
+      ]
+    },
+    {
+      "number": 105,
+      "url": "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/105",
+      "title": "fix(ECL-87): corregir accesibilidad de tablas y validaciones lineales",
+      "author": "GiancarloSE",
+      "head": "86fd2ac0fd9dae4ff3e6ddc6e844b5c60602c5c7",
+      "base": "main",
+      "created_at": "2026-11-07T21:07:37Z",
+      "merged_at": "2026-11-07T21:17:55Z",
+      "closed_at": "2026-11-07T21:17:56Z",
+      "cohort": true,
+      "exclusion": null,
+      "files_total": 10,
+      "files_excluded": 0,
+      "files_counted": 10,
+      "age_hours": 0.17166666666666666,
+      "exceeds_files": false,
+      "exceeds_age": false,
+      "exceeds": false,
+      "followup": {
+        "kind": "no_aplica",
+        "tickets": [],
+        "sources": [],
+        "note": ""
+      },
+      "files": [
+        {
+          "path": "README.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/ECL-87 code smells frontend.md",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/README.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/components/ui/DataTable.tsx",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/components/ui/ui.test.tsx",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/domain/driverForm.test.ts",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/domain/driverForm.ts",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/pages/VehiclesPage.test.tsx",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/pages/VehiclesPage.tsx",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/test/setup.ts",
+          "status": "modified",
+          "excluded": false
+        }
+      ],
+      "discussion_urls": []
+    },
+    {
+      "number": 106,
+      "url": "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/106",
+      "title": "feat(ECL-112): reducir fuentes y documentar recursos estáticos",
+      "author": "GiancarloSE",
+      "head": "b2ab919950d5ac54ba73d9cdf387819eba778cbe",
+      "base": "main",
+      "created_at": "2026-11-07T21:45:31Z",
+      "merged_at": "2026-11-07T21:53:29Z",
+      "closed_at": "2026-11-07T21:53:29Z",
+      "cohort": true,
+      "exclusion": null,
+      "files_total": 43,
+      "files_excluded": 35,
+      "files_counted": 8,
+      "age_hours": 0.13277777777777777,
+      "exceeds_files": false,
+      "exceeds_age": false,
+      "exceeds": false,
+      "followup": {
+        "kind": "no_aplica",
+        "tickets": [],
+        "sources": [],
+        "note": ""
+      },
+      "files": [
+        {
+          "path": "README.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/README.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/ECL-112 recursos estaticos V_1_0_0.md",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/ECL-112/antes-local-2026-11-07/login-01-network.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/ECL-112/antes-local-2026-11-07/login-01-pagina.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/ECL-112/antes-local-2026-11-07/login-01.lighthouse.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/ECL-112/antes-local-2026-11-07/login-01.network.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/ECL-112/antes-local-2026-11-07/login-02-network.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/ECL-112/antes-local-2026-11-07/login-02-pagina.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/ECL-112/antes-local-2026-11-07/login-02.lighthouse.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/ECL-112/antes-local-2026-11-07/login-02.network.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/ECL-112/antes-local-2026-11-07/login-03-network.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/ECL-112/antes-local-2026-11-07/login-03-pagina.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/ECL-112/antes-local-2026-11-07/login-03.lighthouse.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/ECL-112/antes-local-2026-11-07/login-03.network.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/ECL-112/antes-local-2026-11-07/login-accessibility.lighthouse.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/ECL-112/antes-local-2026-11-07/resultados.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/ECL-112/bundle-antes.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/ECL-112/bundle-despues.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/ECL-112/despues-local-2026-11-07/login-01-network.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/ECL-112/despues-local-2026-11-07/login-01-pagina.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/ECL-112/despues-local-2026-11-07/login-01.lighthouse.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/ECL-112/despues-local-2026-11-07/login-01.network.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/ECL-112/despues-local-2026-11-07/login-02-network.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/ECL-112/despues-local-2026-11-07/login-02-pagina.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/ECL-112/despues-local-2026-11-07/login-02.lighthouse.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/ECL-112/despues-local-2026-11-07/login-02.network.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/ECL-112/despues-local-2026-11-07/login-03-network.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/ECL-112/despues-local-2026-11-07/login-03-pagina.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/ECL-112/despues-local-2026-11-07/login-03.lighthouse.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/ECL-112/despues-local-2026-11-07/login-03.network.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/ECL-112/despues-local-2026-11-07/login-accessibility.lighthouse.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/ECL-112/despues-local-2026-11-07/resultados.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/ECL-112/ecl108-base.css.txt",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/ECL-112/ecl108-package.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/ECL-112/main-antes-base.css.txt",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/ECL-112/main-antes-package.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/ECL-112/offline-y-visual.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "frontend/.dockerignore",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "frontend/scripts/analyze-static-resources.mjs",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "frontend/scripts/measure-static-resources.mjs",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "frontend/scripts/verify-static-resources.mjs",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/styles/base.css",
+          "status": "modified",
+          "excluded": false
+        }
+      ],
+      "discussion_urls": []
+    },
+    {
+      "number": 107,
+      "url": "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/107",
+      "title": "fix(ECL-83): avisar y extender la sesión con límite absoluto",
+      "author": "GiancarloSE",
+      "head": "1302b2313082cc986aa8620a06d0ebef7197dc8b",
+      "base": "main",
+      "created_at": "2026-11-07T22:37:36Z",
+      "merged_at": "2026-11-07T23:20:11Z",
+      "closed_at": "2026-11-07T23:20:11Z",
+      "cohort": true,
+      "exclusion": null,
+      "files_total": 32,
+      "files_excluded": 4,
+      "files_counted": 28,
+      "age_hours": 0.7097222222222223,
+      "exceeds_files": true,
+      "exceeds_age": false,
+      "exceeds": true,
+      "followup": {
+        "kind": "no_verificado",
+        "tickets": [],
+        "sources": [],
+        "note": "Sin relación explícita suficiente para acreditar el resto en las fuentes consultadas; no prueba inexistencia en Jira."
+      },
+      "files": [
+        {
+          "path": "README.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/README.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/alembic/versions/0015_sesion_extendida.py",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/api/auth.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/api/dependencies.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/models/auditoria.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/repositories/auditoria.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/repositories/sesiones.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/services/autenticacion.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/tests/integration/test_incidencias.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/tests/integration/test_security_http.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/tests/integration/test_session_extension.py",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "backend/tests/unit/test_auth_api.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/tests/unit/test_security_exposure.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/tests/unit/test_session_extension.py",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/ECL-83 aviso de sesion.md",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/ECL-83 matriz WCAG.csv",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/README.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/evidencias/ECL-83/browser-2026-11-07/aviso-escritorio.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/evidencias/ECL-83/browser-2026-11-07/resultado.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/evidencias/ECL-83/browser-2026-11-07/tope-movil-oscuro.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/evidencias/ECL-83/revision-manual.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "frontend/src/app/App.sessionExpiry.test.tsx",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/app/App.tsx",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/components/SessionExpiryNotice.test.tsx",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/components/SessionExpiryNotice.tsx",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/services/auth.test.ts",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/services/auth.ts",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/services/offlineAccess.test.ts",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/services/offlineAccess.ts",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/services/sessionDraft.test.ts",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/services/sessionDraft.ts",
+          "status": "added",
+          "excluded": false
+        }
+      ],
+      "discussion_urls": [
+        "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/107#issuecomment-6714316281",
+        "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/107#pullrequestreview-5815394387",
+        "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/107#pullrequestreview-5815437908",
+        "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/107#pullrequestreview-5815457063",
+        "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/107#pullrequestreview-5815465080",
+        "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/107#pullrequestreview-5815511235",
+        "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/107#pullrequestreview-5815516413",
+        "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/107#pullrequestreview-5815520766",
+        "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/107#discussion_r4504011305",
+        "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/107#discussion_r4504045253"
+      ]
+    },
+    {
+      "number": 108,
+      "url": "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/108",
+      "title": "fix(ECL-94): ahorro nulo con base cero y sin redondeos intermedios",
+      "author": "ANTONY-MUNIVE",
+      "head": "eb7ce40bc0d965c8c8f2824e0007ba19bb6ec709",
+      "base": "main",
+      "created_at": "2026-11-07T23:40:37Z",
+      "merged_at": "2026-11-08T00:26:15Z",
+      "closed_at": "2026-11-08T00:26:15Z",
+      "cohort": true,
+      "exclusion": null,
+      "files_total": 8,
+      "files_excluded": 0,
+      "files_counted": 8,
+      "age_hours": 0.7605555555555555,
+      "exceeds_files": false,
+      "exceeds_age": false,
+      "exceeds": false,
+      "followup": {
+        "kind": "no_aplica",
+        "tickets": [],
+        "sources": [],
+        "note": ""
+      },
+      "files": [
+        {
+          "path": "backend/README.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/optimizacion/metricas.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/optimizacion/modelo.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/optimizacion/vrptw.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/schemas/rutas.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/scripts/spike_vrptw.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/tests/unit/test_optimizacion_vrptw.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/tests/unit/test_rutas_api.py",
+          "status": "modified",
+          "excluded": false
+        }
+      ],
+      "discussion_urls": []
+    },
+    {
+      "number": 109,
+      "url": "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/109",
+      "title": "feat(ECL-95): modelo de rutas y migración 0016 (ST-046)",
+      "author": "ANTONY-MUNIVE",
+      "head": "2c9442388a57921e1d0a9c9da8650b540b5cc122",
+      "base": "main",
+      "created_at": "2026-11-07T23:54:10Z",
+      "merged_at": "2026-11-08T00:46:05Z",
+      "closed_at": "2026-11-08T00:46:05Z",
+      "cohort": true,
+      "exclusion": null,
+      "files_total": 22,
+      "files_excluded": 0,
+      "files_counted": 22,
+      "age_hours": 0.8652777777777778,
+      "exceeds_files": true,
+      "exceeds_age": false,
+      "exceeds": true,
+      "followup": {
+        "kind": "no_verificado",
+        "tickets": [],
+        "sources": [],
+        "note": "Sin relación explícita suficiente para acreditar el resto en las fuentes consultadas; no prueba inexistencia en Jira."
+      },
+      "files": [
+        {
+          "path": "AGENTS.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "README.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/README.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/alembic/versions/0016_modelo_rutas.py",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/core/rutas.py",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/models/__init__.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/models/driver_stop_assignment.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/models/incidencia.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/models/ruta.py",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/repositories/rutas.py",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "backend/tests/integration/test_modelo_rutas.py",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "backend/tests/integration/test_session_extension.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/tests/unit/test_ruta_repository.py",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "docs/01 Inicio/11. Base de datos V_1_1_0.md",
+          "status": "removed",
+          "excluded": false
+        },
+        {
+          "path": "docs/01 Inicio/11. Base de datos V_1_2_0.md",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "docs/02 Planificación/BDD/ECL-12-US-006-rutas-optimizadas.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "docs/02 Planificación/BDD/ECL-13-US-007-reoptimizacion.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "docs/02 Planificación/BDD/ECL-14-US-008-mapa.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "docs/02 Planificación/BDD/ECL-15-US-009-dashboard.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "docs/02 Planificación/BDD/ECL-47-ST-021-conductores.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "docs/02 Planificación/BDD/ECL-51-ST-025-preferencias-entrega.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "docs/02 Planificación/BDD/ECL-72-ST-039-incidencias.md",
+          "status": "modified",
+          "excluded": false
+        }
+      ],
+      "discussion_urls": [
+        "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/109#issuecomment-6715078790",
+        "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/109#pullrequestreview-5815637252",
+        "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/109#pullrequestreview-5815756387",
+        "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/109#pullrequestreview-5815811275"
+      ]
+    },
+    {
+      "number": 110,
+      "url": "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/110",
+      "title": "feat(ECL-26): parámetros versionados y cálculos de costo y CO2 (EN-008)",
+      "author": "ANTONY-MUNIVE",
+      "head": "37c054becd9c4df04ecacac43713ef505ad3b041",
+      "base": "main",
+      "created_at": "2026-11-08T01:24:19Z",
+      "merged_at": "2026-11-08T03:09:01Z",
+      "closed_at": "2026-11-08T03:09:01Z",
+      "cohort": true,
+      "exclusion": null,
+      "files_total": 35,
+      "files_excluded": 0,
+      "files_counted": 35,
+      "age_hours": 1.745,
+      "exceeds_files": true,
+      "exceeds_age": false,
+      "exceeds": true,
+      "followup": {
+        "kind": "no_verificado",
+        "tickets": [],
+        "sources": [],
+        "note": "Sin relación explícita suficiente para acreditar el resto en las fuentes consultadas; no prueba inexistencia en Jira."
+      },
+      "files": [
+        {
+          "path": "AGENTS.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "README.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/README.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/alembic/versions/0017_parametros_versionados.py",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/api/parametros.py",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/core/calculos.py",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/core/parametros.py",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/main.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/models/__init__.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/models/auditoria.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/models/parametro.py",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/models/ruta.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/repositories/auditoria.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/repositories/parametros.py",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/schemas/parametro.py",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/services/parametros.py",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "backend/scripts/seed_demo.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/tests/integration/test_modelo_rutas.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/tests/integration/test_parametros.py",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "backend/tests/integration/test_seed_demo.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/tests/unit/test_calculos_parametros.py",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "backend/tests/unit/test_casos_referencia_rnf011.py",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "backend/tests/unit/test_parametros_api.py",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "backend/tests/unit/test_parametros_service.py",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "docs/01 Inicio/11. Base de datos V_1_3_0.md",
+          "previous": "docs/01 Inicio/11. Base de datos V_1_2_0.md",
+          "status": "renamed",
+          "excluded": false
+        },
+        {
+          "path": "docs/02 Planificación/BDD/ECL-12-US-006-rutas-optimizadas.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "docs/02 Planificación/BDD/ECL-13-US-007-reoptimizacion.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "docs/02 Planificación/BDD/ECL-14-US-008-mapa.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "docs/02 Planificación/BDD/ECL-15-US-009-dashboard.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "docs/02 Planificación/BDD/ECL-47-ST-021-conductores.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "docs/02 Planificación/BDD/ECL-51-ST-025-preferencias-entrega.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "docs/02 Planificación/BDD/ECL-72-ST-039-incidencias.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/ECL-26 casos de referencia RNF-011.csv",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/ECL-26 parametros versionados y casos de referencia.md",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/README.md",
+          "status": "modified",
+          "excluded": false
+        }
+      ],
+      "discussion_urls": [
+        "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/110#issuecomment-6715626883",
+        "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/110#pullrequestreview-5815934799",
+        "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/110#pullrequestreview-5815960228",
+        "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/110#pullrequestreview-5816003143",
+        "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/110#pullrequestreview-5816230131"
+      ]
+    },
+    {
+      "number": 111,
+      "url": "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/111",
+      "title": "feat(ECL-96): servicio de optimización real y endpoints de rutas (ST-047)",
+      "author": "ANTONY-MUNIVE",
+      "head": "56dd5f9b1f2fae2b76755a42aee81d8e3e69957d",
+      "base": "main",
+      "created_at": "2026-11-08T03:40:32Z",
+      "merged_at": "2026-11-08T05:37:45Z",
+      "closed_at": "2026-11-08T05:37:46Z",
+      "cohort": true,
+      "exclusion": null,
+      "files_total": 14,
+      "files_excluded": 0,
+      "files_counted": 14,
+      "age_hours": 1.9536111111111112,
+      "exceeds_files": true,
+      "exceeds_age": false,
+      "exceeds": true,
+      "followup": {
+        "kind": "explicito",
+        "tickets": [
+          "ECL-21",
+          "ECL-79",
+          "ECL-15"
+        ],
+        "sources": [
+          "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/111#issuecomment-6717714597"
+        ],
+        "note": "El autor deriva expresamente lo pendiente; no se verificó el estado de esos tickets en Jira."
+      },
+      "files": [
+        {
+          "path": "README.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/.env.example",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/README.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/api/rutas.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/core/config.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/repositories/optimizaciones.py",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/services/optimizaciones.py",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "backend/tests/integration/test_optimizaciones.py",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "backend/tests/unit/test_green_http.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/tests/unit/test_optimizacion_repository.py",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "backend/tests/unit/test_optimizaciones_service.py",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "backend/tests/unit/test_rutas_api.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/ECL-96 servicio de optimizacion.md",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/README.md",
+          "status": "modified",
+          "excluded": false
+        }
+      ],
+      "discussion_urls": [
+        "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/111#issuecomment-6717714597",
+        "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/111#issuecomment-6717806063",
+        "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/111#pullrequestreview-5816465585",
+        "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/111#pullrequestreview-5816560540",
+        "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/111#pullrequestreview-5816661225"
+      ]
+    },
+    {
+      "number": 112,
+      "url": "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/112",
+      "title": "chore: Giancarlo como dueño suplente temporal de backend, docs y README",
+      "author": "ANTONY-MUNIVE",
+      "head": "705a0659a62390be5d7feff2d4ac91e4dcb13831",
+      "base": "main",
+      "created_at": "2026-11-08T05:25:51Z",
+      "merged_at": "2026-11-08T05:29:59Z",
+      "closed_at": "2026-11-08T05:29:59Z",
+      "cohort": true,
+      "exclusion": null,
+      "files_total": 1,
+      "files_excluded": 0,
+      "files_counted": 1,
+      "age_hours": 0.06888888888888889,
+      "exceeds_files": false,
+      "exceeds_age": false,
+      "exceeds": false,
+      "followup": {
+        "kind": "no_aplica",
+        "tickets": [],
+        "sources": [],
+        "note": ""
+      },
+      "files": [
+        {
+          "path": ".github/CODEOWNERS",
+          "status": "modified",
+          "excluded": false
+        }
+      ],
+      "discussion_urls": []
+    },
+    {
+      "number": 113,
+      "url": "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/113",
+      "title": "feat(ECL-21): benchmark de extremo a extremo de RNF-001 (30 corridas, P95 20,2 s)",
+      "author": "ANTONY-MUNIVE",
+      "head": "f676336fe4962fce090f0d8711e317c9a8c853df",
+      "base": "main",
+      "created_at": "2026-11-08T05:54:41Z",
+      "merged_at": "2026-11-08T06:07:49Z",
+      "closed_at": "2026-11-08T06:07:49Z",
+      "cohort": true,
+      "exclusion": null,
+      "files_total": 7,
+      "files_excluded": 2,
+      "files_counted": 5,
+      "age_hours": 0.21888888888888888,
+      "exceeds_files": false,
+      "exceeds_age": false,
+      "exceeds": false,
+      "followup": {
+        "kind": "no_aplica",
+        "tickets": [],
+        "sources": [],
+        "note": ""
+      },
+      "files": [
+        {
+          "path": "README.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/scripts/benchmark_optimizacion.py",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "backend/tests/unit/test_benchmark_optimizacion.py",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/ECL-21 benchmark RNF-001.md",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/README.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/evidencias/ECL-21/run-2026-11-08T05-43-25Z/corridas.csv",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/evidencias/ECL-21/run-2026-11-08T05-43-25Z/resumen.json",
+          "status": "added",
+          "excluded": true
+        }
+      ],
+      "discussion_urls": []
+    },
+    {
+      "number": 114,
+      "url": "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/114",
+      "title": "docs(ECL-115): medición DESPUÉS, comparación y límites de Green IT",
+      "author": "JoseDelgadillo277",
+      "head": "2035d16d671f4403c0b8ba9e8a4c66004a7ffe23",
+      "base": "main",
+      "created_at": "2026-11-08T06:58:07Z",
+      "merged_at": "2026-11-08T16:45:28Z",
+      "closed_at": "2026-11-08T16:45:28Z",
+      "cohort": true,
+      "exclusion": null,
+      "files_total": 97,
+      "files_excluded": 89,
+      "files_counted": 8,
+      "age_hours": 9.789166666666667,
+      "exceeds_files": false,
+      "exceeds_age": false,
+      "exceeds": false,
+      "followup": {
+        "kind": "no_aplica",
+        "tickets": [],
+        "sources": [],
+        "note": ""
+      },
+      "files": [
+        {
+          "path": "README.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/README.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/README.md",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/capturar-reportes.mjs",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/comparacion.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/comparacion.md",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/comparar.py",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/diagnostico-headers.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/equipo.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/herramientas-package-lock.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/medir.mjs",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/nginx-antes.conf.txt",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/nginx-despues.conf.txt",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/run-2026-11-08T06-50-38-119Z/api-conductores.csv",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/run-2026-11-08T06-50-38-119Z/api-incidencias.csv",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/run-2026-11-08T06-50-38-119Z/api-vehiculos.csv",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/run-2026-11-08T06-50-38-119Z/inicio-operador-01-network.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/run-2026-11-08T06-50-38-119Z/inicio-operador-01-pagina.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/run-2026-11-08T06-50-38-119Z/inicio-operador-01.network.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/run-2026-11-08T06-50-38-119Z/inicio-operador-antes-recarga.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/run-2026-11-08T06-50-38-119Z/inicio-operador.resultado.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/run-2026-11-08T06-50-38-119Z/itinerario-conductor-01-lighthouse-reporte.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/run-2026-11-08T06-50-38-119Z/itinerario-conductor-01-network.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/run-2026-11-08T06-50-38-119Z/itinerario-conductor-01-pagina.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/run-2026-11-08T06-50-38-119Z/itinerario-conductor-01.lighthouse.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/run-2026-11-08T06-50-38-119Z/itinerario-conductor-01.network.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/run-2026-11-08T06-50-38-119Z/itinerario-conductor-02-lighthouse-reporte.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/run-2026-11-08T06-50-38-119Z/itinerario-conductor-02-network.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/run-2026-11-08T06-50-38-119Z/itinerario-conductor-02-pagina.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/run-2026-11-08T06-50-38-119Z/itinerario-conductor-02.lighthouse.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/run-2026-11-08T06-50-38-119Z/itinerario-conductor-02.network.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/run-2026-11-08T06-50-38-119Z/itinerario-conductor-03-lighthouse-reporte.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/run-2026-11-08T06-50-38-119Z/itinerario-conductor-03-network.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/run-2026-11-08T06-50-38-119Z/itinerario-conductor-03-pagina.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/run-2026-11-08T06-50-38-119Z/itinerario-conductor-03.lighthouse.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/run-2026-11-08T06-50-38-119Z/itinerario-conductor-03.network.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/run-2026-11-08T06-50-38-119Z/itinerario-conductor-antes-recarga.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/run-2026-11-08T06-50-38-119Z/itinerario-conductor.resultado.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/run-2026-11-08T06-50-38-119Z/login-01-lighthouse-reporte.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/run-2026-11-08T06-50-38-119Z/login-01-network.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/run-2026-11-08T06-50-38-119Z/login-01-pagina.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/run-2026-11-08T06-50-38-119Z/login-01.lighthouse.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/run-2026-11-08T06-50-38-119Z/login-01.network.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/run-2026-11-08T06-50-38-119Z/login-02-lighthouse-reporte.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/run-2026-11-08T06-50-38-119Z/login-02-network.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/run-2026-11-08T06-50-38-119Z/login-02-pagina.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/run-2026-11-08T06-50-38-119Z/login-02.lighthouse.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/run-2026-11-08T06-50-38-119Z/login-02.network.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/run-2026-11-08T06-50-38-119Z/login-03-lighthouse-reporte.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/run-2026-11-08T06-50-38-119Z/login-03-network.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/run-2026-11-08T06-50-38-119Z/login-03-pagina.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/run-2026-11-08T06-50-38-119Z/login-03.lighthouse.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/run-2026-11-08T06-50-38-119Z/login-03.network.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/run-2026-11-08T06-50-38-119Z/login.resultado.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/run-2026-11-08T06-50-38-119Z/medir.mjs",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/run-2026-11-08T06-50-38-119Z/resultados.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/run-2026-11-08T06-50-38-119Z/vehiculos-operador-01-network.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/run-2026-11-08T06-50-38-119Z/vehiculos-operador-01-pagina.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/run-2026-11-08T06-50-38-119Z/vehiculos-operador-01.network.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/run-2026-11-08T06-50-38-119Z/vehiculos-operador-antes-recarga.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/run-2026-11-08T06-50-38-119Z/vehiculos-operador.resultado.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/run-2026-11-08T06-52-40-316Z/itinerario-conductor-01-lighthouse-reporte.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/run-2026-11-08T06-52-40-316Z/itinerario-conductor-01-network.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/run-2026-11-08T06-52-40-316Z/itinerario-conductor-01-pagina.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/run-2026-11-08T06-52-40-316Z/itinerario-conductor-01.lighthouse.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/run-2026-11-08T06-52-40-316Z/itinerario-conductor-01.network.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/run-2026-11-08T06-52-40-316Z/itinerario-conductor-02-lighthouse-reporte.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/run-2026-11-08T06-52-40-316Z/itinerario-conductor-02-network.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/run-2026-11-08T06-52-40-316Z/itinerario-conductor-02-pagina.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/run-2026-11-08T06-52-40-316Z/itinerario-conductor-02.lighthouse.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/run-2026-11-08T06-52-40-316Z/itinerario-conductor-02.network.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/run-2026-11-08T06-52-40-316Z/itinerario-conductor-03-lighthouse-reporte.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/run-2026-11-08T06-52-40-316Z/itinerario-conductor-03-network.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/run-2026-11-08T06-52-40-316Z/itinerario-conductor-03-pagina.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/run-2026-11-08T06-52-40-316Z/itinerario-conductor-03.lighthouse.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/run-2026-11-08T06-52-40-316Z/itinerario-conductor-03.network.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/run-2026-11-08T06-52-40-316Z/itinerario-conductor-antes-recarga.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/run-2026-11-08T06-52-40-316Z/itinerario-conductor.resultado.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/run-2026-11-08T06-52-40-316Z/login-01-lighthouse-reporte.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/run-2026-11-08T06-52-40-316Z/login-01-network.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/run-2026-11-08T06-52-40-316Z/login-01-pagina.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/run-2026-11-08T06-52-40-316Z/login-01.lighthouse.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/run-2026-11-08T06-52-40-316Z/login-01.network.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/run-2026-11-08T06-52-40-316Z/login-02-lighthouse-reporte.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/run-2026-11-08T06-52-40-316Z/login-02-network.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/run-2026-11-08T06-52-40-316Z/login-02-pagina.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/run-2026-11-08T06-52-40-316Z/login-02.lighthouse.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/run-2026-11-08T06-52-40-316Z/login-02.network.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/run-2026-11-08T06-52-40-316Z/login-03-lighthouse-reporte.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/run-2026-11-08T06-52-40-316Z/login-03-network.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/run-2026-11-08T06-52-40-316Z/login-03-pagina.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/run-2026-11-08T06-52-40-316Z/login-03.lighthouse.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/run-2026-11-08T06-52-40-316Z/login-03.network.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/run-2026-11-08T06-52-40-316Z/login.resultado.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/run-2026-11-08T06-52-40-316Z/medir.mjs",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/evidencias/despues/run-2026-11-08T06-52-40-316Z/resultados.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "frontend/nginx.prod.conf",
+          "status": "modified",
+          "excluded": false
+        }
+      ],
+      "discussion_urls": []
+    },
+    {
+      "number": 115,
+      "url": "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/115",
+      "title": "fix(ECL-82): validar jornada de incidencias sin revalidar reenvíos",
+      "author": "JoseDelgadillo277",
+      "head": "0c950ca0a754a682abc6f30df21286f5963c2d47",
+      "base": "main",
+      "created_at": "2026-11-08T17:00:49Z",
+      "merged_at": "2026-11-08T17:16:36Z",
+      "closed_at": "2026-11-08T17:16:36Z",
+      "cohort": true,
+      "exclusion": null,
+      "files_total": 19,
+      "files_excluded": 7,
+      "files_counted": 12,
+      "age_hours": 0.26305555555555554,
+      "exceeds_files": true,
+      "exceeds_age": false,
+      "exceeds": true,
+      "followup": {
+        "kind": "no_verificado",
+        "tickets": [],
+        "sources": [],
+        "note": "Sin relación explícita suficiente para acreditar el resto en las fuentes consultadas; no prueba inexistencia en Jira."
+      },
+      "files": [
+        {
+          "path": "README.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/README.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/api/incidencias.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/services/incidencias.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/scripts/seed_demo.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/tests/integration/test_incidencias.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/tests/integration/test_seed_demo.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/tests/unit/test_incidencias_api.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/tests/unit/test_incidencias_service.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/README.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/VALIDACION_US012_ECL82_V_1_1_0.md",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/evidencias/ECL-82/run-20261108T165807Z/Dockerfile.tests",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/evidencias/ECL-82/run-20261108T165807Z/compose.yaml",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/evidencias/ECL-82/run-20261108T165807Z/coverage.xml",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/evidencias/ECL-82/run-20261108T165807Z/focused-unit-tests.xml",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/evidencias/ECL-82/run-20261108T165807Z/frontend-offline.xml",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/evidencias/ECL-82/run-20261108T165807Z/integration-tests.xml",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/evidencias/ECL-82/run-20261108T165807Z/summary.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/evidencias/ECL-82/run-20261108T165807Z/unit-tests.xml",
+          "status": "added",
+          "excluded": true
+        }
+      ],
+      "discussion_urls": [
+        "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/115#issuecomment-6724425739",
+        "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/115#pullrequestreview-5818779620",
+        "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/115#pullrequestreview-5818807284",
+        "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/115#pullrequestreview-5818813085",
+        "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/115#pullrequestreview-5818817071"
+      ]
+    },
+    {
+      "number": 116,
+      "url": "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/116",
+      "title": "feat(ECL-15): incorporar dashboard accesible por periodo",
+      "author": "GiancarloSE",
+      "head": "d594a9536ab6a0c4b4688ab14cf5cf0e12778685",
+      "base": "main",
+      "created_at": "2026-11-08T19:03:23Z",
+      "merged_at": "2026-11-08T19:42:53Z",
+      "closed_at": "2026-11-08T19:42:53Z",
+      "cohort": true,
+      "exclusion": null,
+      "files_total": 21,
+      "files_excluded": 5,
+      "files_counted": 16,
+      "age_hours": 0.6583333333333333,
+      "exceeds_files": true,
+      "exceeds_age": false,
+      "exceeds": true,
+      "followup": {
+        "kind": "posterior_parcial",
+        "tickets": [
+          "ECL-119"
+        ],
+        "sources": [
+          "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/117"
+        ],
+        "note": "PR #117 identifica el backend que faltaba a #116; no acredita corte previo al merge ni todos los pendientes."
+      },
+      "files": [
+        {
+          "path": "README.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/ECL-15 dashboard sostenibilidad.md",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/README.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/evidencias/ECL-15/revision-20261108/chrome-light-1280.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/evidencias/ECL-15/revision-20261108/firefox-dark-360.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/evidencias/ECL-15/revision-20261108/lighthouse-summary.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/evidencias/ECL-15/revision-20261108/manual-narrador.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/evidencias/ECL-15/revision-20261108/results.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "frontend/scripts/verify-sustainability.mjs",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/app/App.sustainability.test.tsx",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/app/App.tsx",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/components/layout/AppShell.test.tsx",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/components/layout/AppShell.tsx",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/domain/sustainability.ts",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/pages/HomePage.test.tsx",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/pages/HomePage.tsx",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/pages/SustainabilityPage.test.tsx",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/pages/SustainabilityPage.tsx",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/services/sustainability.test.ts",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/services/sustainability.ts",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/styles/sustainability.css",
+          "status": "added",
+          "excluded": false
+        }
+      ],
+      "discussion_urls": [
+        "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/116#issuecomment-6725851505",
+        "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/116#pullrequestreview-5819275532",
+        "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/116#pullrequestreview-5819350028",
+        "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/116#pullrequestreview-5819375182"
+      ]
+    },
+    {
+      "number": 117,
+      "url": "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/117",
+      "title": "feat(ECL-119): cierre de rutas y agregado real de sostenibilidad (US-009)",
+      "author": "ANTONY-MUNIVE",
+      "head": "d637583a49d9e7b69b9b3000fa54c708e8fb4cf2",
+      "base": "main",
+      "created_at": "2026-11-08T21:21:40Z",
+      "merged_at": "2026-11-08T21:40:34Z",
+      "closed_at": "2026-11-08T21:40:34Z",
+      "cohort": true,
+      "exclusion": null,
+      "files_total": 32,
+      "files_excluded": 0,
+      "files_counted": 32,
+      "age_hours": 0.315,
+      "exceeds_files": true,
+      "exceeds_age": false,
+      "exceeds": true,
+      "followup": {
+        "kind": "posterior_parcial",
+        "tickets": [
+          "ECL-120"
+        ],
+        "sources": [
+          "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/117",
+          "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/119"
+        ],
+        "note": "La pantalla excluida de #117 se entrega en ECL-120/#119; otros pendientes no tienen aquí seguimiento acreditado."
+      },
+      "files": [
+        {
+          "path": "AGENTS.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "README.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/README.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/alembic/versions/0018_cierre_rutas.py",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/api/rutas.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/main.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/models/auditoria.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/models/ruta.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/optimizacion/modelo.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/optimizacion/vrptw.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/repositories/auditoria.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/repositories/cierre_rutas.py",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/schemas/rutas.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/services/cierre_rutas.py",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/services/optimizaciones.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/tests/integration/test_cierre_rutas.py",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "backend/tests/integration/test_parametros.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/tests/unit/test_cierre_rutas_repository.py",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "backend/tests/unit/test_cierre_rutas_service.py",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "backend/tests/unit/test_green_http.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/tests/unit/test_optimizacion_vrptw.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/tests/unit/test_rutas_api.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "docs/01 Inicio/11. Base de datos V_1_4_0.md",
+          "previous": "docs/01 Inicio/11. Base de datos V_1_3_0.md",
+          "status": "renamed",
+          "excluded": false
+        },
+        {
+          "path": "docs/02 Planificación/BDD/ECL-12-US-006-rutas-optimizadas.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "docs/02 Planificación/BDD/ECL-13-US-007-reoptimizacion.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "docs/02 Planificación/BDD/ECL-14-US-008-mapa.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "docs/02 Planificación/BDD/ECL-15-US-009-dashboard.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "docs/02 Planificación/BDD/ECL-47-ST-021-conductores.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "docs/02 Planificación/BDD/ECL-51-ST-025-preferencias-entrega.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "docs/02 Planificación/BDD/ECL-72-ST-039-incidencias.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/ECL-119 cierre de rutas y sostenibilidad.md",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/README.md",
+          "status": "modified",
+          "excluded": false
+        }
+      ],
+      "discussion_urls": [
+        "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/117#issuecomment-6727367743",
+        "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/117#issuecomment-6727549956",
+        "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/117#pullrequestreview-5819718688",
+        "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/117#pullrequestreview-5819749590",
+        "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/117#pullrequestreview-5819771202",
+        "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/117#pullrequestreview-5819778783",
+        "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/117#pullrequestreview-5819798215"
+      ]
+    },
+    {
+      "number": 118,
+      "url": "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/118",
+      "title": "feat(ECL-79): validar elegibilidad, RN-005 y motivos de asignación",
+      "author": "JoseDelgadillo277",
+      "head": "f94e41ec230ceaf49fc465aa7f8f7178c55f6084",
+      "base": "main",
+      "created_at": "2026-11-08T21:58:41Z",
+      "merged_at": "2026-11-08T22:07:37Z",
+      "closed_at": "2026-11-08T22:07:37Z",
+      "cohort": true,
+      "exclusion": null,
+      "files_total": 45,
+      "files_excluded": 22,
+      "files_counted": 23,
+      "age_hours": 0.14888888888888888,
+      "exceeds_files": true,
+      "exceeds_age": false,
+      "exceeds": true,
+      "followup": {
+        "kind": "no_verificado",
+        "tickets": [],
+        "sources": [],
+        "note": "Sin relación explícita suficiente para acreditar el resto en las fuentes consultadas; no prueba inexistencia en Jira."
+      },
+      "files": [
+        {
+          "path": "README.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/README.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/alembic/versions/0019_motivos_elegibilidad.py",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/core/rutas.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/optimizacion/elegibilidad.py",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/repositories/optimizaciones.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/schemas/rutas.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/app/services/optimizaciones.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/tests/integration/test_cierre_rutas.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/tests/integration/test_optimizaciones.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/tests/unit/test_elegibilidad_conductores.py",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "backend/tests/unit/test_optimizacion_repository.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "backend/tests/unit/test_optimizaciones_service.py",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "docs/02 Planificación/BDD/ECL-47-ST-021-conductores.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/ECL-79 elegibilidad conductores.md",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/README.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/evidencias/ECL-79/run-20261108T171942Z/Dockerfile.tests",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/evidencias/ECL-79/run-20261108T171942Z/backend-coverage.xml",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/evidencias/ECL-79/run-20261108T171942Z/compose.yaml",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/evidencias/ECL-79/run-20261108T171942Z/integration-tests.xml",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/evidencias/ECL-79/run-20261108T171942Z/summary.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/evidencias/ECL-79/run-20261108T171942Z/unit-tests.xml",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/evidencias/ECL-79/run-20261108T172711Z/Dockerfile.tests",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/evidencias/ECL-79/run-20261108T172711Z/backend-coverage.xml",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/evidencias/ECL-79/run-20261108T172711Z/compose.yaml",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/evidencias/ECL-79/run-20261108T172711Z/frontend-coverage-summary.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/evidencias/ECL-79/run-20261108T172711Z/frontend-lcov.info",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/evidencias/ECL-79/run-20261108T172711Z/frontend-tests.xml",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/evidencias/ECL-79/run-20261108T172711Z/integration-tests.xml",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/evidencias/ECL-79/run-20261108T172711Z/parameter-tests.xml",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/evidencias/ECL-79/run-20261108T172711Z/summary.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/evidencias/ECL-79/run-20261108T172711Z/unit-tests.xml",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/evidencias/ECL-79/run-20261108T215609Z/Dockerfile.tests",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/evidencias/ECL-79/run-20261108T215609Z/backend-coverage.xml",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/evidencias/ECL-79/run-20261108T215609Z/compose.yaml",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/evidencias/ECL-79/run-20261108T215609Z/frontend-coverage-summary.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/evidencias/ECL-79/run-20261108T215609Z/frontend-lcov.info",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/evidencias/ECL-79/run-20261108T215609Z/frontend-tests.xml",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/evidencias/ECL-79/run-20261108T215609Z/integration-tests.xml",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/evidencias/ECL-79/run-20261108T215609Z/summary.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/evidencias/ECL-79/run-20261108T215609Z/unit-tests.xml",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "frontend/src/components/OperationRouteDetail.tsx",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/domain/operationRoutes.test.ts",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/domain/operationRoutes.ts",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/pages/OperationRoutesPage.test.tsx",
+          "status": "modified",
+          "excluded": false
+        }
+      ],
+      "discussion_urls": [
+        "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/118#issuecomment-6727755905",
+        "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/118#pullrequestreview-5819849715",
+        "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/118#pullrequestreview-5819856305",
+        "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/118#pullrequestreview-5819872056",
+        "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/118#pullrequestreview-5819875513"
+      ]
+    },
+    {
+      "number": 119,
+      "url": "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/119",
+      "title": "feat(ECL-120): registrar resultados de paradas y cerrar rutas",
+      "author": "GiancarloSE",
+      "head": "79922a80249b9a5a659a9aa73b257b8f55e31cf7",
+      "base": "main",
+      "created_at": "2026-11-08T23:30:16Z",
+      "merged_at": "2026-11-09T00:28:29Z",
+      "closed_at": "2026-11-09T00:28:29Z",
+      "cohort": true,
+      "exclusion": null,
+      "files_total": 28,
+      "files_excluded": 11,
+      "files_counted": 17,
+      "age_hours": 0.9702777777777778,
+      "exceeds_files": true,
+      "exceeds_age": false,
+      "exceeds": true,
+      "followup": {
+        "kind": "no_verificado",
+        "tickets": [],
+        "sources": [],
+        "note": "Sin relación explícita suficiente para acreditar el resto en las fuentes consultadas; no prueba inexistencia en Jira."
+      },
+      "files": [
+        {
+          "path": "README.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/ECL-120 registro y cierre de rutas.md",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/README.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/evidencias/ECL-120/revalidacion-concurrencia-20261108/browser-results.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/evidencias/ECL-120/revalidacion-concurrencia-20261108/concurrencia.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/evidencias/ECL-120/revalidacion-concurrencia-20261108/real-api-results.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/evidencias/ECL-120/revalidacion-concurrencia-20261108/validacion.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/evidencias/ECL-120/revision-20261108/browser-results.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/evidencias/ECL-120/revision-20261108/chrome-light-1280.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/evidencias/ECL-120/revision-20261108/dashboard-real.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/evidencias/ECL-120/revision-20261108/firefox-dark-360.png",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/evidencias/ECL-120/revision-20261108/lighthouse-summary.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/evidencias/ECL-120/revision-20261108/manual-narrador.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/evidencias/ECL-120/revision-20261108/real-api-results.json",
+          "status": "added",
+          "excluded": true
+        },
+        {
+          "path": "frontend/scripts/verify-route-execution-real.mjs",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "frontend/scripts/verify-route-execution-real.ps1",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "frontend/scripts/verify-route-execution.mjs",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/app/App.operationRoutes.test.tsx",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/app/App.tsx",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/components/OperationRouteDetail.tsx",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/components/RouteExecution.tsx",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/components/StopOutcomeForm.tsx",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/domain/routeOutcomes.ts",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/pages/OperationRoutesPage.execution.test.tsx",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/pages/OperationRoutesPage.tsx",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/services/routeOutcomes.test.ts",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/services/routeOutcomes.ts",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "frontend/src/styles/routeExecution.css",
+          "status": "added",
+          "excluded": false
+        }
+      ],
+      "discussion_urls": [
+        "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/119#issuecomment-6728935579",
+        "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/119#pullrequestreview-5820315737",
+        "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/119#pullrequestreview-5820356416"
+      ]
+    },
+    {
+      "number": 120,
+      "url": "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/120",
+      "title": "docs(ECL-86): Modelo de amenazas STRIDE y alertas de seguridad",
+      "author": "FrankRoyYA",
+      "head": "83be70502aea8afee241e9b6a5dbc685c6b2e7de",
+      "base": "main",
+      "created_at": "2026-11-10T04:39:41Z",
+      "merged_at": "2026-11-10T20:10:15Z",
+      "closed_at": "2026-11-10T20:10:15Z",
+      "cohort": true,
+      "exclusion": null,
+      "files_total": 3,
+      "files_excluded": 0,
+      "files_counted": 3,
+      "age_hours": 15.509444444444444,
+      "exceeds_files": false,
+      "exceeds_age": false,
+      "exceeds": false,
+      "followup": {
+        "kind": "no_aplica",
+        "tickets": [],
+        "sources": [],
+        "note": ""
+      },
+      "files": [
+        {
+          "path": "README.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/ECL-86 modelo de amenazas.md",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/README.md",
+          "status": "modified",
+          "excluded": false
+        }
+      ],
+      "discussion_urls": []
+    },
+    {
+      "number": 121,
+      "url": "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/121",
+      "title": "docs(ECL-117): informe 01 de reducción del impacto ambiental (Green IT)",
+      "author": "ANTONY-MUNIVE",
+      "head": "6fb5b21ae36f03d3550bf04d0948bc34e4ceed5e",
+      "base": "main",
+      "created_at": "2026-11-10T20:45:13Z",
+      "merged_at": "2026-11-10T21:37:15Z",
+      "closed_at": "2026-11-10T21:37:15Z",
+      "cohort": true,
+      "exclusion": null,
+      "files_total": 2,
+      "files_excluded": 0,
+      "files_counted": 2,
+      "age_hours": 0.8672222222222222,
+      "exceeds_files": false,
+      "exceeds_age": false,
+      "exceeds": false,
+      "followup": {
+        "kind": "no_aplica",
+        "tickets": [],
+        "sources": [],
+        "note": ""
+      },
+      "files": [
+        {
+          "path": "README.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/reduccion del impacto ambiental/01 Informe de reduccion del impacto ambiental V_1_0_0.md",
+          "status": "added",
+          "excluded": false
+        }
+      ],
+      "discussion_urls": []
+    },
+    {
+      "number": 122,
+      "url": "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/122",
+      "title": "docs(ECL-80/81): decisiones BDD de conductores",
+      "author": "FrankRoyYA",
+      "head": "83167c45efa927e8f8b4aab09d91dca50e6a9a72",
+      "base": "main",
+      "created_at": "2026-11-11T00:27:00Z",
+      "merged_at": "2026-11-11T02:07:45Z",
+      "closed_at": "2026-11-11T02:07:46Z",
+      "cohort": true,
+      "exclusion": null,
+      "files_total": 5,
+      "files_excluded": 0,
+      "files_counted": 5,
+      "age_hours": 1.6791666666666667,
+      "exceeds_files": false,
+      "exceeds_age": false,
+      "exceeds": false,
+      "followup": {
+        "kind": "no_aplica",
+        "tickets": [],
+        "sources": [],
+        "note": ""
+      },
+      "files": [
+        {
+          "path": "README.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "docs/01 Inicio/06. Requisitos funcionales V_1_2_0.md",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "docs/02 Planificación/BDD/ECL-47-ST-021-conductores.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/ECL-80-81 decisiones BDD conductores.md",
+          "status": "added",
+          "excluded": false
+        },
+        {
+          "path": "docs/03 Implementación/Sprint 04/README.md",
+          "status": "modified",
+          "excluded": false
+        }
+      ],
+      "discussion_urls": []
+    },
+    {
+      "number": 123,
+      "url": "https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/123",
+      "title": "docs(ECL-89): exigir revisión comentada y merge del autor",
+      "author": "FrankRoyYA",
+      "head": "c038b10cd8d8025a59bd2657ffff32b80496abb1",
+      "base": "main",
+      "created_at": "2026-11-11T01:49:56Z",
+      "merged_at": "2026-11-11T02:57:26Z",
+      "closed_at": "2026-11-11T02:57:26Z",
+      "cohort": true,
+      "exclusion": null,
+      "files_total": 2,
+      "files_excluded": 0,
+      "files_counted": 2,
+      "age_hours": 1.125,
+      "exceeds_files": false,
+      "exceeds_age": false,
+      "exceeds": false,
+      "followup": {
+        "kind": "no_aplica",
+        "tickets": [],
+        "sources": [],
+        "note": ""
+      },
+      "files": [
+        {
+          "path": ".github/pull_request_template.md",
+          "status": "modified",
+          "excluded": false
+        },
+        {
+          "path": "docs/02 Planificación/01 Transformando a ágil V_1_0_0.md",
+          "status": "modified",
+          "excluded": false
+        }
+      ],
+      "discussion_urls": []
+    }
+  ]
+}

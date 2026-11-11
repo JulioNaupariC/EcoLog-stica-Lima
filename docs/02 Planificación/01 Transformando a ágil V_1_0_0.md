@@ -624,6 +624,7 @@ Una Historia de Usuario o Enabler solo puede pasar a **Done** cuando cumple simu
 - Pull Request aprobado mediante **Peer Review por al menos un par técnico** distinto del autor.
 - Cada PR cuenta con la aprobación comentada de un dueño de cada carpeta/área afectada según `CODEOWNERS`; el comentario indica qué revisó (pruebas, alcance y evidencias) y los acuerdos. Una aprobación sin comentario se señala y se completa antes del merge.
 - El **autor del PR realiza el merge** después de obtener las aprobaciones requeridas de los dueños de cada carpeta/área afectada según `CODEOWNERS` y cumplir las demás condiciones de integración.
+- **A12 / ECL-91 — Corte de alcance:** cuando un PR supera **10 archivos, excluyendo evidencias identificadas**, o **24 horas abierto** (incluido Draft), el autor entrega lo ya validado, separa el resto y abre/enlaza su ticket de seguimiento. El revisor exige el corte si el autor no lo hace. Un PR que lo supera sin justificación se divide antes del merge; la justificación no sustituye la trazabilidad del resto ni los controles de revisión. El conteo y la decisión quedan en la plantilla junto a A10 / ECL-89; para ECL-101 se comparan los PR que superaron el límite con los que tienen seguimiento documentado.
 - Despliegue automatizado ejecutable en ambiente de **Staging / Pruebas**.
 - Documentación técnica, README y **OpenAPI/Swagger** actualizados cuando el cambio afecte API, configuración o arquitectura.
 - Criterios BDD de la Historia/Enabler aprobados y evidencia adjunta o referenciada.
