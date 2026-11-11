@@ -41,6 +41,7 @@ No representan resultados ejecutados ni documentos aprobados.
 - [ECL-120 — Registro de resultados de paradas y cierre de rutas](<ECL-120 registro y cierre de rutas.md>)
 - [ECL-82 — US-012 v1.1.0: jornada de la parada, idempotencia y validación de I03](VALIDACION_US012_ECL82_V_1_1_0.md)
 - [ECL-86 — Modelo de amenazas STRIDE y alertas de seguridad](<ECL-86 modelo de amenazas.md>)
+- [ECL-80/ECL-81 — Decisiones de control de cambios para conductores](<ECL-80-81 decisiones BDD conductores.md>)
 
 ### Entregables y documentación existentes
 
