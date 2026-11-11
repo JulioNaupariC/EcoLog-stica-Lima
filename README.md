@@ -193,6 +193,7 @@ y [políticas de ejecución de PowerShell](https://learn.microsoft.com/en-us/pow
 - [Declaración de la visión V_1_0_0](<docs/01 Inicio/03. Declaración de la visión V_1_0_0.md>)
 - [Registro de supuestos y restricciones V_1_0_0](<docs/01 Inicio/04. Registro de supuestos y restricciones V_1_0_0.md>)
 - [Registro de interesados V_1_0_0](<docs/01 Inicio/05. Registro de interesados V_1_0_0.md>)
+- [Requisitos funcionales V_1_2_0](<docs/01 Inicio/06. Requisitos funcionales V_1_2_0.md>)
 - [Requisitos funcionales V_1_1_0](<docs/01 Inicio/06. Requisitos funcionales V_1_1_0.md>)
 - [Requisitos no funcionales V_1_2_0](<docs/01 Inicio/07. Requisitos no funcionales V_1_2_0.md>)
 - [Usuarios V_1_0_0](<docs/01 Inicio/08. Usuarios V_1_0_0.md>)
@@ -212,7 +213,7 @@ y [políticas de ejecución de PowerShell](https://learn.microsoft.com/en-us/pow
 
 ### Especificaciones BDD del Sprint 2
 
-- [ECL-47 / ST-021 — Reglas y BDD de conductores](<docs/02 Planificación/BDD/ECL-47-ST-021-conductores.md>)
+- [ECL-47 / ST-021 — Reglas y BDD de conductores V_1_2_0](<docs/02 Planificación/BDD/ECL-47-ST-021-conductores.md>)
 - [ECL-51 / ST-025 — Reglas y BDD de preferencias de entrega](<docs/02 Planificación/BDD/ECL-51-ST-025-preferencias-entrega.md>)
 - ECL-71 — Verificación para ratificación: [conductores](<docs/02 Planificación/BDD/ECL-47-ST-021-conductores.md>) y [preferencias de entrega](<docs/02 Planificación/BDD/ECL-51-ST-025-preferencias-entrega.md>) (aprobadas por Julio, PR #64).
 
@@ -434,6 +435,7 @@ Los siguientes comentarios reservan enlaces para entregas futuras.
 - [ECL-15 — Dashboard de sostenibilidad: interfaz, contrato y límites](<docs/03 Implementación/Sprint 04/ECL-15 dashboard sostenibilidad.md>)
 - [ECL-120 — Registro de resultados de paradas y cierre de rutas](<docs/03 Implementación/Sprint 04/ECL-120 registro y cierre de rutas.md>)
 - [ECL-86 — Modelo de amenazas STRIDE y alertas de seguridad](<docs/03 Implementación/Sprint 04/ECL-86 modelo de amenazas.md>)
+- [ECL-80/ECL-81 — Decisiones de control de cambios para conductores](<docs/03 Implementación/Sprint 04/ECL-80-81 decisiones BDD conductores.md>)
 
 #### Estado de cierre del Sprint 4
 
