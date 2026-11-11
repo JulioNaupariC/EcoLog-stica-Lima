@@ -28,6 +28,14 @@
 
 Nota: una ejecucion exitosa de CodeQL confirma que el analisis se completo. La revision de alertas se realiza en la pestana Security > Code scanning alerts.
 
+## Revisión
+
+<!-- Cada revisor registra su aprobación en un comentario de revisión de GitHub e indica qué comprobó: pruebas, alcance y evidencias; anota también los acuerdos o decisiones. El autor enlaza aquí el comentario y resume los acuerdos. Una aprobación sin comentario debe completarse antes del merge. -->
+
+| Revisor / área | Qué comprobó (pruebas, alcance, evidencias) | Acuerdos / decisiones | Enlace a la aprobación comentada |
+|---|---|---|---|
+| | | | |
+
 ## Riesgos
 
 <!-- Riesgos conocidos o "No aplica" con justificacion -->
