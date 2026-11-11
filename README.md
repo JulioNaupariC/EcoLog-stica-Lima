@@ -422,6 +422,7 @@ Los siguientes comentarios reservan enlaces para entregas futuras.
 
 #### Documentación técnica del Sprint 4
 
+- [ECL-91 / A12 — Corte de alcance de PR y seguimiento para ECL-101](<docs/03 Implementación/Sprint 04/ECL-91 corte de alcance de PR.md>)
 - [Convenciones y glosario ECL-99](<docs/03 Implementación/Sprint 04/CONVENCIONES_Y_GLOSARIO_ECL99.md>)
 - [Plantilla de Revisión y demostración ECL-99](<docs/03 Implementación/Sprint 04/PLANTILLA_REVISION_SPRINT4_ECL99.md>)
 - [ECL-98 — Resolución de incidencias: contrato, concurrencia y validaciones](<docs/03 Implementación/Sprint 04/ECL-98 resolucion incidencias.md>)

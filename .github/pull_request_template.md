@@ -36,6 +36,25 @@ Nota: una ejecucion exitosa de CodeQL confirma que el analisis se completo. La r
 |---|---|---|---|
 | | | | |
 
+## Corte de alcance — A12 / ECL-91
+
+<!-- Junto a la revisión comentada de A10 / ECL-89. Completar antes del merge y actualizar si cambia el diff o se cumplen 24 horas. -->
+
+Si el PR supera **10 archivos sin contar evidencias** o lleva **más de 24 horas abierto**, el autor entrega en este PR el incremento ya validado, corta el alcance restante y abre/enlaza un ticket para ese resto. El revisor solicita el corte si el autor no lo hace; Giancarlo aplica esta regla al revisar `frontend/`.
+
+Se cuentan los archivos del diff completo contra la base, incluidos documentación, pruebas, configuración y renombrados (un renombrado cuenta una vez). Solo se excluyen archivos de evidencia identificados y enumerados; un script, prueba o cambio funcional no se excluye por llamarlo evidencia. El tiempo corre desde la apertura, incluido Draft, hasta el merge o hasta ahora si sigue abierto; nuevos commits no lo reinician. Exactamente 10 archivos o 24 horas no superan el límite.
+
+| Archivos totales | Evidencias excluidas (rutas) | Archivos computables | Horas abierto / fecha de corte | ¿Supera algún límite? |
+|---|---|---|---|---|
+| | | | | |
+
+- Incremento validado que se entrega aquí:
+- Trabajo retirado y ticket de seguimiento (enlace, alcance, responsable y criterio de aceptación):
+- Justificación del corte y decisión del revisor (enlace al comentario de revisión):
+
+- [ ] Si supera el límite, el resto está separado y trazado a su ticket; si no lo supera, se anotó «No aplica» con el conteo y la edad.
+- [ ] Si supera el límite sin justificación, se dividió antes del merge. Una justificación no sustituye el ticket del resto ni las validaciones y revisiones exigidas.
+
 ## Riesgos
 
 <!-- Riesgos conocidos o "No aplica" con justificacion -->
