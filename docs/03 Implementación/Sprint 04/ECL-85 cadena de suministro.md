@@ -43,7 +43,8 @@ grep -rhn "uses:" .github/workflows/ | grep -v "@[0-9a-f]\{40\} # v"   # sin sal
 - **`.github/dependabot.yml`** propone cada lunes, hora de Lima, actualizaciones
   de `github-actions` (raíz), `pip` (`/backend`) y `npm` (`/frontend`), con un
   máximo de 3 PR abiertos por ecosistema. Cada propuesta es un PR normal: pasa CI,
-  CODEOWNERS y las reglas A10 y A12, y nada se mergea solo.
+  CODEOWNERS y las reglas A10 y A12, y nada se mergea solo. **En pausa hasta el
+  20/11** (sección 2.1).
 - **Nuevo job `Supply chain / Dependency audit`** en `ci.yml`, en cada push y PR:
   - **Bloqueante:** `pip-audit` 2.10.1 sobre `backend/requirements.lock` y
     `npm audit --omit=dev --audit-level=high` sobre `frontend/package-lock.json`.
@@ -52,6 +53,29 @@ grep -rhn "uses:" .github/workflows/ | grep -v "@[0-9a-f]\{40\} # v"   # sin sal
     dependencias de desarrollo, para que el hallazgo quede a la vista en el log.
 - **Alertas de Dependabot:** se activan en *Settings → Code security* del
   repositorio, cosa que exige permiso de administrador. Ver la sección 4.
+
+### 2.1 Pausa de las actualizaciones de versión (11/11/2026)
+
+Al mergear #126, la primera ejecución de Dependabot abrió 10 PR (#128 a #137)
+en plena semana de inspección y de code freeze:
+
+| PR | Cambio | CI |
+|---|---|---|
+| #128, #129 | `upload-artifact` 4.6.2 → 7.0.2 y `download-artifact` 4.3.0 → 8.0.2 (versiones mayores) | Verde |
+| #130, #132, #133, #134 | `geoalchemy2` 0.21.0, `psycopg>=3.3.8`, `pydantic>=2.14.3` y `ortools` 9.15.6755 | Falla: Dependabot cambia `pyproject.toml` pero no regenera los `requirements*.lock` con hashes, y el CI exige que coincidan |
+| #135, #136 | `vitest` y `@vitest/coverage-v8` 5.1.0 | Falla en Frontend y Lighthouse |
+| #131, #137 | `@testing-library/user-event` 14.6.8 y `@types/node` 26.6.6 | Verde |
+
+**Decisión:** se cierran los 10 PR sin mergear y `open-pull-requests-limit`
+queda en `0` para los tres ecosistemas hasta el cierre del 20/11. Ninguno corrige
+una vulnerabilidad, y cambiar el motor (`ortools`) o el runner de pruebas antes de
+la demo es un riesgo sin beneficio. El límite no afecta a las actualizaciones de
+seguridad, que se abren cuando se activen las alertas (sección 4). Después del
+20/11 conviene revisar dos cosas:
+
+1. Las acciones `upload-artifact` y `download-artifact`: GitHub ya avisa que las
+   versiones 4 usan Node.js 20, que está obsoleto.
+2. Cómo actualizar `pip` regenerando los `.lock`.
 
 ## 3. Resultado de la auditoría del 11/11/2026 (ruta infeliz)
 
@@ -62,20 +86,27 @@ grep -rhn "uses:" .github/workflows/ | grep -v "@[0-9a-f]\{40\} # v"   # sin sal
 | `package-lock.json` (producción) | 0 vulnerabilidades | — |
 | `package-lock.json` (desarrollo) | 26 avisos: 13 altos, 11 moderados y 2 bajos, ninguno crítico. Los altos vienen de `@lhci/cli` 0.15.1 (Lighthouse CI de ECL-114): `basic-ftp`, `extract-zip` y otros en su cadena; `minimatch` también llega por `eslint` | No se distribuyen en el build ni se ejecutan con datos de usuarios: solo corren en CI y en el equipo del desarrollador. `npm audit fix --force` exige cambios incompatibles en la herramienta de medición en plena semana de inspección; se dejan como seguimiento en ECL-102 (evaluación final OWASP) |
 
-## 4. Pendiente de un administrador del repositorio
+## 4. Configuración del administrador del repositorio (ruta de borde)
 
-El autor tiene permiso de escritura, no de administración: la API de protección
-de rama y la de alertas responden `403`. Quedan para **Julio** (dueño del
-repositorio):
+Estos ajustes exigen ser dueño del repositorio: en una cuenta personal de GitHub
+los colaboradores no pueden tener rol de administrador, y la API responde `403`
+al autor. Los hizo **Julio** (dueño) el 12/11/2026. Las capturas que envió están
+en [`evidencias/ECL-85/`](evidencias/ECL-85/):
 
-1. *Settings → Code security*: activar **Dependabot alerts** y **Dependabot
-   security updates**, y adjuntar una captura en ECL-85.
-2. *Settings → Branches → main*: dejar la captura de **Require review from
-   Code Owners**. La exigencia se trabajó en ECL-88; esta es la ruta de borde de
-   ECL-85.
+| Ajuste | Estado | Evidencia |
+|---|---|---|
+| *Settings → Advanced Security*: **Dependabot alerts** | On (1 regla de auto-triage) | [captura](evidencias/ECL-85/ECL-85-dependabot-alertas.png) |
+| **Dependabot security updates** | On (*Grouped security updates* Off) | La misma captura |
+| *Settings → General*: **Automatically delete head branches** | Activado | [captura](evidencias/ECL-85/ECL-85-borrado-automatico-ramas.png) |
+| Protección de `main` | Exige PR con 1 aprobación, descarta las aprobaciones viejas ante commits nuevos, exige **review from Code Owners** y exige checks en verde con la rama al día | [captura](evidencias/ECL-85/ECL-85-proteccion-main-code-owners.png) |
 
-Sin esos dos pasos, el código de este PR funciona igual: el job audita en cada
-ejecución y `dependabot.yml` queda listo para cuando se activen las alertas.
+La misma captura de Advanced Security muestra que CodeQL corre en modo
+*Advanced setup*, que es el `codeql.yml` del repositorio.
+
+Observación para ECL-102: está desmarcada «Require approval of the most recent
+reviewable push». Si un revisor empuja un commit al PR de otra persona, podría
+aprobarlo él mismo. El riesgo es bajo, porque «Dismiss stale pull request
+approvals» ya anula las aprobaciones anteriores a ese commit.
 
 ## 5. Verificación local
 
