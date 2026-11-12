@@ -1,0 +1,159 @@
+{
+  "fecha": "2026-11-12",
+  "codigo": "main 8cf625806ea164dd18441d4b94ca2b9c09a8f75e",
+  "entorno": "build de producción (vite preview) + API local + PostgreSQL 16/PostGIS, base ecologistica_demo sembrada para 2026-11-12, Chromium de Playwright",
+  "teclado_y_foco": {
+    "foco_tras_abrir_registro": "INPUT de hora del resultado de la parada 1",
+    "indicador_de_foco": "outline solid 3px rgb(29,78,216), sin box-shadow",
+    "foco_tras_cancelar": "BUTTON «Registrar resultado de parada 1» (vuelve al disparador)",
+    "instrucciones_mapa": "Mapa interactivo: usa las flechas para desplazarte y +/− para acercar o alejar."
+  },
+  "contraste_manual": {
+    "nota": "axe deja color-contrast como «incompleto» por el fondo en degradado del body y la superposición del mapa. Se calcularon las razones (fórmula WCAG de luminancia relativa) con los tokens de frontend/src/styles/tokens.css.",
+    "minimos": "texto normal 4.5:1; componentes y foco 3:1",
+    "pares": [
+      {
+        "tema": "claro",
+        "par": "--color-text sobre --color-bg",
+        "colores": "#17251c / #f7f6f2",
+        "razon": 14.74
+      },
+      {
+        "tema": "claro",
+        "par": "--color-text-muted sobre --color-bg",
+        "colores": "#526158 / #f7f6f2",
+        "razon": 6.05
+      },
+      {
+        "tema": "claro",
+        "par": "--color-brand-700 sobre --color-bg",
+        "colores": "#166534 / #f7f6f2",
+        "razon": 6.59
+      },
+      {
+        "tema": "claro",
+        "par": "--color-brand-700 sobre --color-surface",
+        "colores": "#166534 / #ffffff",
+        "razon": 7.13
+      },
+      {
+        "tema": "claro",
+        "par": "--color-focus sobre --color-bg",
+        "colores": "#1d4ed8 / #f7f6f2",
+        "razon": 6.2
+      },
+      {
+        "tema": "oscuro",
+        "par": "--color-text sobre --color-bg",
+        "colores": "#e8ede9 / #111512",
+        "razon": 15.55
+      },
+      {
+        "tema": "oscuro",
+        "par": "--color-text-muted sobre --color-bg",
+        "colores": "#a6b3ab / #111512",
+        "razon": 8.47
+      },
+      {
+        "tema": "oscuro",
+        "par": "--color-brand-700 sobre --color-bg",
+        "colores": "#6ee7a0 / #111512",
+        "razon": 11.93
+      },
+      {
+        "tema": "oscuro",
+        "par": "--color-brand-700 sobre --color-surface",
+        "colores": "#6ee7a0 / #181e1a",
+        "razon": 10.97
+      },
+      {
+        "tema": "oscuro",
+        "par": "--color-primary sobre --color-surface",
+        "colores": "#4ade80 / #181e1a",
+        "razon": 9.72
+      },
+      {
+        "tema": "oscuro",
+        "par": "--color-focus sobre --color-bg",
+        "colores": "#93b4ff / #111512",
+        "razon": 8.96
+      }
+    ]
+  },
+  "reflujo_espaciado_ampliacion": {
+    "metodo": "desborde_px = scrollWidth - innerWidth de la página; recortes = elementos con texto dentro de main, overflow hidden y contenido mayor que su caja (se excluyen los textos visualmente ocultos de 1-2 px y el lienzo de Leaflet). espaciado_320 = estilos de 1.4.12 inyectados a 320 px; fuente200_1280 = font-size raíz al 200 % (aproxima zoom de texto, no es el zoom del navegador); horizontal_900x360 = orientación horizontal",
+    "resultados": {
+      "rutas-mapa": {
+        "espaciado_320": [
+          0,
+          0
+        ],
+        "fuente200_1280": [
+          0,
+          0
+        ],
+        "horizontal_900x360": [
+          0,
+          0
+        ]
+      },
+      "dashboard": {
+        "espaciado_320": [
+          0,
+          0
+        ],
+        "fuente200_1280": [
+          0,
+          0
+        ],
+        "horizontal_900x360": [
+          0,
+          0
+        ]
+      },
+      "incidencias-operador": {
+        "espaciado_320": [
+          0,
+          0
+        ],
+        "fuente200_1280": [
+          0,
+          0
+        ],
+        "horizontal_900x360": [
+          0,
+          0
+        ]
+      },
+      "itinerario-movil": {
+        "espaciado_320": [
+          0,
+          0
+        ],
+        "fuente200_1280": [
+          0,
+          0
+        ],
+        "horizontal_900x360": [
+          0,
+          0
+        ]
+      }
+    },
+    "formato": "[desborde_px, recortes]",
+    "reflujo_320_sin_espaciado": {
+      "rutas": 0,
+      "dashboard": 0
+    }
+  },
+  "titulos_y_lang": {
+    "rutas": "Rutas y alertas en mapa — EcoLogística Lima",
+    "dashboard": "Operación y sostenibilidad — EcoLogística Lima",
+    "incidencias-operador": "Incidencias pendientes — EcoLogística Lima",
+    "itinerario": "Mi itinerario — EcoLogística Lima",
+    "incidencia": "Reportar incidencia — EcoLogística Lima",
+    "lang": "es",
+    "enlace_saltar_al_contenido": true
+  },
+  "pendiente_manual": "Recorrido con lector de pantalla (Narrador) de las vistas nuevas del Sprint 4: a cargo de Giancarlo Soto. No se inventan anuncios del lector."
+}
