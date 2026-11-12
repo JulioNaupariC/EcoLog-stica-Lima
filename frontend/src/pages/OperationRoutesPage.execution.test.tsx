@@ -53,12 +53,16 @@ it('éxito: registra atención real y no atención, bloquea finales y cierra con
   expect(screen.getByText(/Estado: en curso/)).toBeInTheDocument()
   await waitFor(() => expect(screen.getByText(/Resultado de parada 1 registrado: atendida/).closest('[role="status"]')).toHaveFocus())
   await record(2, false)
+  // Wait for the stop-2 notice to take focus before moving it to «Cerrar ruta»:
+  // under CI load that focus effect could land after close.focus() and swallow
+  // the Enter (flaky on main, 12/11/2026).
+  await waitFor(() => expect(screen.getByText(/Resultado de parada 2 registrado: no atendida/).closest('[role="status"]')).toHaveFocus())
   expect(screen.getAllByText('Resultado final registrado; no se puede editar.')).toHaveLength(2)
   const close = screen.getByRole('button', { name: 'Cerrar ruta' })
   expect(close).toBeEnabled(); close.focus(); await user.keyboard('{Enter}')
-  expect(screen.getByRole('button', { name: 'Cancelar cierre' })).toHaveFocus()
+  expect(await screen.findByRole('button', { name: 'Cancelar cierre' })).toHaveFocus()
   expect(outcomes.close).not.toHaveBeenCalled()
-  await user.keyboard('{Enter}'); expect(close).toHaveFocus()
+  await user.keyboard('{Enter}'); await waitFor(() => expect(close).toHaveFocus())
   fireEvent.click(close); await user.keyboard('{Tab}'); await user.keyboard(' ')
   await screen.findByText(/Ruta cerrada el/)
   expect(outcomes.close).toHaveBeenCalledOnce(); expect(confirm).not.toHaveBeenCalled()
