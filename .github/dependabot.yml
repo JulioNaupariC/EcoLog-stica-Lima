@@ -1,0 +1,28 @@
+# ECL-85 (OWASP A03:2025): weekly update proposals for the three supply
+# chains of the repository. Each proposal is an ordinary PR that goes through
+# CI, CODEOWNERS and the A10/A12 rules; nothing merges automatically.
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      timezone: America/Lima
+    open-pull-requests-limit: 3
+
+  - package-ecosystem: pip
+    directory: /backend
+    schedule:
+      interval: weekly
+      day: monday
+      timezone: America/Lima
+    open-pull-requests-limit: 3
+
+  - package-ecosystem: npm
+    directory: /frontend
+    schedule:
+      interval: weekly
+      day: monday
+      timezone: America/Lima
+    open-pull-requests-limit: 3
