@@ -291,15 +291,19 @@ class _Modelo:
     def _descanso(
         self, solucion: pywrapcp.Assignment, v: int, salida: int, regreso: int
     ) -> tuple[Descanso, ...]:
+        # A single return path: SonarCloud flags helpers that return tuples of
+        # different lengths. Each vehicle has at most one break interval, so
+        # the first match is kept, as before.
         contenedor = solucion.IntervalVarContainer()
-        for i in range(contenedor.Size()):
-            elemento = contenedor.Element(i)
-            if elemento.Var().Name() != f"descanso_{v}":
-                continue
-            inicio, duracion = elemento.StartValue(), elemento.DurationValue()
-            if inicio < regreso and inicio + duracion > salida:
-                return (Descanso(inicio, duracion),)
-        return ()
+        elementos = (contenedor.Element(i) for i in range(contenedor.Size()))
+        dentro = (
+            Descanso(e.StartValue(), e.DurationValue())
+            for e in elementos
+            if e.Var().Name() == f"descanso_{v}"
+            and e.StartValue() < regreso
+            and e.StartValue() + e.DurationValue() > salida
+        )
+        return tuple(dentro)[:1]
 
     def omitidos(self, solucion: pywrapcp.Assignment) -> list[NoAsignado]:
         return [

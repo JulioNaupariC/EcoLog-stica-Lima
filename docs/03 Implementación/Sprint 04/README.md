@@ -23,7 +23,7 @@ No representan resultados ejecutados ni documentos aprobados.
 
 - [ECL-26 — Parámetros versionados y casos de referencia (RNF-011)](<ECL-26 parametros versionados y casos de referencia.md>)
 
-<!-- ECL-105 Guía de demo -->
+- [ECL-105 — Guía de la demostración del MVP con tiempos medidos](<guias/GUIA_DEMO_SPRINT4.md>)
 
 ### Documentación técnica
 

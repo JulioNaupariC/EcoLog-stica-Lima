@@ -419,7 +419,7 @@ Los siguientes comentarios reservan enlaces para entregas futuras.
 
 - [ECL-26 — Parámetros versionados y casos de referencia (RNF-011)](<docs/03 Implementación/Sprint 04/ECL-26 parametros versionados y casos de referencia.md>)
 
-<!-- ECL-105 Guía de demo -->
+- [ECL-105 — Guía de la demostración del MVP con tiempos medidos](<docs/03 Implementación/Sprint 04/guias/GUIA_DEMO_SPRINT4.md>)
 
 #### Documentación técnica del Sprint 4
 

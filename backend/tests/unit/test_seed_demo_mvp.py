@@ -125,3 +125,10 @@ def test_ruta_feliz_main_resume_sin_contrasenas(monkeypatch, capsys):
     output = capsys.readouterr().out
     assert "150 pedidos PENDIENTE y 15 vehículos ACTIVO" in output
     assert "x" * 16 not in output
+
+
+def test_ruta_de_borde_menos_pedidos_conserva_los_dos_inviables():
+    pedidos = pedidos_demo(143)
+    assert len(pedidos) == 143
+    assert [p.vrp.pedido_id for p in pedidos[-2:]] == ["X-CAPACIDAD", "X-VENTANA"]
+    assert pedidos[0] == pedidos_demo()[0]
