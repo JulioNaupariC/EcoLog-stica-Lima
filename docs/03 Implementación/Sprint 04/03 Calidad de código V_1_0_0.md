@@ -11,8 +11,8 @@
 | Ticket | [ECL-102 — Evaluación final de calidad y seguridad del MVP](https://continental-team-il84x39k.atlassian.net/browse/ECL-102) |
 | Redacción | Antony Munive Rios (@ANTONY-MUNIVE), con apoyo de IA (Claude) |
 | Proyecto SonarCloud | [JulioNaupariC_EcoLog-stica-Lima](https://sonarcloud.io/project/overview?id=JulioNaupariC_EcoLog-stica-Lima) |
-| Análisis evaluado | Rama `main`, commit `8cf6258`, 12/11/2026, el último tras integrar el trabajo del Sprint 4 |
-| Alcance analizado | `backend/app` y `frontend/src` (Measures muestra las dos carpetas) |
+| Análisis evaluado | Rama `main`, commit `8cf6258`, 12/11/2026. Re-análisis tras la remediación: `37f7515`, 12/11/2026, el último del Sprint 4 (sección 3) |
+| Alcance analizado | `backend/app` y `frontend/src`: 19k líneas de código según el Summary de `37f7515` |
 | Evidencia | Capturas de SonarQube Cloud del 12/11/2026 en [evidencias/ECL-102](<evidencias/ECL-102>) |
 | Antecedente | [Calidad de código del Sprint 3](<../Sprint 03/03 Calidad de código V_1_0_0.md>) |
 
@@ -96,9 +96,7 @@ cobertura y duplicación. Están justificadas en `sonar-project.properties`.
   - **Acción:** **corregido** en
     [#149](https://github.com/JulioNaupariC/EcoLog-stica-Lima/pull/149). Un
     solo retorno con `tuple(...)[:1]`, sin cambio de comportamiento: 111
-    pruebas unitarias y 56 de integración de optimización en verde. Al
-    integrarlo, los issues abiertos y la deuda deben quedar en 0. Se confirma
-    con el análisis de `main` posterior al merge.
+    pruebas unitarias y 56 de integración de optimización en verde.
 
 **Nota sobre el conteo.**
 - El Overview indica **2 issues** en todo el código, y el gráfico de
@@ -107,8 +105,25 @@ cobertura y duplicación. Están justificadas en `sonar-project.properties`.
   (10 min).
 - El segundo, de severidad Bloqueante, no está abierto. Por la severidad y el
   historial, corresponde al `S8414` (orden de `CORSMiddleware`), aceptado con
-  justificación desde el 29/10/2026. *(Confirmar en SonarCloud con el filtro
-  «Accepted».)*
+  justificación desde el 29/10/2026.
+
+**Re-análisis tras la remediación** (`main` en `37f7515`, 12/11/2026, después
+de integrar #149, #150 y #151):
+
+| Estado | Antes (`8cf6258`) | Después (`37f7515`) |
+|---|---|---|
+| Issues abiertos (Open/Confirmed, severidad Bloqueante, Alta o Media, seguridad y fiabilidad) | 1 (`vrptw.py`, 10 min) | **0** («No top issues», «All issues 0», 0 effort) |
+| Quality Gate | Passed | **Passed** |
+| Cobertura del código nuevo | 97,3 % | **97,35 %** (requerido ≥ 80 %, sobre 3,2k líneas nuevas por cubrir) |
+| Duplicación | 0,0 % | **0,0 %** (requerido ≤ 3 %) |
+| Issues aceptados en código nuevo | — | 0 |
+| Security hotspots | 0 | **0** |
+
+Evidencia: [issues](<evidencias/ECL-102/sonarcloud-issues-main-37f7515.png>) y
+[summary](<evidencias/ECL-102/sonarcloud-summary-main-37f7515.png>) de `37f7515`.
+La cobertura y la duplicación globales del Overview de `8cf6258` (95,6 % y 0,0 %)
+siguen siendo la referencia del proyecto completo. El cambio de #149 no agrega
+líneas sin cubrir.
 
 **Calidad fuera de SonarCloud.**
 - Auditoría de dependencias bloqueante en el CI desde ECL-85.
