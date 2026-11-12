@@ -41,7 +41,7 @@ export function validateDriver(values: DriverValues, editing: boolean, clearAvai
   const partida = values.punto_partida.trim()
   if (!nombre || Array.from(nombre).length > 160) errors.nombre = 'Ingresa un nombre de 1 a 160 caracteres.'
   if (!/^[0-9]{8}$/u.test(dni)) errors.dni = 'El DNI debe tener exactamente 8 dígitos.'
-  if (!licencia || Array.from(licencia).length > 20) errors.licencia_numero = 'Ingresa una licencia de 1 a 20 caracteres.'
+  if (!/^[A-Za-z0-9-]{1,20}$/u.test(values.licencia_numero.trim())) errors.licencia_numero = 'Usa de 1 a 20 letras sin tilde, números o guiones.'
   const expiry = values.licencia_vigente_hasta
   if (!/^\d{4}-\d{2}-\d{2}$/u.test(expiry) || (!Number.isFinite(Date.parse(expiry)) || Number(expiry.slice(0, 4)) < 1) ||
     new Date(expiry).toISOString().slice(0, 10) !== expiry) errors.licencia_vigente_hasta = 'Ingresa una fecha de vencimiento válida.'

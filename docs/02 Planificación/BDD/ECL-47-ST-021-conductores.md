@@ -94,7 +94,7 @@ retirada de D8 constan en la sección de control de cambios ECL-80/ECL-81.
 | Credenciales | Implementado en ST-022 para ratificación: `email` obligatorio, formato básico y máximo 255 caracteres; `password` de solo escritura, de 1 a 1024 caracteres, sin recorte. El servidor genera hash Argon2id. Cuenta CONDUCTOR y perfil se crean en una transacción, separados del actor. No aceptar hash ni `usuario_id` del cliente. |
 | `nombre` | Obligatorio; recortar espacios exteriores; entre 1 y 160 caracteres. |
 | `dni` | Obligatorio; exactamente 8 dígitos ASCII; unicidad global tras eliminar espacios exteriores; conservar como texto para no perder ceros iniciales. No devolverlo salvo a roles explícitamente autorizados. |
-| `licencia_numero` | Requisito ratificado por ECL-81: obligatorio, de 1–20 caracteres ASCII alfanuméricos (`A-Z`, `a-z`, `0-9`) o guion (`-`), tras recortar espacios y normalizar a mayúsculas. El código actual solo valida campo no vacío y longitud, y normaliza mayúsculas; el patrón requiere un ticket de implementación separado. |
+| `licencia_numero` | Requisito ratificado por ECL-81: obligatorio, de 1–20 caracteres ASCII alfanuméricos (`A-Z`, `a-z`, `0-9`) o guion (`-`), tras recortar espacios y normalizar a mayúsculas. Implementado en [ECL-123](https://continental-team-il84x39k.atlassian.net/browse/ECL-123): el backend rechaza con 422 y el formulario lo valida antes de enviar. |
 | `licencia_vigente_hasta` | Obligatorio; fecha calendario ISO `YYYY-MM-DD`, sin hora. La licencia es válida hasta el final de esa fecha en `America/Lima`. |
 | `experiencia_anios` | Entero no negativo, sin booleanos ni fracciones; máximo técnico 2147483647 de Integer de PostgreSQL, no máximo de negocio. |
 | `telefono` | Nombre HTTP implementado del contacto: E.164 obligatorio, 8–15 dígitos tras `+`, primer dígito entre 1 y 9; no se infiere país. El borrador denominaba este campo `contacto`. |
@@ -361,7 +361,7 @@ registra hora porque no fue especificada.
 |---|---|---|
 | [ECL-80](https://continental-team-il84x39k.atlassian.net/browse/ECL-80) | **Descartar D8** para esta BDD y retirar su escenario condicional. No hay necesidad aprobada ni definición de conteos operativos en la documentación disponible; D8 era una extensión condicional no implementada. | No se define ni implementa una proyección agregada de conductores para Auditor en ECL-47/ST-021. La decisión no cambia la matriz global de usuarios. |
 | [ECL-81](https://continental-team-il84x39k.atlassian.net/browse/ECL-81) | **Permitir guardar** un perfil con licencia vencida, marcarlo no asignable e impedir su asignación hasta renovarla. US-003 limita la restricción a asignación; conservar el perfil evita perder el registro. | Aclara la contradicción de RF-003 mediante [RF V_1_2_0](<../../01%20Inicio/06.%20Requisitos%20funcionales%20V_1_2_0.md>). Comportamiento de guardado observado en ST-022/ST-024; la elegibilidad de ruta se documenta en D3/ECL-79. |
-| [ECL-81](https://continental-team-il84x39k.atlassian.net/browse/ECL-81) | **Exigir formato ASCII alfanumérico con guion** para `licencia_numero`, de 1–20 caracteres tras recorte y normalización a mayúsculas. Motivo: rechazar números fuera del formato acordado, sin atribuirlo a una norma externa. | El código actual todavía no aplica el patrón. Esta entrega es documental; la implementación necesita un ticket de código separado, cuya clave no está disponible en este trabajo. |
+| [ECL-81](https://continental-team-il84x39k.atlassian.net/browse/ECL-81) | **Exigir formato ASCII alfanumérico con guion** para `licencia_numero`, de 1–20 caracteres tras recorte y normalización a mayúsculas. Motivo: rechazar números fuera del formato acordado, sin atribuirlo a una norma externa. | Implementado después en [ECL-123](https://continental-team-il84x39k.atlassian.net/browse/ECL-123), en backend y formulario. |
 
 ## Verificación contra lo implementado
 
@@ -405,7 +405,7 @@ Referencias: [API](../../../backend/tests/unit/test_conductor_api.py),
 `contacto` se precisa como `telefono`, se documentan credenciales de solo
 escritura, máximo técnico de experiencia y error de conflicto genérico según
 ST-022. No son nuevas funciones. ECL-81 ratifica el patrón ASCII alfanumérico
-con guion aunque aún no esté implementado; por separado, la regla de licencia
+con guion, implementado en ECL-123; por separado, la regla de licencia
 vencida autoriza guardar el perfil, no asignarlo. Tampoco se cambia el criterio
 de asignación de D3 para hacerlo pasar con `habilitado_asignacion`.
 
