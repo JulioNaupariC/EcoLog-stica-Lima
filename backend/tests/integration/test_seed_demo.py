@@ -27,7 +27,10 @@ from scripts.seed_demo import DRIVERS, LIMA, seed
 pytestmark = pytest.mark.integration
 
 PASSWORDS = {role: f"demo-{role.value.lower()}-password" for role in Rol}
-NOW = datetime(2026, 10, 13, 10, 0, tzinfo=LIMA)
+# Driver eligibility (habilitado_asignacion) is computed with the real clock in
+# ConductorService, and the seed gives 30 days of availability from ``now``. A
+# fixed date stopped working 30 days later (12/11/2026), so the seed runs "now".
+NOW = datetime.now(LIMA).replace(second=0, microsecond=0) - timedelta(minutes=1)
 
 
 @pytest.fixture
