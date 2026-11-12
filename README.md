@@ -410,6 +410,7 @@ Los siguientes comentarios reservan enlaces para entregas futuras.
 - [ECL-100 — 01 Revisión del Sprint V_1_0_0](<docs/03 Implementación/Sprint 04/01 Revisión del Sprint V_1_0_0.md>)
 
 <!-- ECL-101 Retrospectiva -->
+- [ECL-101 — 02 Retrospectiva del Sprint V_1_0_0](<docs/03 Implementación/Sprint 04/02 Retrospectiva del Sprint V_1_0_0.md>)
 
 <!-- ECL-102 Calidad y OWASP -->
 
