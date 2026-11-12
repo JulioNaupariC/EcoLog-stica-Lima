@@ -1,0 +1,126 @@
+{
+  "axe": "4.10.2",
+  "fecha": "2026-11-12T20:02:39.515Z",
+  "resultados": {
+    "login-light": {
+      "violations": [],
+      "passes": 25,
+      "incomplete": []
+    },
+    "rutas-mapa-light": {
+      "violations": [],
+      "passes": 28,
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "nodes": 16
+        }
+      ]
+    },
+    "rutas-registro-parada-light": {
+      "violations": [],
+      "passes": 28,
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "nodes": 19
+        }
+      ]
+    },
+    "dashboard-light": {
+      "violations": [],
+      "passes": 31,
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "nodes": 8
+        }
+      ]
+    },
+    "incidencias-operador-light": {
+      "violations": [],
+      "passes": 26,
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "nodes": 5
+        }
+      ]
+    },
+    "itinerario-movil-light": {
+      "violations": [],
+      "passes": 26,
+      "incomplete": []
+    },
+    "incidencia-movil-light": {
+      "violations": [],
+      "passes": 27,
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "nodes": 1
+        }
+      ]
+    },
+    "login-dark": {
+      "violations": [],
+      "passes": 25,
+      "incomplete": []
+    },
+    "rutas-mapa-dark": {
+      "violations": [],
+      "passes": 28,
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "nodes": 16
+        }
+      ]
+    },
+    "rutas-registro-parada-dark": {
+      "violations": [],
+      "passes": 28,
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "nodes": 19
+        }
+      ]
+    },
+    "dashboard-dark": {
+      "violations": [],
+      "passes": 31,
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "nodes": 8
+        }
+      ]
+    },
+    "incidencias-operador-dark": {
+      "violations": [],
+      "passes": 26,
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "nodes": 5
+        }
+      ]
+    },
+    "itinerario-movil-dark": {
+      "violations": [],
+      "passes": 26,
+      "incomplete": []
+    },
+    "incidencia-movil-dark": {
+      "violations": [],
+      "passes": 27,
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "nodes": 1
+        }
+      ]
+    }
+  }
+}
