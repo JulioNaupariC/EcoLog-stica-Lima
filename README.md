@@ -407,6 +407,7 @@ sprint; las tres ramas de cierre están protegidas contra cambios y borrado.
 Los siguientes comentarios reservan enlaces para entregas futuras.
 
 <!-- ECL-100 Revisión -->
+- [ECL-100 — 01 Revisión del Sprint V_1_0_0](<docs/03 Implementación/Sprint 04/01 Revisión del Sprint V_1_0_0.md>)
 
 <!-- ECL-101 Retrospectiva -->
 
