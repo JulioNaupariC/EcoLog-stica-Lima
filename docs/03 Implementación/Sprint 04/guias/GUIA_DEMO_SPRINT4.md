@@ -168,8 +168,28 @@ para generarlo. Está registrado como pendiente en la Revisión del sprint.
 
 ## 4. Video de respaldo
 
-Grabar el recorrido de la sección 3 una vez, con el build final, para tenerlo de
-respaldo si falla la red o la PC del laboratorio:
+**Video grabado el 12/11/2026:**
+[EcoLogistica_demo_MVP_Sprint4.mp4 (Drive)](https://drive.google.com/file/d/1MlCkdyiHVL52yTUpIxiBeo3MSHGjS2FP/view?usp=sharing).
+Dura 2 min 45 s, a 1080p y sin audio, con subtítulos por paso.
+
+**Qué es:** una grabación automatizada (Playwright) del sistema real, no una
+simulación.
+- Corre el build de producción, la API y PostgreSQL/PostGIS locales, sobre una
+  base nueva sembrada con `seed_demo_mvp --fecha 2026-11-12`.
+- La optimización se pidió por Swagger: 201 en 20,6 s.
+- Se cerró la ruta `DEMO-003` (9 paradas), con un ahorro de 35,4 % frente a la
+  ruta secuencial.
+- El Conductor reportó una incidencia desde el móvil y el Operador la validó.
+
+**Límites:**
+- El entorno de grabación no tenía internet. El mapa se ve sin las teselas de
+  OpenStreetMap: la app lo avisa y mantiene el trazado y la lista.
+- Por esa misma razón, Swagger usa una copia local de `swagger-ui-dist@5`.
+- Las contraseñas no aparecen en pantalla: se escriben en un campo oculto y no
+  se pide `POST /login` en Swagger.
+- Script de la grabación: [grabacion-demo.js](<../evidencias/ECL-105/grabacion-demo.js>).
+
+Para grabar otra versión, narrada en la PC de la demo, recorrer la sección 3:
 - Herramienta: Xbox Game Bar (`Win + Alt + R`) u OBS.
 - Duración: 8 a 10 minutos, a 1080p.
 - Guardarlo fuera del repositorio (Drive del curso) y enlazarlo en ECL-105.
