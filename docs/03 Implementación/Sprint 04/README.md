@@ -32,6 +32,7 @@ No representan resultados ejecutados ni documentos aprobados.
 
 ### Documentación técnica
 
+- [Ítem 7 — Coherencia y versionamiento documental](<07 Coherencia y versionamiento documental V_1_0_0.md>)
 - [ECL-83 — Aviso y renovación de sesión](<ECL-83 aviso de sesion.md>)
 
 - [Convenciones y glosario ECL-99](CONVENCIONES_Y_GLOSARIO_ECL99.md)

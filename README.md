@@ -428,6 +428,7 @@ Los siguientes comentarios reservan enlaces para entregas futuras.
 
 #### Documentación técnica del Sprint 4
 
+- [Ítem 7 — Coherencia y versionamiento documental del Sprint 4](<docs/03 Implementación/Sprint 04/07 Coherencia y versionamiento documental V_1_0_0.md>)
 - [ECL-91 / A12 — Corte de alcance de PR y seguimiento para ECL-101](<docs/03 Implementación/Sprint 04/ECL-91 corte de alcance de PR.md>)
 - [Convenciones y glosario ECL-99](<docs/03 Implementación/Sprint 04/CONVENCIONES_Y_GLOSARIO_ECL99.md>)
 - [Plantilla de Revisión y demostración ECL-99](<docs/03 Implementación/Sprint 04/PLANTILLA_REVISION_SPRINT4_ECL99.md>)
