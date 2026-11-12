@@ -11,6 +11,7 @@ Los siguientes comentarios reservan espacios para informes futuros.
 No representan resultados ejecutados ni documentos aprobados.
 
 <!-- ECL-100 Revisión -->
+- [ECL-100 — 01 Revisión del Sprint V_1_0_0](<01 Revisión del Sprint V_1_0_0.md>)
 
 <!-- ECL-101 Retrospectiva -->
 
