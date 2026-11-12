@@ -493,7 +493,7 @@ def _ensure_incidents(
         # Preserve legacy payloads on replay; demo assignments have no route.
         with factory() as session:
             existing = session.execute(
-                select(Incidencia.parada_id)
+                select(Incidencia.parada_id, Incidencia.ocurrida_en)
                 .join(Conductor, Conductor.conductor_id == Incidencia.conductor_id)
                 .where(
                     Conductor.usuario_id == driver_account,
@@ -501,6 +501,13 @@ def _ensure_incidents(
                 )
             ).one_or_none()
         parada_id = existing.parada_id if existing is not None else None
+        # ECL-105: on a later run "now" moved; replay the stored instant so the
+        # same operation_id is equivalent instead of an Operation ID conflict.
+        ocurrida_en = (
+            existing.ocurrida_en
+            if existing is not None
+            else now - timedelta(minutes=incident.minutes_ago)
+        )
         # Same operation_id on every run: the service returns the stored one.
         _ack, created = service.registrar(
             driver_account,
@@ -508,7 +515,7 @@ def _ensure_incidents(
                 operation_id=operation_id,
                 tipo=incident.tipo,
                 severidad=incident.severidad,
-                ocurrida_en=now - timedelta(minutes=incident.minutes_ago),
+                ocurrida_en=ocurrida_en,
                 latitud=incident.latitud,
                 longitud=incident.longitud,
                 parada_id=parada_id,
