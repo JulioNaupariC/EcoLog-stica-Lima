@@ -301,7 +301,8 @@ def seed_mvp(
     summary = base.seed(factory, passwords, now=now)
     with factory() as session:
         admin = UsuarioRepository(session).find_for_login(base.USERS[Rol.ADMINISTRADOR])
-    assert admin is not None  # created by base.seed
+    if admin is None:  # base.seed always creates it; guard against a broken base
+        raise SeedMvpRefused("No existe la cuenta de administrador de la demo.")
     clientes = _clientes(factory, summary)
     _vehiculos(factory, summary)
     _conductores(

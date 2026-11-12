@@ -36,7 +36,9 @@ def test_ruta_dorada_150_pedidos_en_los_cuatro_distritos():
 
 
 def test_ruta_feliz_el_escenario_es_el_mismo_en_cada_pc():
-    assert pedidos_demo() == pedidos_demo()
+    primera, segunda = pedidos_demo(), pedidos_demo()
+    assert primera is not segunda
+    assert primera == segunda
 
 
 def test_ruta_dorada_15_vehiculos_en_total():
