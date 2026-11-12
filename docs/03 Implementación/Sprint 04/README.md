@@ -18,12 +18,13 @@ No representan resultados ejecutados ni documentos aprobados.
 <!-- ECL-102 Calidad y OWASP -->
 
 <!-- ECL-103 WCAG -->
+- [ECL-103 — 05 WCAG V_1_0_0](<05 WCAG V_1_0_0.md>)
 
 <!-- ECL-104 Matriz final -->
 
 - [ECL-26 — Parámetros versionados y casos de referencia (RNF-011)](<ECL-26 parametros versionados y casos de referencia.md>)
 
-<!-- ECL-105 Guía de demo -->
+- [ECL-105 — Guía de la demostración del MVP con tiempos medidos](<guias/GUIA_DEMO_SPRINT4.md>)
 
 ### Documentación técnica
 

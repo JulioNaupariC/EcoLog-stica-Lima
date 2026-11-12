@@ -414,12 +414,13 @@ Los siguientes comentarios reservan enlaces para entregas futuras.
 <!-- ECL-102 Calidad y OWASP -->
 
 <!-- ECL-103 WCAG -->
+- [ECL-103 — 05 WCAG V_1_0_0](<docs/03 Implementación/Sprint 04/05 WCAG V_1_0_0.md>)
 
 <!-- ECL-104 Matriz final -->
 
 - [ECL-26 — Parámetros versionados y casos de referencia (RNF-011)](<docs/03 Implementación/Sprint 04/ECL-26 parametros versionados y casos de referencia.md>)
 
-<!-- ECL-105 Guía de demo -->
+- [ECL-105 — Guía de la demostración del MVP con tiempos medidos](<docs/03 Implementación/Sprint 04/guias/GUIA_DEMO_SPRINT4.md>)
 
 #### Documentación técnica del Sprint 4
 
