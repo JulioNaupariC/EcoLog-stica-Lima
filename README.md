@@ -436,6 +436,7 @@ Los siguientes comentarios reservan enlaces para entregas futuras.
 - [ECL-15 — Dashboard de sostenibilidad: interfaz, contrato y límites](<docs/03 Implementación/Sprint 04/ECL-15 dashboard sostenibilidad.md>)
 - [ECL-120 — Registro de resultados de paradas y cierre de rutas](<docs/03 Implementación/Sprint 04/ECL-120 registro y cierre de rutas.md>)
 - [ECL-86 — Modelo de amenazas STRIDE y alertas de seguridad](<docs/03 Implementación/Sprint 04/ECL-86 modelo de amenazas.md>)
+- [ECL-85 — Cadena de suministro: Actions por SHA, Dependabot y auditoría](<docs/03 Implementación/Sprint 04/ECL-85 cadena de suministro.md>)
 - [ECL-80/ECL-81 — Decisiones de control de cambios para conductores](<docs/03 Implementación/Sprint 04/ECL-80-81 decisiones BDD conductores.md>)
 
 #### Estado de cierre del Sprint 4
