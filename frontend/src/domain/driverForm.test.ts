@@ -20,7 +20,8 @@ it('normaliza campos y convierte hora de Lima a UTC sin depender del navegador',
 
 it.each([
   ['nombre', ''], ['nombre', 'x'.repeat(161)], ['dni', '1234567'], ['dni', 'abcdefgh'],
-  ['licencia_numero', ' '], ['licencia_numero', 'x'.repeat(21)],
+  ['licencia_numero', ' '], ['licencia_numero', 'x'.repeat(21)], ['licencia_numero', 'LIC 01'],
+  ['licencia_numero', 'LICEÑA1'], ['licencia_numero', 'straße'], ['licencia_numero', 'LIC_01'],
   ['licencia_vigente_hasta', '2026-02-30'], ['licencia_vigente_hasta', 'invalid'],
   ['licencia_vigente_hasta', '0000-01-01'], ['experiencia_anios', '-1'], ['experiencia_anios', '1.5'],
   ['experiencia_anios', '2147483648'], ['telefono', '987654321'], ['punto_partida', ''],

@@ -25,15 +25,62 @@ jobs:
     timeout-minutes: 5
     steps:
       - name: Check out repository
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Set up Python
-        uses: actions/setup-python@v7
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: "3.12.10"
 
       - name: Check Markdown links and navigation
         run: python scripts/check_docs.py
+
+  # ECL-85 (OWASP A03:2025): audit the locked dependencies on every run.
+  # Runtime locks block on high or critical findings; development locks are
+  # reported only. Accepted exceptions are documented in
+  # "docs/03 Implementación/Sprint 04/ECL-85 cadena de suministro.md".
+  dependency-audit:
+    name: Supply chain / Dependency audit
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Set up Python
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.12.10"
+
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: frontend/.nvmrc
+
+      - name: Install pip-audit
+        run: python -m pip install pip-audit==2.10.1
+
+      - name: Audit backend runtime lock (blocking)
+        # PYSEC-2026-1805 (protobuf ParseDict recursion): ortools 9.14 pins
+        # protobuf<6.32 and the API never parses untrusted protobuf JSON.
+        run: >-
+          pip-audit -r backend/requirements.lock --no-deps --disable-pip
+          --progress-spinner off --ignore-vuln PYSEC-2026-1805
+
+      - name: Audit frontend production dependencies (blocking)
+        working-directory: frontend
+        run: npm audit --omit=dev --audit-level=high
+
+      - name: Report backend development lock
+        continue-on-error: true
+        run: >-
+          pip-audit -r backend/requirements-dev.lock --no-deps --disable-pip
+          --progress-spinner off --ignore-vuln PYSEC-2026-1805
+
+      - name: Report frontend development dependencies
+        continue-on-error: true
+        working-directory: frontend
+        run: npm audit --audit-level=high
 
   backend-quality:
     name: Backend / Quality and unit
@@ -44,10 +91,10 @@ jobs:
         working-directory: backend
     steps:
       - name: Check out repository
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Set up Python
-        uses: actions/setup-python@v7
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: "3.12.10"
 
@@ -102,7 +149,7 @@ jobs:
 
       - name: Upload backend unit evidence
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: backend-unit-results-${{ github.run_id }}
           path: backend/test-results/
@@ -135,10 +182,10 @@ jobs:
         working-directory: backend
     steps:
       - name: Check out repository
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Set up Python
-        uses: actions/setup-python@v7
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: "3.12.10"
 
@@ -170,7 +217,7 @@ jobs:
 
       - name: Upload backend integration evidence
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: backend-integration-results-${{ github.run_id }}
           path: backend/test-results/
@@ -186,10 +233,10 @@ jobs:
         working-directory: frontend
     steps:
       - name: Check out repository
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Set up Node.js
-        uses: actions/setup-node@v7
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version-file: frontend/.nvmrc
           package-manager-cache: false
@@ -216,7 +263,7 @@ jobs:
 
       - name: Upload frontend test evidence
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: frontend-test-results-${{ github.run_id }}
           path: |
@@ -242,7 +289,7 @@ jobs:
       github.event.pull_request.head.repo.full_name == github.repository
     steps:
       - name: Check out repository
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           # Full history for blame, new-code detection and PR decoration.
           fetch-depth: 0
@@ -262,14 +309,14 @@ jobs:
 
       - name: Download backend coverage
         if: steps.token.outputs.present == 'true'
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
         with:
           name: backend-unit-results-${{ github.run_id }}
           path: coverage-reports/backend
 
       - name: Download frontend coverage
         if: steps.token.outputs.present == 'true'
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
         with:
           name: frontend-test-results-${{ github.run_id }}
           path: coverage-reports/frontend
@@ -314,6 +361,6 @@ jobs:
 
       - name: SonarCloud scan
         if: steps.token.outputs.present == 'true'
-        uses: SonarSource/sonarqube-scan-action@v8
+        uses: SonarSource/sonarqube-scan-action@e805d875275f728fac1885b413934be6d7c63f65 # v8.4.1
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

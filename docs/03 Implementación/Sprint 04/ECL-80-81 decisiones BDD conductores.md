@@ -26,9 +26,10 @@ validado en este trabajo.
   como versión histórica.
 - [BDD de conductores ECL-47/ST-021 V_1_2_0](../../02%20Planificación/BDD/ECL-47-ST-021-conductores.md)
   retira el escenario D8 y describe las decisiones, su evidencia y los límites.
-- El código vigente permite guardar perfiles con licencia vencida, pero aún no
-  valida el patrón ASCII de `licencia_numero`. Su implementación requiere un
-  ticket de código separado; no se dispone de una clave para registrarlo aquí.
+- El código vigente permite guardar perfiles con licencia vencida. El patrón
+  ASCII de `licencia_numero` se implementó después en
+  [ECL-123](https://continental-team-il84x39k.atlassian.net/browse/ECL-123) (backend y formulario); los registros ya guardados no se
+  revalidan.
 - No se modificó código ni se ejecutaron pruebas de implementación para estas
   decisiones documentales.
 

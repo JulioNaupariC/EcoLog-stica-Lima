@@ -15,7 +15,9 @@ from pydantic import (
 
 Name = Annotated[str, Field(min_length=1, max_length=160)]
 Dni = Annotated[str, Field(pattern=r"^[0-9]{8}$")]
-License = Annotated[str, Field(min_length=1, max_length=20)]
+# RF-003 V_1_2_0 (ECL-81): ASCII letters, digits or hyphen after trimming;
+# the value is stored upper-case.
+License = Annotated[str, Field(min_length=1, max_length=20, pattern=r"^[A-Za-z0-9-]+$")]
 Phone = Annotated[str, Field(pattern=r"^\+[1-9][0-9]{7,14}$")]
 Experience = Annotated[int, Field(strict=True, ge=0, le=2147483647)]
 StartingPoint = Annotated[str, Field(min_length=1, max_length=255)]

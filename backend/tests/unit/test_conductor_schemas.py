@@ -44,6 +44,11 @@ def test_normalization_and_secret_representation():
         {"nombre": " "},
         {"licencia_numero": " "},
         {"licencia_numero": "X" * 21},
+        {"licencia_numero": "LIC 01"},
+        {"licencia_numero": "LIC_01"},
+        {"licencia_numero": "LIC.01"},
+        {"licencia_numero": "LICEÑA1"},
+        {"licencia_numero": "ＬＩＣ01"},
         {"telefono": "987654321"},
         {"telefono": "+012345678"},
         {"punto_partida": " "},
@@ -99,3 +104,18 @@ def test_clear_availability_and_expired_license_are_valid_profile_data():
         ConductorData.model_validate(
             {**data, "disponible_hasta": data["disponible_desde"]}
         )
+
+
+@pytest.mark.parametrize(
+    "value", ["a", "q-demo-01", " Q4-77 ", "X" * 20, "123-ABC-456"]
+)
+def test_license_format_accepts_ascii_letters_digits_and_hyphen(value):
+    row = ConductorCreate.model_validate(payload(licencia_numero=value))
+    assert row.licencia_numero == value.strip().upper()
+
+
+def test_license_format_also_applies_to_updates():
+    update = ConductorUpdate.model_validate({"licencia_numero": "b-2"})
+    assert update.licencia_numero == "B-2"
+    with pytest.raises(ValidationError):
+        ConductorUpdate.model_validate({"licencia_numero": "B/2"})

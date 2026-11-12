@@ -10,7 +10,7 @@ import type { DriverDetail, DriverField, DriverSummary } from '../services/drive
 const FIELDS: { name: DriverField; label: string; type: string; max?: number; hint: string }[] = [
   { name: 'nombre', label: 'Nombre completo', type: 'text', max: 160, hint: 'Como figura en su documento.' },
   { name: 'dni', label: 'DNI', type: 'text', max: 8, hint: '8 dígitos. No se muestra en el listado.' },
-  { name: 'licencia_numero', label: 'Número de licencia', type: 'text', max: 20, hint: 'Hasta 20 caracteres.' },
+  { name: 'licencia_numero', label: 'Número de licencia', type: 'text', max: 20, hint: 'Letras sin tilde, números o guion; hasta 20.' },
   { name: 'licencia_vigente_hasta', label: 'Licencia vigente hasta', type: 'date', hint: 'Una licencia vencida impide la asignación.' },
   { name: 'experiencia_anios', label: 'Experiencia (años)', type: 'number', hint: 'Años completos de experiencia.' },
   { name: 'telefono', label: 'Teléfono', type: 'tel', max: 16, hint: 'Formato internacional. Ej.: +51987654321.' },
