@@ -1,0 +1,51 @@
+criterio,nivel,principio,estado,evidencia_sprint4
+1.1.1,A,1,cumple,El mapa tiene alternativa textual: enlace «Ir a la lista accesible de paradas» y lista ordenada con hora y estado. Iconos decorativos ocultos; axe sin violaciones en 14 ejecuciones.
+1.2.1,A,1,no_aplica,Sin cambios respecto de ECL-67/ECL-83 en las vistas nuevas: Sin audio o vídeo en las vistas evaluadas.
+1.2.2,A,1,no_aplica,Sin cambios respecto de ECL-67/ECL-83 en las vistas nuevas: Sin audio o vídeo en las vistas evaluadas.
+1.2.3,A,1,no_aplica,Sin cambios respecto de ECL-67/ECL-83 en las vistas nuevas: Sin audio o vídeo en las vistas evaluadas.
+1.2.4,AA,1,no_aplica,Sin cambios respecto de ECL-67/ECL-83 en las vistas nuevas: Sin audio o vídeo en las vistas evaluadas.
+1.2.5,AA,1,no_aplica,Sin cambios respecto de ECL-67/ECL-83 en las vistas nuevas: Sin audio o vídeo en las vistas evaluadas.
+1.3.1,A,1,cumple,"Lista de rutas, detalle, tabla de paradas y tarjetas del dashboard con encabezados y etiquetas; axe sin violaciones."
+1.3.2,A,1,por_confirmar,"Orden del DOM coherente (lista de rutas, detalle, mapa, lista de paradas). Falta el recorrido con lector de pantalla de las vistas nuevas (Giancarlo)."
+1.3.3,A,1,cumple,Las instrucciones nombran campos y botones; el mapa no es la única forma de ubicar una parada.
+1.3.4,AA,1,cumple,"Sondeo horizontal 900x360 en rutas, dashboard, incidencias e itinerario: 0 px de desborde y 0 recortes."
+1.3.5,AA,1,cumple,Login con autocomplete; formulario de incidencia y de resultado de parada sin datos personales del usuario a autocompletar.
+1.4.1,A,1,cumple,"Estado de ruta, parada y severidad con texto, además del color."
+1.4.2,A,1,no_aplica,Sin cambios respecto de ECL-67/ECL-83 en las vistas nuevas: No hay reproducción de audio.
+1.4.3,AA,1,cumple,"axe marca color-contrast como incompleto por el fondo en degradado y el mapa; razones manuales con tokens: mínimo 6,05:1 en claro y 8,47:1 en oscuro (sondeos.json)."
+1.4.4,AA,1,cumple,Fuente raíz al 200 % a 1280 px en 4 vistas: 0 desborde y 0 recortes. Aproxima el zoom de texto; el zoom real del navegador queda para la revisión manual.
+1.4.5,AA,1,no_aplica,Sin cambios respecto de ECL-67/ECL-83 en las vistas nuevas: No hay imágenes de texto; marca y etiquetas son texto HTML.
+1.4.10,AA,1,cumple,Reflujo a 320 px en rutas y dashboard sin desborde; también con espaciado ampliado en 4 vistas.
+1.4.11,AA,1,cumple,"Foco 6,2:1 (claro) y 8,96:1 (oscuro); líneas del mapa acompañadas por la lista textual."
+1.4.12,AA,1,cumple,Estilos de 1.4.12 inyectados a 320 px en 4 vistas: 0 desborde y 0 recortes de texto.
+1.4.13,AA,1,no_aplica,"Las ventanas emergentes del mapa se abren al hacer clic o con teclado, no al pasar el puntero."
+2.1.1,A,2,cumple,Registro de parada y cierre de ruta operables con teclado; el mapa acepta flechas y +/−; la lista accesible cubre el contenido del mapa.
+2.1.2,A,2,cumple,Se entra y se sale del mapa y del formulario de parada con Tab; Cancelar devuelve el foco.
+2.1.4,A,2,cumple,+/− y flechas del mapa solo actúan cuando el mapa tiene el foco (excepción del criterio).
+2.2.1,A,2,cumple,ECL-83: aviso 2 min antes del vencimiento y renovación hasta el tope de 12 h.
+2.2.2,A,2,no_aplica,Sin cambios respecto de ECL-67/ECL-83 en las vistas nuevas: Sin carruseles o texto desplazado/actualización periódica en la muestra. Esqueletos de carga decorativos; información disponible mediante acciones de consulta.
+2.3.1,A,2,cumple,Sin cambios respecto de ECL-67/ECL-83 en las vistas nuevas: Sin contenido que destelle en las vistas y componentes inspeccionados.
+2.4.1,A,2,cumple,Sin cambios respecto de ECL-67/ECL-83 en las vistas nuevas: Enlace Saltar al contenido principal y estructura main/nav en los layouts.
+2.4.2,A,2,cumple,"Títulos: «Rutas y alertas en mapa», «Operación y sostenibilidad», «Incidencias pendientes», «Mi itinerario», «Reportar incidencia»."
+2.4.3,A,2,cumple,Al abrir el registro el foco va al campo de hora; al cancelar vuelve a «Registrar resultado de parada 1».
+2.4.4,A,2,cumple,Sin cambios respecto de ECL-67/ECL-83 en las vistas nuevas: Enlaces descriptivos y contexto de tablas; aviso de nueva pestaña para el mapa.
+2.4.5,AA,2,cumple,"Sin cambios respecto de ECL-67/ECL-83 en las vistas nuevas: Inicio completa el índice por rol, combinado con menú y enlaces contextuales/cuenta. Se visitaron 19 enlaces y su retorno a Inicio entre los cinco roles. Login y cambio obligatorio son pasos de autenticación; no se exponen destinos de otros roles."
+2.4.6,AA,2,cumple,Sin cambios respecto de ECL-67/ECL-83 en las vistas nuevas: Títulos y etiquetas describen controles; corrección de Siguiente parada como encabezado.
+2.4.7,AA,2,cumple,Outline sólido de 3 px con --color-focus en ambos temas.
+2.5.1,A,2,cumple,Ahora aplica por el mapa: el zoom con pellizco tiene botones +/− de un solo puntero y teclado; el desplazamiento también funciona con flechas.
+2.5.2,A,2,cumple,"Sin cambios respecto de ECL-67/ECL-83 en las vistas nuevas: Acciones mediante click/activación nativa; onMouseDown del combobox solo evita perder foco, sin ejecutar negocio."
+2.5.3,A,2,cumple,Sin cambios respecto de ECL-67/ECL-83 en las vistas nuevas: Cuenta y Ver y editar perfil corregidos; axe final sin label-content-name-mismatch.
+2.5.4,A,2,no_aplica,Sin cambios respecto de ECL-67/ECL-83 en las vistas nuevas: No se usan sensores ni movimiento del dispositivo para activar funciones.
+3.1.1,A,3,cumple,Sin cambios respecto de ECL-67/ECL-83 en las vistas nuevas: lang=es en todos los documentos medidos y revisión de axe.
+3.1.2,AA,3,no_aplica,Sin cambios respecto de ECL-67/ECL-83 en las vistas nuevas: Sin pasajes en otro idioma en la muestra; nombres propios/identificadores no son pasajes lingüísticos.
+3.2.1,A,3,cumple,Sin cambios respecto de ECL-67/ECL-83 en las vistas nuevas: No se navega ni envía formularios al enfocar; teclado declarado correcto.
+3.2.2,A,3,cumple,Elegir fecha u optimización no consulta sola: se usa «Actualizar optimizaciones».
+3.2.3,AA,3,cumple,Sin cambios respecto de ECL-67/ECL-83 en las vistas nuevas: Navegación estable dentro de cada rol; cambios por autorización justificados.
+3.2.4,AA,3,cumple,"Sin cambios respecto de ECL-67/ECL-83 en las vistas nuevas: Componentes compartidos y nombres consistentes para actualizar, cancelar, guardar y volver."
+3.3.1,A,3,cumple,Hora futura o anterior al día de la ruta se rechaza con mensaje textual.
+3.3.2,A,3,cumple,"Sin cambios respecto de ECL-67/ECL-83 en las vistas nuevas: Labels, ayudas y obligatoriedad en formularios; axe y pruebas de React."
+3.3.3,AA,3,cumple,Sin cambios respecto de ECL-67/ECL-83 en las vistas nuevas: Mensajes indican qué corregir y requisitos de contraseña; errores de autenticación no revelan credenciales.
+3.3.4,AA,3,cumple,Cerrar ruta pide «Confirmar cierre» en la página antes de enviar; el resultado de parada se puede cancelar antes de guardar.
+4.1.1,A,4,no_aplica,Sin cambios respecto de ECL-67/ECL-83 en las vistas nuevas: Obsoleto según la errata incorporada en WCAG 2.1 (2025); fuera del denominador. Se conserva la fila para trazabilidad del catálogo de 50 criterios.
+4.1.2,A,4,cumple,"axe sin violaciones de nombre, rol o valor en 14 ejecuciones. Recorrido con lector pendiente (ver 1.3.2)."
+4.1.3,AA,4,cumple,"role=status en carga del mapa, confirmación de operación, envío y acuse de incidencia; role=alert en errores."

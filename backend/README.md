@@ -541,17 +541,21 @@ bases `*_demo`, nunca `APP_ENV=production`, y contraseñas tomadas de
 
 | Dato | Total para la fecha | Detalle |
 |---|---:|---|
-| Pedidos PENDIENTE | 150 | `Pedido MVP 001` a `150` en San Juan de Lurigancho, El Agustino, Santa Anita y Ate; 148 atendibles y 2 inviables a propósito (`EXCEDE_CAPACIDAD` y `VENTANA_INVIABLE`) |
+| Pedidos PENDIENTE | 150 | Los `Pedido MVP NNN` en San Juan de Lurigancho, El Agustino, Santa Anita y Ate, más los de `seed_demo` que ya tenga la fecha. Incluye 2 inviables a propósito (`EXCEDE_CAPACIDAD` y `VENTANA_INVIABLE`) |
 | Vehículos ACTIVO | 15 | `DEMO-001` a `005` más `MVP-001` a `010` (furgones, camionetas y una moto, con los valores típicos de `sinteticos.FLOTA`) |
 | Conductores elegibles | 15 | 2 de `seed_demo` más `conductor5.demo` a `conductor17.demo`, que usan la contraseña de `SEED_DEMO_PASSWORD_CONDUCTOR`; se conservan los 2 no elegibles de RN-005 |
 | Clientes | 4 nuevos | `Cliente Demo MVP <distrito>` |
 
 Los pedidos vienen de `app.optimizacion.sinteticos` con semilla fija (105), el
 mismo generador del benchmark de ECL-21: el escenario es idéntico en cualquier
-PC. Son datos ficticios. El script se niega si la fecha ya tiene otros pedidos
-PENDIENTE (el motor admite 150 por fecha) o si la fecha está en el pasado. Es
-idempotente: puede repetirse cualquier día, porque `seed_demo` ya no choca con sus
-incidencias al resembrar en otra fecha.
+PC. Son datos ficticios. Si la fecha ya tiene otros pedidos PENDIENTE (por
+ejemplo, los de `seed_demo`, que caen en el día de su primera ejecución y el
+siguiente), el script siembra solo los que faltan para llegar a 150. Así la demo
+puede ser **hoy**, con el itinerario y las incidencias de `seed_demo` en la misma
+jornada, y se pueden registrar paradas atendidas en vivo. Se niega si la fecha está
+en el pasado o si ya tiene más de 50 pedidos ajenos. Es idempotente: se puede
+repetir cualquier día, porque `seed_demo` ya no choca con sus incidencias al
+resembrar.
 
 **Comprobación del 11/11/2026** (contenedor Linux de 2 CPU, Python 3.12,
 PostgreSQL 16 con PostGIS; no es la PC del laboratorio): la optimización real del
