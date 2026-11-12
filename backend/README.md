@@ -548,8 +548,10 @@ bases `*_demo`, nunca `APP_ENV=production`, y contraseñas tomadas de
 
 Los pedidos vienen de `app.optimizacion.sinteticos` con semilla fija (105), el
 mismo generador del benchmark de ECL-21: el escenario es idéntico en cualquier
-PC. Son datos ficticios. El script se niega si la fecha ya tiene otros pedidos
-PENDIENTE (el motor admite 150 por fecha) o si la fecha está en el pasado. Es
+PC. Son datos ficticios. El script se niega si la fecha está en el pasado o si
+ya tiene otros pedidos PENDIENTE (el motor admite 150 por fecha). Eso incluye
+los 20 de `seed_demo`, que caen en el día de su primera ejecución y el
+siguiente: **usa una fecha al menos dos días después de crear la base**. Es
 idempotente: puede repetirse cualquier día, porque `seed_demo` ya no choca con sus
 incidencias al resembrar en otra fecha.
 

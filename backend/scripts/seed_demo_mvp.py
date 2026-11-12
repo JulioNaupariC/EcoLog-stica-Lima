@@ -26,9 +26,10 @@ Mismas protecciones que ``seed_demo``: solo bases cuyo nombre termina en
 ``SEED_DEMO_PASSWORD_<ROL>``, sin escribirse ni imprimirse. Los 13 conductores
 nuevos usan la contraseña de ``SEED_DEMO_PASSWORD_CONDUCTOR``.
 
-Es idempotente (por referencia del pedido, placa y DNI) y se niega a sembrar si
-la fecha ya tiene otros pedidos PENDIENTE: el optimizador admite como máximo
-150 por fecha y la demo debe mostrar exactamente este escenario.
+Es idempotente (por referencia del pedido, placa y DNI) y se niega a sembrar los
+150 pedidos si la fecha ya tiene otros pedidos PENDIENTE, incluidos los de
+``seed_demo`` (día de su primera ejecución y el siguiente): el optimizador admite
+como máximo 150 por fecha y la demo debe mostrar exactamente este escenario.
 """
 
 from __future__ import annotations
@@ -293,12 +294,15 @@ def seed_mvp(
 ) -> base.SeedSummary:
     """Run seed_demo, then add the MVP scenario for ``fecha``; safe to repeat."""
     now = now or datetime.now(base.LIMA)
+    # seed_demo runs first: on a fresh base it creates 20 orders for the first
+    # run's day and the next one, so they must be counted before adding 150.
+    summary = base.seed(factory, passwords, now=now)
     if _otros_pendientes(factory, fecha):
         raise SeedMvpRefused(
-            f"El {fecha.isoformat()} ya tiene pedidos PENDIENTE ajenos a la demo; "
-            "elige otra fecha para no superar los 150 del optimizador."
+            f"El {fecha.isoformat()} ya tiene pedidos PENDIENTE ajenos a la demo "
+            "(seed_demo usa el día de su primera ejecución y el siguiente); elige "
+            "una fecha posterior para no superar los 150 del optimizador."
         )
-    summary = base.seed(factory, passwords, now=now)
     with factory() as session:
         admin = UsuarioRepository(session).find_for_login(base.USERS[Rol.ADMINISTRADOR])
     if admin is None:  # base.seed always creates it; guard against a broken base

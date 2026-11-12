@@ -127,3 +127,11 @@ def test_ruta_feliz_optimizacion_real_deja_inviables_con_motivo(demo_factory):
     assert {"EXCEDE_CAPACIDAD", "VENTANA_INVIABLE"} <= {
         getattr(m, "value", m) for m in motivos
     }
+
+
+def test_ruta_infeliz_fecha_con_pedidos_de_seed_demo(demo_factory):
+    """seed_demo puts orders on its first day and the next; that day is refused."""
+    manana = NOW.date() + timedelta(days=1)
+    with pytest.raises(SeedMvpRefused, match="seed_demo"):
+        seed_mvp(demo_factory, PASSWORDS, manana, now=NOW)
+    assert resumen_fecha(demo_factory, manana)["pedidos_pendientes"] < 150
