@@ -13,6 +13,7 @@ No representan resultados ejecutados ni documentos aprobados.
 <!-- ECL-100 Revisión -->
 
 <!-- ECL-101 Retrospectiva -->
+- [ECL-101 — 02 Retrospectiva del Sprint V_1_0_0](<02 Retrospectiva del Sprint V_1_0_0.md>)
 
 <!-- ECL-102 Calidad y OWASP -->
 
