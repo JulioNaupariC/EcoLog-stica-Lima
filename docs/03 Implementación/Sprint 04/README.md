@@ -19,6 +19,7 @@ No representan resultados ejecutados ni documentos aprobados.
 <!-- ECL-103 WCAG -->
 
 <!-- ECL-104 Matriz final -->
+- [ECL-104 — Matriz de trazabilidad del MVP V_1_0_0](<Matriz de trazabilidad del MVP V_1_0_0.md>)
 
 - [ECL-26 — Parámetros versionados y casos de referencia (RNF-011)](<ECL-26 parametros versionados y casos de referencia.md>)
 
