@@ -43,7 +43,8 @@ grep -rhn "uses:" .github/workflows/ | grep -v "@[0-9a-f]\{40\} # v"   # sin sal
 - **`.github/dependabot.yml`** propone cada lunes, hora de Lima, actualizaciones
   de `github-actions` (raíz), `pip` (`/backend`) y `npm` (`/frontend`), con un
   máximo de 3 PR abiertos por ecosistema. Cada propuesta es un PR normal: pasa CI,
-  CODEOWNERS y las reglas A10 y A12, y nada se mergea solo.
+  CODEOWNERS y las reglas A10 y A12, y nada se mergea solo. **En pausa hasta el
+  20/11** (sección 2.1).
 - **Nuevo job `Supply chain / Dependency audit`** en `ci.yml`, en cada push y PR:
   - **Bloqueante:** `pip-audit` 2.10.1 sobre `backend/requirements.lock` y
     `npm audit --omit=dev --audit-level=high` sobre `frontend/package-lock.json`.
@@ -52,6 +53,29 @@ grep -rhn "uses:" .github/workflows/ | grep -v "@[0-9a-f]\{40\} # v"   # sin sal
     dependencias de desarrollo, para que el hallazgo quede a la vista en el log.
 - **Alertas de Dependabot:** se activan en *Settings → Code security* del
   repositorio, cosa que exige permiso de administrador. Ver la sección 4.
+
+### 2.1 Pausa de las actualizaciones de versión (11/11/2026)
+
+Al mergear #126, la primera ejecución de Dependabot abrió 10 PR (#128 a #137)
+en plena semana de inspección y de code freeze:
+
+| PR | Cambio | CI |
+|---|---|---|
+| #128, #129 | `upload-artifact` 4.6.2 → 7.0.2 y `download-artifact` 4.3.0 → 8.0.2 (versiones mayores) | Verde |
+| #130, #132, #133, #134 | `geoalchemy2` 0.21.0, `psycopg>=3.3.8`, `pydantic>=2.14.3` y `ortools` 9.15.6755 | Falla: Dependabot cambia `pyproject.toml` pero no regenera los `requirements*.lock` con hashes, y el CI exige que coincidan |
+| #135, #136 | `vitest` y `@vitest/coverage-v8` 5.1.0 | Falla en Frontend y Lighthouse |
+| #131, #137 | `@testing-library/user-event` 14.6.8 y `@types/node` 26.6.6 | Verde |
+
+**Decisión:** se cierran los 10 PR sin mergear y `open-pull-requests-limit`
+queda en `0` para los tres ecosistemas hasta el cierre del 20/11. Ninguno corrige
+una vulnerabilidad, y cambiar el motor (`ortools`) o el runner de pruebas antes de
+la demo es un riesgo sin beneficio. El límite no afecta a las actualizaciones de
+seguridad, que se abren cuando se activen las alertas (sección 4). Después del
+20/11 conviene revisar dos cosas:
+
+1. Las acciones `upload-artifact` y `download-artifact`: GitHub ya avisa que las
+   versiones 4 usan Node.js 20, que está obsoleto.
+2. Cómo actualizar `pip` regenerando los `.lock`.
 
 ## 3. Resultado de la auditoría del 11/11/2026 (ruta infeliz)
 
