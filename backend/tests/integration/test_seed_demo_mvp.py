@@ -29,6 +29,7 @@ from app.optimizacion.sinteticos import DEPOSITO
 from app.repositories.usuarios import UsuarioRepository
 from app.schemas.rutas import OptimizacionSolicitud
 from app.services.optimizaciones import OptimizacionService, medianoche
+from scripts import seed_demo_mvp as modulo_mvp
 from scripts.seed_demo import LIMA, USERS
 from scripts.seed_demo_mvp import (
     PREFIJO_PEDIDO,
@@ -79,12 +80,12 @@ def test_ruta_dorada_150_pedidos_15_vehiculos_e_idempotente(demo_factory):
     assert resumen_fecha(demo_factory, FECHA)["pedidos_pendientes"] == 150
 
 
-def test_ruta_infeliz_fecha_con_pedidos_ajenos(demo_factory):
+def _pedido_ajeno(demo_factory, dia=FECHA):
     with demo_factory.begin() as session:
         cliente = Cliente(nombre="Cliente ajeno")
         session.add(cliente)
         session.flush()
-        inicio = medianoche(FECHA) + timedelta(hours=10)
+        inicio = medianoche(dia) + timedelta(hours=10)
         session.add(
             Pedido(
                 cliente_id=cliente.cliente_id,
@@ -99,15 +100,30 @@ def test_ruta_infeliz_fecha_con_pedidos_ajenos(demo_factory):
                 tipo_producto="GENERAL",
             )
         )
-    with pytest.raises(SeedMvpRefused, match="ajenos a la demo"):
-        seed_mvp(demo_factory, PASSWORDS, FECHA, now=NOW)
+
+
+def _sembrados(demo_factory):
     with demo_factory() as session:
-        sembrados = session.scalar(
+        return session.scalar(
             select(func.count())
             .select_from(Pedido)
             .where(Pedido.referencia.startswith(PREFIJO_PEDIDO))
         )
-    assert sembrados == 0
+
+
+def test_ruta_feliz_completa_hasta_150_si_la_fecha_tiene_pedidos(demo_factory):
+    _pedido_ajeno(demo_factory)
+    seed_mvp(demo_factory, PASSWORDS, FECHA, now=NOW)
+    assert _sembrados(demo_factory) == 149
+    assert resumen_fecha(demo_factory, FECHA)["pedidos_pendientes"] == 150
+
+
+def test_ruta_infeliz_demasiados_pedidos_ajenos(demo_factory, monkeypatch):
+    monkeypatch.setattr(modulo_mvp, "MAX_AJENOS", 0)
+    _pedido_ajeno(demo_factory)
+    with pytest.raises(SeedMvpRefused, match="1 pedidos PENDIENTE ajenos"):
+        seed_mvp(demo_factory, PASSWORDS, FECHA, now=NOW)
+    assert _sembrados(demo_factory) == 0
 
 
 def test_ruta_feliz_optimizacion_real_deja_inviables_con_motivo(demo_factory):
@@ -129,9 +145,12 @@ def test_ruta_feliz_optimizacion_real_deja_inviables_con_motivo(demo_factory):
     }
 
 
-def test_ruta_infeliz_fecha_con_pedidos_de_seed_demo(demo_factory):
-    """seed_demo puts orders on its first day and the next; that day is refused."""
-    manana = NOW.date() + timedelta(days=1)
-    with pytest.raises(SeedMvpRefused, match="seed_demo"):
-        seed_mvp(demo_factory, PASSWORDS, manana, now=NOW)
-    assert resumen_fecha(demo_factory, manana)["pedidos_pendientes"] < 150
+def test_ruta_feliz_demo_hoy_con_los_pedidos_de_seed_demo(demo_factory):
+    """seed_demo leaves orders today; the demo fills the day up to 150."""
+    seed_mvp(demo_factory, PASSWORDS, NOW.date(), now=NOW)
+    assert resumen_fecha(demo_factory, NOW.date())["pedidos_pendientes"] == 150
+    assert 100 <= _sembrados(demo_factory) < 150
+    # A second run creates nothing and keeps the day at 150.
+    again = seed_mvp(demo_factory, PASSWORDS, NOW.date(), now=NOW)
+    assert again.created == {}
+    assert resumen_fecha(demo_factory, NOW.date())["pedidos_pendientes"] == 150

@@ -8,8 +8,8 @@ Completa el conjunto de ``seed_demo`` (usuarios de los cinco roles, clientes,
 5 vehículos, 4 conductores, parámetros EN-008 e incidencias) con el escenario
 de RNF-001 para un día de operación:
 
-* **150 pedidos PENDIENTE** del día indicado en San Juan de Lurigancho,
-  El Agustino, Santa Anita y Ate. Son 148 pedidos atendibles más 2 inviables a
+* **150 pedidos PENDIENTE** en total para el día indicado, en San Juan de
+  Lurigancho, El Agustino, Santa Anita y Ate. Incluye 2 inviables a
   propósito (uno excede la capacidad de toda la flota y otro tiene la ventana
   antes de la jornada), para mostrar «no asignado con motivo» (US-006, E3).
 * **15 vehículos ACTIVO**: los 5 de ``seed_demo`` y 10 más.
@@ -26,10 +26,12 @@ Mismas protecciones que ``seed_demo``: solo bases cuyo nombre termina en
 ``SEED_DEMO_PASSWORD_<ROL>``, sin escribirse ni imprimirse. Los 13 conductores
 nuevos usan la contraseña de ``SEED_DEMO_PASSWORD_CONDUCTOR``.
 
-Es idempotente (por referencia del pedido, placa y DNI) y se niega a sembrar los
-150 pedidos si la fecha ya tiene otros pedidos PENDIENTE, incluidos los de
-``seed_demo`` (día de su primera ejecución y el siguiente): el optimizador admite
-como máximo 150 por fecha y la demo debe mostrar exactamente este escenario.
+Es idempotente (por referencia del pedido, placa y DNI). Si la fecha ya tiene
+otros pedidos PENDIENTE (``seed_demo`` deja algunos en el día de su primera
+ejecución y en el siguiente), siembra solo los que faltan para llegar a 150, que
+es lo que admite el optimizador por fecha. Así la demo puede ser **hoy**, con el
+itinerario y las incidencias de ``seed_demo`` en la misma jornada. Se niega si la
+fecha está en el pasado o si ya tiene más de 50 pedidos ajenos.
 """
 
 from __future__ import annotations
@@ -66,6 +68,7 @@ from app.services.vehiculos import VehicleDuplicatePlate, VehiculoService
 from scripts import seed_demo as base
 
 TOTAL_PEDIDOS = 150
+MAX_AJENOS = 50  # other PENDIENTE orders the date may already hold
 SEMILLA = 105  # fixed: the same scenario on every run and every PC
 PREFIJO_PEDIDO = "Pedido MVP "
 PRODUCTOS = ("Abarrotes", "Farmacia", "Limpieza", "Bebidas", "Ferretería")
@@ -107,10 +110,10 @@ def distrito_de(latitud: float, longitud: float) -> str:
     raise ValueError("Punto fuera de los cuatro distritos piloto")
 
 
-def pedidos_demo() -> tuple[PedidoDemo, ...]:
-    """The 150 orders of the demo: 148 servable + 2 infeasible on purpose."""
+def pedidos_demo(total: int | None = None) -> tuple[PedidoDemo, ...]:
+    """``total`` demo orders (150 by default), the last 2 infeasible on purpose."""
     problema = sinteticos.escenario(
-        TOTAL_PEDIDOS, len(VEHICULOS) + len(base.VEHICLES), semilla=SEMILLA
+        total or TOTAL_PEDIDOS, len(VEHICULOS) + len(base.VEHICLES), semilla=SEMILLA
     )
     return tuple(
         PedidoDemo(
@@ -251,6 +254,7 @@ def _pedidos(
     clientes: Mapping[str, UUID],
     fecha: date,
     summary: base.SeedSummary,
+    total: int,
 ) -> None:
     service = PedidoService(factory)
     inicio_dia = medianoche(fecha)
@@ -262,7 +266,7 @@ def _pedidos(
                 )
             )
         )
-    for i, pedido in enumerate(pedidos_demo()):
+    for i, pedido in enumerate(pedidos_demo(total)):
         if pedido.referencia in existentes:
             summary.count("pedidos", created=False)
             continue
@@ -294,14 +298,22 @@ def seed_mvp(
 ) -> base.SeedSummary:
     """Run seed_demo, then add the MVP scenario for ``fecha``; safe to repeat."""
     now = now or datetime.now(base.LIMA)
-    # seed_demo runs first: on a fresh base it creates 20 orders for the first
-    # run's day and the next one, so they must be counted before adding 150.
     summary = base.seed(factory, passwords, now=now)
-    if _otros_pendientes(factory, fecha):
+    # seed_demo leaves some PENDIENTE orders on the day of its first run and the
+    # next (its driver's stops and incidents belong to that day too). The demo
+    # fills the date up to 150 so the optimizer sees exactly RNF-001's load.
+    otros = _otros_pendientes(factory, fecha)
+    with factory() as session:
+        ya_sembrados = session.scalar(
+            select(func.count())
+            .select_from(Pedido)
+            .where(Pedido.referencia.startswith(PREFIJO_PEDIDO))
+        )
+    total = ya_sembrados or TOTAL_PEDIDOS - otros
+    if otros + total > TOTAL_PEDIDOS or total < TOTAL_PEDIDOS - MAX_AJENOS:
         raise SeedMvpRefused(
-            f"El {fecha.isoformat()} ya tiene pedidos PENDIENTE ajenos a la demo "
-            "(seed_demo usa el día de su primera ejecución y el siguiente); elige "
-            "una fecha posterior para no superar los 150 del optimizador."
+            f"El {fecha.isoformat()} ya tiene {otros} pedidos PENDIENTE ajenos a "
+            "la demo; elige otra fecha para no superar los 150 del optimizador."
         )
     with factory() as session:
         admin = UsuarioRepository(session).find_for_login(base.USERS[Rol.ADMINISTRADOR])
@@ -312,7 +324,7 @@ def seed_mvp(
     _conductores(
         factory, passwords[Rol.CONDUCTOR], admin.usuario_id, now, fecha, summary
     )
-    _pedidos(factory, clientes, fecha, summary)
+    _pedidos(factory, clientes, fecha, summary, total)
     return summary
 
 
