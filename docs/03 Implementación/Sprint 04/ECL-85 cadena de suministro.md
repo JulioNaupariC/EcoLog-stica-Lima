@@ -86,20 +86,27 @@ seguridad, que se abren cuando se activen las alertas (sección 4). Después del
 | `package-lock.json` (producción) | 0 vulnerabilidades | — |
 | `package-lock.json` (desarrollo) | 26 avisos: 13 altos, 11 moderados y 2 bajos, ninguno crítico. Los altos vienen de `@lhci/cli` 0.15.1 (Lighthouse CI de ECL-114): `basic-ftp`, `extract-zip` y otros en su cadena; `minimatch` también llega por `eslint` | No se distribuyen en el build ni se ejecutan con datos de usuarios: solo corren en CI y en el equipo del desarrollador. `npm audit fix --force` exige cambios incompatibles en la herramienta de medición en plena semana de inspección; se dejan como seguimiento en ECL-102 (evaluación final OWASP) |
 
-## 4. Pendiente de un administrador del repositorio
+## 4. Configuración del administrador del repositorio (ruta de borde)
 
-El autor tiene permiso de escritura, no de administración: la API de protección
-de rama y la de alertas responden `403`. Quedan para **Julio** (dueño del
-repositorio):
+Estos ajustes exigen ser dueño del repositorio: en una cuenta personal de GitHub
+los colaboradores no pueden tener rol de administrador, y la API responde `403`
+al autor. Los hizo **Julio** (dueño) el 12/11/2026. Las capturas que envió están
+en [`evidencias/ECL-85/`](evidencias/ECL-85/):
 
-1. *Settings → Code security*: activar **Dependabot alerts** y **Dependabot
-   security updates**, y adjuntar una captura en ECL-85.
-2. *Settings → Branches → main*: dejar la captura de **Require review from
-   Code Owners**. La exigencia se trabajó en ECL-88; esta es la ruta de borde de
-   ECL-85.
+| Ajuste | Estado | Evidencia |
+|---|---|---|
+| *Settings → Advanced Security*: **Dependabot alerts** | On (1 regla de auto-triage) | [captura](evidencias/ECL-85/ECL-85-dependabot-alertas.png) |
+| **Dependabot security updates** | On (*Grouped security updates* Off) | La misma captura |
+| *Settings → General*: **Automatically delete head branches** | Activado | [captura](evidencias/ECL-85/ECL-85-borrado-automatico-ramas.png) |
+| Protección de `main` | Exige PR con 1 aprobación, descarta las aprobaciones viejas ante commits nuevos, exige **review from Code Owners** y exige checks en verde con la rama al día | [captura](evidencias/ECL-85/ECL-85-proteccion-main-code-owners.png) |
 
-Sin esos dos pasos, el código de este PR funciona igual: el job audita en cada
-ejecución y `dependabot.yml` queda listo para cuando se activen las alertas.
+La misma captura de Advanced Security muestra que CodeQL corre en modo
+*Advanced setup*, que es el `codeql.yml` del repositorio.
+
+Observación para ECL-102: está desmarcada «Require approval of the most recent
+reviewable push». Si un revisor empuja un commit al PR de otra persona, podría
+aprobarlo él mismo. El riesgo es bajo, porque «Dismiss stale pull request
+approvals» ya anula las aprobaciones anteriores a ese commit.
 
 ## 5. Verificación local
 
