@@ -411,6 +411,8 @@ Los siguientes comentarios reservan enlaces para entregas futuras.
 <!-- ECL-101 Retrospectiva -->
 
 <!-- ECL-102 Calidad y OWASP -->
+- [ECL-102 — 03 Calidad de código V_1_0_0](<docs/03 Implementación/Sprint 04/03 Calidad de código V_1_0_0.md>)
+- [ECL-102 — 04 OWASP V_1_0_0](<docs/03 Implementación/Sprint 04/04 OWASP V_1_0_0.md>)
 
 <!-- ECL-103 WCAG -->
 

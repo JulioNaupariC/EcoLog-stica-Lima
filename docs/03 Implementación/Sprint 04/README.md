@@ -15,6 +15,8 @@ No representan resultados ejecutados ni documentos aprobados.
 <!-- ECL-101 Retrospectiva -->
 
 <!-- ECL-102 Calidad y OWASP -->
+- [ECL-102 — 03 Calidad de código V_1_0_0](<03 Calidad de código V_1_0_0.md>)
+- [ECL-102 — 04 OWASP V_1_0_0](<04 OWASP V_1_0_0.md>)
 
 <!-- ECL-103 WCAG -->
 
