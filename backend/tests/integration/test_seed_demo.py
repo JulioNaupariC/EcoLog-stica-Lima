@@ -1,6 +1,6 @@
 """scripts/seed_demo.py sobre PostgreSQL real: datos, rutas de borde e idempotencia."""
 
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import pytest
 from sqlalchemy import delete, func, select
@@ -121,6 +121,16 @@ def test_ruta_infeliz_segunda_ejecucion_no_duplica(demo_factory):
     assert summary.existing["asignaciones"] == 5
     assert summary.existing["incidencias"] == 3
     assert summary.existing["parametros"] == 1
+
+
+def test_ECL105_resembrar_otro_dia_no_choca_con_incidencias(demo_factory):
+    """ECL-105: the demo day reseeds a base created days earlier."""
+    seed(demo_factory, PASSWORDS, now=NOW)
+    before = counts(demo_factory)
+    summary = seed(demo_factory, PASSWORDS, now=NOW + timedelta(days=7))
+    assert counts(demo_factory) == before
+    assert summary.existing["incidencias"] == 3
+    assert summary.created.get("incidencias", 0) == 0
 
 
 def test_ruta_dorada_incidencias_demo_pendientes_y_auditadas(demo_factory):

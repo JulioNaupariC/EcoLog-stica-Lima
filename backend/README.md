@@ -527,6 +527,43 @@ se fijan en la primera ejecución: para demostrar otro día, recrear la base `*_
 (`dropdb`/`createdb`, extensión PostGIS y `alembic upgrade head`) y sembrar ese día.
 Pruebas: `tests/unit/test_seed_demo.py` y `tests/integration/test_seed_demo.py`.
 
+## Datos de la demostración final del MVP — ECL-105
+
+`scripts/seed_demo_mvp.py` ejecuta primero `seed_demo` y le añade el escenario
+de RNF-001 para **un día de operación**. Tiene las mismas protecciones: solo
+bases `*_demo`, nunca `APP_ENV=production`, y contraseñas tomadas de
+`SEED_DEMO_PASSWORD_<ROL>`, que no se imprimen.
+
+```powershell
+.venv/Scripts/python -m alembic upgrade head
+.venv/Scripts/python -m scripts.seed_demo_mvp --fecha 2026-11-20
+```
+
+| Dato | Total para la fecha | Detalle |
+|---|---:|---|
+| Pedidos PENDIENTE | 150 | `Pedido MVP 001` a `150` en San Juan de Lurigancho, El Agustino, Santa Anita y Ate; 148 atendibles y 2 inviables a propósito (`EXCEDE_CAPACIDAD` y `VENTANA_INVIABLE`) |
+| Vehículos ACTIVO | 15 | `DEMO-001` a `005` más `MVP-001` a `010` (furgones, camionetas y una moto, con los valores típicos de `sinteticos.FLOTA`) |
+| Conductores elegibles | 15 | 2 de `seed_demo` más `conductor5.demo` a `conductor17.demo`, que usan la contraseña de `SEED_DEMO_PASSWORD_CONDUCTOR`; se conservan los 2 no elegibles de RN-005 |
+| Clientes | 4 nuevos | `Cliente Demo MVP <distrito>` |
+
+Los pedidos vienen de `app.optimizacion.sinteticos` con semilla fija (105), el
+mismo generador del benchmark de ECL-21: el escenario es idéntico en cualquier
+PC. Son datos ficticios. El script se niega si la fecha ya tiene otros pedidos
+PENDIENTE (el motor admite 150 por fecha) o si la fecha está en el pasado. Es
+idempotente: puede repetirse cualquier día, porque `seed_demo` ya no choca con sus
+incidencias al resembrar en otra fecha.
+
+**Comprobación del 11/11/2026** (contenedor Linux de 2 CPU, Python 3.12,
+PostgreSQL 16 con PostGIS; no es la PC del laboratorio): la optimización real del
+20/11/2026 terminó `COMPLETADA` en **20,11 s** (límite de búsqueda de 20 s), con
+9 rutas, 148 pedidos asignados, los 2 inviables con su motivo, todas las rutas
+con conductor y un cumplimiento de ventanas del 100 %. Es una sola corrida; el
+P95 de RNF-001 es el de ECL-21.
+
+Pruebas: `tests/unit/test_seed_demo_mvp.py` y
+`tests/integration/test_seed_demo_mvp.py`; esta última incluye una optimización
+real de 2 s.
+
 ## Calidad
 
 ```powershell
